@@ -1,0 +1,117 @@
+// ----------------------------------------
+// MIXINS POUR MEDIA QUERIES
+// ----------------------------------------
+
+/**
+ * Mixin générique pour media queries
+ * Gère une plage de taille minimale et/ou maximale.
+ *
+ * @param {string | null} $min - Taille minimale (ex: "320px")
+ * @param {string | null} $max - Taille maximale (ex: "768px")
+ */
+ @mixin respond($min: null, $max: null) {
+    @if $min != null and $max != null {
+        @media (min-width: $min) and (max-width: $max) {
+            @content;
+        }
+    } @else if $min != null {
+        @media (min-width: $min) {
+            @content;
+        }
+    } @else if $max != null {
+        @media (max-width: $max) {
+            @content;
+        }
+    }
+}
+
+// ----------------------------------------
+// MIXINS POUR APPAREILS CLASSIQUES
+// ----------------------------------------
+
+// Montres connectées
+@mixin watch {
+    @include respond(null, $breakpoint-watch) {
+        @content;
+    }
+}
+
+// Smartphones
+@mixin small-phone {
+    @include respond(null, $breakpoint-small-phone) {
+        @content;
+    }
+}
+
+@mixin phone {
+    @include respond($breakpoint-small-phone, $breakpoint-phone) {
+        @content;
+    }
+}
+
+@mixin large-phone {
+    @include respond($breakpoint-phone, $breakpoint-large-phone) {
+        @content;
+    }
+}
+
+// Tablettes
+@mixin tablet-portrait {
+    @media (min-width: $breakpoint-large-phone) and (max-width: $breakpoint-tablet-portrait) and (orientation: portrait) {
+        @content;
+    }
+}
+
+@mixin tablet-landscape {
+    @media (min-width: $breakpoint-tablet-portrait) and (max-width: $breakpoint-tablet-landscape) and (orientation: landscape) {
+        @content;
+    }
+}
+
+// ----------------------------------------
+// MIXINS POUR GRANDS ÉCRANS
+// ----------------------------------------
+
+// Ordinateurs portables
+@mixin laptop {
+    @include respond($breakpoint-tablet-landscape, $breakpoint-laptop) {
+        @content;
+    }
+}
+
+@mixin large-laptop {
+    @include respond($breakpoint-laptop, $breakpoint-large-laptop) {
+        @content;
+    }
+}
+
+// Ordinateurs de bureau
+@mixin desktop {
+    @include respond($breakpoint-large-laptop, $breakpoint-desktop) {
+        @content;
+    }
+}
+
+@mixin large-desktop {
+    @include respond($breakpoint-desktop, $breakpoint-large-desktop) {
+        @content;
+    }
+}
+
+// ----------------------------------------
+// MIXINS POUR CAS PARTICULIERS
+// ----------------------------------------
+
+// Vidéoprojecteurs
+@mixin projector {
+    @include respond($breakpoint-large-desktop, $breakpoint-projector) {
+        @content;
+    }
+}
+
+// Écrans géants
+@mixin giant-screen {
+    @include respond($breakpoint-projector, $breakpoint-giant-screen) {
+        @content;
+    }
+}
