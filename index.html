@@ -10,7 +10,7 @@
     <meta name="description" content="Découvrez nos photographes talentueux sur Fisheye. Trouvez le photographe parfait pour vos projets créatifs, événements ou portraits.">
     <meta name="keywords" content="photographes, portfolio, talents, photographie, Fisheye, événements, portraits">
     <meta name="author" content="Fisheye Team">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="icon" type="image/png" href="/images/icons/favicon.png">
 
     <!-- Open Graph Metadata pour réseaux sociaux -->
     <meta property="og:title" content="Fisheye - Découvrez Nos Photographes Talentueux">
@@ -42,12 +42,24 @@
     </header>
 
     <!-- Contenu principal -->
-    <main id="main">
-      <section class="photographer_section" aria-labelledby="photographers-title">
-        <h2 id="photographers-title" class="visually-hidden">Section des photographes</h2>
-        <!-- Contenu des photographes sera injecté ici -->
-      </section>
-    </main>
+<main id="main">
+  <section class="photographer_section" aria-labelledby="photographers-title">
+    <h2 id="photographers-title" class="visually-hidden">Section des photographes</h2>
+    
+    <!-- Template -->
+    <template id="photographer-template">
+      <article class="photographer-card" aria-labelledby="photographer-name">
+        <img src="" alt="" class="photographer-card-portrait">
+        <h3 id="photographer-name">Nom du photographe</h3>
+        <p class="photographer-card-location">Ville, Pays</p>
+        <p class="photographer-card-tagline">"Slogan"</p>
+        <p class="photographer-card-price">Prix : X€/jour</p>
+      </article>
+    </template>
+  </section>
+</main>
+
+
 
     <!-- Scripts JS -->
     <script src="scripts/templates/photographer.js"></script>
