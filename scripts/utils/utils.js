@@ -65,7 +65,9 @@ export function isEmptyArray(array) {
 export function groupBy(array, key) {
     return array.reduce((result, item) => {
         const group = item[key];
-        if (!result[group]) result[group] = [];
+        if (!result[group]) {
+            result[group] = [];
+        }
         result[group].push(item);
         return result;
     }, {});
@@ -80,8 +82,12 @@ export function groupBy(array, key) {
  */
 export function sortBy(array, key, ascending = true) {
     return array.sort((a, b) => {
-        if (a[key] < b[key]) return ascending ? -1 : 1;
-        if (a[key] > b[key]) return ascending ? 1 : -1;
+        if (a[key] < b[key]) {
+            return ascending ? -1 : 1;
+        }
+        if (a[key] > b[key]) {
+            return ascending ? 1 : -1;
+        }
         return 0;
     });
 }
