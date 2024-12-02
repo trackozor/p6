@@ -23,8 +23,9 @@
     width: 100px; /* Définit une largeur adaptée aux écrans mobiles */
     height: 100px; /* Définit une hauteur proportionnelle */
     border-radius: 50%; /* Rend l'image circulaire */
-    object-fit: cover; /* Ajuste l'image pour remplir le cercle sans déformation */
-    margin-bottom: 10px; /* Ajoute un espacement avec les autres éléments */
+    object-fit:cover; /* Ajuste l'image pour remplir le cercle sans déformation */
+    margin-bottom: 10px; /* Ajoute un espacement avec les autres éléments */  
+    transform: scale(1.2); /* Applique un zoom initial */
 }
 
 /* ---------------------------------------------------------------- */

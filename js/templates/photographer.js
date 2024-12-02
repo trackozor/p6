@@ -43,7 +43,7 @@ function photographerTemplate(data) {
 
         // Ajouter un lien qui encapsule l'article
         const link = document.createElement('a');
-        link.setAttribute("href", `photographer.html?id=${id}`);
+        link.setAttribute("href", `/html/photographer.html?id=${id}`);
         link.setAttribute("aria-label", `Voir la page de ${name}`);
         link.appendChild(article); // L'article est à l'intérieur du lien
 
