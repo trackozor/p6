@@ -1,29 +1,24 @@
 :root {
     /* Palette principale */
-    --primary-color: #0a0909;       /* Couleur principale (noir) */
-    --secondary-color: #89C8FA;    /* Couleur secondaire (bleu clair) */
-    --tertiary-color: #003A68;     /* Couleur tertiaire (bleu foncé) */
-    --accent-color: #ff5722;       /* Couleur d'accentuation (orange vif) */
-    --neutral-color: #f5f5f5;      /* Couleur neutre (gris clair) */
+    --primary-color: #901C1C;       /* Rouge foncé (AAA pour WCAG) */
+    --primary-color-light: #D3573C; /* Rouge plus clair */
+    --secondary-color: #D3573C;    /* Rouge clair (AA pour WCAG) */
+    --neutral-color: #FAFAFA;      /* Blanc cassé pour contraste */
 
-    /* Variantes de nuances */
-    --primary-color-light: #2e2d2d;  /* Éclaircissement approximatif */
-    --primary-color-dark: #070707;   /* Assombrissement approximatif */
-    --secondary-color-light: #a3d3fc;
-    --secondary-color-dark: #6299ce;
+    /* Couleurs complémentaires */
+    --accent-color: #FF5722;       /* Orange vif pour accent */
+    --secondary-neutral: #525252; /* Gris foncé */
 
     /* Couleurs de texte */
-    --text-color1: #FAFAFA;    /* Principal */
-    --text-color2: #666;       /* Secondaire */
-    --text-color3: #FFF;       /* Inversée */
-    --text-color4: #FF5722;    /* Accent */
-    --text-color5: #003A68;    /* Tertiaire */
+    --text-color-primary: #FAFAFA; /* Texte principal */
+    --text-color-secondary: #901C1C; /* Texte contrastant sur fond clair */
+    --text-color-accent: #D3573C;  /* Accentuation pour liens ou boutons */
 
     /* Couleurs d'état */
-    --success-color: #4caf50;
-    --warning-color: #ff9800;
-    --error-color: #f44336;
-    --info-color: #2196f3;
+    --success-color: #4caf50;      /* Succès */
+    --warning-color: #ff9800;     /* Avertissement */
+    --error-color: #f44336;       /* Erreur */
+    --info-color: #2196f3;        /* Information */
 
     /* Typographie */
     --font-primary: 'Roboto', sans-serif;

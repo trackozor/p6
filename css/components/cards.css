@@ -1,8 +1,53 @@
-
+/* Styles de base pour mobile (par défaut) */
 .photographer-card {
-    display: block;
+    display: flex;
     flex-direction: column;
-
-
-
+    align-items: center;
+    text-align: center;
+    background-color: #FAFAFA; /* Couleur de fond */
+    border-radius: 15px; /* Bordures arrondies */
+    padding: 15px; /* Réduit légèrement pour mobile */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre réduite */
+    max-width: 50%; /* Prend toute la largeur disponible */
+    margin: 0 auto;
 }
+
+/* Style de l'image */
+.photographer-card-portrait {
+    width: 80px; /* Taille réduite pour mobile */
+    height: 80px;
+    border-radius: 50%; /* Rend l'image circulaire */
+    object-fit: cover; /* Ajuste l'image pour qu'elle remplisse le cercle */
+    margin-bottom: 10px; /* Espacement réduit */
+}
+
+/* Nom du photographe */
+.photographer-card-name {
+    font-size: 3.6rem; /* Taille réduite pour mobile */
+    color: #D3573C; /* Couleur primaire */
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* Localisation */
+.photographer-card-location {
+    font-size: 1.2rem; /* Taille réduite pour mobile */
+    color: #666; /* Couleur secondaire */
+    margin-bottom: 6px;
+}
+
+/* Slogan */
+.photographer-card-tagline {
+    font-size: 1rem; /* Texte plus petit pour mobile */
+    font-style: italic;
+    color: #525252; /* Couleur neutre */
+    margin-bottom: 10px;
+}
+
+/* Prix */
+.photographer-card-price {
+    font-size: 1.2rem; /* Taille réduite pour mobile */
+    font-weight: bold;
+    color: #901C1C; /* Couleur primaire foncée */
+}
+

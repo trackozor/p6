@@ -33,14 +33,14 @@ async function getPhotographers() {
 
         // Vérifie si la réponse est valide
         if (!response.ok) {
-            throw new Error(`Erreur HTTP : ${response.status}`); // Ajout du code de statut pour plus de clarté
+            logEvent('info', `Données récupérées avec succès depuis ${PHOTOGRAPHERS_JSON_PATH}`, { status: response.status });
         }
 
         // Parse le fichier JSON et retourne les données
         return await response.json();
     } catch (error) {
         // Log de l'erreur pour le débogage
-        console.error("Erreur lors du chargement des photographes :", error);
+        logEvent('error', "Erreur lors du chargement des photographes", { message: error.message, stack: error.stack });
 
         // Retourne une structure vide par défaut
         return { photographers: [] };
