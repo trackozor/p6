@@ -1,7 +1,7 @@
 function photographerTemplate(data) {
-    const { name, portrait } = data;
+    const { name, portrait, id } = data;
 
-    const picture = `assets/photographers/${portrait}`;
+    const picture = `assets/photographers/Photographer/${portrait}`;
 
     function getUserCardDOM() {
         const article = document.createElement( 'article' );
@@ -11,6 +11,12 @@ function photographerTemplate(data) {
         h2.textContent = name;
         article.appendChild(img);
         article.appendChild(h2);
+
+        // créer un lien qui va rediriger vers photographer.html
+        // passer un identifiant à l'url
+        // ex: /photographer.html?id=${id}
+
+
         return (article);
     }
     return { name, picture, getUserCardDOM }

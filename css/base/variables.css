@@ -1,0 +1,97 @@
+:root {
+    /* Palette principale */
+    --primary-color: #0a0909;       /* Couleur principale (noir) */
+    --secondary-color: #89C8FA;    /* Couleur secondaire (bleu clair) */
+    --tertiary-color: #003A68;     /* Couleur tertiaire (bleu foncé) */
+    --accent-color: #ff5722;       /* Couleur d'accentuation (orange vif) */
+    --neutral-color: #f5f5f5;      /* Couleur neutre (gris clair) */
+
+    /* Variantes de nuances */
+    --primary-color-light: #2e2d2d;  /* Éclaircissement approximatif */
+    --primary-color-dark: #070707;   /* Assombrissement approximatif */
+    --secondary-color-light: #a3d3fc;
+    --secondary-color-dark: #6299ce;
+
+    /* Couleurs de texte */
+    --text-color1: #FAFAFA;    /* Principal */
+    --text-color2: #666;       /* Secondaire */
+    --text-color3: #FFF;       /* Inversée */
+    --text-color4: #FF5722;    /* Accent */
+    --text-color5: #003A68;    /* Tertiaire */
+
+    /* Couleurs d'état */
+    --success-color: #4caf50;
+    --warning-color: #ff9800;
+    --error-color: #f44336;
+    --info-color: #2196f3;
+
+    /* Typographie */
+    --font-primary: 'Roboto', sans-serif;
+    --font-title: 'Shrikhand', sans-serif;
+
+    /* Tailles des polices */
+    --font-size-small: 1.4rem;
+    --font-size-base: 1.6rem;
+    --font-size-large: 2rem;
+    --font-size-xlarge: 2.4rem;
+
+    /* Poids des polices */
+    --font-weight-regular: 400;
+    --font-weight-bold: 700;
+    --font-weight-light: 300;
+
+    /* Hauteur de ligne */
+    --line-height-tight: 1.2;
+    --line-height-normal: 1.4;
+    --line-height-base: 1.6;
+    --line-height-loose: 1.8;
+    --line-height-extra-loose: 2;
+
+    /* Espacements (Padding & Margins) */
+    --padding-xsmall: 0.4rem;
+    --padding-small: 0.8rem;
+    --padding-medium: 1.6rem;
+    --padding-large: 2.4rem;
+    --padding-xlarge: 3.2rem;
+
+    --margin-xsmall: 0.4rem;
+    --margin-small: 0.8rem;
+    --margin-medium: 1.6rem;
+    --margin-large: 2.4rem;
+    --margin-xlarge: 3.2rem;
+
+    /* Gaps */
+    --gap-small: 0.8rem;
+    --gap-medium: 1.6rem;
+    --gap-large: 2.4rem;
+
+    /* Tailles des objets */
+    --size-small: 2rem;
+    --size-medium: 4rem;
+    --size-large: 6rem;
+
+    /* Bordures et ombres */
+    --border-radius-small: 4px;
+    --border-radius-medium: 8px;
+    --border-radius-large: 16px;
+
+    --box-shadow-small: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --box-shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.15);
+    --box-shadow-large: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+    /* Breakpoints */
+    --breakpoint-watch: 200px;
+    --breakpoint-small-phone: 320px;
+    --breakpoint-phone: 480px;
+    --breakpoint-large-phone: 768px;
+    --breakpoint-tablet-portrait: 1024px;
+    --breakpoint-tablet-landscape: 1366px;
+    --breakpoint-laptop: 1440px;
+    --breakpoint-desktop: 1920px;
+
+    /* Z-Index */
+    --z-index-low: 10;
+    --z-index-medium: 50;
+    --z-index-high: 100;
+    --z-index-overlay: 999;
+}
