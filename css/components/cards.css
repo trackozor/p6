@@ -1,53 +1,71 @@
-/* Styles de base pour mobile (par défaut) */
+/* ---------------------------------------------------------------- */
+/* Styles de la carte du photographe (photographer-card) pour mobile-first */
+/* ---------------------------------------------------------------- */
+
 .photographer-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    background-color: #FAFAFA; /* Couleur de fond */
-    border-radius: 15px; /* Bordures arrondies */
-    padding: 15px; /* Réduit légèrement pour mobile */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre réduite */
-    max-width: 50%; /* Prend toute la largeur disponible */
-    margin: 0 auto;
+    display: flex; /* Utilise Flexbox pour organiser les éléments verticalement */
+    flex-direction: column; /* Positionne les éléments en colonne */
+    align-items: center; /* Centre les éléments horizontalement */
+    text-align: center; /* Centre le texte */
+    background-color: #FAFAFA; /* Couleur de fond pour différencier les cartes */
+    border-radius: 15px; /* Ajoute des bords arrondis pour un aspect moderne */
+    padding: 15px; /* Espacement interne pour aérer les éléments */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère pour la profondeur */
+    max-width: 50%; /* Limite la largeur des cartes à 50% de l'écran */
+    margin: 0 auto; /* Centre les cartes horizontalement */
 }
 
-/* Style de l'image */
+/* ---------------------------------------------------------------- */
+/* Style de l'image du photographe */
+/* ---------------------------------------------------------------- */
+
 .photographer-card-portrait {
-    width: 80px; /* Taille réduite pour mobile */
-    height: 80px;
+    width: 100px; /* Définit une largeur adaptée aux écrans mobiles */
+    height: 100px; /* Définit une hauteur proportionnelle */
     border-radius: 50%; /* Rend l'image circulaire */
-    object-fit: cover; /* Ajuste l'image pour qu'elle remplisse le cercle */
-    margin-bottom: 10px; /* Espacement réduit */
+    object-fit: cover; /* Ajuste l'image pour remplir le cercle sans déformation */
+    margin-bottom: 10px; /* Ajoute un espacement avec les autres éléments */
 }
 
+/* ---------------------------------------------------------------- */
 /* Nom du photographe */
+/* ---------------------------------------------------------------- */
+
 .photographer-card-name {
-    font-size: 1.6rem; /* Taille réduite pour mobile */
-    color: #D3573C; /* Couleur primaire */
-    font-weight: bold;
-    margin-bottom: 8px;
+    font-size: 1.6rem; /* Taille de police adaptée pour mobile */
+    color: #D3573C; /* Couleur principale pour un contraste visuel */
+    font-weight: bold; /* Met en évidence le nom avec un poids gras */
+    margin-bottom: 8px; /* Ajoute un espace entre le nom et la localisation */
 }
 
-/* Localisation */
+/* ---------------------------------------------------------------- */
+/* Localisation du photographe */
+/* ---------------------------------------------------------------- */
+
 .photographer-card-location {
-    font-size: 1.2rem; /* Taille réduite pour mobile */
-    color: #666; /* Couleur secondaire */
-    margin-bottom: 6px;
+    font-size: 1.2rem; /* Texte légèrement plus petit pour mobile */
+    color: #666; /* Couleur secondaire pour moins d'emphase */
+    margin-bottom: 6px; /* Espace réduit pour mobile */
 }
 
-/* Slogan */
+/* ---------------------------------------------------------------- */
+/* Slogan ou tagline du photographe */
+/* ---------------------------------------------------------------- */
+
 .photographer-card-tagline {
-    font-size: 1rem; /* Texte plus petit pour mobile */
-    font-style: italic;
-    color: #525252; /* Couleur neutre */
-    margin-bottom: 10px;
+    font-size: 1rem; /* Texte plus petit pour les slogans */
+    font-style: italic; /* Ajoute un style italique pour différencier */
+    color: #525252; /* Couleur neutre pour un effet secondaire */
+    margin-bottom: 10px; /* Séparation avec le prix */
 }
 
-/* Prix */
+/* ---------------------------------------------------------------- */
+/* Prix par jour du photographe */
+/* ---------------------------------------------------------------- */
+
 .photographer-card-price {
-    font-size: 1.2rem; /* Taille réduite pour mobile */
-    font-weight: bold;
-    color: #901C1C; /* Couleur primaire foncée */
+    font-size: 1.2rem; /* Taille de police pour rester lisible */
+    font-weight: bold; /* Met en évidence le prix */
+    color: #901C1C; /* Couleur primaire foncée pour un bon contraste */
 }
 
