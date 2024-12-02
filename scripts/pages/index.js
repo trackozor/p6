@@ -16,7 +16,7 @@ const articles = [
 const photographersSection = document.querySelector(".photographer_section");
 
 // Chemin vers le fichier JSON des photographes
-const PHOTOGRAPHERS_JSON_PATH = "/photographers.json";
+const PHOTOGRAPHERS_JSON_PATH = "/assets/data/photographers.json";
 const PHOTO_BASE_PATH = "/assets/images/photographers/"; // Dossier contenant les photos des photographes
 
 // ----------------------------------------
