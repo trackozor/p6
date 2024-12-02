@@ -1,5 +1,5 @@
 function photographerTemplate(data) {
-    const { name, portrait, id } = data;
+    const { name, portrait, id, } = data;
 
     const picture = `assets/photographers/Photographer/${portrait}`;
 
@@ -11,6 +11,7 @@ function photographerTemplate(data) {
         h2.textContent = name;
         article.appendChild(img);
         article.appendChild(h2);
+        
 
         // créer un lien qui va rediriger vers photographer.html
         // passer un identifiant à l'url
