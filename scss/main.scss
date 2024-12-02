@@ -1,8 +1,7 @@
-@import url(/scss/base/_variables.scss);
-@import url(/scss/base/_mixins.scss);
-@import url(/scss/base/_reset.scss);
-
-@import url(/scss/components/card.scss);
-@import url(/scss/components/button.scss);
-
-@import url(/scss/layouts/header.scss);
+@import 'base/variables';
+@import 'base/mixins';
+@import 'base/reset';
+@import 'base/global';
+@import 'components/cards';
+@import 'components/button';
+@import 'layouts/header';
