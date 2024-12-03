@@ -1,5 +1,6 @@
+
 /* ---------------------------------------------------------------- */
-/* Styles de la carte du photographe (photographer-card) pour mobile-first */
+/* Carte du photographe (photographer-card) pour mobile-first *     /
 /* ---------------------------------------------------------------- */
 
 .photographer-card {
@@ -69,4 +70,8 @@
     font-weight: bold; /* Met en évidence le prix */
     color: #901C1C; /* Couleur primaire foncée pour un bon contraste */
 }
+
+/*------------------------------------------------------------------------------------------------------------*/
+/*                                            MEDIA QUERIES                                                   */
+/*------------------------------------------------------------------------------------------------------------*/
 

@@ -1,6 +1,10 @@
 @import url("/css/base/reset.css");
 @import url("/css/base/global.css");
+@import url("/css/base/variables.css");
 @import url("/css/components/button.css");
 @import url("/css/components/cards.css");
 @import url("/css/layouts/header.css");
+
+
+
 
