@@ -4,9 +4,9 @@
  * @param {string} message - Message descriptif de l'événement.
  * @param {Object} [data={}] - Données supplémentaires à afficher (facultatif).
  */
-export function logEvent(type, message, data = {}) {
+export function LogEvent(type, message, data = {}) {
     const timestamp = new Date().toLocaleTimeString();
-    const prefix = `[GameOn][${timestamp}]`;
+    const prefix = `[FishEye][${timestamp}]`;
 
     const logStyles = {
         info: 'color: green;',

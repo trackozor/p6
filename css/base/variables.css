@@ -74,19 +74,4 @@
     --box-shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.15);
     --box-shadow-large: 0 5px 15px rgba(0, 0, 0, 0.2);
 
-    /* Breakpoints */
-    --breakpoint-watch: 200px;
-    --breakpoint-small-phone: 320px;
-    --breakpoint-phone: 480px;
-    --breakpoint-large-phone: 768px;
-    --breakpoint-tablet-portrait: 1024px;
-    --breakpoint-tablet-landscape: 1366px;
-    --breakpoint-laptop: 1440px;
-    --breakpoint-desktop: 1920px;
-
-    /* Z-Index */
-    --z-index-low: 10;
-    --z-index-medium: 50;
-    --z-index-high: 100;
-    --z-index-overlay: 999;
 }

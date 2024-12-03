@@ -17,8 +17,7 @@ const photographersSection = document.querySelector(".photographer_section");
 
 // Chemin vers le fichier JSON des photographes
 const PHOTOGRAPHERS_JSON_PATH = "/assets/data/photographers.json";
-const PHOTO_BASE_PATH = "/assets/images/photographers/"; // Dossier contenant les photos des photographes
-
+const PHOTO_BASE_PATH = "/assets/images/photographers/"; // Dossier contenant les photos des photographes 
 // ----------------------------------------
 // Fonctions
 // ----------------------------------------
@@ -33,14 +32,14 @@ async function getPhotographers() {
 
         // Vérifie si la réponse est valide
         if (!response.ok) {
-            logEvent('info', `Données récupérées avec succès depuis ${PHOTOGRAPHERS_JSON_PATH}`, { status: response.status });
+            LogEvent('info', `Données récupérées avec succès depuis ${PHOTOGRAPHERS_JSON_PATH}`, { status: response.status });
         }
 
         // Parse le fichier JSON et retourne les données
         return await response.json();
     } catch (error) {
         // Log de l'erreur pour le débogage
-        logEvent('error', "Erreur lors du chargement des photographes", { message: error.message, stack: error.stack });
+        LogEvent('error', "Erreur lors du chargement des photographes", { message: error.message, stack: error.stack });
 
         // Retourne une structure vide par défaut
         return { photographers: [] };
