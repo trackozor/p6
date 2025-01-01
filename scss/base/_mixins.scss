@@ -1,4 +1,26 @@
-// Mixin pour Media Queries (Mobile First)
+/* =============================================================================
+    Projet      : Fisheye
+    Fichier     : _mixins.scss
+    Auteur      : Équipe Fisheye
+    Date        : 01/01/2025
+    Version     : 1.0.0
+    Description : Contient des mixins réutilisables, notamment pour la gestion
+                  des media queries dans une approche Mobile First.
+============================================================================= */
+
+// ============================================================================
+// Mixin : respond
+// Description : Facilite l'écriture de media queries dans une approche Mobile
+//               First. Utilise des noms de points de rupture pour plus de clarté.
+// Paramètre : $breakpoint - Nom du point de rupture (ex. "tablet", "desktop").
+// Usage :
+// .classe {
+//     font-size: 1rem;
+//     @include respond(tablet) {
+//         font-size: 1.2rem;
+//     }
+// }
+// ============================================================================
 @mixin respond($breakpoint) {
     @if $breakpoint == tablet {
         @media (min-width: 768px) {
@@ -12,5 +34,7 @@
         @media (min-width: 1440px) {
             @content;
         }
+    } @else {
+        @warn "Le point de rupture #{$breakpoint} n'est pas défini. Veuillez vérifier.";
     }
 }

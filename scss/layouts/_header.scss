@@ -1,43 +1,59 @@
+/* =============================================================================
+    Projet      : Fisheye
+    Fichier     : _header.scss
+    Auteur      : Équipe Fisheye
+    Date        : 01/01/2025
+    Version     : 1.0.0
+    Description : Styles pour le header du site, incluant le logo et le titre.
+                  Supporte une approche responsive avec des media queries.
+============================================================================= */
 
-
+/* ------------------------------------------------------------------------- */
+/*                        Styles par défaut (Mobile)                         */
+/* ------------------------------------------------------------------------- */
 header {
-    display: flex;
-    flex-direction: row;
-    width: 95%;
-    justify-content: space-between;
-    align-items: center;
-    height: auto;
-    padding: 5% 0 10% 0;
-}
+    display: flex; /* Utilise Flexbox pour la mise en page */
+    flex-direction: row; /* Positionne les enfants en ligne */
+    justify-content: space-between; /* Espace entre le logo et le titre */
+    align-items: center; /* Aligne verticalement les éléments */
+    width: 95%; /* Largeur relative */
+    height: auto; /* Hauteur automatique */
+    padding: 5% 0 10% 0; /* Espacement vertical */
 
+    /* Ajout d'une marge pour mieux centrer */
+    margin: 0 auto;
+}
 
 .logo {
-    width:25vw;
-    max-width: 100px;
-    height: auto;
-    padding-left:15%
-
+    width: 25vw; /* Largeur responsive basée sur la largeur de la fenêtre */
+    max-width: 100px; /* Limite la taille du logo sur petits écrans */
+    height: auto; /* Conserve les proportions */
+    padding-left: 15%; /* Décalage gauche */
 }
-
 
 h1 {
-    font-size: var(--font-size-base);
-    color: var(--primary-color);
-    margin: 0;
-    padding-bottom: 2%;
+    font-size: var(--font-size-base); /* Taille de police définie dans les variables */
+    color: var(--primary-color); /* Couleur principale */
+    margin: 0; /* Supprime les marges par défaut */
+    padding-bottom: 2%; /* Espacement en dessous */
 }
 
-/*-------------------------------------------------------------------------*/
-/*                        Media Queries                                    */
-/*-------------------------------------------------------------------------*/
-
-@media (min-width:768px) {
+/* ------------------------------------------------------------------------- */
+/*                        Media Queries (Tablettes et plus)                  */
+/* ------------------------------------------------------------------------- */
+@media (min-width: 768px) {
     header {
-        width: 95%;
+        width: 95%; /* Garde une largeur relative pour plus d'espace */
+        padding: 3% 0; /* Réduit l'espacement vertical */
     }
-    .logo {
-        max-width: 200px;
-        padding-left: 10%;
 
+    .logo {
+        max-width: 200px; /* Agrandit le logo */
+        padding-left: 10%; /* Réduit le décalage gauche */
+    }
+
+    h1 {
+        font-size: var(--font-size-large); /* Augmente la taille du titre */
+        padding-bottom: 0; /* Supprime l'espacement en dessous */
     }
 }

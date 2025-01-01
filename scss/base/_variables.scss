@@ -1,77 +1,105 @@
+/* =============================================================================
+    Projet      : Fisheye
+    Fichier     : _variables.scss
+    Auteur      : [Votre nom ou équipe]
+    Date        : [Date de création ou mise à jour]
+    Version     : 1.0.0
+    Description : Contient les variables globales utilisées dans le projet.
+                  Couvre les couleurs, typographies, tailles et espacements.
+============================================================================= */
+
 :root {
-    /* Palette principale */
-    --primary-color: #901C1C;       /* Rouge foncé (AAA pour WCAG) */
-    --primary-color-light: #D3573C; /* Rouge plus clair */
-    --secondary-color: #D3573C;    /* Rouge clair (AA pour WCAG) */
-    --neutral-color: #FAFAFA;      /* Blanc cassé pour contraste */
+    /* ================================ */
+    /* Palette principale               */
+    /* ================================ */
+    --primary-color: #901C1C;         /* Rouge foncé pour accentuation (AAA WCAG) */
+    --primary-color-light: #D3573C;   /* Rouge plus clair pour les hovers ou fonds */
+    --secondary-color: #D3573C;       /* Rouge clair pour les éléments secondaires */
+    --neutral-color: #FAFAFA;         /* Blanc cassé pour les fonds */
 
-    /* Couleurs complémentaires */
-    --accent-color: #FF5722;       /* Orange vif pour accent */
-    --secondary-neutral: #525252; /* Gris foncé */
+    /* ================================ */
+    /* Couleurs complémentaires         */
+    /* ================================ */
+    --accent-color: #FF5722;          /* Orange vif pour les appels à l'action */
+    --secondary-neutral: #525252;     /* Gris foncé pour les textes secondaires */
 
-    /* Couleurs de texte */
-    --text-color-primary: #FAFAFA; /* Texte principal */
-    --text-color-secondary: #901C1C; /* Texte contrastant sur fond clair */
-    --text-color-accent: #D3573C;  /* Accentuation pour liens ou boutons */
+    /* ================================ */
+    /* Couleurs de texte                */
+    /* ================================ */
+    --text-color-primary: #FAFAFA;    /* Couleur principale pour le texte */
+    --text-color-secondary: #901C1C;  /* Texte contrastant sur fonds clairs */
+    --text-color-accent: #D3573C;     /* Couleur d'accentuation pour liens ou boutons */
 
-    /* Couleurs d'état */
-    --success-color: #4caf50;      /* Succès */
-    --warning-color: #ff9800;     /* Avertissement */
-    --error-color: #f44336;       /* Erreur */
-    --info-color: #2196f3;        /* Information */
+    /* ================================ */
+    /* Couleurs d'état                  */
+    /* ================================ */
+    --success-color: #4caf50;         /* Couleur pour indiquer un succès */
+    --warning-color: #ff9800;         /* Couleur pour indiquer un avertissement */
+    --error-color: #f44336;           /* Couleur pour signaler une erreur */
+    --info-color: #2196f3;            /* Couleur pour afficher des informations */
 
-    /* Typographie */
-    --font-primary: 'Roboto', sans-serif;
-    --font-title: 'Shrikhand', sans-serif;
+    /* ================================ */
+    /* Typographie                      */
+    /* ================================ */
+    --font-primary: 'Roboto', sans-serif;    /* Police principale */
+    --font-title: 'Shrikhand', sans-serif;   /* Police pour les titres */
 
     /* Tailles des polices */
-    --font-size-small: 1.4rem;
-    --font-size-base: 1.6rem;
-    --font-size-large: 2rem;
-    --font-size-xlarge: 2.4rem;
+    --font-size-small: 1.4rem;        /* Pour les textes secondaires */
+    --font-size-base: 1.6rem;         /* Taille de texte par défaut */
+    --font-size-large: 2rem;          /* Taille des sous-titres */
+    --font-size-xlarge: 2.4rem;       /* Taille des titres principaux */
 
     /* Poids des polices */
-    --font-weight-regular: 400;
-    --font-weight-bold: 700;
-    --font-weight-light: 300;
+    --font-weight-regular: 400;       /* Poids standard des polices */
+    --font-weight-bold: 700;          /* Poids pour les polices en gras */
+    --font-weight-light: 300;         /* Poids pour les polices fines */
 
     /* Hauteur de ligne */
-    --line-height-tight: 1.2;
-    --line-height-normal: 1.4;
-    --line-height-base: 1.6;
-    --line-height-loose: 1.8;
-    --line-height-extra-loose: 2;
+    --line-height-tight: 1.2;         /* Hauteur réduite pour les titres */
+    --line-height-normal: 1.4;        /* Hauteur standard */
+    --line-height-base: 1.6;          /* Hauteur pour les paragraphes */
+    --line-height-loose: 1.8;         /* Hauteur pour les grands blocs */
+    --line-height-extra-loose: 2;     /* Hauteur extra-large pour aération */
 
-    /* Espacements (Padding & Margins) */
-    --padding-xsmall: 0.4rem;
-    --padding-small: 0.8rem;
-    --padding-medium: 1.6rem;
-    --padding-large: 2.4rem;
-    --padding-xlarge: 3.2rem;
+    /* ================================ */
+    /* Espacements (Padding & Margins)  */
+    /* ================================ */
+    --padding-xsmall: 0.4rem;         /* Espacement très petit */
+    --padding-small: 0.8rem;          /* Espacement petit */
+    --padding-medium: 1.6rem;         /* Espacement moyen */
+    --padding-large: 2.4rem;          /* Espacement large */
+    --padding-xlarge: 3.2rem;         /* Espacement très large */
 
-    --margin-xsmall: 0.4rem;
-    --margin-small: 0.8rem;
-    --margin-medium: 1.6rem;
-    --margin-large: 2.4rem;
-    --margin-xlarge: 3.2rem;
+    --margin-xsmall: 0.4rem;          /* Marges très petites */
+    --margin-small: 0.8rem;           /* Marges petites */
+    --margin-medium: 1.6rem;          /* Marges moyennes */
+    --margin-large: 2.4rem;           /* Marges larges */
+    --margin-xlarge: 3.2rem;          /* Marges très larges */
 
-    /* Gaps */
-    --gap-small: 0.8rem;
-    --gap-medium: 1.6rem;
-    --gap-large: 2.4rem;
+    /* ================================ */
+    /* Gaps                             */
+    /* ================================ */
+    --gap-small: 0.8rem;              /* Petites espacements entre éléments */
+    --gap-medium: 1.6rem;             /* Espacement moyen */
+    --gap-large: 2.4rem;              /* Espacement large */
 
-    /* Tailles des objets */
-    --size-small: 2rem;
-    --size-medium: 4rem;
-    --size-large: 6rem;
+    /* ================================ */
+    /* Tailles des objets               */
+    /* ================================ */
+    --size-small: 2rem;               /* Objets ou boutons petits */
+    --size-medium: 4rem;              /* Objets ou boutons moyens */
+    --size-large: 6rem;               /* Objets ou boutons larges */
 
-    /* Bordures et ombres */
-    --border-radius-small: 4px;
-    --border-radius-medium: 8px;
-    --border-radius-large: 16px;
+    /* ================================ */
+    /* Bordures et ombres               */
+    /* ================================ */
+    --border-radius-small: 4px;       /* Bordures légèrement arrondies */
+    --border-radius-medium: 8px;      /* Bordures moyennement arrondies */
+    --border-radius-large: 16px;      /* Bordures très arrondies */
 
-    --box-shadow-small: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --box-shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.15);
-    --box-shadow-large: 0 5px 15px rgba(0, 0, 0, 0.2);
-
+    --box-shadow-small: 0 1px 3px rgba(0, 0, 0, 0.1);  /* Ombre légère */
+    --box-shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.15); /* Ombre moyenne */
+    --box-shadow-large: 0 5px 15px rgba(0, 0, 0, 0.2);  /* Ombre prononcée */
 }
+

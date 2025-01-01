@@ -1,6 +1,16 @@
+/* =============================================================================
+        Projet      : Fisheye
+        Fichier     : _card.scss
+        Auteur      : Équipe Fisheye
+        Date        : 01/01/2025
+        Version     : 1.0.0
+        Description : Styles pour la carte des photographes (photographer-card).
+                    Inclut les styles de base et des media queries pour
+                    l'adaptation aux différents écrans.
+============================================================================= */
 
 /* ---------------------------------------------------------------- */
-/* Carte du photographe (photographer-card) pour mobile-first *     /
+/* Carte du photographe (Mobile First)                              */
 /* ---------------------------------------------------------------- */
 
 .photographer-card {
@@ -8,70 +18,118 @@
     flex-direction: column; /* Positionne les éléments en colonne */
     align-items: center; /* Centre les éléments horizontalement */
     text-align: center; /* Centre le texte */
-    background-color: #FAFAFA; /* Couleur de fond pour différencier les cartes */
+    background-color: var(--neutral-color, #FAFAFA); /* Couleur de fond */
     border-radius: 15px; /* Ajoute des bords arrondis pour un aspect moderne */
     padding: 15px; /* Espacement interne pour aérer les éléments */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère pour la profondeur */
-    max-width: 50%; /* Limite la largeur des cartes à 50% de l'écran */
-    margin: 0 auto; /* Centre les cartes horizontalement */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère */
+    max-width: 90%; /* Largeur adaptée pour mobile */
+    margin: 15px auto; /* Centre les cartes horizontalement avec un espacement */
 }
 
 /* ---------------------------------------------------------------- */
-/* Style de l'image du photographe */
+/* Image du photographe                                             */
 /* ---------------------------------------------------------------- */
 
 .photographer-card-portrait {
-    width: 100px; /* Définit une largeur adaptée aux écrans mobiles */
-    height: 100px; /* Définit une hauteur proportionnelle */
+    width: 100px;
+    height: 100px;
     border-radius: 50%; /* Rend l'image circulaire */
-    object-fit:cover; /* Ajuste l'image pour remplir le cercle sans déformation */
+    object-fit: cover; /* Ajuste l'image pour remplir le cercle sans déformation */
     margin-bottom: 10px; /* Ajoute un espacement avec les autres éléments */  
-    transform: scale(1.2); /* Applique un zoom initial */
+    transform: scale(1.1); /* Légère mise en avant par un zoom */
+    transition: transform 0.3s ease; /* Animation pour hover */
+}
+
+.photographer-card-portrait:hover {
+    transform: scale(1.2); /* Zoom supplémentaire au survol */
 }
 
 /* ---------------------------------------------------------------- */
-/* Nom du photographe */
+/* Nom du photographe                                               */
 /* ---------------------------------------------------------------- */
 
 .photographer-card-name {
-    font-size: 1.6rem; /* Taille de police adaptée pour mobile */
-    color: #D3573C; /* Couleur principale pour un contraste visuel */
-    font-weight: bold; /* Met en évidence le nom avec un poids gras */
-    margin-bottom: 8px; /* Ajoute un espace entre le nom et la localisation */
+    font-size: var(--font-size-base, 1.6rem); /* Taille de police pour mobile */
+    color: var(--secondary-color, #D3573C); /* Couleur principale */
+    font-weight: bold; /* Met en évidence le nom */
+    margin-bottom: 8px;
 }
 
 /* ---------------------------------------------------------------- */
-/* Localisation du photographe */
+/* Localisation du photographe                                      */
 /* ---------------------------------------------------------------- */
 
 .photographer-card-location {
-    font-size: 1.2rem; /* Texte légèrement plus petit pour mobile */
-    color: #666; /* Couleur secondaire pour moins d'emphase */
-    margin-bottom: 6px; /* Espace réduit pour mobile */
+    font-size: 1.2rem;
+    color: var(--secondary-neutral, #666); /* Couleur secondaire */
+    margin-bottom: 6px;
 }
 
 /* ---------------------------------------------------------------- */
-/* Slogan ou tagline du photographe */
+/* Slogan du photographe                                            */
 /* ---------------------------------------------------------------- */
 
 .photographer-card-tagline {
-    font-size: 1rem; /* Texte plus petit pour les slogans */
-    font-style: italic; /* Ajoute un style italique pour différencier */
-    color: #525252; /* Couleur neutre pour un effet secondaire */
-    margin-bottom: 10px; /* Séparation avec le prix */
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--secondary-neutral, #525252);
+    margin-bottom: 10px;
 }
 
 /* ---------------------------------------------------------------- */
-/* Prix par jour du photographe */
+/* Prix par jour du photographe                                     */
 /* ---------------------------------------------------------------- */
 
 .photographer-card-price {
-    font-size: 1.2rem; /* Taille de police pour rester lisible */
-    font-weight: bold; /* Met en évidence le prix */
-    color: #901C1C; /* Couleur primaire foncée pour un bon contraste */
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color, #901C1C); /* Couleur principale foncée */
 }
 
-/*------------------------------------------------------------------------------------------------------------*/
-/*                                            MEDIA QUERIES                                                   */
-/*------------------------------------------------------------------------------------------------------------*/
+/* ---------------------------------------------------------------- */
+/* MEDIA QUERIES : Styles responsives                              */
+/* ---------------------------------------------------------------- */
 
+@media (min-width: 768px) {
+    .photographer-card {
+        max-width: 70%; /* Augmente la largeur des cartes */
+        padding: 20px; /* Ajoute un peu plus d'espace interne */
+    }
+
+    .photographer-card-portrait {
+        width: 120px;
+        height: 120px; /* Agrandit les images pour les tablettes */
+    }
+
+    .photographer-card-name {
+        font-size: var(--font-size-large, 1.8rem); /* Taille de texte plus grande */
+    }
+
+    .photographer-card-location {
+        font-size: 1.4rem; /* Ajuste légèrement la taille */
+    }
+
+    .photographer-card-price {
+        font-size: 1.4rem; /* Rend le prix plus visible */
+    }
+}
+
+@media (min-width: 1024px) {
+    .photographer-card {
+        max-width: 50%; /* Largeur encore plus grande pour les écrans larges */
+        padding: 25px;
+    }
+
+    .photographer-card-portrait {
+        width: 150px;
+        height: 150px;
+    }
+
+    .photographer-card-name {
+        font-size: 2rem; /* Titre encore plus visible */
+    }
+
+    .photographer-card-price {
+        font-size: 1.6rem;
+    }
+}
