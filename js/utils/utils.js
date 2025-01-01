@@ -23,8 +23,8 @@ const CONFIG = {
         warn: true,  // Activer/Désactiver les avertissements
         error: true, // Activer/Désactiver les erreurs
         success: true, // Activer/Désactiver les logs de succès
-        check: true, // Activer/Désactiver les logs de la checkbox info
-        checkfinal:true,
+        test_start: true, // Activer/Désactiver les logs de la checkbox info
+        test_end:true,
     },
 
     /*====== Classes CSS utilisées ======*/
@@ -48,8 +48,8 @@ const CONFIG = {
         error: "color: red; font-weight: bold;", // Style pour les erreurs critiques.
         success: "color: green; font-weight: bold;", // Style pour les messages indiquant une réussite.
         default: "color: black;", // Style par défaut pour les messages qui ne correspondent pas à un type spécifique.
-        check: "background-color: pink; color: purple;font-weight: bold;", // Style pour la checkbox d'info
-        checkfinal:"background-color: green; color: white;font-weight: bold;", // Style pour la checkbox d'info
+        test_start: "background-color: orange; color: purple;font-weight: bold;", // Style pour la checkbox d'info
+        test_end:"background-color: green; color: white;font-weight: bold;", // Style pour la checkbox d'info
     },
 
     /*====== styles icône log ======*/
@@ -66,9 +66,6 @@ const CONFIG = {
         isMobile: window.matchMedia("(max-width: 1023px)").matches, // Indique si l'utilisateur utilise un appareil avec un écran de taille inférieure ou égale à 1024px.
     },
 };
-
-let modalOpen = false; // Variable globale pour suivre l'état de la modale
-let isCheckboxValid = false; // Indique si la checkbox est valide
 
 /*================================================================================================================================================*/
 /*========================================================================================*/

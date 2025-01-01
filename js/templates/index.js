@@ -1,88 +1,102 @@
 /* ========================================================
- * Nom du fichier : utils.js
- * Description    : Script JavaScript pour les fonctions utiliataires
- *                  
+ * Nom du fichier : photographer.js
+ * Description    : Gestion des photographes et rendu dynamique
  * Auteur         : Trackozor
  * Date           : 01/01/2025
- * Version        : 1.0.0
+ * Version        : 2.0.0
  * ======================================================== */
 
-
-import { logEvent, addClass, removeClass } from '/js/utils/utils.js';
-import {photographerTemplate} from '/js/templates/photographer.js'
-// Exemple d'utilisation
-logEvent('info', 'Index.js chargé avec succès');
-
+import { logEvent } from '/js/utils/utils.js'; // Utilitaire de logging
+import { photographerTemplate } from '/js/templates/photographer.js'; // Modèle de carte pour les photographes
 
 // ----------------------------------------
 // Variables globales
 // ----------------------------------------
 
-// Liste d'articles (exemple de données locales)
-const articles = [
-    { title: "Article 1", content: "Contenu du premier article." },
-    { title: "Article 2", content: "Contenu du deuxième article." },
-    { title: "Article 3", content: "Contenu du troisième article." },
-    { title: "Article 4", content: "Contenu du quatrième article." },
-    { title: "Article 5", content: "Contenu du cinquième article." },
-    { title: "Article 6", content: "Contenu du sixième article." }
-];
-
 // Sélecteurs DOM
 const photographersSection = document.querySelector(".photographer_section");
 
-// Chemin vers le fichier JSON des photographes
+// Chemin vers les ressources JSON et images
 const PHOTOGRAPHERS_JSON_PATH = "/assets/data/photographers.json";
-const PHOTO_BASE_PATH = "/assets/images/photographers/"; // Dossier contenant les photos des photographes 
+const PHOTO_BASE_PATH = "/assets/images/photographers/"; // Dossier contenant les photos des photographes
+
 // ----------------------------------------
-// Fonctions
+// Fonctions utilitaires
 // ----------------------------------------
 
 /**
- * Récupère les données des photographes depuis un fichier JSON
- * @returns {Promise<Object>} Les données des photographes
+ * Récupère les données JSON depuis un chemin donné.
+ * @param {string} path - Chemin vers le fichier JSON.
+ * @returns {Promise<Object>} Les données JSON.
  */
-async function getPhotographers() {
+async function fetchJSON(path) {
     try {
-        const response = await fetch(PHOTOGRAPHERS_JSON_PATH);
+        const response = await fetch(path);
 
         // Vérifie si la réponse est valide
         if (!response.ok) {
-            LogEvent('info', `Données récupérées avec succès depuis ${PHOTOGRAPHERS_JSON_PATH}`, { status: response.status });
+            logEvent('warn', `Erreur lors de la récupération de ${path}`, { status: response.status });
+            return null;
         }
 
-        // Parse le fichier JSON et retourne les données
+        logEvent('info', `Données récupérées avec succès depuis ${path}`);
         return await response.json();
     } catch (error) {
-        // Log de l'erreur pour le débogage
-        LogEvent('error', "Erreur lors du chargement des photographes", { message: error.message, stack: error.stack });
-
-        // Retourne une structure vide par défaut
-        return { photographers: [] };
+        logEvent('error', "Erreur lors du fetch JSON", { message: error.message, stack: error.stack });
+        return null;
     }
 }
 
+// ----------------------------------------
+// Gestion des photographes
+// ----------------------------------------
+
 /**
- * Affiche les données des photographes dans la section correspondante
- * @param {Array} photographers - Liste des photographes à afficher
+ * Récupère les données des photographes depuis un fichier JSON.
+ * @returns {Promise<Array>} Liste des photographes.
  */
-async function displayData(photographers) {
-    photographers.forEach((photographer) => {
-        const photographerModel = photographerTemplate(photographer);
-        const userCardDOM = photographerModel.getUserCardDOM();
-        photographersSection.appendChild(userCardDOM);
-    });
+async function getPhotographers() {
+    const data = await fetchJSON(PHOTOGRAPHERS_JSON_PATH);
+    return data ? data.photographers : [];
 }
 
 /**
- * Fonction d'initialisation principale
+ * Affiche les données des photographes dans la section correspondante.
+ * @param {Array} photographers - Liste des photographes à afficher.
+ */
+function displayData(photographers) {
+    if (!photographers || photographers.length === 0) {
+        logEvent('warn', "Aucun photographe à afficher");
+        photographersSection.innerHTML = `<p>Aucun photographe trouvé.</p>`;
+        return;
+    }
+
+    photographers.forEach((photographer) => {
+        const photographerModel = photographerTemplate(photographer); // Génération du modèle
+        const userCardDOM = photographerModel.getUserCardDOM(); // Récupération de l'élément DOM
+        photographersSection.appendChild(userCardDOM); // Ajout au DOM
+    });
+
+    logEvent('info', `${photographers.length} photographes affichés.`);
+}
+
+// ----------------------------------------
+// Initialisation principale
+// ----------------------------------------
+
+/**
+ * Fonction d'initialisation principale.
  */
 async function init() {
+    logEvent('info', "Initialisation de l'application...");
+
     // Récupère les données des photographes
-    const { photographers } = await getPhotographers();
-    console.log(photographers)
+    const photographers = await getPhotographers();
+
     // Affiche les données dans le DOM
     displayData(photographers);
+
+    logEvent('info', "Initialisation terminée.");
 }
 
 // ----------------------------------------
