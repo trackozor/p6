@@ -218,30 +218,37 @@ a {
 header {
   display: flex;
   flex-direction: row;
+  width: 95%;
   justify-content: space-between;
   align-items: center;
   height: auto;
-  padding: 5%;
+  padding: 5% 0 10% 0;
 }
 
 .logo {
-  width: 100px;
+  width: 25vw;
+  max-width: 100px;
   height: auto;
-  margin-right: 20px;
+  padding-left: 15%;
 }
 
 h1 {
   font-size: var(--font-size-base);
   color: var(--primary-color);
   margin: 0;
+  padding-bottom: 2%;
 }
 
 /*-------------------------------------------------------------------------*/
 /*                        Media Queries                                    */
 /*-------------------------------------------------------------------------*/
 @media (min-width: 768px) {
+  header {
+    width: 95%;
+  }
   .logo {
-    width: 200px;
+    max-width: 200px;
+    padding-left: 10%;
   }
 }
 
