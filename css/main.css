@@ -1,0 +1,248 @@
+@charset "UTF-8";
+:root {
+  /* Palette principale */
+  --primary-color: #901C1C; /* Rouge foncé (AAA pour WCAG) */
+  --primary-color-light: #D3573C; /* Rouge plus clair */
+  --secondary-color: #D3573C; /* Rouge clair (AA pour WCAG) */
+  --neutral-color: #FAFAFA; /* Blanc cassé pour contraste */
+  /* Couleurs complémentaires */
+  --accent-color: #FF5722; /* Orange vif pour accent */
+  --secondary-neutral: #525252; /* Gris foncé */
+  /* Couleurs de texte */
+  --text-color-primary: #FAFAFA; /* Texte principal */
+  --text-color-secondary: #901C1C; /* Texte contrastant sur fond clair */
+  --text-color-accent: #D3573C; /* Accentuation pour liens ou boutons */
+  /* Couleurs d'état */
+  --success-color: #4caf50; /* Succès */
+  --warning-color: #ff9800; /* Avertissement */
+  --error-color: #f44336; /* Erreur */
+  --info-color: #2196f3; /* Information */
+  /* Typographie */
+  --font-primary: "Roboto", sans-serif;
+  --font-title: "Shrikhand", sans-serif;
+  /* Tailles des polices */
+  --font-size-small: 1.4rem;
+  --font-size-base: 1.6rem;
+  --font-size-large: 2rem;
+  --font-size-xlarge: 2.4rem;
+  /* Poids des polices */
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+  --font-weight-light: 300;
+  /* Hauteur de ligne */
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.4;
+  --line-height-base: 1.6;
+  --line-height-loose: 1.8;
+  --line-height-extra-loose: 2;
+  /* Espacements (Padding & Margins) */
+  --padding-xsmall: 0.4rem;
+  --padding-small: 0.8rem;
+  --padding-medium: 1.6rem;
+  --padding-large: 2.4rem;
+  --padding-xlarge: 3.2rem;
+  --margin-xsmall: 0.4rem;
+  --margin-small: 0.8rem;
+  --margin-medium: 1.6rem;
+  --margin-large: 2.4rem;
+  --margin-xlarge: 3.2rem;
+  /* Gaps */
+  --gap-small: 0.8rem;
+  --gap-medium: 1.6rem;
+  --gap-large: 2.4rem;
+  /* Tailles des objets */
+  --size-small: 2rem;
+  --size-medium: 4rem;
+  --size-large: 6rem;
+  /* Bordures et ombres */
+  --border-radius-small: 4px;
+  --border-radius-medium: 8px;
+  --border-radius-large: 16px;
+  --box-shadow-small: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --box-shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.15);
+  --box-shadow-large: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ----------------------------------------
+   RESET CSS
+   ----------------------------------------
+   Objectif : Supprimer les styles par défaut des navigateurs pour une base uniforme.
+*/
+/* Général */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%; /* Taille de police par défaut */
+  font: inherit; /* Hérite de la famille de police du parent */
+  vertical-align: baseline;
+}
+
+/* HTML5 : Assure une prise en charge des éléments de type block */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+/* Corps du document */
+body {
+  line-height: 1; /* Normalise l'interligne */
+}
+
+/* Listes : Supprime les styles par défaut */
+ol, ul {
+  list-style: none;
+}
+
+/* Citations : Supprime les guillemets ajoutés automatiquement */
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: "";
+}
+
+/* Tables : Supprime les espacements et collapse les bordures */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Médias : Ajuste la taille des images et vidéos à leur conteneur */
+img, video {
+  max-width: 100%;
+  height: auto; /* Conserve les proportions */
+}
+
+/* =================================================================*/
+/*                    classe pour les lecteur d'écran               */
+/* =================================================================*/
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------------- */
+/* Carte du photographe (photographer-card) pour mobile-first *     /
+/* ---------------------------------------------------------------- */
+.photographer-card {
+  display: flex; /* Utilise Flexbox pour organiser les éléments verticalement */
+  flex-direction: column; /* Positionne les éléments en colonne */
+  align-items: center; /* Centre les éléments horizontalement */
+  text-align: center; /* Centre le texte */
+  background-color: #FAFAFA; /* Couleur de fond pour différencier les cartes */
+  border-radius: 15px; /* Ajoute des bords arrondis pour un aspect moderne */
+  padding: 15px; /* Espacement interne pour aérer les éléments */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère pour la profondeur */
+  max-width: 50%; /* Limite la largeur des cartes à 50% de l'écran */
+  margin: 0 auto; /* Centre les cartes horizontalement */
+}
+
+/* ---------------------------------------------------------------- */
+/* Style de l'image du photographe */
+/* ---------------------------------------------------------------- */
+.photographer-card-portrait {
+  width: 100px; /* Définit une largeur adaptée aux écrans mobiles */
+  height: 100px; /* Définit une hauteur proportionnelle */
+  border-radius: 50%; /* Rend l'image circulaire */
+  object-fit: cover; /* Ajuste l'image pour remplir le cercle sans déformation */
+  margin-bottom: 10px; /* Ajoute un espacement avec les autres éléments */
+  transform: scale(1.2); /* Applique un zoom initial */
+}
+
+/* ---------------------------------------------------------------- */
+/* Nom du photographe */
+/* ---------------------------------------------------------------- */
+.photographer-card-name {
+  font-size: 1.6rem; /* Taille de police adaptée pour mobile */
+  color: #D3573C; /* Couleur principale pour un contraste visuel */
+  font-weight: bold; /* Met en évidence le nom avec un poids gras */
+  margin-bottom: 8px; /* Ajoute un espace entre le nom et la localisation */
+}
+
+/* ---------------------------------------------------------------- */
+/* Localisation du photographe */
+/* ---------------------------------------------------------------- */
+.photographer-card-location {
+  font-size: 1.2rem; /* Texte légèrement plus petit pour mobile */
+  color: #666; /* Couleur secondaire pour moins d'emphase */
+  margin-bottom: 6px; /* Espace réduit pour mobile */
+}
+
+/* ---------------------------------------------------------------- */
+/* Slogan ou tagline du photographe */
+/* ---------------------------------------------------------------- */
+.photographer-card-tagline {
+  font-size: 1rem; /* Texte plus petit pour les slogans */
+  font-style: italic; /* Ajoute un style italique pour différencier */
+  color: #525252; /* Couleur neutre pour un effet secondaire */
+  margin-bottom: 10px; /* Séparation avec le prix */
+}
+
+/* ---------------------------------------------------------------- */
+/* Prix par jour du photographe */
+/* ---------------------------------------------------------------- */
+.photographer-card-price {
+  font-size: 1.2rem; /* Taille de police pour rester lisible */
+  font-weight: bold; /* Met en évidence le prix */
+  color: #901C1C; /* Couleur primaire foncée pour un bon contraste */
+}
+
+/*------------------------------------------------------------------------------------------------------------*/
+/*                                            MEDIA QUERIES                                                   */
+/*------------------------------------------------------------------------------------------------------------*/
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: auto;
+  padding: 5%;
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+  margin-right: 20px;
+}
+
+h1 {
+  font-size: var(--font-size-base);
+  color: var(--primary-color);
+  margin: 0;
+}
+
+/*-------------------------------------------------------------------------*/
+/*                        Media Queries                                    */
+/*-------------------------------------------------------------------------*/
+@media (min-width: 768px) {
+  .logo {
+    width: 200px;
+  }
+}
+
+/*# sourceMappingURL=main.css.map */

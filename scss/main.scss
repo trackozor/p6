@@ -1,0 +1,14 @@
+// Importer les variables globales
+@import 'base/variables';
+
+// Importer les styles de réinitialisation et globaux
+@import 'base/reset';
+@import 'base/global';
+
+// Importer les composants
+@import 'components/button';
+@import 'components/cards';
+@import 'components/footer';
+
+// Importer les layouts
+@import 'layouts/header';
