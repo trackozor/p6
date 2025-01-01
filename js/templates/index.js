@@ -1,3 +1,19 @@
+/* ========================================================
+ * Nom du fichier : utils.js
+ * Description    : Script JavaScript pour les fonctions utiliataires
+ *                  
+ * Auteur         : Trackozor
+ * Date           : 01/01/2025
+ * Version        : 1.0.0
+ * ======================================================== */
+
+
+import { logEvent, addClass, removeClass } from '/js/utils/utils.js';
+import {photographerTemplate} from '/js/templates/photographer.js'
+// Exemple d'utilisation
+logEvent('info', 'Index.js chargé avec succès');
+
+
 // ----------------------------------------
 // Variables globales
 // ----------------------------------------

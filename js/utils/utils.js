@@ -19,7 +19,7 @@ const CONFIG = {
      /* ====== Niveaux de Logs ====== */
     LOG_LEVELS: {
         default: true,
-        info: false,  // Activer/Désactiver les logs d'information
+        info: true,  // Activer/Désactiver les logs d'information
         warn: true,  // Activer/Désactiver les avertissements
         error: true, // Activer/Désactiver les erreurs
         success: true, // Activer/Désactiver les logs de succès
@@ -96,7 +96,7 @@ let isCheckboxValid = false; // Indique si la checkbox est valide
  * logEvent('error', 'Échec de la validation', { field: 'email', reason: 'Format invalide' });
  */
 
-function logEvent(type, message, data = {}) {
+export function logEvent(type, message, data = {}) {
     
     /* 1. Vérifie si les logs sont activés via CONFIG.ENABLE_LOGS.*/  
     if (!CONFIG.ENABLE_LOGS) {
@@ -142,7 +142,7 @@ function logEvent(type, message, data = {}) {
  * @param {string} className - Nom de la classe CSS à ajouter.
  * @returns {boolean} - `true` si la classe a été ajoutée, `false` si elle était déjà présente ou en cas d'erreur.
  */
-function addClass(element, className) {
+export function addClass(element, className) {
     // Vérifie si l'élément est valide
     if (!(element instanceof HTMLElement)) {
         logEvent('error','addClass: Le paramètre "element" n\'est pas un élément HTML valide.', { element });
@@ -182,7 +182,7 @@ function addClass(element, className) {
  * @param {string} className - Nom de la classe CSS à supprimer.
  * @returns {boolean} - `true` si la classe a été supprimée, `false` si elle n'était pas présente ou en cas d'erreur.
  */
-function removeClass(element, className) {
+export function removeClass(element, className) {
     // 1. Vérifie que l'élément est un élément HTML valide
     if (!(element instanceof HTMLElement)) {
         logEvent('error','removeClass: Le paramètre "element" n\'est pas un élément HTML valide.', { element });
