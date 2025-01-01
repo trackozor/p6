@@ -265,7 +265,6 @@ a:focus {
   align-items: center; /* Centre les éléments horizontalement */
   text-align: center; /* Centre le texte */
   background-color: var(--neutral-color); /* Couleur de fond */
-  border-radius: 15px; /* Ajoute des bords arrondis pour un aspect moderne */
   padding: 5%; /* Espacement interne pour aérer les éléments */
   max-width: 90%; /* Largeur adaptée pour mobile */
   margin: 5% auto; /* Centre les cartes horizontalement avec un espacement */
@@ -280,7 +279,7 @@ a:focus {
   border-radius: 50%; /* Rend l'image circulaire */
   object-fit: cover; /* Ajuste l'image pour remplir le cercle sans déformation */
   margin-bottom: 10px; /* Ajoute un espacement avec les autres éléments */
-  transform: scale(1.1); /* Légère mise en avant par un zoom */
+  transform: scale(1.2); /* Légère mise en avant par un zoom */
   transition: transform 0.3s ease; /* Animation pour hover */
 }
 
