@@ -1,11 +1,11 @@
 /* =============================================================================
-    Projet      : Fisheye
-    Fichier     : _utilities.scss
-    Auteur      : Équipe Fisheye
-    Date        : 01/01/2025
-    Version     : 1.0.0
-    Description : Classes utilitaires pour des fonctionnalités spécifiques,
-                  notamment pour l'accessibilité et des comportements génériques.
+    Projet      :   Fisheye
+    Fichier     :   _utilities.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Classes utilitaires pour des fonctionnalités spécifiques,
+                    notamment pour l'accessibilité et des comportements génériques.
 ============================================================================= */
 
 /* =========================================================================== */
@@ -32,7 +32,7 @@
     margin: 0; /* Supprime les marges négatives */
     overflow: visible; /* Rend le contenu visible */
     clip: auto; /* Rétablit le contenu */
-    border: 2px solid var(--primary-color, #901C1C); /* Ajoute une bordure pour la mise en évidence */
+    border: 2px solid var(--primary-color); /* Ajoute une bordure pour la mise en évidence */
 }
 
 /* =========================================================================== */
@@ -48,5 +48,5 @@ a {
 a:hover,
 a:focus {
     text-decoration: underline; /* Ajoute une décoration */
-    color: var(--primary-color, #901C1C); /* Applique une couleur d'accentuation */
+    color: var(--primary-color); /* Applique une couleur d'accentuation */
 }

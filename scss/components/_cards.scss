@@ -1,7 +1,7 @@
 /* =============================================================================
         Projet      : Fisheye
         Fichier     : _card.scss
-        Auteur      : Équipe Fisheye
+        Auteur      : Trackozor
         Date        : 01/01/2025
         Version     : 1.0.0
         Description : Styles pour la carte des photographes (photographer-card).
@@ -18,12 +18,11 @@
     flex-direction: column; /* Positionne les éléments en colonne */
     align-items: center; /* Centre les éléments horizontalement */
     text-align: center; /* Centre le texte */
-    background-color: var(--neutral-color, #FAFAFA); /* Couleur de fond */
+    background-color: var(--neutral-color); /* Couleur de fond */
     border-radius: 15px; /* Ajoute des bords arrondis pour un aspect moderne */
-    padding: 15px; /* Espacement interne pour aérer les éléments */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère */
+    padding: 5%; /* Espacement interne pour aérer les éléments */
     max-width: 90%; /* Largeur adaptée pour mobile */
-    margin: 15px auto; /* Centre les cartes horizontalement avec un espacement */
+    margin: 5% auto; /* Centre les cartes horizontalement avec un espacement */
 }
 
 /* ---------------------------------------------------------------- */
@@ -50,7 +49,7 @@
 
 .photographer-card-name {
     font-size: var(--font-size-base, 1.6rem); /* Taille de police pour mobile */
-    color: var(--secondary-color, #D3573C); /* Couleur principale */
+    color: var(--secondary-color); /* Couleur principale */
     font-weight: bold; /* Met en évidence le nom */
     margin-bottom: 8px;
 }
@@ -61,7 +60,7 @@
 
 .photographer-card-location {
     font-size: 1.2rem;
-    color: var(--secondary-neutral, #666); /* Couleur secondaire */
+    color: var(--secondary-neutral); /* Couleur secondaire */
     margin-bottom: 6px;
 }
 
@@ -72,7 +71,7 @@
 .photographer-card-tagline {
     font-size: 1rem;
     font-style: italic;
-    color: var(--secondary-neutral, #525252);
+    color: var(--secondary-neutral);
     margin-bottom: 10px;
 }
 
@@ -83,7 +82,7 @@
 .photographer-card-price {
     font-size: 1.2rem;
     font-weight: bold;
-    color: var(--primary-color, #901C1C); /* Couleur principale foncée */
+    color: var(--primary-color); /* Couleur principale foncée */
 }
 
 /* ---------------------------------------------------------------- */

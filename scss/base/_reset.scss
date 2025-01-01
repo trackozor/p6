@@ -1,7 +1,7 @@
 /* =============================================================================
     Projet      : Fisheye
     Fichier     : _reset.scss
-    Auteur      : Équipe Fisheye
+    Auteur      : Trackozor
     Date        : 01/01/2025
     Version     : 1.0.0
     Description : Fichier de reset CSS pour normaliser les styles par défaut
@@ -50,8 +50,8 @@ footer, header, hgroup, menu, nav, section {
 body {
   line-height: 1; /* Normalise l'interligne */
   font-family: var(--font-primary, sans-serif); /* Police par défaut */
-  background-color: var(--neutral-color, #ffffff); /* Fond par défaut */
-  color: var(--text-color-primary, #000000); /* Texte par défaut */
+  background-color: var(--neutral-color); /* Fond par défaut */
+  color: var(--text-color-primary); /* Texte par défaut */
 }
 
 /* ================================ */

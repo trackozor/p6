@@ -1,12 +1,12 @@
 @charset "UTF-8";
 /* =============================================================================
-    Projet      : Fisheye
-    Fichier     : _variables.scss
-    Auteur      : [Votre nom ou équipe]
-    Date        : [Date de création ou mise à jour]
-    Version     : 1.0.0
-    Description : Contient les variables globales utilisées dans le projet.
-                  Couvre les couleurs, typographies, tailles et espacements.
+    Projet      :   Fisheye
+    Fichier     :   _variables.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Contient les variables globales utilisées dans le projet.
+                    Couvre les couleurs, typographies, tailles et espacements.
 ============================================================================= */
 :root {
   /* ================================ */
@@ -91,18 +91,18 @@
 }
 
 /* =============================================================================
-    Projet      : Fisheye
-    Fichier     : _mixins.scss
-    Auteur      : Équipe Fisheye
-    Date        : 01/01/2025
-    Version     : 1.0.0
-    Description : Contient des mixins réutilisables, notamment pour la gestion
-                  des media queries dans une approche Mobile First.
+    Projet      :   Fisheye
+    Fichier     :   _mixins.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Contient des mixins réutilisables, notamment pour la gestion
+                    des media queries dans une approche Mobile First.
 ============================================================================= */
 /* =============================================================================
     Projet      : Fisheye
     Fichier     : _reset.scss
-    Auteur      : Équipe Fisheye
+    Auteur      : Trackozor
     Date        : 01/01/2025
     Version     : 1.0.0
     Description : Fichier de reset CSS pour normaliser les styles par défaut
@@ -150,8 +150,8 @@ footer, header, hgroup, menu, nav, section {
 body {
   line-height: 1; /* Normalise l'interligne */
   font-family: var(--font-primary, sans-serif); /* Police par défaut */
-  background-color: var(--neutral-color, #ffffff); /* Fond par défaut */
-  color: var(--text-color-primary, #000000); /* Texte par défaut */
+  background-color: var(--neutral-color); /* Fond par défaut */
+  color: var(--text-color-primary); /* Texte par défaut */
 }
 
 /* ================================ */
@@ -195,13 +195,13 @@ img, video {
 }
 
 /* =============================================================================
-    Projet      : Fisheye
-    Fichier     : _utilities.scss
-    Auteur      : Équipe Fisheye
-    Date        : 01/01/2025
-    Version     : 1.0.0
-    Description : Classes utilitaires pour des fonctionnalités spécifiques,
-                  notamment pour l'accessibilité et des comportements génériques.
+    Projet      :   Fisheye
+    Fichier     :   _utilities.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Classes utilitaires pour des fonctionnalités spécifiques,
+                    notamment pour l'accessibilité et des comportements génériques.
 ============================================================================= */
 /* =========================================================================== */
 /*                          Classes pour l'accessibilité                       */
@@ -227,7 +227,7 @@ img, video {
   margin: 0; /* Supprime les marges négatives */
   overflow: visible; /* Rend le contenu visible */
   clip: auto; /* Rétablit le contenu */
-  border: 2px solid var(--primary-color, #901C1C); /* Ajoute une bordure pour la mise en évidence */
+  border: 2px solid var(--primary-color); /* Ajoute une bordure pour la mise en évidence */
 }
 
 /* =========================================================================== */
@@ -243,13 +243,13 @@ a {
 a:hover,
 a:focus {
   text-decoration: underline; /* Ajoute une décoration */
-  color: var(--primary-color, #901C1C); /* Applique une couleur d'accentuation */
+  color: var(--primary-color); /* Applique une couleur d'accentuation */
 }
 
 /* =============================================================================
         Projet      : Fisheye
         Fichier     : _card.scss
-        Auteur      : Équipe Fisheye
+        Auteur      : Trackozor
         Date        : 01/01/2025
         Version     : 1.0.0
         Description : Styles pour la carte des photographes (photographer-card).
@@ -264,12 +264,11 @@ a:focus {
   flex-direction: column; /* Positionne les éléments en colonne */
   align-items: center; /* Centre les éléments horizontalement */
   text-align: center; /* Centre le texte */
-  background-color: var(--neutral-color, #FAFAFA); /* Couleur de fond */
+  background-color: var(--neutral-color); /* Couleur de fond */
   border-radius: 15px; /* Ajoute des bords arrondis pour un aspect moderne */
-  padding: 15px; /* Espacement interne pour aérer les éléments */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère */
+  padding: 5%; /* Espacement interne pour aérer les éléments */
   max-width: 90%; /* Largeur adaptée pour mobile */
-  margin: 15px auto; /* Centre les cartes horizontalement avec un espacement */
+  margin: 5% auto; /* Centre les cartes horizontalement avec un espacement */
 }
 
 /* ---------------------------------------------------------------- */
@@ -294,7 +293,7 @@ a:focus {
 /* ---------------------------------------------------------------- */
 .photographer-card-name {
   font-size: var(--font-size-base, 1.6rem); /* Taille de police pour mobile */
-  color: var(--secondary-color, #D3573C); /* Couleur principale */
+  color: var(--secondary-color); /* Couleur principale */
   font-weight: bold; /* Met en évidence le nom */
   margin-bottom: 8px;
 }
@@ -304,7 +303,7 @@ a:focus {
 /* ---------------------------------------------------------------- */
 .photographer-card-location {
   font-size: 1.2rem;
-  color: var(--secondary-neutral, #666); /* Couleur secondaire */
+  color: var(--secondary-neutral); /* Couleur secondaire */
   margin-bottom: 6px;
 }
 
@@ -314,7 +313,7 @@ a:focus {
 .photographer-card-tagline {
   font-size: 1rem;
   font-style: italic;
-  color: var(--secondary-neutral, #525252);
+  color: var(--secondary-neutral);
   margin-bottom: 10px;
 }
 
@@ -324,7 +323,7 @@ a:focus {
 .photographer-card-price {
   font-size: 1.2rem;
   font-weight: bold;
-  color: var(--primary-color, #901C1C); /* Couleur principale foncée */
+  color: var(--primary-color); /* Couleur principale foncée */
 }
 
 /* ---------------------------------------------------------------- */

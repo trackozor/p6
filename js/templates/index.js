@@ -3,7 +3,7 @@
  * Description    : Gestion des photographes et rendu dynamique
  * Auteur         : Trackozor
  * Date           : 01/01/2025
- * Version        : 2.0.0
+ * Version        : 2.1.0
  * ======================================================== */
 
 import { logEvent } from '/js/utils/utils.js'; // Utilitaire de logging
@@ -31,6 +31,7 @@ const PHOTO_BASE_PATH = "/assets/images/photographers/"; // Dossier contenant le
  */
 async function fetchJSON(path) {
     try {
+        logEvent('test_start', `Début de la récupération des données depuis ${path}`);
         const response = await fetch(path);
 
         // Vérifie si la réponse est valide
@@ -39,10 +40,12 @@ async function fetchJSON(path) {
             return null;
         }
 
-        logEvent('info', `Données récupérées avec succès depuis ${path}`);
+        logEvent('success', `Données récupérées avec succès depuis ${path}`);
+        logEvent('test_end', `Fin de la récupération des données depuis ${path}`);
         return await response.json();
     } catch (error) {
         logEvent('error', "Erreur lors du fetch JSON", { message: error.message, stack: error.stack });
+        logEvent('test_end', `Récupération des données échouée depuis ${path}`);
         return null;
     }
 }
@@ -56,8 +59,23 @@ async function fetchJSON(path) {
  * @returns {Promise<Array>} Liste des photographes.
  */
 async function getPhotographers() {
-    const data = await fetchJSON(PHOTOGRAPHERS_JSON_PATH);
-    return data ? data.photographers : [];
+    try {
+        logEvent('test_start', "Début de la récupération des photographes");
+        const data = await fetchJSON(PHOTOGRAPHERS_JSON_PATH);
+
+        if (!data || !data.photographers) {
+            logEvent('warn', "Aucune donnée de photographes trouvée dans le JSON");
+            return [];
+        }
+
+        logEvent('success', "Données des photographes récupérées avec succès");
+        logEvent('test_end', "Fin de la récupération des photographes");
+        return data.photographers;
+    } catch (error) {
+        logEvent('error', "Erreur lors de la récupération des photographes", { message: error.message });
+        logEvent('test_end', "Récupération des photographes échouée");
+        return [];
+    }
 }
 
 /**
@@ -65,19 +83,27 @@ async function getPhotographers() {
  * @param {Array} photographers - Liste des photographes à afficher.
  */
 function displayData(photographers) {
-    if (!photographers || photographers.length === 0) {
-        logEvent('warn', "Aucun photographe à afficher");
-        photographersSection.innerHTML = `<p>Aucun photographe trouvé.</p>`;
-        return;
+    try {
+        logEvent('test_start', "Début de l'affichage des photographes");
+
+        if (!photographers || photographers.length === 0) {
+            logEvent('warn', "Aucun photographe à afficher");
+            photographersSection.innerHTML = `<p>Aucun photographe trouvé.</p>`;
+            return;
+        }
+
+        photographers.forEach((photographer) => {
+            const photographerModel = photographerTemplate(photographer); // Génération du modèle
+            const userCardDOM = photographerModel.getUserCardDOM(); // Récupération de l'élément DOM
+            photographersSection.appendChild(userCardDOM); // Ajout au DOM
+        });
+
+        logEvent('success', `${photographers.length} photographes affichés.`);
+        logEvent('test_end', "Fin de l'affichage des photographes");
+    } catch (error) {
+        logEvent('error', "Erreur lors de l'affichage des photographes", { message: error.message });
+        logEvent('test_end', "Affichage des photographes échoué");
     }
-
-    photographers.forEach((photographer) => {
-        const photographerModel = photographerTemplate(photographer); // Génération du modèle
-        const userCardDOM = photographerModel.getUserCardDOM(); // Récupération de l'élément DOM
-        photographersSection.appendChild(userCardDOM); // Ajout au DOM
-    });
-
-    logEvent('info', `${photographers.length} photographes affichés.`);
 }
 
 // ----------------------------------------
@@ -88,15 +114,23 @@ function displayData(photographers) {
  * Fonction d'initialisation principale.
  */
 async function init() {
-    logEvent('info', "Initialisation de l'application...");
+    try {
+        logEvent('test_start', "Initialisation de l'application");
 
-    // Récupère les données des photographes
-    const photographers = await getPhotographers();
+        logEvent('info', "Initialisation de l'application...");
 
-    // Affiche les données dans le DOM
-    displayData(photographers);
+        // Récupère les données des photographes
+        const photographers = await getPhotographers();
 
-    logEvent('info', "Initialisation terminée.");
+        // Affiche les données dans le DOM
+        displayData(photographers);
+
+        logEvent('success', "Initialisation terminée avec succès.");
+        logEvent('test_end', "Fin de l'initialisation de l'application");
+    } catch (error) {
+        logEvent('error', "Erreur critique lors de l'initialisation de l'application", { message: error.message });
+        logEvent('test_end', "Initialisation échouée");
+    }
 }
 
 // ----------------------------------------
