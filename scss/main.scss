@@ -1,6 +1,9 @@
 // Importer les variables globales
 @import 'base/variables';
 
+//Importer les mixins
+@import 'base/mixins';
+
 // Importer les styles de réinitialisation et globaux
 @import 'base/reset';
 @import 'base/global';
