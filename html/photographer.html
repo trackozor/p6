@@ -29,10 +29,13 @@
     <main id="main" tabindex="-1">
       <!-- Section des informations du photographe -->
       <section id="photograph-info" class="photograph-header" aria-labelledby="photograph-title">
-        <h1 id="photograph-title">Nom du photographe</h1>
-        <p aria-labelledby="photograph-title">London, UK</p>
-        <p aria-labelledby="photograph-title">Voir le beau dans le quotidien</p>
+        <article class="photographer-profile" aria-labelledby="photograph-title">
+          <h1 id="photograph-title">{{name}}</h1>
+          <p aria-labelledby="photograph-title">{{city}}, {{country}}</p>
+          <p aria-labelledby="photograph-title">{{tagline}}></p>
+        </article>
         <button 
+          type="button"
           class="contact_button" 
           data-action="open-modal" 
           aria-haspopup="dialog" 
@@ -41,8 +44,8 @@
         </button>
         <div class="photographer-card-portrait-wrapper">
           <img 
-            src="path-to-image.jpg" 
-            alt="Portrait de Jean Dupont" 
+            src="" 
+            alt="Portrait {{name}}" 
             class="photographer-card-portrait" 
             loading="lazy">
         </div>
@@ -51,7 +54,7 @@
       <!-- Section de tri -->
       <section class="sorting" aria-labelledby="sorting-title">
         <h2 id="sorting-title" class="sr-only">Options de tri</h2>
-        <label for="sort-options">Trier les photographies</label>
+        <label for="sort-options">Trier par</label>
         <select id="sort-options" aria-label="Trier par">
           <option value="popularity">Popularité</option>
           <option value="date">Date</option>
@@ -66,7 +69,7 @@
           <figure class="gallery-item" tabindex="0" data-index="1">
             <img 
               src="assets/images/sample1.jpg" 
-              alt="Photo de paysage avec un arc-en-ciel" 
+              alt="" 
               loading="lazy">
             <figcaption>Arc-en-ciel</figcaption>
           </figure>
@@ -85,13 +88,15 @@
     <!-- Lightbox -->
     <div id="lightbox" class="lightbox" role="dialog" aria-labelledby="lightbox-title" aria-hidden="true">
       <div class="lightbox-content">
-        <button 
+        <button
+          type="button"
           class="lightbox-close" 
           aria-label="Fermer la lightbox" 
           data-action="close-lightbox">
           <i class="fas fa-times"></i>
         </button>
-        <button 
+        <button
+          type="button"
           class="lightbox-prev" 
           aria-label="Photo précédente" 
           data-action="prev-lightbox">
@@ -101,7 +106,8 @@
           <!-- Contenu dynamique (image ou vidéo) sera injecté ici -->
         </div>
         <div id="lightbox-caption" class="lightbox-caption" aria-live="polite"></div>
-        <button 
+        <button
+          type="button" 
           class="lightbox-next" 
           aria-label="Photo suivante" 
           data-action="next-lightbox">
@@ -179,18 +185,11 @@
     </div>
 
     <!-- Templates -->
-    <template id="photograph-info-template">
+    <template id="photographer-template">
       <article>
-        <h1>{{name}}</h1>
-        <p>{{city}}, {{country}}</p>
-        <p>{{tagline}}</p>
-        <button 
-          class="contact_button" 
-          data-action="open-modal" 
-          aria-haspopup="dialog" 
-          aria-controls="contact_modal">
-          Contactez-moi
-        </button>
+        <h1 id="photographer-name">{{name}}</h1>
+        <p class="photographer-card-location">{{city}}, {{country}}</p>
+        <p class="photographer-card-tagline">{{tagline}}</p>
       </article>
     </template>
 
@@ -205,6 +204,6 @@
     </template>
 
     <!-- Scripts -->
-    <script type="module" src="/js/pages/photographer.js"></script>
+    <script type="module" src="/js/main.js"></script>
   </body>
 </html>
