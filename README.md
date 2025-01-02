@@ -130,19 +130,13 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 ### **2. Installez les dépendances :**
 
    Si vous utilisez Sass pour les styles, installez-le globalement :
-
-         ```sh
-
-   npm install -g sass
-         ```
+         npm install -g sass
 
 ### **3. Compilez le fichier SCSS (si applicable) :**
 
    Pour compiler `styles.scss` en `styles.css` :
 
-         ```sh
-   npm run sass
-         ```
+         npm run sass
 
 ### **4. Démarrez un serveur local :**
 
