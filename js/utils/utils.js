@@ -208,3 +208,86 @@ export function removeClass(element, className) {
         return false; // Échec de l'opération
     }
 }
+
+/**
+ * Réinitialise un formulaire en effaçant ses champs, ses erreurs, et en
+ * effectuant des actions supplémentaires comme le nettoyage des champs dynamiques.
+ * @param {HTMLFormElement} form - L'élément formulaire à réinitialiser.
+ * @param {Object} options - Options pour personnaliser le comportement.
+ * @param {boolean} options.clearCustomFields - Supprime les champs ajoutés dynamiquement (par défaut : false).
+ * @param {boolean} options.resetPlaceholders - Réinitialise les placeholders personnalisés (par défaut : false).
+ * @param {boolean} options.removeErrorStyles - Supprime les styles liés aux erreurs (par défaut : true).
+ */
+export function resetForm(
+    form,
+    { clearCustomFields = false, resetPlaceholders = false, removeErrorStyles = true } = {}
+) {
+    // Vérification de la validité du formulaire
+    if (!form || !(form instanceof HTMLFormElement)) {
+        logEvent('error', "Le paramètre fourni n'est pas un formulaire valide.", { form });
+        return;
+    }
+
+    // eslint-disable-next-line no-undef
+    logEvent('info', "Début de la réinitialisation du formulaire.", { options });
+
+    // Test de réinitialisation
+    try {
+        // Étape 1 : Réinitialisation native
+        form.reset();
+        logEvent('success', "Champs du formulaire réinitialisés avec succès.");
+
+        // Étape 2 : Supprimer les styles d'erreur
+        if (removeErrorStyles) {
+            const inputs = form.querySelectorAll(".input-error");
+            const errorMessages = form.querySelectorAll(".error-message");
+
+            inputs.forEach((input) => {
+                input.classList.remove("input-error");
+                logEvent('info', `Style d'erreur supprimé pour l'élément: ${input.name || input.id}.`, {
+                    input,
+                });
+            });
+
+            errorMessages.forEach((msg) => {
+                msg.textContent = "";
+                logEvent('info', "Message d'erreur effacé pour un élément associé.", { element: msg });
+            });
+        }
+
+        // Étape 3 : Réinitialiser les placeholders si demandé
+        if (resetPlaceholders) {
+            const inputs = form.querySelectorAll("input, textarea");
+            inputs.forEach((input) => {
+                if (input.hasAttribute("data-original-placeholder")) {
+                    input.setAttribute(
+                        "placeholder",
+                        input.getAttribute("data-original-placeholder")
+                    );
+                    logEvent(
+                        'info',
+                        `Placeholder réinitialisé pour l'élément: ${input.name || input.id}.`,
+                        { input }
+                    );
+                }
+            });
+        }
+
+        // Étape 4 : Supprimer les champs ajoutés dynamiquement si demandé
+        if (clearCustomFields) {
+            const customFields = form.querySelectorAll(".custom-field");
+            customFields.forEach((field) => {
+                field.remove();
+                logEvent('warn', "Champ dynamique supprimé.", { field });
+            });
+        }
+
+        logEvent('success', "Formulaire réinitialisé avec succès.");
+    } catch (error) {
+        // Gestion des erreurs
+        logEvent('error', "Une erreur est survenue lors de la réinitialisation du formulaire.", {
+            error,
+        });
+    }
+}
+

@@ -247,19 +247,20 @@ a:focus {
 }
 
 /* =============================================================================
-   Projet      : Fisheye
-   Fichier     : _card.scss
-   Auteur      : Trackozor
-   Date        : 01/01/2025
-   Version     : 1.0.0
-   Description : Styles pour la carte des photographes (photographer-card).
-                 Inclut les styles de base et des media queries pour
-                 l'adaptation aux différents écrans.
+    Projet      : Fisheye
+    Fichier     : _card.scss
+    Auteur      : Trackozor
+    Date        : 01/01/2025
+    Version     : 1.0.0
+    Description : Styles pour la carte des photographes (photographer-card).
+                    Inclut les styles de base et des media queries pour
+                    l'adaptation aux différents écrans.
 ============================================================================= */
 /* -------------------------------------------------------------------------- */
 /* Carte du photographe (Mobile First)                                        */
 /* -------------------------------------------------------------------------- */
 .photographer-card {
+  position: relative;
   display: flex; /* Organise les éléments en colonne */
   flex-direction: column; /* Positionne les éléments verticalement */
   align-items: center; /* Centre les éléments horizontalement */
@@ -268,11 +269,22 @@ a:focus {
   padding: 5%; /* Espacement interne */
   max-width: 90%; /* Largeur maximale adaptée pour mobile */
   margin: 5% auto; /* Centre la carte avec un espacement vertical */
+  transition: transform 0.3s ease; /* Transition pour toute la carte */
+}
+
+.photographer-card:hover {
+  transform: translateY(-5px); /* Légère élévation au survol */
 }
 
 /* -------------------------------------------------------------------------- */
 /* Image du photographe                                                      */
 /* -------------------------------------------------------------------------- */
+.photographer-card-portrait-wrapper {
+  position: relative;
+  margin: 0 auto; /* Centre le conteneur */
+  transition: transform 0.3s ease-in-out; /* Transition pour l'image */
+}
+
 .photographer-card-portrait {
   width: 100px; /* Largeur fixe pour l'image */
   height: 100px; /* Hauteur fixe */
@@ -281,10 +293,17 @@ a:focus {
   margin-bottom: 10px; /* Espacement avec les autres éléments */
   transform: scale(1.2); /* Zoom initial */
   transition: transform 0.3s ease; /* Animation fluide sur hover */
+  cursor: pointer; /* Pointeur de curseur pour le click */
 }
 
-.photographer-card-portrait:hover {
-  transform: scale(1.4); /* Zoom supplémentaire au survol */
+.photographer-card-portrait img {
+  transform: scale(5); /* Zoom initial pour la carte */
+  transition: transform 0.3s ease; /* Animation fluide sur hover */
+}
+
+.photographer-card:hover .photographer-card-portrait {
+  transform: scale(1.2); /* Zoom de 20 % */
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Ombre subtile */
 }
 
 /* -------------------------------------------------------------------------- */
@@ -329,43 +348,15 @@ a:focus {
 /* MEDIA QUERIES : Styles responsives                                        */
 /* -------------------------------------------------------------------------- */
 @media (min-width: 768px) {
-  /* Disposition en grille pour les tablettes */
-  .photographer-section {
-    display: grid;
-    grid-template-columns: repeat(2, auto); /* Deux colonnes */
-    grid-template-rows: repeat(3, auto); /* Trois lignes */
-  }
-  .photographer-card {
-    padding: 2%; /* Réduction du padding */
-  }
-  .photographer-card-portrait {
-    width: 120px;
-    height: 120px; /* Agrandit les images */
-  }
-  .photographer-card-name {
-    font-size: var(--font-size-large, 1.8rem); /* Texte plus grand */
-  }
-  .photographer-card-location {
-    font-size: 1.4rem; /* Ajuste légèrement la taille */
-  }
-  .photographer-card-price {
-    font-size: 1.4rem; /* Augmente la visibilité */
+  .photographer-card-portrait-wrapper {
+    width: 150px;
+    height: 150px;
   }
 }
 @media (min-width: 1024px) {
-  .photographer-card {
-    max-width: 50%; /* Largeur adaptée aux grands écrans */
-    padding: 25px; /* Padding pour aérer davantage */
-  }
-  .photographer-card-portrait {
-    width: 150px;
-    height: 150px; /* Image encore plus grande */
-  }
-  .photographer-card-name {
-    font-size: 2rem; /* Titre bien visible */
-  }
-  .photographer-card-price {
-    font-size: 1.6rem; /* Taille du prix accentuée */
+  .photographer-card-portrait-wrapper {
+    width: 200px;
+    height: 200px;
   }
 }
 /* =============================================================================

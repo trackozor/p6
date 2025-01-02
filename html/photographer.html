@@ -1,51 +1,42 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <!-- Métadonnées essentielles -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Contactez le photographe via notre formulaire accessible et pratique.">
     <link rel="icon" type="image/png" href="assets/favicon.png">
-    
+
     <!-- Polices et styles -->
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
     <link href="/css/photographer.css" rel="stylesheet" type="text/css" />
 
-    <!-- Titre de la page -->
     <title>Fisheye - Photographe</title>
   </head>
   <body>
-    <!-- Lien d'accès rapide -->
     <a href="#main" class="sr-only">Passer au contenu principal</a>
-
-    <!-- En-tête -->
     <header>
       <a href="index.html" aria-label="Retour à la page d'accueil">
         <img src="/assets/images/logo.png" class="logo" alt="Logo Fisheye">
       </a>
     </header>
-
-    <!-- Contenu principal -->
     <main id="main" tabindex="-1">
       <section class="photograph-header" aria-labelledby="contact-section-title">
         <h1 id="contact-section-title">Photographe - Contactez-moi</h1>
-        <button class="contact_button" onclick="displayModal()" aria-haspopup="dialog" aria-controls="contact_modal">Contactez-moi</button>
+        <button class="contact_button" data-action="open-modal" aria-haspopup="dialog" aria-controls="contact_modal">
+          Contactez-moi
+        </button>
       </section>
     </main>
-
-    <!-- Modal de contact -->
     <div id="contact_modal" class="modal-container" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
       <div class="modal">
-        <!-- En-tête du formulaire -->
         <header class="modal-header">
           <h2 id="modal-title">Contactez-moi</h2>
-          <button type="button" class="modal-close" aria-label="Fermer le formulaire" onclick="closeModal()">
+          <button type="button" class="modal-close" aria-label="Fermer le formulaire" data-action="close-modal">
             <img src="/assets/icons/close.svg" alt="Fermer">
           </button>
         </header>
-
-        <!-- Formulaire de contact -->
-        <form action="#" method="POST" aria-label="Formulaire de contact">
+        <form action="#" method="POST" aria-label="Formulaire de contact" novalidate>
           <div class="form-group">
             <label for="first-name">Prénom</label>
             <input type="text" id="first-name" name="first-name" required aria-required="true" placeholder="Votre prénom">
@@ -67,9 +58,8 @@
       </div>
     </div>
 
-    <!-- Scripts JS -->
+    <!-- Scripts JavaScript -->
     <script src="/scripts/pages/photographer.js"></script>
     <script src="/scripts/utils/contactForm.js"></script>
   </body>
 </html>
-
