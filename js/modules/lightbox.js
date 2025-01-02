@@ -71,9 +71,15 @@ export function initializeLightbox(items) {
   // Gestion du clavier
     document.addEventListener("keydown", (e) => {
         if (lightbox.getAttribute("aria-hidden") === "false") {
-        if (e.key === "Escape") closeLightbox();
-        if (e.key === "ArrowLeft") showPrevious();
-        if (e.key === "ArrowRight") showNext();
+        if (e.key === "Escape") {
+            closeLightbox();
+        }
+        if (e.key === "ArrowLeft") {
+            showPrevious();
+        }
+        if (e.key === "ArrowRight") {
+            showNext();
+        }
     }
 });
 

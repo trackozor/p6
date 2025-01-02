@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <!-- Métadonnées essentielles -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Découvrez les œuvres d'un photographe talentueux et contactez-le.">
+    <meta name="keywords" content="photographe, Fisheye, galerie, contact, photographie">
     <link rel="icon" href="assets/favicon.png" type="image/png">
     <title>Fisheye - Photographe</title>
 
@@ -12,28 +12,46 @@
     <link rel="preload" href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
     <link href="/css/photographer.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   </head>
   <body>
     <!-- Lien d'accès rapide -->
     <a href="#main" class="sr-only">Passer au contenu principal</a>
-    
+
     <!-- En-tête -->
     <header>
       <a href="/index.html" aria-label="Retour à la page d'accueil">
-        <img src="/assets/images/logo.png" alt="Logo Fisheye" class="logo">
+        <img src="/assets/images/logo.png" alt="Logo de Fisheye - Retour à l'accueil" class="logo">
       </a>
     </header>
 
     <!-- Contenu principal -->
-    <main id="main">
+    <main id="main" tabindex="-1">
       <!-- Section des informations du photographe -->
-      <section id="photograph-info" class="photograph-header">
-        <!-- Dynamique via Template -->
+      <section id="photograph-info" class="photograph-header" aria-labelledby="photograph-title">
+        <h1 id="photograph-title">Nom du photographe</h1>
+        <p aria-labelledby="photograph-title">London, UK</p>
+        <p aria-labelledby="photograph-title">Voir le beau dans le quotidien</p>
+        <button 
+          class="contact_button" 
+          data-action="open-modal" 
+          aria-haspopup="dialog" 
+          aria-controls="contact_modal">
+          Contactez-moi
+        </button>
+        <div class="photographer-card-portrait-wrapper">
+          <img 
+            src="path-to-image.jpg" 
+            alt="Portrait de Jean Dupont" 
+            class="photographer-card-portrait" 
+            loading="lazy">
+        </div>
       </section>
 
       <!-- Section de tri -->
-      <section class="sorting">
-        <label for="sort-options" class="sr-only">Trier par</label>
+      <section class="sorting" aria-labelledby="sorting-title">
+        <h2 id="sorting-title" class="sr-only">Options de tri</h2>
+        <label for="sort-options">Trier les photographies</label>
         <select id="sort-options" aria-label="Trier par">
           <option value="popularity">Popularité</option>
           <option value="date">Date</option>
@@ -42,40 +60,114 @@
       </section>
 
       <!-- Section Galerie -->
-      <section class="photograph-gallery">
-        <h2 class="sr-only">Galerie de photos</h2>
-        <div id="gallery" class="gallery">
-          <!-- Dynamique via Template -->
+      <section class="photograph-gallery" aria-labelledby="gallery-title" role="region">
+        <h2 id="gallery-title" class="sr-only">Galerie de photos et vidéos</h2>
+        <div id="gallery" class="gallery" role="group" aria-labelledby="gallery-title">
+          <figure class="gallery-item" tabindex="0" data-index="1">
+            <img 
+              src="assets/images/sample1.jpg" 
+              alt="Photo de paysage avec un arc-en-ciel" 
+              loading="lazy">
+            <figcaption>Arc-en-ciel</figcaption>
+          </figure>
+          <figure class="gallery-item" tabindex="0" data-index="2">
+            <img 
+              src="assets/images/sample2.jpg" 
+              alt="Photo d'un paysage calme et isolé" 
+              loading="lazy">
+            <figcaption>Solitude</figcaption>
+          </figure>
+          <!-- Autres items de galerie -->
         </div>
       </section>
     </main>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-labelledby="lightbox-title" aria-hidden="true">
+      <div class="lightbox-content">
+        <button 
+          class="lightbox-close" 
+          aria-label="Fermer la lightbox" 
+          data-action="close-lightbox">
+          <i class="fas fa-times"></i>
+        </button>
+        <button 
+          class="lightbox-prev" 
+          aria-label="Photo précédente" 
+          data-action="prev-lightbox">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="lightbox-media-container" role="group" aria-labelledby="lightbox-caption">
+          <!-- Contenu dynamique (image ou vidéo) sera injecté ici -->
+        </div>
+        <div id="lightbox-caption" class="lightbox-caption" aria-live="polite"></div>
+        <button 
+          class="lightbox-next" 
+          aria-label="Photo suivante" 
+          data-action="next-lightbox">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
 
     <!-- Modale de contact -->
     <div id="contact_modal" class="modal-container" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
       <div class="modal">
         <header class="modal-header">
           <h2 id="modal-title">Contactez-moi</h2>
-          <button type="button" class="modal-close" aria-label="Fermer le formulaire" data-action="close-modal">
-            <img src="/assets/icons/close.svg" alt="Fermer">
+          <button 
+            type="button" 
+            class="modal-close" 
+            aria-label="Fermer le formulaire" 
+            data-action="close-modal">
+            <i class="fas fa-times"></i>
           </button>
         </header>
         <form action="#" method="POST" aria-label="Formulaire de contact" novalidate>
-          <div class="form-group">
-            <label for="first-name">Prénom</label>
-            <input type="text" id="first-name" name="first-name" required placeholder="Votre prénom">
-          </div>
-          <div class="form-group">
-            <label for="last-name">Nom</label>
-            <input type="text" id="last-name" name="last-name" required placeholder="Votre nom">
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required placeholder="Votre email">
-          </div>
-          <div class="form-group">
-            <label for="message">Votre message</label>
-            <textarea id="message" name="message" rows="5" required placeholder="Votre message"></textarea>
-          </div>
+          <fieldset>
+            <legend class="sr-only">Informations de contact</legend>
+            <div class="form-group">
+              <label for="first-name">Prénom</label>
+              <input 
+                type="text" 
+                id="first-name" 
+                name="first-name" 
+                required 
+                placeholder="Votre prénom" 
+                aria-describedby="first-name-help">
+              <p id="first-name-help" class="sr-only">Entrez votre prénom.</p>
+            </div>
+            <div class="form-group">
+              <label for="last-name">Nom</label>
+              <input 
+                type="text" 
+                id="last-name" 
+                name="last-name" 
+                required 
+                placeholder="Votre nom" 
+                aria-describedby="last-name-help">
+              <p id="last-name-help" class="sr-only">Entrez votre nom.</p>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                required 
+                placeholder="Votre email" 
+                aria-invalid="false">
+            </div>
+            <div class="form-group">
+              <label for="message">Votre message</label>
+              <textarea 
+                id="message" 
+                name="message" 
+                rows="5" 
+                required 
+                placeholder="Votre message"></textarea>
+            </div>
+          </fieldset>
           <button type="submit" class="contact_button">Envoyer</button>
         </form>
       </div>
@@ -83,22 +175,31 @@
 
     <!-- Templates -->
     <template id="photograph-info-template">
-      <h1>{{name}}</h1>
-      <p>{{city}}, {{country}}</p>
-      <p>{{tagline}}</p>
-      <button class="contact_button" data-action="open-modal" aria-haspopup="dialog" aria-controls="contact_modal">
-        Contactez-moi
-      </button>
+      <article>
+        <h1>{{name}}</h1>
+        <p>{{city}}, {{country}}</p>
+        <p>{{tagline}}</p>
+        <button 
+          class="contact_button" 
+          data-action="open-modal" 
+          aria-haspopup="dialog" 
+          aria-controls="contact_modal">
+          Contactez-moi
+        </button>
+      </article>
     </template>
 
     <template id="gallery-item-template">
       <figure class="gallery-item" tabindex="0" data-index="{{index}}">
-        <img src="{{imageSrc}}" alt="{{imageAlt}}">
+        <img 
+          src="{{imageSrc}}" 
+          alt="{{imageAlt}}" 
+          loading="lazy">
         <figcaption>{{title}}</figcaption>
       </figure>
     </template>
 
-    <!-- Inclusion des scripts -->
+    <!-- Scripts -->
     <script type="module" src="/js/pages/photographer.js"></script>
   </body>
 </html>
