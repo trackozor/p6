@@ -124,11 +124,8 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
 ### **1. Clonez le dépôt :**
 
-      ```sh
-
-   git clone ()
-   cd photographers-directory
-      ```
+         git clone ()
+         cd photographers-directory
 
 ### **2. Installez les dépendances :**
 
