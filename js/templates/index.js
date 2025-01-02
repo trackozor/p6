@@ -112,7 +112,7 @@ function displayData(photographers) {
 /**
  * Fonction d'initialisation principale.
  */
-async function init() {
+export async function init() {
     try {
         logEvent('test_start', "Initialisation de l'application");
 
@@ -132,7 +132,4 @@ async function init() {
     }
 }
 
-// ----------------------------------------
-// Exécution
-// ----------------------------------------
-init();
+

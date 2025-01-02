@@ -11,11 +11,12 @@
 
 //import fonction log
 import { logEvent } from '/js/utils/utils.js';
-import'/js/templates/index.js';
+import { init } from '/js/templates/index.js';
 
 function main() {
     // Exemple d'utilisation des fonctions de logs
     logEvent('info', "Lancement de l'application..." );
+    init()
 
 
 }
