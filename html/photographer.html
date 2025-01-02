@@ -1,33 +1,56 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
+    <!-- Métadonnées essentielles -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Contactez le photographe via notre formulaire accessible et pratique.">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <meta name="description" content="Découvrez les œuvres d'un photographe talentueux et contactez-le.">
+    <link rel="icon" href="assets/favicon.png" type="image/png">
+    <title>Fisheye - Photographe</title>
 
     <!-- Polices et styles -->
     <link rel="preload" href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <link href="/css/photographer.css" rel="stylesheet" type="text/css" />
-
-    <title>Fisheye - Photographe</title>
+    <link href="/css/photographer.css" rel="stylesheet">
   </head>
   <body>
+    <!-- Lien d'accès rapide -->
     <a href="#main" class="sr-only">Passer au contenu principal</a>
+    
+    <!-- En-tête -->
     <header>
-      <a href="index.html" aria-label="Retour à la page d'accueil">
-        <img src="/assets/images/logo.png" class="logo" alt="Logo Fisheye">
+      <a href="/index.html" aria-label="Retour à la page d'accueil">
+        <img src="/assets/images/logo.png" alt="Logo Fisheye" class="logo">
       </a>
     </header>
-    <main id="main" tabindex="-1">
-      <section class="photograph-header" aria-labelledby="contact-section-title">
-        <h1 id="contact-section-title">Photographe - Contactez-moi</h1>
-        <button class="contact_button" data-action="open-modal" aria-haspopup="dialog" aria-controls="contact_modal">
-          Contactez-moi
-        </button>
+
+    <!-- Contenu principal -->
+    <main id="main">
+      <!-- Section des informations du photographe -->
+      <section id="photograph-info" class="photograph-header">
+        <!-- Dynamique via Template -->
+      </section>
+
+      <!-- Section de tri -->
+      <section class="sorting">
+        <label for="sort-options" class="sr-only">Trier par</label>
+        <select id="sort-options" aria-label="Trier par">
+          <option value="popularity">Popularité</option>
+          <option value="date">Date</option>
+          <option value="title">Titre</option>
+        </select>
+      </section>
+
+      <!-- Section Galerie -->
+      <section class="photograph-gallery">
+        <h2 class="sr-only">Galerie de photos</h2>
+        <div id="gallery" class="gallery">
+          <!-- Dynamique via Template -->
+        </div>
       </section>
     </main>
+
+    <!-- Modale de contact -->
     <div id="contact_modal" class="modal-container" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
       <div class="modal">
         <header class="modal-header">
@@ -39,27 +62,43 @@
         <form action="#" method="POST" aria-label="Formulaire de contact" novalidate>
           <div class="form-group">
             <label for="first-name">Prénom</label>
-            <input type="text" id="first-name" name="first-name" required aria-required="true" placeholder="Votre prénom">
+            <input type="text" id="first-name" name="first-name" required placeholder="Votre prénom">
           </div>
           <div class="form-group">
             <label for="last-name">Nom</label>
-            <input type="text" id="last-name" name="last-name" required aria-required="true" placeholder="Votre nom">
+            <input type="text" id="last-name" name="last-name" required placeholder="Votre nom">
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" required aria-required="true" placeholder="Votre email">
+            <input type="email" id="email" name="email" required placeholder="Votre email">
           </div>
           <div class="form-group">
             <label for="message">Votre message</label>
-            <textarea id="message" name="message" rows="5" required aria-required="true" placeholder="Votre message"></textarea>
+            <textarea id="message" name="message" rows="5" required placeholder="Votre message"></textarea>
           </div>
           <button type="submit" class="contact_button">Envoyer</button>
         </form>
       </div>
     </div>
 
-    <!-- Scripts JavaScript -->
-    <script src="/scripts/pages/photographer.js"></script>
-    <script src="/scripts/utils/contactForm.js"></script>
+    <!-- Templates -->
+    <template id="photograph-info-template">
+      <h1>{{name}}</h1>
+      <p>{{city}}, {{country}}</p>
+      <p>{{tagline}}</p>
+      <button class="contact_button" data-action="open-modal" aria-haspopup="dialog" aria-controls="contact_modal">
+        Contactez-moi
+      </button>
+    </template>
+
+    <template id="gallery-item-template">
+      <figure class="gallery-item" tabindex="0" data-index="{{index}}">
+        <img src="{{imageSrc}}" alt="{{imageAlt}}">
+        <figcaption>{{title}}</figcaption>
+      </figure>
+    </template>
+
+    <!-- Inclusion des scripts -->
+    <script type="module" src="/js/pages/photographer.js"></script>
   </body>
 </html>

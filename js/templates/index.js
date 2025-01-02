@@ -7,7 +7,7 @@
  * ======================================================== */
 
 import { logEvent } from '/js/utils/utils.js'; // Utilitaire de logging
-import { photographerTemplate } from '/js/templates/photographer.js'; // Modèle de carte pour les photographes
+import { photographerTemplate } from '/js/templates/photographer-logic.js'; // Modèle de carte pour les photographes
 
 // ----------------------------------------
 // Variables globales
