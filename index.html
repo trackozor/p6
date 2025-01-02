@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <!-- Métadonnées essentielles -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Découvrez nos photographes talentueux sur Fisheye. Trouvez le photographe parfait pour vos projets créatifs, événements ou portraits.">
     <meta name="keywords" content="photographes, portfolio, talents, photographie, Fisheye, événements, portraits">
     <meta name="author" content="Fisheye Team">
-    <link rel="icon" type="image/png" href="/images/icons/favicon.png">
+    <link rel="icon" href="/images/icons/favicon.png" type="image/png">
 
-    <!-- Open Graph Metadata pour réseaux sociaux -->
+    <!-- Open Graph Metadata -->
     <meta property="og:title" content="Fisheye - Découvrez Nos Photographes Talentueux">
     <meta property="og:description" content="Explorez notre plateforme pour trouver les meilleurs photographes pour vos besoins.">
     <meta property="og:image" content="assets/images/og-image.jpg">
@@ -25,43 +24,34 @@
     <!-- Polices et styles -->
     <link rel="preload" href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet" type="text/css">
+    <link href="/css/main.css" rel="stylesheet">
 
     <!-- Titre -->
     <title>Fisheye - Nos Photographes</title>
-    
+
     <!-- Préchargement des ressources critiques -->
     <link rel="preload" href="assets/images/logo.png" as="image">
   </head>
   <body>
-    <!-- Lien d'accès rapide pour les lecteurs d'écran -->
+    <!-- Lien d'accès rapide -->
     <a href="#main" class="sr-only">Passer au contenu principal</a>
 
-    <!-- En-tête du site -->
+    <!-- En-tête -->
     <header>
-      <a href="index.html" class="logo-link" aria-label="Retour à l'accueil">
-        <img src="assets/images/logo.png" class="logo" alt="Logo Fisheye">
+      <a href="index.html" class="logo-link" aria-label="Retour à la page d'accueil">
+        <img src="/assets/images/logo.png" alt="Logo Fisheye - Retour à l'accueil" class="logo">
       </a>
-      <h1>Nos photographes <span class="sr-only">nos photographes à découvrir sur Fisheye</span></h1>
+      <h1>Nos photographes <span class="sr-only">Découvrez nos photographes sur Fisheye</span></h1>
     </header>
 
     <!-- Contenu principal -->
-    <main id="main">
+    <main id="main" tabindex="-1">
+      <!-- Section des photographes -->
       <section class="photographer-section" aria-labelledby="photographers-title">
-        <h2 id="photographers-title" class="sr-only">Section des photographes</h2>
-        
-        <!-- Template -->
-        <template id="photographer-template">
-          <article class="photographer-card" aria-labelledby="photographer-name">
-            <div class="photographer-card-portrait-wrapper">
-                <img src="path-to-image.jpg" alt="Portrait de Jean Dupont" class="photographer-card-portrait">
-            </div>
-            <h3 id="photographer-name">Nom du photographe</h3>
-            <p class="photographer-card-location">Ville, Pays</p>
-            <p class="photographer-card-tagline">"Slogan"</p>
-            <p class="photographer-card-price">Prix : X€/jour</p>
-          </article>
-        </template>
+        <h2 id="photographers-title" class="sr-only">Liste des photographes</h2>
+        <div id="photographers-container" role="list">
+          <!-- Dynamique via JavaScript -->
+        </div>
       </section>
     </main>
 
@@ -70,7 +60,25 @@
       <p>&copy; 2025 Fisheye. Tous droits réservés.</p>
     </footer>
 
-    <!-- Script JS -->
-    <script type="module" src="js/main.js"></script>
+    <!-- Templates pour les photographes -->
+    <template id="photographer-template">
+      <article class="photographer-card" aria-labelledby="photographer-name">
+        <div class="photographer-card-portrait-wrapper">
+          <img 
+            src="" 
+            alt="Portrait de {{name}}" 
+            class="photographer-card-portrait" 
+            loading="lazy">
+        </div>
+        <h3 id="photographer-name">{{name}}</h3>
+        <p class="photographer-card-location">{{city}}, {{country}}</p>
+        <p class="photographer-card-tagline">{{tagline}}</p>
+        <p class="photographer-card-price">Prix : {{price}}€/jour</p>
+        <a href="/photographer.html?id={{id}}" aria-label="Voir le portfolio de {{name}}" class="photographer-card-link">Voir plus</a>
+      </article>
+    </template>
+
+    <!-- Inclusion des scripts -->
+    <script type="module" src="/js/main.js"></script>
   </body>
 </html>
