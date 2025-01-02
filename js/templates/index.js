@@ -18,7 +18,6 @@ const photographersSection = document.querySelector(".photographer-section");
 
 // Chemin vers les ressources JSON et images
 const PHOTOGRAPHERS_JSON_PATH = "/assets/data/photographers.json";
-const PHOTO_BASE_PATH = "/assets/images/photographers/"; // Dossier contenant les photos des photographes
 
 // ----------------------------------------
 // Fonctions utilitaires

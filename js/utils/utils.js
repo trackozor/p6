@@ -6,66 +6,12 @@
  * Date           : 01/01/2025
  * Version        : 1.0.0
  * ======================================================== */
+/*================================================================================================================================================*/
+/*========================================================================================*/
+/*                       =========== imports ===================            */
+/*========================================================================================*/
 
-
-/* =============================== */
-/*       Configuration Globale     */
-/* =============================== */
-
-const CONFIG = {
-     /* ====== Configuration des logs ====== */
-    ENABLE_LOGS: true, // Permet d'activer ou de désactiver les logs dans la console. Utile pour basculer entre les environnements (développement/production).
-    
-     /* ====== Niveaux de Logs ====== */
-    LOG_LEVELS: {
-        default: true,
-        info: true,  // Activer/Désactiver les logs d'information
-        warn: true,  // Activer/Désactiver les avertissements
-        error: true, // Activer/Désactiver les erreurs
-        success: true, // Activer/Désactiver les logs de succès
-        test_start: true, // Activer/Désactiver les logs de la checkbox info
-        test_end:true,
-    },
-
-    /*====== Classes CSS utilisées ======*/
-    CSS_CLASSES: {
-        ERROR_INPUT: 'error-input', // Classe CSS pour styliser un champ avec une erreur (ex : bordure rouge).
-        ERROR_MODAL: 'error-modal', // Classe CSS pour afficher une erreur dans la modale.
-        MODAL_ACTIVE: 'active',  // Classe CSS pour indiquer qu'une modale est active et visible.
-        BODY_NO_SCROLL: 'no-scroll', // Classe CSS pour empêcher le défilement de la page lorsque la modale est ouverte.
-        NAV_RESPONSIVE: 'responsive', // Classe CSS pour activer le mode "responsive" du menu de navigation.
-        HERO_DEFAULT: 'hero-default', // Classe CSS pour le style par défaut de la section "hero".
-        HERO_RESPONSIVE: 'hero-responsive', // Classe CSS pour ajuster la section "hero" en mode responsive.
-        MODAL_DEFAULT: 'modal-default', // Classe CSS pour le style par défaut de la modale.
-        MODAL_RESPONSIVE: 'modal-responsive',  // Classe CSS pour adapter la modale au mode responsive.
-    },
-
-
-    /*====== styles tag log ======*/
-    LOG_STYLES: {
-        info: "color: blue; font-weight: bold;", // Style pour les messages d'information.
-        warn: "color: orange; font-weight: bold;", // Style pour les avertissements.
-        error: "color: red; font-weight: bold;", // Style pour les erreurs critiques.
-        success: "color: green; font-weight: bold;", // Style pour les messages indiquant une réussite.
-        default: "color: black;", // Style par défaut pour les messages qui ne correspondent pas à un type spécifique.
-        test_start: "background-color: orange; color: purple;font-weight: bold;", // Style pour la checkbox d'info
-        test_end:"background-color: green; color: white;font-weight: bold;", // Style pour la checkbox d'info
-    },
-
-    /*====== styles icône log ======*/
-    LOG_ICONS: {
-        info: 'ℹ️',  // Icône pour les messages d'information.
-        warn: '⚠️', // Icône pour les avertissements.
-        error: '❌', // Icône pour les erreurs critiques.
-        success: '✅', // Icône pour indiquer une réussite.
-        default: '🔵', // Icône par défaut si le type de message n'est pas défini.
-    },
-
-    /*====== Configuration des médias ======*/
-    MEDIA: {
-        isMobile: window.matchMedia("(max-width: 1023px)").matches, // Indique si l'utilisateur utilise un appareil avec un écran de taille inférieure ou égale à 1024px.
-    },
-};
+import { CONFIGLOG } from "/js//modules/constants.js";
 
 /*================================================================================================================================================*/
 /*========================================================================================*/
@@ -96,12 +42,12 @@ const CONFIG = {
 export function logEvent(type, message, data = {}) {
     
     /* 1. Vérifie si les logs sont activés via CONFIG.ENABLE_LOGS.*/  
-    if (!CONFIG.ENABLE_LOGS) {
+    if (!CONFIGLOG.ENABLE_LOGS) {
         return; // Si les logs sont désactivés, sortir de la fonction immédiatement.
     }
 
     // Vérifie si le type de log est activé dans LOG_LEVELS
-    if (!CONFIG.LOG_LEVELS[type]) {
+    if (!CONFIGLOG.LOG_LEVELS[type]) {
         return; // Si le type de log est désactivé, ne rien afficher
     }
 
@@ -110,8 +56,8 @@ export function logEvent(type, message, data = {}) {
     const prefix = `[Fisheye][${timestamp}]`; // Préfixe standard pour identifier les logs et horodatage.
 
     /*3. Sélectionne une icône, un style en fonction du type de log  et construit le message complet avec le type, l'icône, et le contenu.*/
-    const icon = CONFIG.LOG_ICONS[type] || CONFIG.LOG_ICONS.default;// Icône par défaut si le type est inconnu    
-    const style = CONFIG.LOG_STYLES[type] || CONFIG.LOG_STYLES.default ;// Récupère le style approprié depuis `logStyles` en fonction du type (info, warn, error).
+    const icon = CONFIGLOG.LOG_ICONS[type] || CONFIGLOG.LOG_ICONS.default;// Icône par défaut si le type est inconnu    
+    const style = CONFIGLOG.LOG_STYLES[type] || CONFIGLOG.LOG_STYLES.default ;// Récupère le style approprié depuis `logStyles` en fonction du type (info, warn, error).
     const fullMessage = `${icon} ${prefix} ${type.toUpperCase()}: ${message}`; // Message complet à afficher.
 
     /*4. Vérifie si le message est vide pour éviter les logs inutiles.*/
