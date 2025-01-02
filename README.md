@@ -58,7 +58,7 @@ Photographers Directory est une application web permettant de visualiser les inf
 
 ## **📁 4.Structure du projet**
 
-```
+      ```sh
 📦 Photographers Directory
 ├── 📁 assets                     # Contient les ressources statiques
 │   ├── 📁 data                   # Fichiers JSON avec les données
@@ -72,17 +72,17 @@ Photographers Directory est une application web permettant de visualiser les inf
 │
 ├── 📁 html                       # Pages HTML de l'application
 │   └── photographer.html         # Page individuelle pour chaque photographe
-│              
+│
 ├── 📁 js                         # Scripts JavaScript
 │   ├── 📁 templates              # Modèles dynamiques (cartes, DOM)
 │   │   ├── index.js              # Gestion des éléments sur la page d'accueil
 │   │   └── photographer.js       # Génération des cartes des photographes
-│   │ 
+│   │
 │   ├── 📁 utils                  # Fonctions utilitaires et scripts réutilisables
 │   │   ├── utils.js              # Utilitaires globaux (ex : logEvent)
 │   │   └── contactForm.js        # Gestion dynamique du formulaire de contact
 │   └── main.js                   # Script principal pour initialiser l'application
-│ 
+│
 ├── 📁 scss                       # Fichiers SCSS pour la gestion des styles
 │   ├── 📁 base                   # Styles de base (reset, variables, mixins)
 │   ├── 📁 components             # Styles pour les composants UI (boutons, cartes)
@@ -92,8 +92,8 @@ Photographers Directory est une application web permettant de visualiser les inf
 ├── .gitignore                    # Fichiers et dossiers à exclure du contrôle de version Git
 ├── package.json                  # Dépendances et scripts npm pour le projet
 └── 📄 README.md                  # Documentation complète du projet
- 
-```
+
+      ```
 
 ---
 
@@ -122,35 +122,41 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
 ## **📦 Installation**
 
-1. **Clonez le dépôt :**
+### **1. Clonez le dépôt :**
 
-   ```bash
-   git clone https://github.com/trackozor/photographers-directory.git
+      ```sh
+
+   git clone ()
    cd photographers-directory
-   ```
+      ```
 
-2. **Installez les dépendances :**
+### **2. Installez les dépendances :**
+
    Si vous utilisez Sass pour les styles, installez-le globalement :
 
-   ```bash
-   npm install -g sass
-   ```
+         ```sh
 
-3. **Compilez le fichier SCSS (si applicable) :**
+   npm install -g sass
+         ```
+
+### **3. Compilez le fichier SCSS (si applicable) :**
+
    Pour compiler `styles.scss` en `styles.css` :
 
-   ```bash
+         ```sh
    npm run sass
-   ```
+         ```
 
-4. **Démarrez un serveur local :**
+### **4. Démarrez un serveur local :**
+
    Exemple avec [http-server](https://www.npmjs.com/package/http-server) :
 
-   ```bash
+         ```sh
    npx http-server .
-   ```
+         ```
 
-5. **Ouvrez l'application dans le navigateur :**
+### **5. Ouvrez l'application dans le navigateur :**
+
    Accédez à [http://localhost:8080](http://localhost:8080).
 
 ---
@@ -171,7 +177,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
 Les données des photographes se trouvent dans `assets/data/photographers.json`. Exemple de structure JSON :
 
-```json
+      ```json
 {
   "photographers": [
     {
@@ -185,26 +191,29 @@ Les données des photographes se trouvent dans `assets/data/photographers.json`.
     }
   ]
 }
-```
+      ```
 
 ---
 
 ## **🧩 Fonctionnalités techniques**
 
-1. **Scripts principaux :**
-   - `photographer.js` : Récupère les données JSON, affiche les photographes et gère les erreurs.
-   - `photographerTemplate.js` : Génère dynamiquement les cartes des photographes.
+### **1. Scripts principaux :**
 
-2. **Système de log :**
+      - `photographer.js` : Récupère les données JSON, affiche les photographes et gère les erreurs.
+      - `photographerTemplate.js` : Génère dynamiquement les cartes des photographes.
+
+### **2. Système de log :**
+
    Utilisez `logEvent` pour enregistrer des messages de débogage, des erreurs ou des succès. Exemple :
 
-   ```javascript
+      ```javascript
    logEvent('info', 'Initialisation du projet réussie');
-   ```
+      ```
 
-3. **Système SCSS :**
-   - Divisez vos styles en fichiers SCSS partiels (`_variables.scss`, `_mixins.scss`) pour une meilleure organisation.
-   - Compilez-les en un seul fichier CSS.
+### **3. Système SCSS :**
+
+      - Divisez vos styles en fichiers SCSS partiels (`_variables.scss`, `_mixins.scss`) pour une meilleure organisation.
+      - Compilez-les en un seul fichier CSS.
 
 ---
 
@@ -213,23 +222,23 @@ Les données des photographes se trouvent dans `assets/data/photographers.json`.
 1. **Récupération JSON :**
    - Si le fichier JSON est introuvable ou corrompu, une erreur sera loguée :
 
-     ```bash
-     [error] Erreur lors du fetch JSON
-     ```
+         ```javascript
+         [error] Erreur lors du fetch JSON
+         ```
 
 2. **Affichage des photographes :**
    - Si aucune donnée n'est disponible, un message est affiché :
 
-     ```
-     Aucun photographe trouvé.
-     ```
+         ```javascript
+         [error] Aucun photographe trouvé.
+         ```
 
 3. **Logs intelligents :**
    - Exemple de log en cas de succès :
 
-     ```
-     [success] Données récupérées avec succès depuis /assets/data/photographers.json
-     ```
+         ```javascript
+         [success] Données récupérées avec succès depuis /assets/data/photographers.json
+         ```
 
 ---
 
@@ -237,15 +246,15 @@ Les données des photographes se trouvent dans `assets/data/photographers.json`.
 
 Voici un exemple de structure pour vos fichiers SCSS :
 
-```
+      ```sh
 scss/
 ├── main.scss           # Fichier principal
-├── _variables.scss     # Variables globales
-├── _mixins.scss        # Mixins réutilisables
-├── _base.scss          # Styles de base (body, h1, etc.)
-├── _header.scss        # Styles pour l'en-tête
-├── _footer.scss        # Styles pour le pied de page
-```
+├── variables.scss     # Variables globales
+├── mixins.scss        # Mixins réutilisables
+├── base.scss          # Styles de base (body, h1, etc.)
+├── header.scss        # Styles pour l'en-tête
+├── footer.scss        # Styles pour le pied de page
+      ```
 
 ---
 
@@ -258,13 +267,13 @@ scss/
 2. **Tests unitaires :**
    - Exemple avec Jest :
 
-     ```javascript
-     test('photographerTemplate génère une carte valide', () => {
+         ```javascript
+      test('photographerTemplate génère une carte valide', () => {
          const mockData = { name: "John", id: 1, city: "Paris", price: 300, tagline: "Test", portrait: "test.jpg" };
          const result = photographerTemplate(mockData).getUserCardDOM();
          expect(result).toBeInstanceOf(HTMLElement);
-     });
-     ```
+      });
+         ```
 
 ---
 
