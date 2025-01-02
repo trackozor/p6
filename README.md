@@ -168,7 +168,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
 Les données des photographes se trouvent dans `assets/data/photographers.json`. Exemple de structure JSON :
 
-      ```json
+```json
 {
   "photographers": [
     {
@@ -182,7 +182,7 @@ Les données des photographes se trouvent dans `assets/data/photographers.json`.
     }
   ]
 }
-      ```
+```
 
 ---
 
