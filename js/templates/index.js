@@ -14,7 +14,7 @@ import { photographerTemplate } from '/js/templates/photographer.js'; // Modèle
 // ----------------------------------------
 
 // Sélecteurs DOM
-const photographersSection = document.querySelector(".photographer_section");
+const photographersSection = document.querySelector(".photographer-section");
 
 // Chemin vers les ressources JSON et images
 const PHOTOGRAPHERS_JSON_PATH = "/assets/data/photographers.json";

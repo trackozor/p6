@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <!DOCTYPE html>
-<html lang="fr">
-  <head>
     <!-- Métadonnées essentielles -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,10 +23,15 @@
     <meta name="twitter:image" content="assets/images/twitter-card.jpg">
 
     <!-- Polices et styles -->
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet" type="text/css">
+
     <!-- Titre -->
     <title>Fisheye - Nos Photographes</title>
+    
+    <!-- Préchargement des ressources critiques -->
+    <link rel="preload" href="assets/images/logo.png" as="image">
   </head>
   <body>
     <!-- Lien d'accès rapide pour les lecteurs d'écran -->
@@ -40,28 +42,31 @@
       <a href="index.html" class="logo-link" aria-label="Retour à l'accueil">
         <img src="assets/images/logo.png" class="logo" alt="Logo Fisheye">
       </a>
-      <h1>Nos photographes</h1>
+      <h1>Nos photographes <span class="sr-only">nos photographes à découvrir sur Fisheye</span></h1>
     </header>
 
     <!-- Contenu principal -->
-<main id="main">
-  <section class="photographer_section" aria-labelledby="photographers-title">
-    <h2 id="photographers-title" class="sr-only">Section des photographes</h2>
-    
-    <!-- Template -->
-    <template id="photographer-template">
-      <article class="photographer-card" aria-labelledby="photographer-name">
-        <img src="" alt="" class="photographer-card-portrait">
-        <h3 id="photographer-name">Nom du photographe</h3>
-        <p class="photographer-card-location">Ville, Pays</p>
-        <p class="photographer-card-tagline">"Slogan"</p>
-        <p class="photographer-card-price">Prix : X€/jour</p>
-      </article>
-    </template>
-  </section>
-</main>
+    <main id="main">
+      <section class="photographer-section" aria-labelledby="photographers-title">
+        <h2 id="photographers-title" class="sr-only">Section des photographes</h2>
+        
+        <!-- Template -->
+        <template id="photographer-template">
+          <article class="photographer-card" aria-labelledby="photographer-name">
+            <img src="assets/images/default-portrait.jpg" alt="Portrait du photographe" class="photographer-card-portrait">
+            <h3 id="photographer-name">Nom du photographe</h3>
+            <p class="photographer-card-location">Ville, Pays</p>
+            <p class="photographer-card-tagline">"Slogan"</p>
+            <p class="photographer-card-price">Prix : X€/jour</p>
+          </article>
+        </template>
+      </section>
+    </main>
 
-
+    <!-- Pied de page -->
+    <footer>
+      <p>&copy; 2025 Fisheye. Tous droits réservés.</p>
+    </footer>
 
     <!-- Script JS -->
     <script type="module" src="js/main.js"></script>
