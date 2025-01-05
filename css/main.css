@@ -345,8 +345,8 @@ a:focus {
 /* -------------------------------------------------------------------------- */
 @media (min-width: 768px) {
   .photographer-card-portrait-wrapper {
-    width: 150px;
-    height: 150px;
+    max-width: 150px;
+    max-height: 150px;
   }
 }
 @media (min-width: 1024px) {
@@ -356,13 +356,13 @@ a:focus {
   }
 }
 /* =============================================================================
-    Projet      : Fisheye
-    Fichier     : _header.scss
-    Auteur      : Équipe Fisheye
-    Date        : 01/01/2025
-    Version     : 1.0.0
-    Description : Styles pour le header du site, incluant le logo et le titre.
-                  Supporte une approche responsive avec des media queries.
+    Projet      :   Fisheye
+    Fichier     :   _header.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Styles pour le header du site, incluant le logo et le titre.
+                    Supporte une approche responsive avec des media queries.
 ============================================================================= */
 /* ------------------------------------------------------------------------- */
 /*                        Styles par défaut (Mobile)                         */
@@ -375,6 +375,7 @@ header {
   width: 95%; /* Largeur relative */
   height: auto; /* Hauteur automatique */
   padding: 5% 0 10% 0; /* Espacement vertical */
+  gap: 2%;
   /* Ajout d'une marge pour mieux centrer */
   margin: 0 auto;
 }
@@ -408,6 +409,20 @@ h1 {
   h1 {
     font-size: var(--font-size-large); /* Augmente la taille du titre */
     padding-bottom: 0; /* Supprime l'espacement en dessous */
+  }
+}
+.photographer-section {
+  height: 80%;
+}
+
+/*----------------------------------------------------------------*/
+/*                      media queries                             */
+/*----------------------------------------------------------------*/
+/* tablette */
+@media (min-width: 768px) {
+  .photographer-section {
+    display: grid;
+    grid-template-rows: repeat(2, 10vh);
   }
 }
 

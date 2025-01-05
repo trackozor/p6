@@ -105,11 +105,10 @@
 /* -------------------------------------------------------------------------- */
 /* MEDIA QUERIES : Styles responsives                                        */
 /* -------------------------------------------------------------------------- */
-
-@media (min-width: 768px) {
+@include respond(tablet) {
     .photographer-card-portrait-wrapper {
-        width: 150px;
-        height: 150px;
+        max-width: 150px;
+        max-height: 150px;
     }
 }
 

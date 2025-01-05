@@ -1,0 +1,15 @@
+.photographer-section {
+    height:80%;
+}
+/*----------------------------------------------------------------*/
+/*                      media queries                             */
+/*----------------------------------------------------------------*/
+
+/* tablette */
+@include respond(tablet) {
+    .photographer-section{
+    display: grid;
+    grid-template-rows: repeat(2,10vh);
+    }
+    
+}

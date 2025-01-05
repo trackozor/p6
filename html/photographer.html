@@ -30,8 +30,10 @@
       <!-- Section des informations du photographe -->
       <section id="photograph-info" class="photograph-header" aria-labelledby="photograph-title">
         <article class="photographer-profile" aria-labelledby="photograph-title">
-          <h1 id="photograph-title" class="sr-only">{{name}}</h1>
-          <div id="photographers-container" role="list"></div>
+          <h2 id="photograph-title" >Titre par défaut</h2>
+          <p class="photographer-card-location">Ville, Pays par défaut</p>
+          <p class="photographer-card-tagline">Slogan par défaut</p>
+          
         </article>
         <button 
           type="button"
@@ -65,27 +67,13 @@
       <section class="photograph-gallery" aria-labelledby="gallery-title" role="region">
         <h2 id="gallery-title" class="sr-only">Galerie de photos et vidéos</h2>
         <div id="gallery" class="gallery" role="group" aria-labelledby="gallery-title">
-          <figure class="gallery-item" tabindex="0" data-index="1">
-            <img 
-              src="assets/images/sample1.jpg" 
-              alt="" 
-              loading="lazy">
-            <figcaption>Arc-en-ciel</figcaption>
-          </figure>
-          <figure class="gallery-item" tabindex="0" data-index="2">
-            <img 
-              src="assets/images/sample2.jpg" 
-              alt="Photo d'un paysage calme et isolé" 
-              loading="lazy">
-            <figcaption>Solitude</figcaption>
-          </figure>
           <!-- Autres items de galerie -->
         </div>
       </section>
     </main>
     
     <!-- Lightbox -->
-    <div id="lightbox" class="lightbox" role="dialog" aria-labelledby="lightbox-title" aria-hidden="true">
+    <div id="lightbox" class="lightbox" role="dialog" aria-labelledby="lightbox-title" aria-hidden="false">
       <div class="lightbox-content">
         <button
           type="button"
@@ -186,12 +174,12 @@
     <!-- Templates -->
     <template id="photographer-template">
       <article class="photographer-card" aria-labelledby="photographer-name">
-        <h1 id="photographer-name">{{name}}</h1>
+        <h3 id="photographer-name">{{name}}</h3>
         <p class="photographer-card-location">{{city}}, {{country}}</p>
         <p class="photographer-card-tagline">{{tagline}}</p>
       </article>
     </template>
-    <template id="photographer-card-portrait-wrapper">
+    <template id="photographer-card-portrait-template">
       <div class="photographer-card-portrait-wrapper">
         <img 
           src="" 

@@ -1,11 +1,11 @@
 /* =============================================================================
-    Projet      : Fisheye
-    Fichier     : _header.scss
-    Auteur      : Équipe Fisheye
-    Date        : 01/01/2025
-    Version     : 1.0.0
-    Description : Styles pour le header du site, incluant le logo et le titre.
-                  Supporte une approche responsive avec des media queries.
+    Projet      :   Fisheye
+    Fichier     :   _header.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Styles pour le header du site, incluant le logo et le titre.
+                    Supporte une approche responsive avec des media queries.
 ============================================================================= */
 
 /* ------------------------------------------------------------------------- */
@@ -19,6 +19,7 @@ header {
     width: 95%; /* Largeur relative */
     height: auto; /* Hauteur automatique */
     padding: 5% 0 10% 0; /* Espacement vertical */
+    gap:2%;
 
     /* Ajout d'une marge pour mieux centrer */
     margin: 0 auto;
@@ -32,6 +33,7 @@ header {
 }
 
 h1 {
+    
     font-size: var(--font-size-base); /* Taille de police définie dans les variables */
     color: var(--primary-color); /* Couleur principale */
     margin: 0; /* Supprime les marges par défaut */
