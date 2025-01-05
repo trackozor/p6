@@ -356,6 +356,40 @@ a:focus {
     padding: 20px; /* Ajoute un espacement interne */
   }
 }
+@media screen and (min-width: 1024px) {
+  #photographers-container {
+    display: grid; /* Active le mode Grid */
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
+    margin: auto 0;
+  }
+  .photographer-card-portrait {
+    width: 15vw; /* Largeur fixe pour l'image */
+    height: 15vw; /* Hauteur fixe */
+    border-radius: 50%; /* Rend l'image circulaire */
+    object-fit: cover; /* Remplit le cercle sans déformation */
+    margin-bottom: 10%; /* Espacement avec les autres éléments */
+    transform: scale(1.2); /* Zoom initial */
+    transition: transform 0.3s ease; /* Animation fluide sur hover */
+    cursor: pointer; /* Pointeur de curseur pour le click */
+  }
+}
+@media screen and (min-width: 1440px) {
+  #photographers-container {
+    display: grid; /* Active le mode Grid */
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
+    margin: auto 0;
+  }
+  .photographer-card-portrait {
+    width: 8vw; /* Largeur fixe pour l'image */
+    height: 8vw; /* Hauteur fixe */
+    border-radius: 50%; /* Rend l'image circulaire */
+    object-fit: cover; /* Remplit le cercle sans déformation */
+    margin-bottom: 10%; /* Espacement avec les autres éléments */
+    transform: scale(1.2); /* Zoom initial */
+    transition: transform 0.3s ease; /* Animation fluide sur hover */
+    cursor: pointer; /* Pointeur de curseur pour le click */
+  }
+}
 /* =============================================================================
     Projet      :   Fisheye
     Fichier     :   _header.scss
