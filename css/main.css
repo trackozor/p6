@@ -347,7 +347,7 @@ a:focus {
 /* -------------------------------------------------------------------------- */
 /* MEDIA QUERIES : Styles responsives                                        */
 /* -------------------------------------------------------------------------- */
-@media screen and (max-width: 768px) {
+@media screen and (min-width: 768px) {
   #photographers-container {
     display: flex; /* Active Flexbox */
     flex-wrap: wrap; /* Permet les retours à la ligne */
