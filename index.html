@@ -37,10 +37,12 @@
 
     <!-- En-tête -->
     <header>
-      <a href="index.html" class="logo-link" aria-label="Retour à la page d'accueil">
+      <a href="/" class="logo-link" aria-label="Retour à la page d'accueil">
         <img src="/assets/images/logo.png" alt="Logo Fisheye - Retour à l'accueil" class="logo">
       </a>
-      <h1>Nos photographes <span class="sr-only">Découvrez nos photographes sur Fisheye</span></h1>
+      <a href="#main">
+        <h1>Nos photographes <span class="sr-only">Découvrez nos photographes sur Fisheye</span></h1>
+    </a>
     </header>
 
     <!-- Contenu principal -->
@@ -67,15 +69,20 @@
             src="" 
             alt="Portrait de {{name}}" 
             class="photographer-card-portrait" 
-            loading="lazy">
+            loading="lazy" 
+            width="150" 
+            height="150">
         </div>
-        <h3 id="photographer-name">{{name}}</h3>
-        <p class="photographer-card-location">{{city}}, {{country}}</p>
-        <p class="photographer-card-tagline">{{tagline}}</p>
-        <p class="photographer-card-price">Prix : {{price}}€/jour</p>
-        <a href="/photographer.html?id={{id}}" aria-label="Voir le portfolio de {{name}}" class="photographer-card-link">Voir plus</a>
+        <div class="photographer-card-details">
+          <h3 id="photographer-name">{{name}}</h3>
+          <p class="photographer-card-location">{{city}}, {{country}}</p>
+          <p class="photographer-card-tagline">{{tagline}}</p>
+          <p class="photographer-card-price">Prix : {{price}}€/jour</p>
+          <a href="/photographer.html?id={{id}}" aria-label="Voir le portfolio de {{name}}" class="photographer-card-link">Voir plus</a>
+        </div>
       </article>
     </template>
+    
 
     <!-- Inclusion des scripts -->
     <script type="module" src="/js/main.js"></script>

@@ -242,7 +242,7 @@ a {
 /* Ajoute une décoration au survol pour les liens */
 a:hover,
 a:focus {
-  text-decoration: underline; /* Ajoute une décoration */
+  text-decoration: none; /* Ajoute une décoration */
   color: var(--primary-color); /* Applique une couleur d'accentuation */
 }
 
@@ -267,9 +267,11 @@ a:focus {
   text-align: center; /* Centre le texte */
   background-color: var(--neutral-color); /* Couleur de fond neutre */
   padding: 5%; /* Espacement interne */
-  max-width: 90%; /* Largeur maximale adaptée pour mobile */
+  max-width: 100%; /* Largeur maximale adaptée pour mobile */
   margin: 5% auto; /* Centre la carte avec un espacement vertical */
   transition: transform 0.3s ease; /* Transition pour toute la carte */
+  cursor: pointer; /* Pointeur de curseur pour le click */
+  text-decoration: none;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -286,7 +288,7 @@ a:focus {
   height: 100px; /* Hauteur fixe */
   border-radius: 50%; /* Rend l'image circulaire */
   object-fit: cover; /* Remplit le cercle sans déformation */
-  margin-bottom: 10px; /* Espacement avec les autres éléments */
+  margin-bottom: 2%; /* Espacement avec les autres éléments */
   transform: scale(1.2); /* Zoom initial */
   transition: transform 0.3s ease; /* Animation fluide sur hover */
   cursor: pointer; /* Pointeur de curseur pour le click */
@@ -295,11 +297,13 @@ a:focus {
 .photographer-card-portrait img {
   transform: scale(5); /* Zoom initial pour la carte */
   transition: transform 0.3s ease; /* Animation fluide sur hover */
+  text-decoration: none;
 }
 
-.photographer-card:hover .photographer-card-portrait {
+.photographer-card:hover {
   transform: scale(1.2); /* Zoom de 20 % */
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Ombre subtile */
+  text-decoration: none;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -343,16 +347,13 @@ a:focus {
 /* -------------------------------------------------------------------------- */
 /* MEDIA QUERIES : Styles responsives                                        */
 /* -------------------------------------------------------------------------- */
-@media (min-width: 768px) {
-  .photographer-card-portrait-wrapper {
-    max-width: 150px;
-    max-height: 150px;
-  }
-}
-@media (min-width: 1024px) {
-  .photographer-card-portrait-wrapper {
-    width: 200px;
-    height: 200px;
+@media screen and (max-width: 768px) {
+  #photographers-container {
+    display: flex; /* Active Flexbox */
+    flex-wrap: wrap; /* Permet les retours à la ligne */
+    gap: 20px; /* Ajoute un espacement entre les cartes */
+    justify-content: space-between; /* Répartit uniformément les cartes */
+    padding: 20px; /* Ajoute un espacement interne */
   }
 }
 /* =============================================================================
@@ -411,10 +412,6 @@ h1 {
     padding-bottom: 0; /* Supprime l'espacement en dessous */
   }
 }
-.photographer-section {
-  height: 80%;
-}
-
 /*----------------------------------------------------------------*/
 /*                      media queries                             */
 /*----------------------------------------------------------------*/

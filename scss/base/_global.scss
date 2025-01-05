@@ -47,6 +47,6 @@ a {
 /* Ajoute une décoration au survol pour les liens */
 a:hover,
 a:focus {
-    text-decoration: underline; /* Ajoute une décoration */
+    text-decoration: none; /* Ajoute une décoration */
     color: var(--primary-color); /* Applique une couleur d'accentuation */
 }
