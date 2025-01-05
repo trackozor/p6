@@ -47,7 +47,7 @@
     height: 100px; /* Hauteur fixe */
     border-radius: 50%; /* Rend l'image circulaire */
     object-fit: cover; /* Remplit le cercle sans déformation */
-    margin-bottom: 2%; /* Espacement avec les autres éléments */
+    margin-bottom: 10%; /* Espacement avec les autres éléments */
     transform: scale(1.2); /* Zoom initial */
     transition: transform 0.3s ease; /* Animation fluide sur hover */
     cursor: pointer; /* Pointeur de curseur pour le click */
@@ -55,6 +55,7 @@
 
 .photographer-card-portrait img {
     transform: scale(5); /* Zoom initial pour la carte */
+
     transition: transform 0.3s ease; /* Animation fluide sur hover */
     text-decoration:none;
 
@@ -114,13 +115,14 @@
 /* -------------------------------------------------------------------------- */
 @media screen and (min-width: 768px) {
     #photographers-container {
-    display: flex; /* Active Flexbox */
-    flex-wrap: wrap; /* Permet les retours à la ligne */
-    gap: 20px; /* Ajoute un espacement entre les cartes */
-    justify-content: space-between; /* Répartit uniformément les cartes */
+    display: grid; /* Active le mode Grid */
+    grid-template-columns: repeat(2, 1fr); /* 3 colonnes de taille égale */
+    grid-template-rows: repeat(2,1fr); /* 2 colonnes de taille*/
+    gap: 20px; /* Espacement entre les cartes */
     padding: 20px; /* Ajoute un espacement interne */
     }
 
+    
 }
 
 
