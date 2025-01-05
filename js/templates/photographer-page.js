@@ -1,50 +1,73 @@
-import { getPhotographerDetails, getPhotographerGallery } from '/js/modules/photographerManager.js';
+// ========================================================
+// Nom du fichier : photographer-page.js
+// Description    : Gestion de la page photographe (détails et galerie)
+// Auteur         : Trackozor
+// Date           : 05/01/2025
+// Version        : 1.1.0
+// ========================================================
 
+import { getPhotographersAndMedia, filterMediaByPhotographer, displayMedia } from '/js/modules/mediaManager.js';
+import { logEvent } from '/js/utils/utils.js'; // Logging des événements
+import domSelectors from '/js/modules/domSelectors.js'; // Centralisation des sélecteurs DOM
+
+/**
+ * Initialise la page du photographe.
+ */
 async function initPhotographerPage() {
-    const photographerId = getPhotographerIdFromURL();
-    if (!photographerId) {
-        console.error("ID du photographe manquant dans l'URL.");
-        return;
+    try {
+        // Étape 1 : Récupérer l'ID du photographe depuis l'URL
+        const photographerId = getPhotographerIdFromURL();
+        if (!photographerId) {
+            logEvent('error', "ID du photographe manquant dans l'URL.");
+            return;
+        }
+
+        // Étape 2 : Récupérer les données des photographes et médias
+        const { photographers, media } = await getPhotographersAndMedia();
+
+        // Trouver le photographe
+        const photographer = photographers.find(p => p.id === parseInt(photographerId, 10));
+        if (!photographer) {
+            logEvent('error', "Photographe introuvable.");
+            return;
+        }
+
+        // Injecter les informations du photographe dans le DOM
+        injectPhotographerDetails(photographer);
+
+        // Étape 3 : Filtrer et afficher les médias pour ce photographe
+        const photographerMedia = filterMediaByPhotographer(media, photographer.id);
+        displayMedia(photographerMedia, domSelectors.photographerPage.galleryContainer);
+
+        logEvent('success', "Page photographe initialisée avec succès.");
+    } catch (error) {
+        logEvent('error', "Erreur lors de l'initialisation de la page du photographe.", {
+            message: error.message,
+            stack: error.stack,
+        });
     }
-
-    // Récupérer les données du photographe
-    const photographer = await getPhotographerDetails(photographerId);
-    if (!photographer) return;
-
-    // Injecter les informations du photographe dans le DOM
-    document.querySelector('#photograph-title').textContent = photographer.name;
-    document.querySelector('.photographer-card-portrait').src = `/assets/images/${photographer.portrait}`;
-    document.querySelector('.photographer-card-portrait').alt = `Portrait ${photographer.name}`;
-    document.querySelector('.photographer-card-location').textContent = `${photographer.city}, ${photographer.country}`;
-    document.querySelector('.photographer-card-tagline').textContent = photographer.tagline;
-
-    // Charger et afficher la galerie
-    const gallery = await getPhotographerGallery(photographerId);
-    displayGallery(gallery);
 }
 
 /**
- * Affiche les œuvres d'un photographe dans la galerie.
- * @param {Array} gallery - Liste des œuvres.
+ * Récupère l'ID du photographe depuis les paramètres de l'URL.
  */
-function displayGallery(gallery) {
-    const galleryContainer = document.getElementById('gallery');
-
-    if (!gallery || gallery.length === 0) {
-        galleryContainer.innerHTML = `<p>Aucune œuvre trouvée pour ce photographe.</p>`;
-        return;
-    }
-
-    gallery.forEach((item, index) => {
-        const template = document.getElementById('gallery-item-template').content.cloneNode(true);
-
-        template.querySelector('.gallery-item').setAttribute('data-index', index + 1);
-        template.querySelector('img').src = `/assets/images/${item.image}`;
-        template.querySelector('img').alt = item.title || 'Œuvre sans titre';
-        template.querySelector('figcaption').textContent = item.title;
-
-        galleryContainer.appendChild(template);
-    });
+function getPhotographerIdFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('id');
 }
 
+/**
+ * Injecte les informations du photographe dans le DOM.
+ */
+function injectPhotographerDetails(photographer) {
+    const { name, city, country, tagline, portrait } = photographer;
+
+    domSelectors.photographerPage.photographerTitle.textContent = name;
+    domSelectors.photographerPage.photographerLocation.textContent = `${city}, ${country}`;
+    domSelectors.photographerPage.photographerTagline.textContent = tagline || "Pas de slogan disponible.";
+    domSelectors.photographerPage.photographerProfileImage.src = `/assets/photographers/${photographer.portrait}`;
+    domSelectors.photographerPage.photographerProfileImage.alt = `Portrait de ${name}`;
+}
+
+// Lancer l'initialisation
 document.addEventListener('DOMContentLoaded', initPhotographerPage);

@@ -26,39 +26,11 @@ const domSelectors = {
 
     // === Sélecteurs spécifiques à la page photographer.html ===
     photographerPage: {
-        header: document.querySelector('header'), // En-tête principal
-        logoLink: document.querySelector('.logo'), // Logo de retour à la page d'accueil
-        mainContent: document.querySelector('#main'), // Contenu principal
-
-        // Section des informations du photographe
-        photographerInfo: document.querySelector('#photograph-info'), // Section des infos du photographe
-        photographerTitle: document.querySelector('#photograph-title'), // Titre du photographe
-        photographersContainer: document.querySelector('#photographers-container'), // Conteneur des photographes
-        photographerProfileImage: document.querySelector('.photographer-card-portrait'), // Image de profil
-
-        // Section de tri
-        sortingSection: document.querySelector('.sorting'), // Section de tri
-        sortOptions: document.querySelector('#sort-options'), // Liste déroulante des options de tri
-
-        // Section de la galerie
-        gallerySection: document.querySelector('.photograph-gallery'), // Section de la galerie
-        galleryContainer: document.querySelector('#gallery'), // Conteneur de la galerie
-
-        // Lightbox
-        lightbox: document.querySelector('#lightbox'), // Conteneur de la lightbox
-        lightboxClose: document.querySelector('.lightbox-close'), // Bouton pour fermer la lightbox
-        lightboxPrev: document.querySelector('.lightbox-prev'), // Bouton pour la photo précédente
-        lightboxNext: document.querySelector('.lightbox-next'), // Bouton pour la photo suivante
-        lightboxContent: document.querySelector('.lightbox-media-container'), // Conteneur des médias de la lightbox
-        lightboxCaption: document.querySelector('#lightbox-caption'), // Légende de la lightbox
-
-        // Modale de contact
-        contactModal: document.querySelector('#contact_modal'), // Conteneur de la modale de contact
-        modalClose: document.querySelector('.modal-close'), // Bouton pour fermer la modale
-        contactForm: document.querySelector('form[aria-label="Formulaire de contact"]'), // Formulaire de contact
-
-        // Pied de page
-        footer: document.querySelector('footer'), // Pied de page
+        photographerTitle: document.querySelector('#photograph-title'),
+        photographerLocation: document.querySelector('.photographer-card-location'),
+        photographerTagline: document.querySelector('.photographer-card-tagline'),
+        photographerProfileImage: document.querySelector('.photographer-card-portrait'),
+        galleryContainer: document.getElementById('gallery')
     },
 
     // === Sélecteurs pour les templates ===
