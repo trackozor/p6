@@ -10,8 +10,8 @@
 import { getPhotographers, displayData } from '/js/modules/photographerManager.js';
 import { logEvent } from '/js/utils/utils.js'; // Utilitaire de logging
 
-// Sélecteurs DOM
-const photographersSection = document.querySelector(".photographer-section");
+// Import des sélecteurs centralisés
+import domSelectors from '/js/modules/domSelectors.js';
 
 /**
  * Fonction d'initialisation principale.
@@ -26,7 +26,7 @@ export async function init() {
 
         logEvent('info', "Affichage des photographes dans le DOM...");
         // Affiche les données dans le DOM
-        displayData(photographers, photographersSection);
+        displayData(photographers, domSelectors.indexPage.photographersContainer);
 
         logEvent('success', "Application initialisée avec succès.");
         logEvent('test_end', "Fin de l'initialisation de l'application");
