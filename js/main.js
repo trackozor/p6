@@ -1,25 +1,34 @@
 /* =============================================================================
     Projet      : Fisheye
-    Fichier     : [Nom du fichier]
+    Fichier     : main.js
     Auteur      : [Votre nom ou équipe]
     Date        : [Date de création ou mise à jour]
     Version     : [Numéro de version]
-    Description : [Brève description de l'objectif du fichier]
+    Description : Point d'entrée principal de l'application
 ============================================================================= */
 
-
-
-//import fonction log
+// Import des modules nécessaires
 import { logEvent } from '/js/utils/utils.js';
 import { init } from '/js/templates/index.js';
 
+/**
+ * Fonction principale de l'application.
+ */
 function main() {
-    // Exemple d'utilisation des fonctions de logs
-    logEvent('info', "Lancement de l'application..." );
-    init()
+    try {
+        logEvent('info', "Lancement de l'application...");
 
+        // Initialisation principale
+        init();
 
+        logEvent('success', "Application lancée avec succès.");
+    } catch (error) {
+        logEvent('error', "Erreur critique lors du lancement de l'application", {
+            message: error.message,
+            stack: error.stack,
+        });
+    }
 }
 
-// Exécuter la fonction principale
-main();
+// Exécution de la fonction principale lorsque le DOM est prêt
+document.addEventListener('DOMContentLoaded', main);

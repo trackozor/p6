@@ -272,10 +272,6 @@ a:focus {
   transition: transform 0.3s ease; /* Transition pour toute la carte */
 }
 
-.photographer-card:hover {
-  transform: translateY(-5px); /* Légère élévation au survol */
-}
-
 /* -------------------------------------------------------------------------- */
 /* Image du photographe                                                      */
 /* -------------------------------------------------------------------------- */

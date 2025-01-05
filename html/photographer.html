@@ -30,9 +30,8 @@
       <!-- Section des informations du photographe -->
       <section id="photograph-info" class="photograph-header" aria-labelledby="photograph-title">
         <article class="photographer-profile" aria-labelledby="photograph-title">
-          <h1 id="photograph-title">{{name}}</h1>
-          <p aria-labelledby="photograph-title">{{city}}, {{country}}</p>
-          <p aria-labelledby="photograph-title">{{tagline}}></p>
+          <h1 id="photograph-title" class="sr-only">{{name}}</h1>
+          <div id="photographers-container" role="list"></div>
         </article>
         <button 
           type="button"
@@ -186,13 +185,21 @@
 
     <!-- Templates -->
     <template id="photographer-template">
-      <article>
+      <article class="photographer-card" aria-labelledby="photographer-name">
         <h1 id="photographer-name">{{name}}</h1>
         <p class="photographer-card-location">{{city}}, {{country}}</p>
         <p class="photographer-card-tagline">{{tagline}}</p>
       </article>
     </template>
-
+    <template id="photographer-card-portrait-wrapper">
+      <div class="photographer-card-portrait-wrapper">
+        <img 
+          src="" 
+          alt="Portrait {{name}}" 
+          class="photographer-card-portrait" 
+          loading="lazy">
+      </div>
+    </template>
     <template id="gallery-item-template">
       <figure class="gallery-item" tabindex="0" data-index="{{index}}">
         <img 

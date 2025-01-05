@@ -1,5 +1,3 @@
-/* photographerManager.js */
-
 import { fetchJSON } from '/js/data/dataFetcher.js';
 import { photographerTemplate } from '/js/templates/photographer-logic.js'; // Modèle pour les cartes
 import { logEvent } from '/js/utils/utils.js';
@@ -30,12 +28,25 @@ export async function getPhotographers() {
 }
 
 /**
+ * Valide les données d’un photographe.
+ * @param {Object} photographer - Objet représentant un photographe.
+ * @returns {boolean} Vrai si les données sont valides.
+ */
+function isValidPhotographer(photographer) {
+    return photographer && typeof photographer.id === "number" && typeof photographer.name === "string";
+}
+
+/**
  * Affiche les données des photographes dans la section correspondante.
  * @param {Array} photographers - Liste des photographes à afficher.
+ * @param {HTMLElement} photographersSection - Élément DOM pour afficher les photographes.
  */
 export function displayData(photographers, photographersSection) {
     try {
         logEvent('test_start', "Début de l'affichage des photographes");
+
+        // Vider le conteneur avant d'ajouter les nouveaux photographes
+        photographersSection.innerHTML = '';
 
         if (!photographers || photographers.length === 0) {
             logEvent('warn', "Aucun photographe à afficher");
@@ -43,13 +54,19 @@ export function displayData(photographers, photographersSection) {
             return;
         }
 
-        photographers.forEach((photographer) => {
-            const photographerModel = photographerTemplate(photographer); // Génération du modèle
-            const userCardDOM = photographerModel.getUserCardDOM(); // Récupération de l'élément DOM
-            photographersSection.appendChild(userCardDOM); // Ajout au DOM
+        const validPhotographers = photographers.filter(isValidPhotographer);
+        if (validPhotographers.length !== photographers.length) {
+            logEvent('warn', "Certains photographes ont été ignorés à cause de données invalides.");
+        }
+
+        const fragment = document.createDocumentFragment();
+        validPhotographers.forEach((photographer) => {
+            const photographerModel = photographerTemplate(photographer);
+            fragment.appendChild(photographerModel.getUserCardDOM());
         });
 
-        logEvent('success', `${photographers.length} photographes affichés.`);
+        photographersSection.appendChild(fragment);
+        logEvent('success', `${validPhotographers.length} photographes affichés.`, { photographers: validPhotographers });
     } catch (error) {
         logEvent('error', "Erreur lors de l'affichage des photographes", { message: error.message });
     }
