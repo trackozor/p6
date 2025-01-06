@@ -68,7 +68,7 @@ export async function fetchJSON(path) {
         logEvent('test_start', `Début de la récupération des données depuis ${path}`);
 
         // Effectue la requête avec un timeout de 10 secondes
-        const response = await fetchWithTimeout(path, 10000);
+        const response = await fetchWithTimeout(path);
 
         // Vérification de l'état HTTP
         if (!response.ok) {
