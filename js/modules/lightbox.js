@@ -7,7 +7,7 @@
 // ========================================================
 
 // Importation des sélecteurs DOM centralisés
-import domSelectors from '/js/modules/domSelectors.js'; 
+import domSelectors from './domSelectors.js'; 
 
 // Éléments DOM pour la lightbox
 const { lightbox, mediaContainer, captionElement, closeButton, prevButton, nextButton } = domSelectors.lightbox;

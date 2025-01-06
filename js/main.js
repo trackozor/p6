@@ -8,8 +8,8 @@
 ============================================================================= */
 
 // Import des modules nécessaires
-import { logEvent } from '/js/utils/utils.js';
-import { init } from '/js/templates/index.js';
+import { logEvent } from './utils/utils.js';
+import { init } from './templates/index.js';
 
 /**
  * Fonction principale de l'application.

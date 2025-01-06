@@ -6,11 +6,11 @@
 // Version        : 1.2.0
 // ========================================================
 
-import { fetchJSON } from '/js/data/dataFetcher.js'; // Standardisation des appels réseau
-import { logEvent } from '/js/utils/utils.js'; // Logging des événements
+import { fetchJSON } from '../data/dataFetcher.js'; // Standardisation des appels réseau
+import { logEvent } from '../utils/utils.js'; // Logging des événements
 
 // Chemin vers le fichier JSON contenant photographes et médias
-const DATA_JSON_PATH = './assets/data/photographers.json';
+const DATA_JSON_PATH = '../../assets/data/photographers.json';
 
 /**
  * ========================================================
@@ -112,8 +112,8 @@ export function displayMedia(mediaList, galleryContainer) {
 
         // Générer le chemin source du média (image ou vidéo)
         const mediaSrc = media.image
-            ? `/assets/photographers/${media.id}/${media.image}`
-            : `/assets/photographers/${media.id}/${media.video}`;
+            ? `../../assets/photographers/${media.id}/${media.image}`
+            : `../../assets/photographers/${media.id}/${media.video}`;
 
         const figure = document.createElement('figure');
         figure.classList.add('gallery-item');

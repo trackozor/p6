@@ -19,7 +19,7 @@ export function photographerTemplate(data) {
     const { name, portrait, id, city, country, tagline, price } = data;
 
     // Générer le chemin complet de l'image du photographe
-    const picture = `assets/photographers/Photographer/${portrait}`;
+    const picture = `../../assets/photographers/Photographer/${portrait}`;
 
     // Crée un élément DOM avec une classe et un contenu textuel
     const createElement = (tagName, className, textContent) => {
@@ -56,7 +56,7 @@ export function photographerTemplate(data) {
 
         // Ajouter un lien qui encapsule l'article
         const link = document.createElement('a');
-        link.setAttribute("href", `/html/photographer.html?id=${id}`);
+        link.setAttribute("href", `../../html/photographer.html?id=${id}`);
         link.setAttribute("aria-label", `Voir la page de ${name}`);
         link.appendChild(article); // L'article est à l'intérieur du lien
 

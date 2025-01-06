@@ -6,9 +6,9 @@
 // Version        : 1.2.0
 // ========================================================
 
-import { getPhotographersAndMedia, filterMediaByPhotographer, displayMedia } from '/js/modules/mediaManager.js';
-import { logEvent } from '/js/utils/utils.js'; // Gestion des logs
-import domSelectors from '/js/modules/domSelectors.js'; // Sélecteurs DOM centralisés
+import { getPhotographersAndMedia, filterMediaByPhotographer, displayMedia } from '../modules/mediaManager.js';
+import { logEvent } from '../utils/utils.js'; // Gestion des logs
+import domSelectors from '../modules/domSelectors.js'; // Sélecteurs DOM centralisés
 
 /**
  * Initialise la page du photographe.
@@ -75,7 +75,7 @@ function injectPhotographerDetails(photographer) {
         domSelectors.photographerPage.photographerTitle.textContent = name;
         domSelectors.photographerPage.photographerLocation.textContent = `${city}, ${country}`;
         domSelectors.photographerPage.photographerTagline.textContent = tagline || "Pas de slogan disponible.";
-        domSelectors.photographerPage.photographerProfileImage.src = `/assets/photographers/${name}/${portrait}`;
+        domSelectors.photographerPage.photographerProfileImage.src = `../../assets/photographers/${name}/${portrait}`;
         domSelectors.photographerPage.photographerProfileImage.alt = `Portrait de ${name}`;
 
         logEvent('success', "Détails du photographe injectés dans le DOM avec succès.");

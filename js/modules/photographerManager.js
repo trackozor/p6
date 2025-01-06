@@ -1,9 +1,9 @@
-import { fetchJSON } from '/js/data/dataFetcher.js';
-import { photographerTemplate } from '/js/templates/photographer-logic.js'; // Modèle pour les cartes
-import { logEvent } from '/js/utils/utils.js';
+import { fetchJSON } from '../data/dataFetcher.js';
+import { photographerTemplate } from '../templates/photographer-logic.js'; // Modèle pour les cartes
+import { logEvent } from '../utils/utils.js';
 
 // Chemin des données JSON
-const PHOTOGRAPHERS_JSON_PATH = "./assets/data/photographers.json";
+const PHOTOGRAPHERS_JSON_PATH = "../../assets/data/photographers.json";
 
 /**
  * Récupère les données des photographes depuis un fichier JSON.

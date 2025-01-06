@@ -13,9 +13,9 @@
  */
 
 // === Importation des modules nécessaires ===
-import { getPhotographers, displayData } from '/js/modules/photographerManager.js';
-import { logEvent } from '/js/utils/utils.js'; // Utilitaire pour journaliser les événements
-import domSelectors from '/js/modules/domSelectors.js'; // Sélecteurs DOM centralisés
+import { getPhotographers, displayData } from '../modules/photographerManager.js';
+import { logEvent } from '../utils/utils.js'; // Utilitaire pour journaliser les événements
+import domSelectors from '../modules/domSelectors.js'; // Sélecteurs DOM centralisés
 
 /**
  * Fonction d'initialisation principale.

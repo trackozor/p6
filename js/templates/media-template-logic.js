@@ -1,8 +1,8 @@
-import { fetchJSON } from '/js/data/dataFetcher.js'; // Utilise fetchJSON pour standardiser l'appel réseau
-import { logEvent } from '/js/utils/utils.js'; // Utilitaire pour le logging
+import { fetchJSON } from '../data/dataFetcher.js'; // Utilise fetchJSON pour standardiser l'appel réseau
+import { logEvent } from '../utils/utils.js'; // Utilitaire pour le logging
 
 // Chemin vers le fichier JSON des médias
-const MEDIA_JSON_PATH = "/assets/data/media.json";
+const MEDIA_JSON_PATH = "../../assets/data/media.json";
 
 /**
  * Récupère les médias depuis un fichier JSON via `fetchJSON`.

@@ -6,7 +6,7 @@
 // Version        : 1.0.0
 // ========================================================
 
-import { logEvent } from '/js/utils/utils.js'; // Utilitaire de logging
+import { logEvent } from '../utils/utils.js'; // Utilitaire de logging
 
 /**
  * ========================================================
