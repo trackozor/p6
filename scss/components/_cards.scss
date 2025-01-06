@@ -126,7 +126,7 @@
     #photographers-container {
         display: grid; /* Active le mode Grid */
         grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
-        margin:auto 0;
+        margin:2% 0;
     }
 
     .photographer-card-portrait {
@@ -139,23 +139,37 @@
     transition: transform 0.3s ease; /* Animation fluide sur hover */
     cursor: pointer; /* Pointeur de curseur pour le click */
     }
+    .photographer-card {
+        display: flex;
+        padding:2% 0;   
+    }
 }
 @media screen  and (min-width : 1440px) {
+    
     #photographers-container {
         display: grid; /* Active le mode Grid */
         grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
-        margin:auto 0;
+        grid-template-rows: repeat(2,1fr); 
+        margin: 0;
+        padding: 0;
+
     }
 
     .photographer-card-portrait {
-    width: 8vw; /* Largeur fixe pour l'image */
-    height: 8vw; /* Hauteur fixe */
+    width: 6vw; /* Largeur fixe pour l'image */
+    height: 6vw; /* Hauteur fixe */
     border-radius: 50%; /* Rend l'image circulaire */
     object-fit: cover; /* Remplit le cercle sans déformation */
-    margin-bottom: 10%; /* Espacement avec les autres éléments */
+    margin-bottom: 3%; /* Espacement avec les autres éléments */
     transform: scale(1.2); /* Zoom initial */
     transition: transform 0.3s ease; /* Animation fluide sur hover */
     cursor: pointer; /* Pointeur de curseur pour le click */
+    }
+    .photographer-card {
+        border-radius: 1rem;
+        margin-bottom:1% 0;
+        padding:0;
+        height:30vh;
     }
 }
 

@@ -1,0 +1,12 @@
+@use '../base/variables';       // Variables globales
+@use '../base/mixins';          // Mixins
+@use '../base/reset';           // Réinitialisation des styles
+@use '../base/global';          // Styles globaux si nécessaire
+
+@use '../components/button';    // Composants boutons si nécessaire
+@use '../components/cards';     // Composants cartes
+
+@use '../layouts/header';       // Header si utilisé
+@use '../layouts/footer';       // Footer si utilisé
+
+// Ajoute des styles spécifiques à la page photographer ici

@@ -1,22 +1,23 @@
 // Importer les variables globales
-@import 'base/variables';
+@use 'base/variables';
 
 //Importer les mixins
-@import 'base/mixins';
+@use 'base/mixins';
 
 // Importer les styles de réinitialisation et globaux
-@import 'base/reset';
-@import 'base/global';
+@use 'base/reset';
+@use 'base/global';
 
 // Importer les composants
-@import 'components/button';
-@import 'components/cards';
+@use 'components/button';
+@use 'components/cards';
 
 
 // Importer les layouts
-@import 'layouts/header';
-@import 'layouts/footer';
-@import 'layouts/photographersection';
+@use 'layouts/header';
+@use 'layouts/footer';
+@use 'layouts/photographersection';
+@use 'layouts/modal';
 
 
-@import 'pages/index';
+@use 'pages/index';
