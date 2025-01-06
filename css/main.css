@@ -304,6 +304,7 @@ a:focus {
   position: relative;
   margin: 0 auto; /* Centre le conteneur */
   transition: transform 0.3s ease-in-out; /* Transition pour l'image */
+  padding-top: 5% 0;
 }
 
 .photographer-card-portrait {
@@ -319,6 +320,7 @@ a:focus {
 
 .photographer-card-portrait img {
   transform: scale(5); /* Zoom initial pour la carte */
+  margin-top: 10%;
   transition: transform 0.3s ease; /* Animation fluide sur hover */
   text-decoration: none;
 }
@@ -376,22 +378,22 @@ a:focus {
     grid-template-columns: repeat(2, 1fr); /* 3 colonnes de taille égale */
     grid-template-rows: repeat(2, 1fr); /* 2 colonnes de taille*/
     gap: 20px; /* Espacement entre les cartes */
-    padding: 20px; /* Ajoute un espacement interne */
+    margin-top: 20px; /* Ajoute un espacement interne */
   }
 }
 @media screen and (min-width: 1024px) {
   #photographers-container {
     display: grid; /* Active le mode Grid */
     grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
-    margin: 2% 0;
+    margin: 12% 0;
   }
   .photographer-card-portrait {
     width: 15vw; /* Largeur fixe pour l'image */
     height: 15vw; /* Hauteur fixe */
     border-radius: 50%; /* Rend l'image circulaire */
     object-fit: cover; /* Remplit le cercle sans déformation */
-    margin-bottom: 10%; /* Espacement avec les autres éléments */
     transform: scale(1.2); /* Zoom initial */
+    margin-top: 5%;
     transition: transform 0.3s ease; /* Animation fluide sur hover */
     cursor: pointer; /* Pointeur de curseur pour le click */
   }
@@ -506,8 +508,12 @@ h1 {
   align-items: center;
   justify-content: space-between;
   align-items: center;
-  padding: 5%;
+  padding: 0;
   margin: auto;
+}
+
+#contact-modal {
+  display: none;
 }
 
 /*# sourceMappingURL=main.css.map */
