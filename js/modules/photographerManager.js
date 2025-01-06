@@ -5,6 +5,7 @@ import { logEvent } from '../utils/utils.js';
 // Chemin des données JSON
 const PHOTOGRAPHERS_JSON_PATH = "../../assets/data/photographers.json";
 
+
 /**
  * Récupère les données des photographes depuis un fichier JSON.
  * @returns {Promise<Array>} Liste des photographes.
