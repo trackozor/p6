@@ -1,13 +1,28 @@
 .contact_button {
-    font-size: 20px;
+    font-size: 1rem;
     font-weight: bold;
     color: white;
-    padding: 11px;
-    width: 170px;
-    height: 70px;
+    padding: 5% 3% ;
+    max-width: 150px;
+    max-height: 70px;
     border: none;
     background-color: #901C1C;
-    border-radius: 5px;
+    border-radius: 0.5rem;
+    margin:2%;
     cursor: pointer;
 }
 
+
+/* Icône SVG */
+.icon {
+    width: 24px;
+    background-color:transparent;
+
+    height: 24px;
+    fill: #fff; /* Couleur par défaut */
+    transition: fill 0.3s ease; /* Animation pour le survol */
+}
+
+.lightbox-prev:hover .icon {
+    fill: #f00; /* Change la couleur au survol */
+}
