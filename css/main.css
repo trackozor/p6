@@ -532,7 +532,7 @@ h1 {
                     styles propres à la page.
 ============================================================================= */
 .modal-container {
-  display: flex;
+  display: none;
   position: absolute;
   z-index: 10;
   top: 5%;
@@ -550,7 +550,7 @@ h1 {
 }
 
 #contact-modal {
-  display: none;
+  display: flex;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -1,5 +1,5 @@
 .modal-container {
-    display: flex;
+    display: none;
     position: absolute;
     z-index: 10;
     top: 5%;
@@ -16,5 +16,5 @@
     margin: auto;
 }
 #contact-modal {
-    display: none;
+    display: flex;
 }
