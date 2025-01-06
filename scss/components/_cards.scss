@@ -142,7 +142,10 @@
     }
     .photographer-card {
         display: flex;
-        padding:2% 0;   
+        padding:2% 0;
+        width:50%; 
+        padding:0;
+        padding-top:2%;  
     }
 }
 @media screen  and (min-width : 1440px) {
@@ -161,7 +164,7 @@
     height: 6vw; /* Hauteur fixe */
     border-radius: 50%; /* Rend l'image circulaire */
     object-fit: cover; /* Remplit le cercle sans déformation */
-    margin-bottom: 3%; /* Espacement avec les autres éléments */
+    margin: 10% 0; /* Espacement avec les autres éléments */
     transform: scale(1.2); /* Zoom initial */
     transition: transform 0.3s ease; /* Animation fluide sur hover */
     cursor: pointer; /* Pointeur de curseur pour le click */
@@ -172,6 +175,48 @@
         padding:0;
         height:30vh;
     }
+    /* -------------------------------------------------------------------------- */
+/* Nom du photographe                                                        */
+/* -------------------------------------------------------------------------- */
+
+.photographer-card-name {
+    font-size: var(--font-size-base, 1.6rem); /* Taille de texte adaptée pour mobile */
+    color: var(--secondary-color); /* Couleur secondaire */
+    font-weight: bold; /* Texte en gras */
+    margin-bottom: 8px; /* Espacement inférieur */
+    
+}
+
+/* -------------------------------------------------------------------------- */
+/* Localisation du photographe                                               */
+/* -------------------------------------------------------------------------- */
+
+.photographer-card-location {
+    font-size: 1.2rem; /* Taille légèrement réduite */
+    color: var(--secondary-neutral); /* Couleur neutre secondaire */
+    margin-bottom: 6px; /* Espacement inférieur */
+}
+
+/* -------------------------------------------------------------------------- */
+/* Slogan du photographe                                                     */
+/* -------------------------------------------------------------------------- */
+
+.photographer-card-tagline {
+    font-size: 1rem; /* Taille plus petite et discrète */
+    font-style: italic; /* Texte en italique */
+    color: var(--secondary-neutral); /* Couleur neutre secondaire */
+    margin-bottom: 1%; /* Espacement inférieur */
+}
+
+/* -------------------------------------------------------------------------- */
+/* Prix par jour du photographe                                              */
+/* -------------------------------------------------------------------------- */
+
+.photographer-card-price {
+    font-size: 1.2rem; /* Taille légèrement mise en avant */
+    font-weight: bold; /* Texte en gras pour le prix */
+    color: var(--primary-color); /* Couleur principale pour le prix */
+}
 }
 
 
