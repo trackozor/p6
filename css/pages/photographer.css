@@ -1,6 +1,17 @@
 @charset "UTF-8";
 /* =============================================================================
     Projet      :   Fisheye
+    Fichier     :   photographer.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Styles spécifiques à la page des photographes. Ce fichier
+                    inclut les styles nécessaires pour les composants, layouts
+                    et sections utilisées dans cette page, ainsi que des
+                    styles propres à la page.
+============================================================================= */
+/* =============================================================================
+    Projet      :   Fisheye
     Fichier     :   _variables.scss
     Auteur      :   Trackozor
     Date        :   01/01/2025
@@ -470,6 +481,21 @@ h1 {
     font-size: var(--font-size-large); /* Augmente la taille du titre */
     padding-bottom: 0; /* Supprime l'espacement en dessous */
   }
+}
+.modal {
+  display: flex;
+  position: absolute;
+  z-index: 10;
+  top: 1%;
+  border-radius: 5px;
+  background-color: #DB8876;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 35px;
+  margin: auto;
 }
 
 /*# sourceMappingURL=photographer.css.map */
