@@ -75,7 +75,7 @@ function injectPhotographerDetails(photographer) {
         domSelectors.photographerPage.photographerTitle.textContent = name;
         domSelectors.photographerPage.photographerLocation.textContent = `${city}, ${country}`;
         domSelectors.photographerPage.photographerTagline.textContent = tagline || "Pas de slogan disponible.";
-        domSelectors.photographerPage.photographerProfileImage.src = `../../assets/photographers/${name}/${portrait}`;
+        domSelectors.photographerPage.photographerProfileImage.src = `../../assets/photographers/Photographer/${name}/${portrait}`;
         domSelectors.photographerPage.photographerProfileImage.alt = `Portrait de ${name}`;
 
         logEvent('success', "Détails du photographe injectés dans le DOM avec succès.");
