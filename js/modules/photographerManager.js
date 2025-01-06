@@ -3,7 +3,8 @@ import { photographerTemplate } from '../templates/photographer-logic.js'; // Mo
 import { logEvent } from '../utils/utils.js';
 
 // Chemin des données JSON
-const PHOTOGRAPHERS_JSON_PATH = "../../assets/data/photographers.json";
+const PHOTOGRAPHERS_JSON_PATH = "/assets/data/photographers.json";
+
 
 
 /**
