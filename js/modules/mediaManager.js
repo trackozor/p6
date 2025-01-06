@@ -10,7 +10,7 @@ import { fetchJSON } from '/js/data/dataFetcher.js'; // Standardisation des appe
 import { logEvent } from '/js/utils/utils.js'; // Logging des événements
 
 // Chemin vers le fichier JSON contenant photographes et médias
-const DATA_JSON_PATH = '/assets/data/photographers.json';
+const DATA_JSON_PATH = './assets/data/photographers.json';
 
 /**
  * ========================================================
