@@ -12,95 +12,102 @@
     /* ================================ */
     /* Palette principale               */
     /* ================================ */
-    --primary-color: #901C1C;         /* Rouge foncé pour accentuation  */
-    --primary-color-light: #D3573C;   /* Rouge plus clair pour les hovers ou fonds */
-    --secondary-color: #D3573C;       /* Rouge clair pour les éléments secondaires */
-    --neutral-color: #FAFAFA;         /* Blanc cassé pour les fonds */
+    --primary-color: #901C1C;          /* Rouge foncé pour accentuation */
+    --primary-color-light: #D3573C;    /* Rouge plus clair pour hover */
+    --secondary-color: #D3573C;        /* Rouge clair pour éléments secondaires */
+    --neutral-color: #FAFAFA;          /* Blanc cassé pour les fonds */
 
-    /* ================================ */
-    /* Couleurs complémentaires         */
-    /* ================================ */
-    --accent-color: #FF5722;          /* Orange vif pour les appels à l'action */
-    --secondary-neutral: #525252;     /* Gris foncé pour les textes secondaires */
+    /* Couleurs complémentaires */
+    --accent-color: #FF5722;           /* Orange vif pour les appels à l'action */
+    --secondary-neutral: #525252;      /* Gris foncé pour textes secondaires */
 
-    /* ================================ */
-    /* Couleurs de texte                */
-    /* ================================ */
-    --text-color-primary:black;         /* Couleur principale pour le texte */
-    --text-color-secondary: #901C1C;
-    --text-color-tertiary : #757575;  /* Texte contrastant sur fonds clairs */
-    --text-color-name: #D3573C;         /* Couleur pour les noms  */
-
-    /* ================================ */
-    /* Couleurs d'état                  */
-    /* ================================ */
-    --success-color: #4caf50;         /* Couleur pour indiquer un succès */
-    --warning-color: #ff9800;         /* Couleur pour indiquer un avertissement */
-    --error-color: #f44336;           /* Couleur pour signaler une erreur */
-    --info-color: #2196f3;            /* Couleur pour afficher des informations */
+    /* Couleurs de texte */
+    --text-color-primary: #000;        /* Texte principal (noir) */
+    --text-color-secondary: #901C1C;   /* Texte secondaire */
+    --text-color-tertiary: #757575;    /* Texte peu important */
+    --text-color-name: #D3573C;        /* Texte pour noms ou accents */
+    
+    /* Couleurs d'état */
+    --success-color: #4caf50;          /* Succès */
+    --warning-color: #ff9800;          /* Avertissement */
+    --error-color: #f44336;            /* Erreur */
+    --info-color: #2196f3;             /* Information */
 
     /* ================================ */
     /* Typographie                      */
     /* ================================ */
-    --font-primary: 'DM Sans';    /* Police principale */
+    --font-primary: 'DM Sans', sans-serif; /* Police principale */
+    --font-secondary: 'Arial', sans-serif; /* Police secondaire */
 
     /* Tailles des polices */
-    --font-size-small: 0.8rem;           /* taille de texte 80% de la taille de base */
-    --font-size-base: 1rem;             /* Taille de texte par défaut */
-    --font-size-large: 1.6rem;          /* Taille de 60 % plus grand que la base*/
-    --font-size-xlarge: 2rem;           /* taille doublé par rapport a la base */   
-    --font-size-giant: 2.4rem;          /* Taille  */
+    --font-size-xsmall: 0.7rem;        /* Texte très petit */
+    --font-size-small: 0.8rem;         /* Texte petit */
+    --font-size-base: 1rem;            /* Texte de base */
+    --font-size-medium: 1.2rem;        /* Texte légèrement plus grand */
+    --font-size-large: 1.6rem;         /* Grand texte */
+    --font-size-xlarge: 2rem;          /* Très grand texte */
+    --font-size-giant: 2.4rem;         /* Texte énorme */
 
     /* Poids des polices */
-    --font-weight-regular: 400;       /* Poids standard des polices */
-    --font-weight-bold: 700;          /* Poids pour les polices en gras */
-    --font-weight-light: 300;         /* Poids pour les polices fines */
+    --font-weight-light: 300;          /* Poids léger */
+    --font-weight-regular: 400;        /* Poids normal */
+    --font-weight-medium: 500;         /* Poids intermédiaire */
+    --font-weight-bold: 700;           /* Poids gras */
 
     /* Hauteur de ligne */
-    --line-height-tight: 1.2;         /* Hauteur réduite pour les titres */
-    --line-height-normal: 1.4;        /* Hauteur standard */
-    --line-height-base: 1.6;          /* Hauteur pour les paragraphes */
-    --line-height-loose: 1.8;         /* Hauteur pour les grands blocs */
-    --line-height-extra-loose: 2;     /* Hauteur extra-large pour aération */
+    --line-height-tight: 1.2;          /* Compact */
+    --line-height-normal: 1.4;         /* Standard */
+    --line-height-loose: 1.6;          /* Espacé */
 
     /* ================================ */
-    /* Espacements (Padding & Margins)  */
+    /* Espacements                      */
     /* ================================ */
-    --padding-xsmall: 0.4rem;         /* Espacement très petit */
-    --padding-small: 0.8rem;          /* Espacement petit */
-    --padding-medium: 1.6rem;         /* Espacement moyen */
-    --padding-large: 2.4rem;          /* Espacement large */
-    --padding-xlarge: 3.2rem;         /* Espacement très large */
-
-    --margin-xsmall: 0.4rem;          /* Marges très petites */
-    --margin-small: 0.8rem;           /* Marges petites */
-    --margin-medium: 1.6rem;          /* Marges moyennes */
-    --margin-large: 2.4rem;           /* Marges larges */
-    --margin-xlarge: 3.2rem;          /* Marges très larges */
+    --spacing-xxsmall: 0.2rem;         /* Très petit */
+    --spacing-xsmall: 0.4rem;          /* Petit */
+    --spacing-small: 0.8rem;           /* Moyen-petit */
+    --spacing-medium: 1.6rem;          /* Moyen */
+    --spacing-large: 2.4rem;           /* Grand */
+    --spacing-xlarge: 3.2rem;          /* Très grand */
+    --spacing-xxlarge: 4rem;           /* Énorme */
 
     /* ================================ */
     /* Gaps                             */
     /* ================================ */
-    --gap-small: 0.8rem;              /* Petites espacements entre éléments */
-    --gap-medium: 1.6rem;             /* Espacement moyen */
-    --gap-large: 2.4rem;              /* Espacement large */
+    --gap-small: 0.8rem;               /* Petit espace */
+    --gap-medium: 1.6rem;              /* Moyen espace */
+    --gap-large: 2.4rem;               /* Grand espace */
 
     /* ================================ */
-    /* Tailles des objets               */
+    /* Tailles                          */
     /* ================================ */
-    --size-small: 2rem;               /* Objets ou boutons petits */
-    --size-medium: 4rem;              /* Objets ou boutons moyens */
-    --size-large: 6rem;               /* Objets ou boutons larges */
+    --size-small: 2rem;                /* Objets petits */
+    --size-medium: 4rem;               /* Objets moyens */
+    --size-large: 6rem;                /* Objets grands */
+    --size-xlarge: 8rem;               /* Objets très grands */
 
     /* ================================ */
     /* Bordures et ombres               */
     /* ================================ */
-    --border-radius-small: 4px;       /* Bordures légèrement arrondies */
-    --border-radius-medium: 8px;      /* Bordures moyennement arrondies */
-    --border-radius-large: 16px;      /* Bordures très arrondies */
+    --border-radius-small: 0.3rem;     /* Coins légèrement arrondis */
+    --border-radius-medium: 0.5rem;    /* Coins arrondis */
+    --border-radius-large: 1rem;       /* Coins très arrondis */
 
-    --box-shadow-small: 0 1px 3px rgba(0, 0, 0, 0.1);  /* Ombre légère */
+    --box-shadow-small: 0 1px 3px rgba(0, 0, 0, 0.1); /* Ombre légère */
     --box-shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.15); /* Ombre moyenne */
-    --box-shadow-large: 0 5px 15px rgba(0, 0, 0, 0.2);  /* Ombre prononcée */
-}
+    --box-shadow-large: 0 5px 15px rgba(0, 0, 0, 0.2); /* Ombre prononcée */
 
+    /* ================================ */
+    /* Transitions et Animations        */
+    /* ================================ */
+    --transition-fast: 0.2s ease-in-out; /* Animation rapide */
+    --transition-default: 0.3s ease;    /* Animation standard */
+    --transition-slow: 0.5s ease-out;  /* Animation lente */
+
+    /* ================================ */
+    /* Breakpoints                      */
+    /* ================================ */
+    --breakpoint-mobile: 480px;
+    --breakpoint-tablet: 768px;
+    --breakpoint-desktop: 1024px;
+    --breakpoint-large-desktop: 1440px;
+}

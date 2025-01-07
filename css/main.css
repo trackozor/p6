@@ -320,25 +320,23 @@ a:focus {
   position: relative; /* Permet des ajustements par rapport aux éléments environnants */
   margin: 0 auto; /* Centre horizontalement */
   transition: transform 0.3s ease-in-out; /* Ajoute une animation fluide */
-  padding-top: 5% 0; /* Espacement en haut */
+  padding-top: 5%; /* Espacement en haut */
 }
 
 .photographer-card-portrait {
-  width: 100px; /* Largeur de l'image fixe */
-  height: 100px; /* Hauteur de l'image fixe */
+  width: 10vh; /* Largeur de l'image fixe */
+  height: 10vh; /* Hauteur de l'image fixe */
   border-radius: 50%; /* Forme circulaire */
   object-fit: cover; /* Remplit l'image sans distorsion */
   margin-bottom: 10%; /* Espace en dessous de l'image */
-  transform: scale(1.2); /* Ajoute un zoom initial */
   transition: transform 0.3s ease; /* Transition fluide sur hover */
   cursor: pointer; /* Pointeur cliquable */
 }
 
-.photographer-card-portrait img {
-  transform: scale(5); /* Zoom initial pour l'image */
+.photographer-card-portrait-wrapper img {
+  transform: scale(1.5); /* Zoom initial pour l'image */
   margin-top: 10%; /* Espacement en haut */
   transition: transform 0.3s ease; /* Transition fluide */
-  text-decoration: none; /* Pas de décoration de texte */
 }
 
 .photographer-card:hover {
@@ -354,8 +352,7 @@ a:focus {
   font-size: var(--font-size-large); /* Taille de texte pour mobile */
   color: var(--text-color-name); /* Applique la couleur secondaire */
   font-weight: bold; /* Texte en gras */
-  margin-bottom: 8px; /* Espace en dessous du nom */
-  margin-bottom: 8px; /* Espace en dessous du nom */
+  margin-bottom: 2%;
 }
 
 /* -------------------------------------------------------------------------- */
