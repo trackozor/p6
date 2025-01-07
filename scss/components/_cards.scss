@@ -127,12 +127,12 @@
     #photographers-container {
         display: grid; /* Active le mode Grid */
         grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
-        margin:12% 0;
+        margin:1% 0;
     }
 
     .photographer-card-portrait {
-    width: 15vw; /* Largeur fixe pour l'image */
-    height: 15vw; /* Hauteur fixe */
+    width: 8vw; /* Largeur fixe pour l'image */
+    height: 8vw; /* Hauteur fixe */
     border-radius: 50%; /* Rend l'image circulaire */
     object-fit: cover; /* Remplit le cercle sans déformation */
     transform: scale(1.2); /* Zoom initial */
@@ -143,7 +143,7 @@
     .photographer-card {
         display: flex;
         padding:2% 0;
-        width:50%; 
+        width:80%; 
         padding:0;
         padding-top:2%;  
     }
@@ -153,8 +153,7 @@
     #photographers-container {
         display: grid; /* Active le mode Grid */
         grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
-        grid-template-rows: repeat(2,1fr); 
-        margin: 0;
+        margin: 1%;
         padding: 0;
 
     }

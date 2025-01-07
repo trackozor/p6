@@ -400,11 +400,11 @@ a:focus {
   #photographers-container {
     display: grid; /* Active le mode Grid */
     grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
-    margin: 12% 0;
+    margin: 1% 0;
   }
   .photographer-card-portrait {
-    width: 15vw; /* Largeur fixe pour l'image */
-    height: 15vw; /* Hauteur fixe */
+    width: 8vw; /* Largeur fixe pour l'image */
+    height: 8vw; /* Hauteur fixe */
     border-radius: 50%; /* Rend l'image circulaire */
     object-fit: cover; /* Remplit le cercle sans déformation */
     transform: scale(1.2); /* Zoom initial */
@@ -415,7 +415,7 @@ a:focus {
   .photographer-card {
     display: flex;
     padding: 2% 0;
-    width: 50%;
+    width: 80%;
     padding: 0;
     padding-top: 2%;
   }
@@ -424,8 +424,7 @@ a:focus {
   #photographers-container {
     display: grid; /* Active le mode Grid */
     grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
-    grid-template-rows: repeat(2, 1fr);
-    margin: 0;
+    margin: 1%;
     padding: 0;
   }
   .photographer-card-portrait {
@@ -486,53 +485,65 @@ a:focus {
     Date        :   01/01/2025
     Version     :   1.0.0
     Description :   Styles pour le header du site, incluant le logo et le titre.
-                    Supporte une approche responsive avec des media queries.
+                    Inclut une gestion responsive pour s'adapter à différentes tailles d'écran.
 ============================================================================= */
 /* ------------------------------------------------------------------------- */
 /*                        Styles par défaut (Mobile)                         */
 /* ------------------------------------------------------------------------- */
 header {
-  display: flex; /* Utilise Flexbox pour la mise en page */
-  flex-direction: row; /* Positionne les enfants en ligne */
+  display: flex; /* Utilise Flexbox pour organiser les éléments enfants */
+  flex-direction: row; /* Place les éléments enfants en ligne (horizontalement) */
   justify-content: space-between; /* Espace entre le logo et le titre */
-  align-items: center; /* Aligne verticalement les éléments */
-  width: 95%; /* Largeur relative */
-  height: auto; /* Hauteur automatique */
-  padding: 5% 0 10% 0; /* Espacement vertical */
-  gap: 2%;
-  /* Ajout d'une marge pour mieux centrer */
-  margin: 0 auto;
+  align-items: center; /* Aligne les éléments verticalement au centre */
+  width: 95%; /* Largeur relative pour s'adapter à l'écran */
+  height: auto; /* Hauteur automatique basée sur le contenu */
+  padding: 5% 0 10% 0; /* Espacement en haut et en bas */
+  gap: 2%; /* Espace entre les enfants */
+  margin: 0 auto; /* Centre horizontalement le header */
 }
 
 .logo {
-  width: 25vw; /* Largeur responsive basée sur la largeur de la fenêtre */
-  max-width: 100px; /* Limite la taille du logo sur petits écrans */
-  height: auto; /* Conserve les proportions */
-  padding-left: 15%; /* Décalage gauche */
+  width: 25vw; /* Largeur du logo basée sur la taille de la fenêtre */
+  max-width: 100px; /* Limite la taille maximale du logo sur petits écrans */
+  height: auto; /* Maintient les proportions d'origine */
+  padding-left: 15%; /* Décalage à gauche pour espacer du bord */
 }
 
 h1 {
-  font-size: var(--font-size-base); /* Taille de police définie dans les variables */
-  color: var(--primary-color); /* Couleur principale */
+  font-size: var(--font-size-base); /* Utilise la taille de police définie dans les variables */
+  color: var(--primary-color); /* Applique la couleur principale au titre */
   margin: 0; /* Supprime les marges par défaut */
-  padding-bottom: 2%; /* Espacement en dessous */
+  padding-bottom: 2%; /* Ajoute un espacement en bas */
 }
 
 /* ------------------------------------------------------------------------- */
-/*                        Media Queries (Tablettes et plus)                  */
+/*                        Media Queries pour les écrans                      */
 /* ------------------------------------------------------------------------- */
+/* --- Écrans moyens (Tablettes) : Min-width 768px --- */
 @media (min-width: 768px) {
   header {
-    width: 95%; /* Garde une largeur relative pour plus d'espace */
-    padding: 3% 0 2% 0; /* Réduit l'espacement vertical */
+    width: 80%; /* Réduit la largeur pour un meilleur alignement */
+    padding: 3% 0 2% 0; /* Diminue l'espacement vertical */
   }
   .logo {
-    max-width: 200px; /* Agrandit le logo */
-    padding-left: 10%; /* Réduit le décalage gauche */
+    max-width: 200px; /* Augmente la taille maximale du logo */
+    padding-left: 10%; /* Réduit l'espacement gauche */
   }
   h1 {
-    font-size: var(--font-size-large); /* Augmente la taille du titre */
+    font-size: var(--font-size-large); /* Augmente la taille de la police */
     padding-bottom: 0; /* Supprime l'espacement en dessous */
+  }
+}
+/* --- Écrans larges (Ordinateurs) : Min-width 1024px --- */
+@media (min-width: 1024px) {
+  header {
+    width: 85%; /* Augmente la largeur pour un meilleur espacement */
+  }
+}
+/* --- Très grands écrans (Grands ordinateurs ou téléviseurs) : Min-width 1440px --- */
+@media (min-width: 1440px) {
+  header {
+    width: 80%; /* Réduit légèrement la largeur pour plus d'équilibre */
   }
 }
 /* =============================================================================
