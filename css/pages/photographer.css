@@ -413,10 +413,35 @@ a:focus {
     cursor: pointer; /* Pointeur cliquable */
   }
   .photographer-card {
-    width: 40%;
+    width: 50%;
     border-radius: 1rem; /* Ajoute des coins arrondis */
     margin-bottom: 1%; /* Réduit l'espace en dessous */
     padding: 0; /* Supprime les espacements */
+  }
+  /* -------------------------------------------------------------------------- */
+  /* Nom du photographe                                                        */
+  /* -------------------------------------------------------------------------- */
+  .photographer-card-name {
+    font-size: var(--font-size-xlarge); /* Taille de texte pour mobile */
+    color: var(--text-color-name); /* Applique la couleur secondaire */
+  }
+  /* -------------------------------------------------------------------------- */
+  /* Localisation du photographe                                               */
+  /* -------------------------------------------------------------------------- */
+  .photographer-card-location {
+    font-size: var(--font-size-base); /* Taille légèrement plus petite */
+  }
+  /* -------------------------------------------------------------------------- */
+  /* Slogan du photographe                                                     */
+  /* -------------------------------------------------------------------------- */
+  .photographer-card-tagline {
+    font-size: var(--font-size-base); /* Taille discrète pour le slogan */
+  }
+  /* -------------------------------------------------------------------------- */
+  /* Prix par jour du photographe                                              */
+  /* -------------------------------------------------------------------------- */
+  .photographer-card-price {
+    font-size: var(--font-size-base); /* Taille mise en avant */
   }
 }
 /* =============================================================================

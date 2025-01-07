@@ -16,7 +16,7 @@
 			"id": 930,
 			"city": "Paris",
 			"country": "France",
-			"tagline": "Capturer des compositions complexes",
+			"tagline": "Travaille sur des compositions complexes",
 			"price": 250,
 			"portrait": "EllieRoseWilkens.jpg"
 		},
@@ -36,7 +36,7 @@
 			"id": 527,
 			"city": "Mexico City",
 			"country": "Mexico",
-			"tagline": "Toujours aller de l'avant",
+			"tagline": "Je vais toujours de l'avant",
 			"price": 350,
 			"portrait": "NabeelBradford.jpg"
 		},
@@ -46,8 +46,8 @@
 			"id": 925,
 			"city": "Barcelona",
 			"country": "Spain",
-			"tagline": "Je crée des souvenirs",
-			"price": 275,
+			"tagline": "Créatrices de souvenirs",
+			"price": 375,
 			"portrait": "RhodeDubois.jpg"
 		},
 		
