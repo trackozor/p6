@@ -1,4 +1,4 @@
-/* =============================================================================
+/* ===========================================================================================
     Projet      :   Fisheye
     Fichier     :   _header.scss
     Auteur      :   Trackozor
@@ -6,70 +6,95 @@
     Version     :   1.0.0
     Description :   Styles pour le header du site, incluant le logo et le titre.
                     Inclut une gestion responsive pour s'adapter à différentes tailles d'écran.
-============================================================================= */
+================================================================================================= */
 
 /* ------------------------------------------------------------------------- */
-/*                        Styles par défaut (Mobile)                         */
+/*                        Styles par défaut (Mobile First)                   */
+/* Description : Styles principaux pour le header, optimisés pour mobiles.   */
 /* ------------------------------------------------------------------------- */
+
 header {
     display: flex; /* Utilise Flexbox pour organiser les éléments enfants */
-    flex-direction: row; /* Place les éléments enfants en ligne (horizontalement) */
-    justify-content: space-between; /* Espace entre le logo et le titre */
-    align-items: center; /* Aligne les éléments verticalement au centre */
-    width: 95%; /* Largeur relative pour s'adapter à l'écran */
-    height: auto; /* Hauteur automatique basée sur le contenu */
+    flex-direction: row; /* Aligne les éléments horizontalement */
+    justify-content: space-between; /* Crée un espace entre le logo et le titre */
+    align-items: center; /* Centre les éléments verticalement */
+    width: 95%; /* Largeur relative pour s'adapter à différentes tailles d'écran */
+    height: auto; /* La hauteur s'ajuste automatiquement au contenu */
     padding: 5% 0 10% 0; /* Espacement en haut et en bas */
-    gap: 2%; /* Espace entre les enfants */
-
-    margin: 0 auto; /* Centre horizontalement le header */
+    gap: 2%; /* Espace horizontal entre les éléments enfants */
+    margin: 0 auto; /* Centre le header horizontalement */
 }
+
+/* -------------------------------------------------------------------------- */
+/* Logo                                                                       */
+/* Description : Définit les dimensions et le positionnement                  */
+/* -------------------------------------------------------------------------- */
 
 .logo {
-    width: 25vw; /* Largeur du logo basée sur la taille de la fenêtre */
-    max-width: 100px; /* Limite la taille maximale du logo sur petits écrans */
-    height: auto; /* Maintient les proportions d'origine */
-    padding-left: 15%; /* Décalage à gauche pour espacer du bord */
+    width: 25vw; /* Largeur relative au viewport pour le logo */
+    max-width: 100px; /* Limite la largeur maximale pour éviter une taille excessive */
+    height: auto; /* Garde les proportions originales */
+    padding-left: 15%; /* Ajoute un espacement à gauche pour éloigner du bord */
 }
+
+/* -------------------------------------------------------------------------- */
+/* Titre                                                                      */
+/* Description : Définit les dimensions la typographie et le positionnement   */
+/* -------------------------------------------------------------------------- */
 
 h1 {
-    font-size: var(--font-size-base); /* Utilise la taille de police définie dans les variables */
+    font-size: var(--font-size-base); /* Taille de police définie dans les variables */
     color: var(--primary-color); /* Applique la couleur principale au titre */
     margin: 0; /* Supprime les marges par défaut */
-    padding-bottom: 2%; /* Ajoute un espacement en bas */
+    padding-bottom: 2%; /* Ajoute un espacement sous le titre */
 }
 
-/* ------------------------------------------------------------------------- */
-/*                        Media Queries pour les écrans                      */
-/* ------------------------------------------------------------------------- */
+/* ============================================================================*/
+/*                          MEDIA QUERIES                                      */
+/* Description : Ajustements des styles pour différents écrans                 */
+/* =========================================================================== */
 
-/* --- Écrans moyens (Tablettes) : Min-width 768px --- */
+/* -------------------------------------------------------------------------- */
+/* Tablette (min-width : 768px)                                               */
+/* Description : Optimisation des styles pour les tablettes                   */
+/* -------------------------------------------------------------------------- */
+
 @media (min-width: 768px) {
+
     header {
-        width: 80%; /* Réduit la largeur pour un meilleur alignement */
-        padding: 3% 0 2% 0; /* Diminue l'espacement vertical */
+        width: 80%; /* Réduit la largeur pour un alignement visuel plus centré */
+        padding: 3% 0 2% 0; /* Diminue les marges verticales pour plus de compacité */
     }
 
     .logo {
-        max-width: 200px; /* Augmente la taille maximale du logo */
-        padding-left: 10%; /* Réduit l'espacement gauche */
+        max-width: 200px; /* Augmente la taille maximale pour les écrans moyens */
+        padding-left: 10%; /* Réduit l'espacement à gauche pour une meilleure proportion */
     }
 
     h1 {
-        font-size: var(--font-size-large); /* Augmente la taille de la police */
-        padding-bottom: 0; /* Supprime l'espacement en dessous */
+        font-size: var(--font-size-large); /* Augmente la taille du texte pour une meilleure lisibilité */
+        padding-bottom: 0; /* Supprime l'espacement sous le titre */
     }
 }
 
-/* --- Écrans larges (Ordinateurs) : Min-width 1024px --- */
+/* -------------------------------------------------------------------------- */
+/* Desktop (min-width : 1024px)                                               */
+/* Description : Ajustements des styles pour les ordinateurs                  */
+/* -------------------------------------------------------------------------- */
+
 @media (min-width: 1024px) {
     header {
-        width: 85%; /* Augmente la largeur pour un meilleur espacement */
+        width: 85%; /* Augmente la largeur pour équilibrer les proportions */
     }
 }
 
-/* --- Très grands écrans (Grands ordinateurs ou téléviseurs) : Min-width 1440px --- */
+/* -------------------------------------------------------------------------- */
+/* Grands écrans (min-width : 1440px)                                         */
+/* Description : Ajustements pour les écrans larges                           */
+/* -------------------------------------------------------------------------- */
+
 @media (min-width: 1440px) {
     header {
-        width: 80%; /* Réduit légèrement la largeur pour plus d'équilibre */
+        width: 80%; /* Réduit légèrement la largeur pour une meilleure mise en page */
     }
 }
