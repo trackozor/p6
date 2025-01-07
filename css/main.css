@@ -22,83 +22,90 @@
   /* ================================ */
   /* Palette principale               */
   /* ================================ */
-  --primary-color: #901C1C; /* Rouge foncé pour accentuation  */
-  --primary-color-light: #D3573C; /* Rouge plus clair pour les hovers ou fonds */
-  --secondary-color: #D3573C; /* Rouge clair pour les éléments secondaires */
+  --primary-color: #901C1C; /* Rouge foncé pour accentuation */
+  --primary-color-light: #D3573C; /* Rouge plus clair pour hover */
+  --secondary-color: #D3573C; /* Rouge clair pour éléments secondaires */
   --neutral-color: #FAFAFA; /* Blanc cassé pour les fonds */
-  /* ================================ */
-  /* Couleurs complémentaires         */
-  /* ================================ */
+  /* Couleurs complémentaires */
   --accent-color: #FF5722; /* Orange vif pour les appels à l'action */
-  --secondary-neutral: #525252; /* Gris foncé pour les textes secondaires */
-  /* ================================ */
-  /* Couleurs de texte                */
-  /* ================================ */
-  --text-color-primary:black; /* Couleur principale pour le texte */
-  --text-color-secondary: #901C1C;
-  --text-color-tertiary: #757575; /* Texte contrastant sur fonds clairs */
-  --text-color-name: #D3573C; /* Couleur pour les noms  */
-  /* ================================ */
-  /* Couleurs d'état                  */
-  /* ================================ */
-  --success-color: #4caf50; /* Couleur pour indiquer un succès */
-  --warning-color: #ff9800; /* Couleur pour indiquer un avertissement */
-  --error-color: #f44336; /* Couleur pour signaler une erreur */
-  --info-color: #2196f3; /* Couleur pour afficher des informations */
+  --secondary-neutral: #525252; /* Gris foncé pour textes secondaires */
+  /* Couleurs de texte */
+  --text-color-primary: #000; /* Texte principal (noir) */
+  --text-color-secondary: #901C1C; /* Texte secondaire */
+  --text-color-tertiary: #757575; /* Texte peu important */
+  --text-color-name: #D3573C; /* Texte pour noms ou accents */
+  /* Couleurs d'état */
+  --success-color: #4caf50; /* Succès */
+  --warning-color: #ff9800; /* Avertissement */
+  --error-color: #f44336; /* Erreur */
+  --info-color: #2196f3; /* Information */
   /* ================================ */
   /* Typographie                      */
   /* ================================ */
-  --font-primary: "DM Sans"; /* Police principale */
+  --font-primary: "DM Sans", sans-serif; /* Police principale */
+  --font-secondary: "Arial", sans-serif; /* Police secondaire */
   /* Tailles des polices */
-  --font-size-small: 0.8rem; /* taille de texte 80% de la taille de base */
-  --font-size-base: 1rem; /* Taille de texte par défaut */
-  --font-size-large: 1.6rem; /* Taille de 60 % plus grand que la base*/
-  --font-size-xlarge: 2rem; /* taille doublé par rapport a la base */
-  --font-size-giant: 2.4rem; /* Taille  */
+  --font-size-xsmall: 0.7rem; /* Texte très petit */
+  --font-size-small: 0.8rem; /* Texte petit */
+  --font-size-base: 1rem; /* Texte de base */
+  --font-size-medium: 1.2rem; /* Texte légèrement plus grand */
+  --font-size-large: 1.6rem; /* Grand texte */
+  --font-size-xlarge: 2rem; /* Très grand texte */
+  --font-size-giant: 2.4rem; /* Texte énorme */
   /* Poids des polices */
-  --font-weight-regular: 400; /* Poids standard des polices */
-  --font-weight-bold: 700; /* Poids pour les polices en gras */
-  --font-weight-light: 300; /* Poids pour les polices fines */
+  --font-weight-light: 300; /* Poids léger */
+  --font-weight-regular: 400; /* Poids normal */
+  --font-weight-medium: 500; /* Poids intermédiaire */
+  --font-weight-bold: 700; /* Poids gras */
   /* Hauteur de ligne */
-  --line-height-tight: 1.2; /* Hauteur réduite pour les titres */
-  --line-height-normal: 1.4; /* Hauteur standard */
-  --line-height-base: 1.6; /* Hauteur pour les paragraphes */
-  --line-height-loose: 1.8; /* Hauteur pour les grands blocs */
-  --line-height-extra-loose: 2; /* Hauteur extra-large pour aération */
+  --line-height-tight: 1.2; /* Compact */
+  --line-height-normal: 1.4; /* Standard */
+  --line-height-loose: 1.6; /* Espacé */
   /* ================================ */
-  /* Espacements (Padding & Margins)  */
+  /* Espacements                      */
   /* ================================ */
-  --padding-xsmall: 0.4rem; /* Espacement très petit */
-  --padding-small: 0.8rem; /* Espacement petit */
-  --padding-medium: 1.6rem; /* Espacement moyen */
-  --padding-large: 2.4rem; /* Espacement large */
-  --padding-xlarge: 3.2rem; /* Espacement très large */
-  --margin-xsmall: 0.4rem; /* Marges très petites */
-  --margin-small: 0.8rem; /* Marges petites */
-  --margin-medium: 1.6rem; /* Marges moyennes */
-  --margin-large: 2.4rem; /* Marges larges */
-  --margin-xlarge: 3.2rem; /* Marges très larges */
+  --spacing-xxsmall: 0.2rem; /* Très petit */
+  --spacing-xsmall: 0.4rem; /* Petit */
+  --spacing-small: 0.8rem; /* Moyen-petit */
+  --spacing-medium: 1.6rem; /* Moyen */
+  --spacing-large: 2.4rem; /* Grand */
+  --spacing-xlarge: 3.2rem; /* Très grand */
+  --spacing-xxlarge: 4rem; /* Énorme */
   /* ================================ */
   /* Gaps                             */
   /* ================================ */
-  --gap-small: 0.8rem; /* Petites espacements entre éléments */
-  --gap-medium: 1.6rem; /* Espacement moyen */
-  --gap-large: 2.4rem; /* Espacement large */
+  --gap-small: 0.8rem; /* Petit espace */
+  --gap-medium: 1.6rem; /* Moyen espace */
+  --gap-large: 2.4rem; /* Grand espace */
   /* ================================ */
-  /* Tailles des objets               */
+  /* Tailles                          */
   /* ================================ */
-  --size-small: 2rem; /* Objets ou boutons petits */
-  --size-medium: 4rem; /* Objets ou boutons moyens */
-  --size-large: 6rem; /* Objets ou boutons larges */
+  --size-small: 2rem; /* Objets petits */
+  --size-medium: 4rem; /* Objets moyens */
+  --size-large: 6rem; /* Objets grands */
+  --size-xlarge: 8rem; /* Objets très grands */
   /* ================================ */
   /* Bordures et ombres               */
   /* ================================ */
-  --border-radius-small: 4px; /* Bordures légèrement arrondies */
-  --border-radius-medium: 8px; /* Bordures moyennement arrondies */
-  --border-radius-large: 16px; /* Bordures très arrondies */
+  --border-radius-small: 0.3rem; /* Coins légèrement arrondis */
+  --border-radius-medium: 0.5rem; /* Coins arrondis */
+  --border-radius-large: 1rem; /* Coins très arrondis */
   --box-shadow-small: 0 1px 3px rgba(0, 0, 0, 0.1); /* Ombre légère */
   --box-shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.15); /* Ombre moyenne */
   --box-shadow-large: 0 5px 15px rgba(0, 0, 0, 0.2); /* Ombre prononcée */
+  /* ================================ */
+  /* Transitions et Animations        */
+  /* ================================ */
+  --transition-fast: 0.2s ease-in-out; /* Animation rapide */
+  --transition-default: 0.3s ease; /* Animation standard */
+  --transition-slow: 0.5s ease-out; /* Animation lente */
+  /* ================================ */
+  /* Breakpoints                      */
+  /* ================================ */
+  --breakpoint-mobile: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-large-desktop: 1440px;
 }
 
 /* =============================================================================
@@ -305,44 +312,34 @@ a:focus {
   align-items: center; /* Centre les éléments horizontalement */
   text-align: center; /* Centre le texte */
   background-color: var(--neutral-color); /* Couleur de fond neutre */
-  padding: 5%; /* Espacement interne */
   max-width: 100%; /* Largeur maximale pour s'adapter aux écrans */
-  margin: 5% auto; /* Centre la carte avec des marges verticales */
+  margin: 6% auto; /* Centre la carte avec des marges verticales */
   transition: transform 0.3s ease; /* Transition fluide sur hover */
   cursor: pointer; /* Affiche un pointeur cliquable */
   text-decoration: none; /* Supprime les décorations de texte */
 }
 
+/*------------------------------------------------------------------------------*/
+/*  hover sur carte  */
+.photographer-card:hover {
+  transform: scale(1.2); /* Agrandit la carte de 20 % au survol */
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Ajoute une ombre subtile */
+  text-decoration: none; /* Pas de décoration de texte */
+}
+
 /* -------------------------------------------------------------------------- */
 /* Image du photographe                                                      */
 /* -------------------------------------------------------------------------- */
-.photographer-card-portrait-wrapper {
-  position: relative; /* Permet des ajustements par rapport aux éléments environnants */
-  margin: 0 auto; /* Centre horizontalement */
-  transition: transform 0.3s ease-in-out; /* Ajoute une animation fluide */
-  padding-top: 5%; /* Espacement en haut */
-}
-
 .photographer-card-portrait {
   width: 10vh; /* Largeur de l'image fixe */
   height: 10vh; /* Hauteur de l'image fixe */
   border-radius: 50%; /* Forme circulaire */
   object-fit: cover; /* Remplit l'image sans distorsion */
-  margin-bottom: 10%; /* Espace en dessous de l'image */
+  object-position: center;
+  transform: scale(1.2);
+  margin: 1% 0 5% 0; /* Espace en dessous de l'image */
   transition: transform 0.3s ease; /* Transition fluide sur hover */
   cursor: pointer; /* Pointeur cliquable */
-}
-
-.photographer-card-portrait-wrapper img {
-  transform: scale(1.5); /* Zoom initial pour l'image */
-  margin-top: 10%; /* Espacement en haut */
-  transition: transform 0.3s ease; /* Transition fluide */
-}
-
-.photographer-card:hover {
-  transform: scale(1.2); /* Agrandit la carte de 20 % au survol */
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Ajoute une ombre subtile */
-  text-decoration: none; /* Pas de décoration de texte */
 }
 
 /* -------------------------------------------------------------------------- */
@@ -386,28 +383,11 @@ a:focus {
 /* -------------------------------------------------------------------------- */
 /* MEDIA QUERIES : Styles responsives                                        */
 /* -------------------------------------------------------------------------- */
-/* --- Tablettes (min-width : 768px) --- */
-@media screen and (min-width: 768px) {
-  #photographers-container {
-    display: grid; /* Active le mode Grid */
-    grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
-    grid-template-rows: repeat(2, 1fr); /* 2 lignes */
-    gap: 20px; /* Espace entre les cartes */
-    margin-top: 20px; /* Espacement supérieur */
-  }
-}
 /* --- Ordinateurs (min-width : 1024px) --- */
 @media screen and (min-width: 1024px) {
-  #photographers-container {
-    display: grid; /* Active le mode Grid */
-    grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
-    margin: 1% 0; /* Espacement vertical */
-  }
   .photographer-card-portrait {
     width: 8vw; /* Largeur basée sur la fenêtre */
     height: 8vw; /* Hauteur basée sur la fenêtre */
-    border-radius: 50%; /* Forme circulaire */
-    object-fit: cover; /* Remplit le cercle sans distorsion */
     transform: scale(1.2); /* Zoom initial */
     margin-top: 5%; /* Espacement supérieur */
     transition: transform 0.3s ease; /* Transition fluide */
@@ -415,30 +395,24 @@ a:focus {
   }
   .photographer-card {
     display: flex; /* Active Flexbox */
-    padding: 2% 0; /* Réduit l'espacement interne */
+    padding: 3% 0 2% 0; /* Réduit l'espacement interne */
     width: 80%; /* Largeur relative */
-    padding-top: 2%; /* Espacement supérieur */
   }
 }
 /* --- Grands écrans (min-width : 1440px) --- */
 @media screen and (min-width: 1440px) {
-  #photographers-container {
-    display: grid; /* Active le mode Grid */
-    grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
-    margin: 0; /* Supprime les marges */
-    padding: 0; /* Supprime les espacements */
-  }
   .photographer-card-portrait {
-    width: 6vw; /* Largeur basée sur la fenêtre */
-    height: 6vw; /* Hauteur basée sur la fenêtre */
+    width: 8vw; /* Largeur basée sur la fenêtre */
+    height: 8vw; /* Hauteur basée sur la fenêtre */
     border-radius: 50%; /* Forme circulaire */
     object-fit: cover; /* Remplit le cercle sans distorsion */
-    margin: 10% 0; /* Espacement supérieur et inférieur */
+    margin: 8% 0; /* Espacement supérieur et inférieur */
     transform: scale(1.2); /* Zoom initial */
     transition: transform 0.3s ease; /* Transition fluide */
     cursor: pointer; /* Pointeur cliquable */
   }
   .photographer-card {
+    width: 40%;
     border-radius: 1rem; /* Ajoute des coins arrondis */
     margin-bottom: 1%; /* Réduit l'espace en dessous */
     padding: 0; /* Supprime les espacements */
@@ -523,8 +497,38 @@ h1 {
 footer {
   display: flex;
   justify-content: center;
+  margin: 2% 0 1% 0;
 }
 
+/* -------------------------------------------------------------------------- */
+/* Styles pour les conteneurs des cartes                                      */
+/* -------------------------------------------------------------------------- */
+#photographers-container {
+  display: grid;
+  gap: var(--spacing-medium); /* Utilise des variables pour l'espacement */
+  margin-top: var(--spacing-xxsmall);
+  padding: 0 var(--spacing-medium);
+}
+
+@media screen and (min-width: 768px) {
+  #photographers-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+    margin-top: var(--spacing-medium);
+  }
+}
+@media screen and (min-width: 1024px) {
+  #photographers-container {
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
+    margin: var(--spacing-medium) auto;
+  }
+}
+@media screen and (min-width: 1440px) {
+  #photographers-container {
+    grid-template-columns: repeat(3, 1fr); /* 4 colonnes pour grands écrans */
+    padding: 0;
+    margin: 0;
+  }
+}
 /* =============================================================================
     Projet      :   Fisheye
     Fichier     :   photographer.scss

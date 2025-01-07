@@ -1,1 +1,33 @@
 
+/* -------------------------------------------------------------------------- */
+/* Styles pour les conteneurs des cartes                                      */
+/* -------------------------------------------------------------------------- */
+
+#photographers-container {
+    display: grid;
+    gap: var(--spacing-medium); /* Utilise des variables pour l'espacement */
+    margin-top: var(--spacing-xxsmall);
+    padding: 0 var(--spacing-medium);
+}
+
+@media screen and (min-width: 768px) {
+    #photographers-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+        margin-top: var(--spacing-medium);
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    #photographers-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
+        margin: var(--spacing-medium) auto;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    #photographers-container {
+        grid-template-columns: repeat(3, 1fr); /* 4 colonnes pour grands écrans */
+        padding: 0;
+        margin: 0;
+    }
+}

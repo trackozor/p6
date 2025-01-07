@@ -21,45 +21,36 @@
     align-items: center; /* Centre les éléments horizontalement */
     text-align: center; /* Centre le texte */
     background-color: var(--neutral-color); /* Couleur de fond neutre */
-    padding: 5%; /* Espacement interne */
     max-width: 100%; /* Largeur maximale pour s'adapter aux écrans */
-    margin: 5% auto; /* Centre la carte avec des marges verticales */
+    margin: 6% auto; /* Centre la carte avec des marges verticales */
     transition: transform 0.3s ease; /* Transition fluide sur hover */
     cursor: pointer; /* Affiche un pointeur cliquable */
     text-decoration: none; /* Supprime les décorations de texte */
+}
+
+/*------------------------------------------------------------------------------*/
+/*  hover sur carte  */
+
+.photographer-card:hover {
+    transform: scale(1.2); /* Agrandit la carte de 20 % au survol */
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Ajoute une ombre subtile */
+    text-decoration: none; /* Pas de décoration de texte */
 }
 
 /* -------------------------------------------------------------------------- */
 /* Image du photographe                                                      */
 /* -------------------------------------------------------------------------- */
 
-.photographer-card-portrait-wrapper {
-    position: relative; /* Permet des ajustements par rapport aux éléments environnants */
-    margin: 0 auto; /* Centre horizontalement */
-    transition: transform 0.3s ease-in-out; /* Ajoute une animation fluide */
-    padding-top: 5% ; /* Espacement en haut */
-}
-
 .photographer-card-portrait {
     width: 10vh; /* Largeur de l'image fixe */
     height: 10vh; /* Hauteur de l'image fixe */
     border-radius: 50%; /* Forme circulaire */
     object-fit: cover; /* Remplit l'image sans distorsion */
-    margin-bottom: 10%; /* Espace en dessous de l'image */
+    object-position: center;
+    transform: scale(1.2);
+    margin: 1% 0 5% 0; /* Espace en dessous de l'image */
     transition: transform 0.3s ease; /* Transition fluide sur hover */
-    cursor: pointer; /* Pointeur cliquable */
-}
-
-.photographer-card-portrait-wrapper img {
-    transform: scale(1.5); /* Zoom initial pour l'image */
-    margin-top: 10%; /* Espacement en haut */
-    transition: transform 0.3s ease; /* Transition fluide */
-}
-
-.photographer-card:hover {
-    transform: scale(1.2); /* Agrandit la carte de 20 % au survol */
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Ajoute une ombre subtile */
-    text-decoration: none; /* Pas de décoration de texte */
+    cursor: pointer; /* Pointeur cliquable */   
 }
 
 /* -------------------------------------------------------------------------- */
@@ -108,31 +99,12 @@
 /* MEDIA QUERIES : Styles responsives                                        */
 /* -------------------------------------------------------------------------- */
 
-/* --- Tablettes (min-width : 768px) --- */
-@media screen and (min-width: 768px) {
-    #photographers-container {
-        display: grid; /* Active le mode Grid */
-        grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
-        grid-template-rows: repeat(2, 1fr); /* 2 lignes */
-        gap: 20px; /* Espace entre les cartes */
-        margin-top: 20px; /* Espacement supérieur */
-    }
-}
-
-
 /* --- Ordinateurs (min-width : 1024px) --- */
 @media screen and (min-width: 1024px) {
-    #photographers-container {
-        display: grid; /* Active le mode Grid */
-        grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
-        margin: 1% 0; /* Espacement vertical */
-    }
 
     .photographer-card-portrait {
         width: 8vw; /* Largeur basée sur la fenêtre */
         height: 8vw; /* Hauteur basée sur la fenêtre */
-        border-radius: 50%; /* Forme circulaire */
-        object-fit: cover; /* Remplit le cercle sans distorsion */
         transform: scale(1.2); /* Zoom initial */
         margin-top: 5%; /* Espacement supérieur */
         transition: transform 0.3s ease; /* Transition fluide */
@@ -141,33 +113,27 @@
 
     .photographer-card {
         display: flex; /* Active Flexbox */
-        padding: 2% 0; /* Réduit l'espacement interne */
+        padding: 3% 0 2% 0; /* Réduit l'espacement interne */
         width: 80%; /* Largeur relative */
-        padding-top: 2%; /* Espacement supérieur */
     }
 }
 
 /* --- Grands écrans (min-width : 1440px) --- */
 @media screen and (min-width: 1440px) {
-    #photographers-container {
-        display: grid; /* Active le mode Grid */
-        grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
-        margin: 0; /* Supprime les marges */
-        padding: 0; /* Supprime les espacements */
-    }
 
     .photographer-card-portrait {
-        width: 6vw; /* Largeur basée sur la fenêtre */
-        height: 6vw; /* Hauteur basée sur la fenêtre */
+        width: 8vw; /* Largeur basée sur la fenêtre */
+        height: 8vw; /* Hauteur basée sur la fenêtre */
         border-radius: 50%; /* Forme circulaire */
         object-fit: cover; /* Remplit le cercle sans distorsion */
-        margin: 10% 0; /* Espacement supérieur et inférieur */
+        margin: 8% 0; /* Espacement supérieur et inférieur */
         transform: scale(1.2); /* Zoom initial */
         transition: transform 0.3s ease; /* Transition fluide */
         cursor: pointer; /* Pointeur cliquable */
     }
 
     .photographer-card {
+        width:40%;
         border-radius: 1rem; /* Ajoute des coins arrondis */
         margin-bottom: 1%; /* Réduit l'espace en dessous */
         padding: 0; /* Supprime les espacements */
