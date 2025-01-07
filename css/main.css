@@ -291,191 +291,159 @@ a:focus {
     Date        : 01/01/2025
     Version     : 1.0.0
     Description : Styles pour la carte des photographes (photographer-card).
-                    Inclut les styles de base et des media queries pour
-                    l'adaptation aux différents écrans.
+                  Inclut les styles de base et des media queries pour
+                  l'adaptation aux différents écrans.
 ============================================================================= */
 /* -------------------------------------------------------------------------- */
 /* Carte du photographe (Mobile First)                                        */
 /* -------------------------------------------------------------------------- */
 .photographer-card {
-  position: relative;
-  display: flex; /* Organise les éléments en colonne */
-  flex-direction: column; /* Positionne les éléments verticalement */
+  position: relative; /* Position relative pour permettre des ajustements internes */
+  display: flex; /* Utilise Flexbox pour organiser les éléments */
+  flex-direction: column; /* Aligne les éléments en colonne */
   align-items: center; /* Centre les éléments horizontalement */
   text-align: center; /* Centre le texte */
   background-color: var(--neutral-color); /* Couleur de fond neutre */
   padding: 5%; /* Espacement interne */
-  max-width: 100%; /* Largeur maximale adaptée pour mobile */
-  margin: 5% auto; /* Centre la carte avec un espacement vertical */
-  transition: transform 0.3s ease; /* Transition pour toute la carte */
-  cursor: pointer; /* Pointeur de curseur pour le click */
-  text-decoration: none;
+  max-width: 100%; /* Largeur maximale pour s'adapter aux écrans */
+  margin: 5% auto; /* Centre la carte avec des marges verticales */
+  transition: transform 0.3s ease; /* Transition fluide sur hover */
+  cursor: pointer; /* Affiche un pointeur cliquable */
+  text-decoration: none; /* Supprime les décorations de texte */
 }
 
 /* -------------------------------------------------------------------------- */
 /* Image du photographe                                                      */
 /* -------------------------------------------------------------------------- */
 .photographer-card-portrait-wrapper {
-  position: relative;
-  margin: 0 auto; /* Centre le conteneur */
-  transition: transform 0.3s ease-in-out; /* Transition pour l'image */
-  padding-top: 5% 0;
+  position: relative; /* Permet des ajustements par rapport aux éléments environnants */
+  margin: 0 auto; /* Centre horizontalement */
+  transition: transform 0.3s ease-in-out; /* Ajoute une animation fluide */
+  padding-top: 5% 0; /* Espacement en haut */
 }
 
 .photographer-card-portrait {
-  width: 100px; /* Largeur fixe pour l'image */
-  height: 100px; /* Hauteur fixe */
-  border-radius: 50%; /* Rend l'image circulaire */
-  object-fit: cover; /* Remplit le cercle sans déformation */
-  margin-bottom: 10%; /* Espacement avec les autres éléments */
-  transform: scale(1.2); /* Zoom initial */
-  transition: transform 0.3s ease; /* Animation fluide sur hover */
-  cursor: pointer; /* Pointeur de curseur pour le click */
+  width: 100px; /* Largeur de l'image fixe */
+  height: 100px; /* Hauteur de l'image fixe */
+  border-radius: 50%; /* Forme circulaire */
+  object-fit: cover; /* Remplit l'image sans distorsion */
+  margin-bottom: 10%; /* Espace en dessous de l'image */
+  transform: scale(1.2); /* Ajoute un zoom initial */
+  transition: transform 0.3s ease; /* Transition fluide sur hover */
+  cursor: pointer; /* Pointeur cliquable */
 }
 
 .photographer-card-portrait img {
-  transform: scale(5); /* Zoom initial pour la carte */
-  margin-top: 10%;
-  transition: transform 0.3s ease; /* Animation fluide sur hover */
-  text-decoration: none;
+  transform: scale(5); /* Zoom initial pour l'image */
+  margin-top: 10%; /* Espacement en haut */
+  transition: transform 0.3s ease; /* Transition fluide */
+  text-decoration: none; /* Pas de décoration de texte */
 }
 
 .photographer-card:hover {
-  transform: scale(1.2); /* Zoom de 20 % */
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Ombre subtile */
-  text-decoration: none;
+  transform: scale(1.2); /* Agrandit la carte de 20 % au survol */
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Ajoute une ombre subtile */
+  text-decoration: none; /* Pas de décoration de texte */
 }
 
 /* -------------------------------------------------------------------------- */
 /* Nom du photographe                                                        */
 /* -------------------------------------------------------------------------- */
 .photographer-card-name {
-  font-size: var(--font-size-base, 1.6rem); /* Taille de texte adaptée pour mobile */
-  color: var(--secondary-color); /* Couleur secondaire */
+  font-size: var(--font-size-base, 1.6rem); /* Taille de texte pour mobile */
+  color: var(--secondary-color); /* Applique la couleur secondaire */
   font-weight: bold; /* Texte en gras */
-  margin-bottom: 8px; /* Espacement inférieur */
+  margin-bottom: 8px; /* Espace en dessous du nom */
+  margin-bottom: 8px; /* Espace en dessous du nom */
 }
 
 /* -------------------------------------------------------------------------- */
 /* Localisation du photographe                                               */
 /* -------------------------------------------------------------------------- */
 .photographer-card-location {
-  font-size: 1.2rem; /* Taille légèrement réduite */
-  color: var(--secondary-neutral); /* Couleur neutre secondaire */
-  margin-bottom: 6px; /* Espacement inférieur */
+  font-size: 1.1rem; /* Taille légèrement plus petite */
+  color: var(--primary-color); /* Couleur neutre secondaire */
+  margin-bottom: 6px; /* Espace en dessous */
 }
 
 /* -------------------------------------------------------------------------- */
 /* Slogan du photographe                                                     */
 /* -------------------------------------------------------------------------- */
 .photographer-card-tagline {
-  font-size: 1rem; /* Taille plus petite et discrète */
-  font-style: italic; /* Texte en italique */
+  font-size: 0.9rem; /* Taille discrète pour le slogan */
+  font-weight: 700;
   color: var(--secondary-neutral); /* Couleur neutre secondaire */
-  margin-bottom: 10px; /* Espacement inférieur */
+  margin-bottom: 10px; /* Espace en dessous */
 }
 
 /* -------------------------------------------------------------------------- */
 /* Prix par jour du photographe                                              */
 /* -------------------------------------------------------------------------- */
 .photographer-card-price {
-  font-size: 1.2rem; /* Taille légèrement mise en avant */
-  font-weight: bold; /* Texte en gras pour le prix */
+  font-size: 1.2rem; /* Taille mise en avant */
+  font-weight: bold; /* Texte en gras */
   color: var(--primary-color); /* Couleur principale pour le prix */
 }
 
 /* -------------------------------------------------------------------------- */
 /* MEDIA QUERIES : Styles responsives                                        */
 /* -------------------------------------------------------------------------- */
+/* --- Tablettes (min-width : 768px) --- */
 @media screen and (min-width: 768px) {
   #photographers-container {
     display: grid; /* Active le mode Grid */
-    grid-template-columns: repeat(2, 1fr); /* 3 colonnes de taille égale */
-    grid-template-rows: repeat(2, 1fr); /* 2 colonnes de taille*/
-    gap: 20px; /* Espacement entre les cartes */
-    margin-top: 20px; /* Ajoute un espacement interne */
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+    grid-template-rows: repeat(2, 1fr); /* 2 lignes */
+    gap: 20px; /* Espace entre les cartes */
+    margin-top: 20px; /* Espacement supérieur */
   }
 }
+/* --- Ordinateurs (min-width : 1024px) --- */
 @media screen and (min-width: 1024px) {
   #photographers-container {
     display: grid; /* Active le mode Grid */
-    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
-    margin: 1% 0;
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
+    margin: 1% 0; /* Espacement vertical */
   }
   .photographer-card-portrait {
-    width: 8vw; /* Largeur fixe pour l'image */
-    height: 8vw; /* Hauteur fixe */
-    border-radius: 50%; /* Rend l'image circulaire */
-    object-fit: cover; /* Remplit le cercle sans déformation */
+    width: 8vw; /* Largeur basée sur la fenêtre */
+    height: 8vw; /* Hauteur basée sur la fenêtre */
+    border-radius: 50%; /* Forme circulaire */
+    object-fit: cover; /* Remplit le cercle sans distorsion */
     transform: scale(1.2); /* Zoom initial */
-    margin-top: 5%;
-    transition: transform 0.3s ease; /* Animation fluide sur hover */
-    cursor: pointer; /* Pointeur de curseur pour le click */
+    margin-top: 5%; /* Espacement supérieur */
+    transition: transform 0.3s ease; /* Transition fluide */
+    cursor: pointer; /* Pointeur cliquable */
   }
   .photographer-card {
-    display: flex;
-    padding: 2% 0;
-    width: 80%;
-    padding: 0;
-    padding-top: 2%;
+    display: flex; /* Active Flexbox */
+    padding: 2% 0; /* Réduit l'espacement interne */
+    width: 80%; /* Largeur relative */
+    padding-top: 2%; /* Espacement supérieur */
   }
 }
+/* --- Grands écrans (min-width : 1440px) --- */
 @media screen and (min-width: 1440px) {
   #photographers-container {
     display: grid; /* Active le mode Grid */
-    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de taille égale */
-    margin: 1%;
-    padding: 0;
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
+    margin: 0; /* Supprime les marges */
+    padding: 0; /* Supprime les espacements */
   }
   .photographer-card-portrait {
-    width: 6vw; /* Largeur fixe pour l'image */
-    height: 6vw; /* Hauteur fixe */
-    border-radius: 50%; /* Rend l'image circulaire */
-    object-fit: cover; /* Remplit le cercle sans déformation */
-    margin: 10% 0; /* Espacement avec les autres éléments */
+    width: 6vw; /* Largeur basée sur la fenêtre */
+    height: 6vw; /* Hauteur basée sur la fenêtre */
+    border-radius: 50%; /* Forme circulaire */
+    object-fit: cover; /* Remplit le cercle sans distorsion */
+    margin: 10% 0; /* Espacement supérieur et inférieur */
     transform: scale(1.2); /* Zoom initial */
-    transition: transform 0.3s ease; /* Animation fluide sur hover */
-    cursor: pointer; /* Pointeur de curseur pour le click */
+    transition: transform 0.3s ease; /* Transition fluide */
+    cursor: pointer; /* Pointeur cliquable */
   }
   .photographer-card {
-    border-radius: 1rem;
-    margin-bottom: 1% 0;
-    padding: 0;
-    height: 30vh;
-  }
-  /* -------------------------------------------------------------------------- */
-  /* Nom du photographe                                                        */
-  /* -------------------------------------------------------------------------- */
-  .photographer-card-name {
-    font-size: var(--font-size-base, 1.6rem); /* Taille de texte adaptée pour mobile */
-    color: var(--secondary-color); /* Couleur secondaire */
-    font-weight: bold; /* Texte en gras */
-    margin-bottom: 8px; /* Espacement inférieur */
-  }
-  /* -------------------------------------------------------------------------- */
-  /* Localisation du photographe                                               */
-  /* -------------------------------------------------------------------------- */
-  .photographer-card-location {
-    font-size: 1.2rem; /* Taille légèrement réduite */
-    color: var(--secondary-neutral); /* Couleur neutre secondaire */
-    margin-bottom: 6px; /* Espacement inférieur */
-  }
-  /* -------------------------------------------------------------------------- */
-  /* Slogan du photographe                                                     */
-  /* -------------------------------------------------------------------------- */
-  .photographer-card-tagline {
-    font-size: 1rem; /* Taille plus petite et discrète */
-    font-style: italic; /* Texte en italique */
-    color: var(--secondary-neutral); /* Couleur neutre secondaire */
-    margin-bottom: 1%; /* Espacement inférieur */
-  }
-  /* -------------------------------------------------------------------------- */
-  /* Prix par jour du photographe                                              */
-  /* -------------------------------------------------------------------------- */
-  .photographer-card-price {
-    font-size: 1.2rem; /* Taille légèrement mise en avant */
-    font-weight: bold; /* Texte en gras pour le prix */
-    color: var(--primary-color); /* Couleur principale pour le prix */
+    border-radius: 1rem; /* Ajoute des coins arrondis */
+    margin-bottom: 1%; /* Réduit l'espace en dessous */
+    padding: 0; /* Supprime les espacements */
   }
 }
 /* =============================================================================
@@ -546,6 +514,19 @@ h1 {
     width: 80%; /* Réduit légèrement la largeur pour plus d'équilibre */
   }
 }
+/* =============================================================================
+    Projet      : Fisheye
+    Fichier     : _footer.scss
+    Auteur      : Trackozor
+    Date        : 01/01/2025
+    Version     : 1.0.0
+    Description : Styles pour le footer
+============================================================================= */
+footer {
+  display: flex;
+  justify-content: center;
+}
+
 /* =============================================================================
     Projet      :   Fisheye
     Fichier     :   photographer.scss
