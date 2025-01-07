@@ -1,12 +1,12 @@
 /* =============================================================================
-    Projet      : Fisheye
-    Fichier     : _card.scss
-    Auteur      : Trackozor
-    Date        : 01/01/2025
-    Version     : 1.0.0
-    Description : Styles pour la carte des photographes (photographer-card).
-                  Inclut les styles de base et des media queries pour
-                  l'adaptation aux différents écrans.
+    Projet      :    Fisheye
+    Fichier     :   _card.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :    1.0.0
+    Description :    Styles pour la carte des photographes (photographer-card).
+                    Inclut les styles de base et des media queries pour
+                    l'adaptation aux différents écrans.
 ============================================================================= */
 
 
@@ -69,8 +69,8 @@
 /* -------------------------------------------------------------------------- */
 
 .photographer-card-name {
-    font-size: var(--font-size-base, 1.6rem); /* Taille de texte pour mobile */
-    color: var(--secondary-color); /* Applique la couleur secondaire */
+    font-size: var(--font-size-large); /* Taille de texte pour mobile */
+    color: var(--text-color-name); /* Applique la couleur secondaire */
     font-weight: bold; /* Texte en gras */
     margin-bottom: 8px; /* Espace en dessous du nom */
     margin-bottom: 8px; /* Espace en dessous du nom */
@@ -81,8 +81,8 @@
 /* -------------------------------------------------------------------------- */
 
 .photographer-card-location {
-    font-size: 1.1rem; /* Taille légèrement plus petite */
-    color: var(--primary-color); /* Couleur neutre secondaire */
+    font-size: var(--font-size-small); /* Taille légèrement plus petite */
+    color: var(--text-color-secondary); /* Couleur neutre secondaire */
     margin-bottom: 6px; /* Espace en dessous */
 }
 
@@ -91,9 +91,9 @@
 /* -------------------------------------------------------------------------- */
 
 .photographer-card-tagline {
-    font-size: 0.9rem; /* Taille discrète pour le slogan */
-    font-weight: 700;
-    color: var(--secondary-neutral); /* Couleur neutre secondaire */
+    font-size: var(--font-size-small); /* Taille discrète pour le slogan */
+    font-weight: 500;
+    color: var( --text-color-primary); /* Couleur neutre secondaire */
     margin-bottom: 10px; /* Espace en dessous */
 }
 
@@ -102,9 +102,9 @@
 /* -------------------------------------------------------------------------- */
 
 .photographer-card-price {
-    font-size: 1.2rem; /* Taille mise en avant */
-    font-weight: bold; /* Texte en gras */
-    color: var(--primary-color); /* Couleur principale pour le prix */
+    font-size: var(--font-size-small); /* Taille mise en avant */
+    font-weight: 500; /* Texte en gras */
+    color: var(--text-color-tertiary); /* Couleur principale pour le prix */
 }
 
 /* -------------------------------------------------------------------------- */
@@ -121,6 +121,7 @@
         margin-top: 20px; /* Espacement supérieur */
     }
 }
+
 
 /* --- Ordinateurs (min-width : 1024px) --- */
 @media screen and (min-width: 1024px) {

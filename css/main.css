@@ -22,7 +22,7 @@
   /* ================================ */
   /* Palette principale               */
   /* ================================ */
-  --primary-color: #901C1C; /* Rouge foncé pour accentuation (AAA WCAG) */
+  --primary-color: #901C1C; /* Rouge foncé pour accentuation  */
   --primary-color-light: #D3573C; /* Rouge plus clair pour les hovers ou fonds */
   --secondary-color: #D3573C; /* Rouge clair pour les éléments secondaires */
   --neutral-color: #FAFAFA; /* Blanc cassé pour les fonds */
@@ -34,9 +34,10 @@
   /* ================================ */
   /* Couleurs de texte                */
   /* ================================ */
-  --text-color-primary: #FAFAFA; /* Couleur principale pour le texte */
-  --text-color-secondary: #901C1C; /* Texte contrastant sur fonds clairs */
-  --text-color-accent: #D3573C; /* Couleur d'accentuation pour liens ou boutons */
+  --text-color-primary:black; /* Couleur principale pour le texte */
+  --text-color-secondary: #901C1C;
+  --text-color-tertiary: #757575; /* Texte contrastant sur fonds clairs */
+  --text-color-name: #D3573C; /* Couleur pour les noms  */
   /* ================================ */
   /* Couleurs d'état                  */
   /* ================================ */
@@ -47,13 +48,13 @@
   /* ================================ */
   /* Typographie                      */
   /* ================================ */
-  --font-primary: "Roboto", sans-serif; /* Police principale */
-  --font-title: "Shrikhand", sans-serif; /* Police pour les titres */
+  --font-primary: "DM Sans"; /* Police principale */
   /* Tailles des polices */
-  --font-size-small: 1.4rem; /* Pour les textes secondaires */
-  --font-size-base: 1.6rem; /* Taille de texte par défaut */
-  --font-size-large: 2rem; /* Taille des sous-titres */
-  --font-size-xlarge: 2.4rem; /* Taille des titres principaux */
+  --font-size-small: 0.8rem; /* taille de texte 80% de la taille de base */
+  --font-size-base: 1rem; /* Taille de texte par défaut */
+  --font-size-large: 1.6rem; /* Taille de 60 % plus grand que la base*/
+  --font-size-xlarge: 2rem; /* taille doublé par rapport a la base */
+  --font-size-giant: 2.4rem; /* Taille  */
   /* Poids des polices */
   --font-weight-regular: 400; /* Poids standard des polices */
   --font-weight-bold: 700; /* Poids pour les polices en gras */
@@ -285,14 +286,14 @@ a:focus {
 }
 
 /* =============================================================================
-    Projet      : Fisheye
-    Fichier     : _card.scss
-    Auteur      : Trackozor
-    Date        : 01/01/2025
-    Version     : 1.0.0
-    Description : Styles pour la carte des photographes (photographer-card).
-                  Inclut les styles de base et des media queries pour
-                  l'adaptation aux différents écrans.
+    Projet      :    Fisheye
+    Fichier     :   _card.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :    1.0.0
+    Description :    Styles pour la carte des photographes (photographer-card).
+                    Inclut les styles de base et des media queries pour
+                    l'adaptation aux différents écrans.
 ============================================================================= */
 /* -------------------------------------------------------------------------- */
 /* Carte du photographe (Mobile First)                                        */
@@ -350,8 +351,8 @@ a:focus {
 /* Nom du photographe                                                        */
 /* -------------------------------------------------------------------------- */
 .photographer-card-name {
-  font-size: var(--font-size-base, 1.6rem); /* Taille de texte pour mobile */
-  color: var(--secondary-color); /* Applique la couleur secondaire */
+  font-size: var(--font-size-large); /* Taille de texte pour mobile */
+  color: var(--text-color-name); /* Applique la couleur secondaire */
   font-weight: bold; /* Texte en gras */
   margin-bottom: 8px; /* Espace en dessous du nom */
   margin-bottom: 8px; /* Espace en dessous du nom */
@@ -361,8 +362,8 @@ a:focus {
 /* Localisation du photographe                                               */
 /* -------------------------------------------------------------------------- */
 .photographer-card-location {
-  font-size: 1.1rem; /* Taille légèrement plus petite */
-  color: var(--primary-color); /* Couleur neutre secondaire */
+  font-size: var(--font-size-small); /* Taille légèrement plus petite */
+  color: var(--text-color-secondary); /* Couleur neutre secondaire */
   margin-bottom: 6px; /* Espace en dessous */
 }
 
@@ -370,9 +371,9 @@ a:focus {
 /* Slogan du photographe                                                     */
 /* -------------------------------------------------------------------------- */
 .photographer-card-tagline {
-  font-size: 0.9rem; /* Taille discrète pour le slogan */
-  font-weight: 700;
-  color: var(--secondary-neutral); /* Couleur neutre secondaire */
+  font-size: var(--font-size-small); /* Taille discrète pour le slogan */
+  font-weight: 500;
+  color: var(--text-color-primary); /* Couleur neutre secondaire */
   margin-bottom: 10px; /* Espace en dessous */
 }
 
@@ -380,9 +381,9 @@ a:focus {
 /* Prix par jour du photographe                                              */
 /* -------------------------------------------------------------------------- */
 .photographer-card-price {
-  font-size: 1.2rem; /* Taille mise en avant */
-  font-weight: bold; /* Texte en gras */
-  color: var(--primary-color); /* Couleur principale pour le prix */
+  font-size: var(--font-size-small); /* Taille mise en avant */
+  font-weight: 500; /* Texte en gras */
+  color: var(--text-color-tertiary); /* Couleur principale pour le prix */
 }
 
 /* -------------------------------------------------------------------------- */
