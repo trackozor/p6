@@ -321,7 +321,8 @@ a:focus {
 }
 
 /*------------------------------------------------------------------------------*/
-/*  hover sur carte  */
+/*  hover sur carte                                                             */
+/*------------------------------------------------------------------------------*/
 .photographer-card:hover {
   transform: scale(1.2); /* Agrandit la carte de 20 % au survol */
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Ajoute une ombre subtile */
@@ -347,7 +348,7 @@ a:focus {
 /* Nom du photographe                                                        */
 /* -------------------------------------------------------------------------- */
 .photographer-card-name {
-  font-size: var(--font-size-large); /* Taille de texte pour mobile */
+  font-size: var(--font-size-xlarge); /* Taille de texte pour mobile */
   color: var(--text-color-name); /* Applique la couleur secondaire */
   font-weight: bold; /* Texte en gras */
   margin-bottom: 2%;
@@ -357,9 +358,9 @@ a:focus {
 /* Localisation du photographe                                               */
 /* -------------------------------------------------------------------------- */
 .photographer-card-location {
-  font-size: var(--font-size-small); /* Taille légèrement plus petite */
+  font-size: var(--font-size-base); /* Taille légèrement plus petite */
   color: var(--text-color-secondary); /* Couleur neutre secondaire */
-  margin-bottom: 6px; /* Espace en dessous */
+  margin-bottom: 2%; /* Espace en dessous */
 }
 
 /* -------------------------------------------------------------------------- */
@@ -369,7 +370,7 @@ a:focus {
   font-size: var(--font-size-small); /* Taille discrète pour le slogan */
   font-weight: 500;
   color: var(--text-color-primary); /* Couleur neutre secondaire */
-  margin-bottom: 10px; /* Espace en dessous */
+  margin-bottom: 2%; /* Espace en dessous */
 }
 
 /* -------------------------------------------------------------------------- */
@@ -381,55 +382,85 @@ a:focus {
   color: var(--text-color-tertiary); /* Couleur principale pour le prix */
 }
 
+/* ============================================================================*/
+/*                          MEDIA QUERIES                                      */
+/* =========================================================================== */
 /* -------------------------------------------------------------------------- */
-/* MEDIA QUERIES : Styles responsives                                        */
+/*              --- Tablette (min-width : 768px) ---                          */
 /* -------------------------------------------------------------------------- */
-/* --- Ordinateurs (min-width : 1024px) --- */
-@media screen and (min-width: 1024px) {
-  .photographer-card-portrait {
-    width: 8vw; /* Largeur basée sur la fenêtre */
-    height: 8vw; /* Hauteur basée sur la fenêtre */
-    transform: scale(1.2); /* Zoom initial */
-    margin-top: 5%; /* Espacement supérieur */
-    transition: transform 0.3s ease; /* Transition fluide */
-    cursor: pointer; /* Pointeur cliquable */
-  }
+@media screen and (min-width: 768px) {
+  /* ---------------------------------------------------------------------- */
+  /* Carte du photographe (Tablet)                                          */
+  /* ---------------------------------------------------------------------- */
   .photographer-card {
     display: flex; /* Active Flexbox */
-    padding: 3% 0 2% 0; /* Réduit l'espacement interne */
-    width: 80%; /* Largeur relative */
+    padding: 0; /* Réduit l'espacement interne */
+    width: 90%; /* Largeur relative */
+  }
+  /* ------------------------------------------------------------------------*/
+  /* Image du photographe                                                    */
+  /* ------------------------------------------------------------------------*/
+  .photographer-card-portrait {
+    width: 10vw; /* Largeur basée sur la fenêtre */
+    height: 10vw; /* Hauteur basée sur la fenêtre */
+    margin: 1% 0 3% 0; /* Espacement supérieur */
+  }
+  /* -------------------------------------------------------------------------*/
+  /* Nom du photographe                                                       */
+  /* -------------------------------------------------------------------------*/
+  .photographer-card-name {
+    font-size: var(--font-size-large); /* Taille de texte pour mobile */
+  }
+  /* -------------------------------------------------------------------------*/
+  /* Localisation du photographe                                              */
+  /* -------------------------------------------------------------------------*/
+  .photographer-card-location {
+    font-size: var(--font-size-medium); /* Taille légèrement plus petite */
+  }
+  /* --------------------------------------------------------------------------*/
+  /* Slogan du photographe                                                     */
+  /* --------------------------------------------------------------------------*/
+  .photographer-card-tagline {
+    font-size: var(--font-size-base); /* Taille discrète pour le slogan */
+  }
+  /* --------------------------------------------------------------------------*/
+  /* Prix par jour du photographe                                              */
+  /* --------------------------------------------------------------------------*/
+  .photographer-card-price {
+    font-size: var(--font-size-base); /* Taille mise en avant */
   }
 }
-/* --- Grands écrans (min-width : 1440px) --- */
-@media screen and (min-width: 1440px) {
-  .photographer-card-portrait {
-    width: 8vw; /* Largeur basée sur la fenêtre */
-    height: 8vw; /* Hauteur basée sur la fenêtre */
-    border-radius: 50%; /* Forme circulaire */
-    object-fit: cover; /* Remplit le cercle sans distorsion */
-    margin: 8% 0; /* Espacement supérieur et inférieur */
-    transform: scale(1.2); /* Zoom initial */
-    transition: transform 0.3s ease; /* Transition fluide */
-    cursor: pointer; /* Pointeur cliquable */
-  }
+/* ------------------------------------------------------------------------------ */
+/*              --- Desktop (min-width : 1024px) ---                              */
+/* ------------------------------------------------------------------------------ */
+@media screen and (min-width: 1024px) {
+  /* -------------------------------------------------------------------------- */
+  /* Carte du photographe (Desktop)                                             */
+  /* -------------------------------------------------------------------------- */
   .photographer-card {
-    width: 50%;
-    border-radius: 1rem; /* Ajoute des coins arrondis */
-    margin-bottom: 1%; /* Réduit l'espace en dessous */
-    padding: 0; /* Supprime les espacements */
+    display: flex; /* Active Flexbox */
+    padding: 0; /* Réduit l'espacement interne */
+    width: 90%; /* Largeur relative */
+  }
+  /* -------------------------------------------------------------------------- */
+  /* Image du photographe                                                      */
+  /* -------------------------------------------------------------------------- */
+  .photographer-card-portrait {
+    width: 10vw; /* Largeur basée sur la fenêtre */
+    height: 10vw; /* Hauteur basée sur la fenêtre */
+    margin: 5% 0 8% 0; /* Espacement supérieur */
   }
   /* -------------------------------------------------------------------------- */
   /* Nom du photographe                                                        */
   /* -------------------------------------------------------------------------- */
   .photographer-card-name {
-    font-size: var(--font-size-xlarge); /* Taille de texte pour mobile */
-    color: var(--text-color-name); /* Applique la couleur secondaire */
+    font-size: var(--font-size-large); /* Taille de texte pour mobile */
   }
   /* -------------------------------------------------------------------------- */
   /* Localisation du photographe                                               */
   /* -------------------------------------------------------------------------- */
   .photographer-card-location {
-    font-size: var(--font-size-base); /* Taille légèrement plus petite */
+    font-size: var(--font-size-medium); /* Taille légèrement plus petite */
   }
   /* -------------------------------------------------------------------------- */
   /* Slogan du photographe                                                     */
@@ -439,6 +470,52 @@ a:focus {
   }
   /* -------------------------------------------------------------------------- */
   /* Prix par jour du photographe                                              */
+  /* -------------------------------------------------------------------------- */
+  .photographer-card-price {
+    font-size: var(--font-size-base); /* Taille mise en avant */
+  }
+}
+/* ------------------------------------------------------------------------------ */
+/*              --- Grands écrans (min-width : 1440px) ---                        */
+/* ------------------------------------------------------------------------------ */
+@media screen and (min-width: 1440px) {
+  /* --------------------------------------------------------------------------  */
+  /* Carte du photographe (Large Desktop)                                        */
+  /* --------------------------------------------------------------------------  */
+  .photographer-card {
+    width: 50%;
+    border-radius: 1rem; /* Ajoute des coins arrondis */
+    margin-bottom: 1%; /* Réduit l'espace en dessous */
+    padding: 0; /* Supprime les espacements */
+  }
+  /* -------------------------------------------------------------------------- */
+  /* Image du photographe                                                       */
+  /* -------------------------------------------------------------------------- */
+  .photographer-card-portrait {
+    width: 8vw; /* Largeur basée sur la fenêtre */
+    height: 8vw; /* Hauteur basée sur la fenêtre */
+    margin: 8% 0; /* Espacement supérieur et inférieur */
+  }
+  /* -------------------------------------------------------------------------- */
+  /* Nom du photographe                                                         */
+  /* -------------------------------------------------------------------------- */
+  .photographer-card-name {
+    font-size: var(--font-size-xlarge); /* Taille de texte pour mobile */
+  }
+  /* -------------------------------------------------------------------------- */
+  /* Localisation du photographe                                                */
+  /* -------------------------------------------------------------------------- */
+  .photographer-card-location {
+    font-size: var(--font-size-medium); /* Taille légèrement plus petite */
+  }
+  /* -------------------------------------------------------------------------- */
+  /* Slogan du photographe                                                      */
+  /* -------------------------------------------------------------------------- */
+  .photographer-card-tagline {
+    font-size: var(--font-size-base); /* Taille discrète pour le slogan */
+  }
+  /* -------------------------------------------------------------------------- */
+  /* Prix par jour du photographe                                               */
   /* -------------------------------------------------------------------------- */
   .photographer-card-price {
     font-size: var(--font-size-base); /* Taille mise en avant */

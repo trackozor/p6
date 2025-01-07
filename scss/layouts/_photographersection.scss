@@ -5,15 +5,14 @@
 
 #photographers-container {
     display: grid;
-    gap: var(--spacing-medium); /* Utilise des variables pour l'espacement */
+    gap: var(--spacing-base); /* Utilise des variables pour l'espacement */
     margin-top: var(--spacing-xxsmall);
-    padding: 0 var(--spacing-medium);
+    padding: 0 var(--spacing-base);
 }
 
 @media screen and (min-width: 768px) {
     #photographers-container {
         grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
-        margin-top: var(--spacing-medium);
     }
 }
 
