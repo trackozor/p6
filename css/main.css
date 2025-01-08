@@ -253,50 +253,69 @@ a:focus {
   color: var(--primary-color); /* Applique une couleur d'accentuation */
 }
 
+/* -------------------------------------------------------------------------- */
+/* Bouton de contact                                                          */
+/* Description : Style pour le bouton de contact avec un design simple et     */
+/* élégant. Inclut des ajustements responsive pour les tablettes.             */
+/* -------------------------------------------------------------------------- */
 .contact_button {
-  font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  padding: 3% 3%;
-  max-width: 150px;
-  max-height: 70px;
-  border: none;
-  background-color: #901C1C;
-  border-radius: 0.3rem;
-  margin: 5% 0;
-  cursor: pointer;
+  font-size: 1rem; /* Taille de la police pour le texte du bouton */
+  font-weight: bold; /* Texte en gras pour plus de visibilité */
+  color: white; /* Couleur du texte */
+  padding: 3% 3%; /* Espacement interne pour rendre le bouton plus grand */
+  max-width: 150px; /* Limite la largeur maximale du bouton */
+  max-height: 70px; /* Limite la hauteur maximale du bouton */
+  border: none; /* Supprime les bordures */
+  background-color: #901C1C; /* Couleur de fond rouge foncé */
+  border-radius: 0.3rem; /* Coins légèrement arrondis */
+  margin: 5% 0; /* Ajoute un espace vertical autour du bouton */
+  cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
 }
 @media (min-width: 767px) {
   .contact_button {
-    max-height: 50px;
-    padding: 2%;
+    max-height: 50px; /* Réduit la hauteur maximale sur tablette */
+    padding: 2%; /* Diminue les espacements internes */
   }
 }
 
-/* Icône SVG */
+/* -------------------------------------------------------------------------- */
+/* Icônes SVG                                                                 */
+/* Description : Style générique pour les icônes SVG avec des transitions     */
+/* pour un changement de couleur fluide au survol.                            */
+/* -------------------------------------------------------------------------- */
 .icon {
-  width: 24px; /* Largeur de l'icône */
-  height: 24px; /* Hauteur de l'icône */
+  width: 24px; /* Largeur fixe pour toutes les icônes */
+  height: 24px; /* Hauteur fixe pour toutes les icônes */
   fill: #fff; /* Couleur de l'icône par défaut (blanc) */
-  transition: fill 0.3s ease; /* Animation pour le changement de couleur au survol */
+  transition: fill 0.3s ease; /* Ajoute une transition pour le changement de couleur au survol */
 }
 
+/* -------------------------------------------------------------------------- */
+/* Effet au survol pour les icônes SVG                                        */
+/* Description : Change la couleur de l'icône au survol.                      */
+/* -------------------------------------------------------------------------- */
 .lightbox-prev:hover .icon {
-  fill: #f00; /* Change la couleur au survol */
+  fill: #f00; /* Change la couleur de l'icône au survol (rouge) */
 }
 
+/* -------------------------------------------------------------------------- */
+/* Boutons de navigation et de fermeture                                      */
+/* Description : Supprime les styles par défaut et centre les icônes.         */
+/* Appliqué aux boutons suivants : lightbox-prev, lightbox-close,             */
+/* lightbox-next, modal-close.                                                */
+/* -------------------------------------------------------------------------- */
 .lightbox-prev, .lightbox-close, .lightbox-next, .modal-close {
-  background: none; /* Supprime tout arrière-plan */
-  border: none; /* Supprime les bordures */
-  padding: 0; /* Supprime les espaces internes */
-  margin: 0; /* Supprime les marges */
-  box-shadow: none; /* Supprime les ombres */
+  background: none; /* Supprime tout arrière-plan pour un design minimal */
+  border: none; /* Supprime les bordures par défaut */
+  padding: 0; /* Supprime les espacements internes */
+  margin: 0; /* Supprime les marges externes */
+  box-shadow: none; /* Supprime les ombres éventuelles */
   cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
-  display: flex; /* Permet d'aligner correctement l'icône */
-  align-items: center; /* Centre l'icône verticalement */
-  justify-content: center; /* Centre l'icône horizontalement */
-  width: auto; /* S'ajuste à la taille de l'icône */
-  height: auto; /* S'ajuste à la taille de l'icône */
+  display: flex; /* Utilise Flexbox pour organiser le contenu */
+  align-items: center; /* Centre les icônes verticalement */
+  justify-content: center; /* Centre les icônes horizontalement */
+  width: auto; /* Ajuste automatiquement la largeur au contenu */
+  height: auto; /* Ajuste automatiquement la hauteur au contenu */
 }
 
 /* =============================================================================
@@ -867,50 +886,69 @@ a:focus {
   color: var(--primary-color); /* Applique une couleur d'accentuation */
 }
 
+/* -------------------------------------------------------------------------- */
+/* Bouton de contact                                                          */
+/* Description : Style pour le bouton de contact avec un design simple et     */
+/* élégant. Inclut des ajustements responsive pour les tablettes.             */
+/* -------------------------------------------------------------------------- */
 .contact_button {
-  font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  padding: 3% 3%;
-  max-width: 150px;
-  max-height: 70px;
-  border: none;
-  background-color: #901C1C;
-  border-radius: 0.3rem;
-  margin: 5% 0;
-  cursor: pointer;
+  font-size: 1rem; /* Taille de la police pour le texte du bouton */
+  font-weight: bold; /* Texte en gras pour plus de visibilité */
+  color: white; /* Couleur du texte */
+  padding: 3% 3%; /* Espacement interne pour rendre le bouton plus grand */
+  max-width: 150px; /* Limite la largeur maximale du bouton */
+  max-height: 70px; /* Limite la hauteur maximale du bouton */
+  border: none; /* Supprime les bordures */
+  background-color: #901C1C; /* Couleur de fond rouge foncé */
+  border-radius: 0.3rem; /* Coins légèrement arrondis */
+  margin: 5% 0; /* Ajoute un espace vertical autour du bouton */
+  cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
 }
 @media (min-width: 767px) {
   .contact_button {
-    max-height: 50px;
-    padding: 2%;
+    max-height: 50px; /* Réduit la hauteur maximale sur tablette */
+    padding: 2%; /* Diminue les espacements internes */
   }
 }
 
-/* Icône SVG */
+/* -------------------------------------------------------------------------- */
+/* Icônes SVG                                                                 */
+/* Description : Style générique pour les icônes SVG avec des transitions     */
+/* pour un changement de couleur fluide au survol.                            */
+/* -------------------------------------------------------------------------- */
 .icon {
-  width: 24px; /* Largeur de l'icône */
-  height: 24px; /* Hauteur de l'icône */
+  width: 24px; /* Largeur fixe pour toutes les icônes */
+  height: 24px; /* Hauteur fixe pour toutes les icônes */
   fill: #fff; /* Couleur de l'icône par défaut (blanc) */
-  transition: fill 0.3s ease; /* Animation pour le changement de couleur au survol */
+  transition: fill 0.3s ease; /* Ajoute une transition pour le changement de couleur au survol */
 }
 
+/* -------------------------------------------------------------------------- */
+/* Effet au survol pour les icônes SVG                                        */
+/* Description : Change la couleur de l'icône au survol.                      */
+/* -------------------------------------------------------------------------- */
 .lightbox-prev:hover .icon {
-  fill: #f00; /* Change la couleur au survol */
+  fill: #f00; /* Change la couleur de l'icône au survol (rouge) */
 }
 
+/* -------------------------------------------------------------------------- */
+/* Boutons de navigation et de fermeture                                      */
+/* Description : Supprime les styles par défaut et centre les icônes.         */
+/* Appliqué aux boutons suivants : lightbox-prev, lightbox-close,             */
+/* lightbox-next, modal-close.                                                */
+/* -------------------------------------------------------------------------- */
 .lightbox-prev, .lightbox-close, .lightbox-next, .modal-close {
-  background: none; /* Supprime tout arrière-plan */
-  border: none; /* Supprime les bordures */
-  padding: 0; /* Supprime les espaces internes */
-  margin: 0; /* Supprime les marges */
-  box-shadow: none; /* Supprime les ombres */
+  background: none; /* Supprime tout arrière-plan pour un design minimal */
+  border: none; /* Supprime les bordures par défaut */
+  padding: 0; /* Supprime les espacements internes */
+  margin: 0; /* Supprime les marges externes */
+  box-shadow: none; /* Supprime les ombres éventuelles */
   cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
-  display: flex; /* Permet d'aligner correctement l'icône */
-  align-items: center; /* Centre l'icône verticalement */
-  justify-content: center; /* Centre l'icône horizontalement */
-  width: auto; /* S'ajuste à la taille de l'icône */
-  height: auto; /* S'ajuste à la taille de l'icône */
+  display: flex; /* Utilise Flexbox pour organiser le contenu */
+  align-items: center; /* Centre les icônes verticalement */
+  justify-content: center; /* Centre les icônes horizontalement */
+  width: auto; /* Ajuste automatiquement la largeur au contenu */
+  height: auto; /* Ajuste automatiquement la hauteur au contenu */
 }
 
 /* =============================================================================
@@ -1194,35 +1232,38 @@ footer {
     Date        :   08/01/2025
     Version     :   1.0.0
     Description :   Styles pour la modal, incluant le conteneur principal, 
-                    l'overlay et la gestion responsive.
+                    l'overlay, les transitions et la gestion responsive.
 ============================================================================= */
 /* -------------------------------------------------------------------------- */
 /* Conteneur principal de la modal                                            */
 /* Description : Style principal pour afficher une modal centrée             */
 /* -------------------------------------------------------------------------- */
 .modal-container {
-  display: flex; /* Par défaut, la modal est masquée */
-  position: absolute; /* Positionnement relatif à la page */
-  z-index: 10; /* Place la modal au-dessus des autres éléments */
-  top: 5%; /* Décale la modal légèrement du haut de la page */
-  width: 100%; /* Occupe toute la largeur de la fenêtre */
-  height: 100%; /* Occupe toute la hauteur de la fenêtre */
-  max-width: 600px; /* Limite la largeur sur les écrans larges */
-  background-color: #DB8876; /* Couleur de fond principale */
-  border-radius: 5px; /* Coins légèrement arrondis */
-  display: flex; /* Utilisation de Flexbox pour l'agencement */
-  flex-direction: column; /* Les éléments sont empilés verticalement */
-  align-items: center; /* Centre les éléments horizontalement */
-  justify-content: space-between; /* Espace égal entre les éléments */
-  padding: 0; /* Pas de padding interne */
-  margin: auto; /* Centre la modal dans la page */
+  display: flex; /* Active l'affichage Flexbox pour structurer les enfants */
+  position: absolute; /* Permet un positionnement relatif à la page */
+  z-index: 10; /* Positionne la modal au-dessus des autres éléments */
+  top: 5%; /* Décale la modal légèrement du haut de la fenêtre */
+  width: 100%; /* La modal occupe toute la largeur de l'écran */
+  height: 100%; /* La modal occupe toute la hauteur de l'écran */
+  max-width: 600px; /* Limite la largeur de la modal sur les écrans larges */
+  background-color: #DB8876; /* Couleur de fond pour un style cohérent */
+  border-radius: 5px; /* Coins arrondis pour un design moderne */
+  flex-direction: column; /* Les éléments enfants sont empilés verticalement */
+  align-items: center; /* Centre les enfants horizontalement */
+  justify-content: space-between; /* Espace uniforme entre les éléments */
+  padding: 0; /* Pas de marges internes */
+  margin: auto; /* Centre la modal dans la fenêtre */
+  /* ---------------------------------------------------------------------- */
+  /* Styles pour les tablettes                                              */
+  /* Description : Ajuste la modal pour s'adapter à des écrans moyens       */
+  /* ---------------------------------------------------------------------- */
 }
 @media (min-width: 767px) {
   .modal-container {
-    top: 8%; /* Décale la modal davantage du haut */
-    left: 30%; /* Décale la modal du côté gauche */
-    width: 40%; /* Réduit la largeur de la modal pour un meilleur rendu */
-    height: auto; /* Ajuste la hauteur automatiquement au contenu */
+    top: 8%; /* Décale davantage la modal du haut */
+    left: 30%; /* Ajuste horizontalement pour un centrage optimal */
+    width: 40%; /* Réduit la largeur pour un meilleur affichage */
+    height: auto; /* Ajuste automatiquement la hauteur au contenu */
   }
 }
 
@@ -1231,75 +1272,101 @@ footer {
 /* Description : Couche semi-transparente pour masquer l'arrière-plan         */
 /* -------------------------------------------------------------------------- */
 #modal-overlay {
-  display: none;
-  position: fixed; /* Positionnement fixe pour couvrir tout l'écran */
+  display: none; /* Masque l'overlay par défaut */
+  position: fixed; /* L'overlay couvre l'écran indépendamment du défilement */
   top: 0; /* Ancrage au bord supérieur */
   left: 0; /* Ancrage au bord gauche */
-  width: 100%; /* Occupe toute la largeur de la fenêtre */
-  height: 100%; /* Occupe toute la hauteur de la fenêtre */
-  background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
-  z-index: 5; /* Positionné sous la modal mais au-dessus du contenu */
+  width: 100%; /* L'overlay couvre toute la largeur de la fenêtre */
+  height: 100%; /* L'overlay couvre toute la hauteur de la fenêtre */
+  background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent pour un effet visuel */
+  z-index: 5; /* Place l'overlay sous la modal mais au-dessus du contenu */
 }
 
 #modal-overlay.active {
-  display: flex; /* Affiche l'overlay lorsqu'elle est active */
+  display: flex; /* Affiche l'overlay lorsqu'il est activé */
 }
 
 /* -------------------------------------------------------------------------- */
 /* Conteneur spécifique : Modal de contact                                    */
-/* Description : Styles spécifiques pour la modal de contact                 */
+/* Description : Styles spécifiques pour l'affichage de la modal de contact   */
 /* -------------------------------------------------------------------------- */
 #contact-modal {
-  display: none; /* Masqué par défaut */
+  display: none; /* Masque la modal par défaut */
   margin: 0 auto; /* Centre le contenu horizontalement */
   opacity: 0; /* Rendre la modal invisible par défaut */
-  transform: scale(0.9); /* Réduire légèrement la taille initiale */
-  transition: opacity 0.3s ease, transform 0.3s ease; /* Ajout d'une transition */
+  transform: scale(0.9); /* Réduction initiale de la taille de la modal */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Animation fluide pour l'apparition */
 }
 
 #contact-modal.active {
-  display: flex; /* Affiche la modal lorsqu'elle est active */
+  display: flex; /* Affiche la modal lorsqu'elle est activée */
   opacity: 1; /* Rendre la modal visible */
-  transform: scale(1); /* Revenir à la taille normale */
+  transform: scale(1); /* Ramène la modal à sa taille normale */
 }
 
 /* -------------------------------------------------------------------------- */
 /* Groupe de champs de formulaire                                             */
-/* Description : Styles pour les champs dans la modal                        */
+/* Description : Styles pour les champs et labels dans la modal               */
 /* -------------------------------------------------------------------------- */
 .form-group {
-  width: 85vw; /* Largeur relative pour les écrans mobiles */
-  max-width: 500px; /* Limite la largeur pour les écrans larges */
-  display: flex;
-  flex-direction: column;
+  width: 85vw; /* Largeur relative pour s'adapter aux petits écrans */
+  max-width: 500px; /* Limite la largeur sur les écrans plus grands */
+  display: flex; /* Utilisation de Flexbox pour organiser les labels et champs */
+  flex-direction: column; /* Les labels et champs sont empilés verticalement */
 }
 
+/* Styles pour les labels */
 .form-group label {
-  font-size: var(--font-size-base);
-  margin: 2% 0;
+  font-size: var(--font-size-base); /* Taille de la police basée sur la variable */
+  margin: 2% 0; /* Ajoute un espacement au-dessus et en dessous des labels */
 }
 
+/* Styles pour les champs de saisie */
 .form-group input {
-  font-size: var(--font-size-base);
-  padding: 2%;
+  font-size: var(--font-size-base); /* Taille de police standard */
+  padding: 2%; /* Ajoute un rembourrage interne pour une meilleure lisibilité */
 }
 
+/* =============================================================================
+    Projet      :   Fisheye
+    Fichier     :   photographer-bandeau.scss
+    Auteur      :   Trackozor
+    Date        :   08/01/2025
+    Version     :   1.0.0
+    Description :   Styles pour la bandeau d'information du photographe,
+                    incluant des ajustements responsives pour tablettes 
+                    et ordinateurs de bureau.
+============================================================================= */
+/* -------------------------------------------------------------------------- */
+/* Section des informations du photographe                                    */
+/* Description : Structure et styles pour afficher les informations           */
+/* principales du photographe dans un bandeau.                                */
+/* -------------------------------------------------------------------------- */
 .photographer-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #FAFAFA;
+  display: flex; /* Active le modèle Flexbox pour l'agencement des éléments */
+  flex-direction: column; /* Par défaut, les éléments sont empilés verticalement */
+  align-items: center; /* Centre les éléments horizontalement */
+  background: #FAFAFA; /* Couleur de fond gris clair pour un contraste doux */
+  /* ---------------------------------------------------------------------- */
+  /* Styles pour les tablettes                                              */
+  /* Description : Ajuste la disposition pour un affichage horizontal       */
+  /* ---------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------- */
+  /* Styles pour les ordinateurs de bureau                                  */
+  /* Description : Maintient la disposition horizontale et l'espacement     */
+  /* ---------------------------------------------------------------------- */
 }
 @media (min-width: 767px) {
   .photographer-info {
-    flex-direction: row;
-    justify-content: space-around;
+    flex-direction: row; /* Passe à une disposition horizontale */
+    justify-content: space-around; /* Espacement égal entre les éléments */
   }
 }
 @media (min-width: 1024px) {
   .photographer-info {
-    flex-direction: row;
-    justify-content: space-around;
+    flex-direction: row; /* Disposition horizontale pour les grands écrans */
+    justify-content: space-around; /* Répartit les éléments avec un espace égal */
+    margin: 0 2%;
   }
 }
 

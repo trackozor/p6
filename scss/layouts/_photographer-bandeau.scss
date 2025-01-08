@@ -1,16 +1,42 @@
-.photographer-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #FAFAFA ;
+/* =============================================================================
+    Projet      :   Fisheye
+    Fichier     :   photographer-bandeau.scss
+    Auteur      :   Trackozor
+    Date        :   08/01/2025
+    Version     :   1.0.0
+    Description :   Styles pour la bandeau d'information du photographe,
+                    incluant des ajustements responsives pour tablettes 
+                    et ordinateurs de bureau.
+============================================================================= */
 
+/* -------------------------------------------------------------------------- */
+/* Section des informations du photographe                                    */
+/* Description : Structure et styles pour afficher les informations           */
+/* principales du photographe dans un bandeau.                                */
+/* -------------------------------------------------------------------------- */
+
+.photographer-info {
+    display: flex; /* Active le modèle Flexbox pour l'agencement des éléments */
+    flex-direction: column; /* Par défaut, les éléments sont empilés verticalement */
+    align-items: center; /* Centre les éléments horizontalement */
+    background: #FAFAFA; /* Couleur de fond gris clair pour un contraste doux */
+
+    /* ---------------------------------------------------------------------- */
+    /* Styles pour les tablettes                                              */
+    /* Description : Ajuste la disposition pour un affichage horizontal       */
+    /* ---------------------------------------------------------------------- */
     @include tablet {
-        flex-direction: row;
-        justify-content: space-around;
+        flex-direction: row; /* Passe à une disposition horizontale */
+        justify-content: space-around; /* Espacement égal entre les éléments */
     }
 
+    /* ---------------------------------------------------------------------- */
+    /* Styles pour les ordinateurs de bureau                                  */
+    /* Description : Maintient la disposition horizontale et l'espacement     */
+    /* ---------------------------------------------------------------------- */
     @include desktop {
-        flex-direction: row;
-        justify-content: space-around;
+        flex-direction: row; /* Disposition horizontale pour les grands écrans */
+        justify-content: space-around; /* Répartit les éléments avec un espace égal */
+        margin:0 2%;
     }
 }
