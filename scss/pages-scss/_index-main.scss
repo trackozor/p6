@@ -5,12 +5,36 @@
     Date        :   01/01/2025
     Version     :   1.0.0
     Description :   Styles spécifiques à la page d'accueil du projet Fisheye.
-                    layouts et sections nécessaires pour construire cette page.
+                    Inclut les composants, layouts et sections nécessaires pour
+                    construire cette page.
 ============================================================================= */
 
 // ============================================================================
-//  1.Layout    Définition de la structure générale utilisée sur la page d'accueil.
+// 1. Variables et Mixins
+//    Importation des variables globales et des mixins pour une configuration
+//    centralisée  des styles.
 // ============================================================================
-@use '../layouts/header';              // Styles pour l'en-tête du site.
-@use '../layouts/footer';              // Styles pour le pied de page.
-@use '../layouts/photographersection'; // Section spécifique aux photographes.
+@import '../base/variables'; // Variables globales (couleurs, typographie, etc.).
+@import '../base/mixins';    // Mixins SCSS pour des styles modulaires et réutilisables.
+
+// ============================================================================
+// 2. Réinitialisation et Styles Globaux
+//    Réinitialisation des styles des navigateurs et application de styles globaux.
+// ============================================================================
+@import '../base/reset';  // Normalisation des styles CSS pour une base cohérente.
+@import '../base/global'; // Styles globaux : typographie principale, classes génériques.
+
+// ============================================================================
+// 3. Composants
+//    Importation des composants réutilisables nécessaires pour cette page.
+// ============================================================================
+@import '../components/button'; // Boutons (utilisés sur la page d'accueil).
+@import '../components/cards';  // Cartes pour afficher du contenu.
+
+// ============================================================================
+// 4. Layouts
+//    Définition de la structure générale utilisée sur la page d'accueil.
+// ============================================================================
+@import '../layouts/header';              // Styles pour l'en-tête du site.
+@import '../layouts/footer';              // Styles pour le pied de page.
+@import '../layouts/photographersection'; // Section spécifique aux photographes.

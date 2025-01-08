@@ -23,6 +23,25 @@ header {
     padding: 5% 0 7% 0; /* Espacement en haut et en bas */
     gap: 2%; /* Espace horizontal entre les éléments enfants */
     margin: 0 auto; /* Centre le header horizontalement */
+
+
+
+    /* ------------------------ Responsives ----------------------------------- */
+
+    @include tablet {
+        width: 80%; /* Réduit la largeur pour un alignement visuel plus centré */
+        padding: 3% 0 2% 0; /* Diminue les marges verticales pour plus de compacité */
+    }
+
+    
+    @include desktop {
+        width: 85%; /* Augmente la largeur pour équilibrer les proportions */
+    }
+
+
+    @include large-desktop {
+        width: 80%; /* Réduit légèrement la largeur pour une meilleure mise en page */
+    }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -35,67 +54,34 @@ header {
     max-width: 120px; /* Limite la largeur maximale pour éviter une taille excessive */
     height: auto; /* Garde les proportions originales */
     padding-left: 15%; /* Ajoute un espacement à gauche pour éloigner du bord */
+
+    /* ------------------------ Responsives -------------------------------- */
+    @include tablet {
+        max-width: 200px; /* Augmente la taille maximale pour les écrans moyens */
+        padding-left: 10%; /* Réduit l'espacement à gauche pour une meilleure proportion */
+    }
 }
 
 /* -------------------------------------------------------------------------- */
 /* Titre                                                                      */
-/* Description : Définit les dimensions la typographie et le positionnement   */
+/* Description : Définit les dimensions, la typographie et le positionnement  */
 /* -------------------------------------------------------------------------- */
 
 h1 {
-    position: relative;
-    top:4%;
+    position: relative; /* Permet un ajustement fin de la position */
+    top: 4%; /* Décale légèrement le titre vers le bas */
     font-size: var(--font-size-base); /* Taille de police définie dans les variables */
     color: var(--primary-color); /* Applique la couleur principale au titre */
     margin: 0; /* Supprime les marges par défaut */
-}
 
-/* ============================================================================*/
-/*                          MEDIA QUERIES                                      */
-/* Description : Ajustements des styles pour différents écrans                 */
-/* =========================================================================== */
-
-/* -------------------------------------------------------------------------- */
-/* Tablette (min-width : 768px)                                               */
-/* Description : Optimisation des styles pour les tablettes                   */
-/* -------------------------------------------------------------------------- */
-
-@media (min-width: 768px) {
-
-    header {
-        width: 80%; /* Réduit la largeur pour un alignement visuel plus centré */
-        padding: 3% 0 2% 0; /* Diminue les marges verticales pour plus de compacité */
-    }
-
-    .logo {
-        max-width: 200px; /* Augmente la taille maximale pour les écrans moyens */
-        padding-left: 10%; /* Réduit l'espacement à gauche pour une meilleure proportion */
-    }
-
-    h1 {
+    /* ------------------------ Responsives ---------------------------------- */
+    @include tablet {
         font-size: var(--font-size-large); /* Augmente la taille du texte pour une meilleure lisibilité */
-        padding-bottom: 0; /* Supprime l'espacement sous le titre */
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* Desktop (min-width : 1024px)                                               */
-/* Description : Ajustements des styles pour les ordinateurs                  */
-/* -------------------------------------------------------------------------- */
 
-@media (min-width: 1024px) {
-    header {
-        width: 85%; /* Augmente la largeur pour équilibrer les proportions */
-    }
-}
 
-/* -------------------------------------------------------------------------- */
-/* Grands écrans (min-width : 1440px)                                         */
-/* Description : Ajustements pour les écrans larges                           */
-/* -------------------------------------------------------------------------- */
 
-@media (min-width: 1440px) {
-    header {
-        width: 80%; /* Réduit légèrement la largeur pour une meilleure mise en page */
-    }
-}
+
+

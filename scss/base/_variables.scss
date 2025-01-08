@@ -94,7 +94,7 @@
 
     --box-shadow-small: 0 1px 3px rgba(0, 0, 0, 0.1); /* Ombre légère */
     --box-shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.15); /* Ombre moyenne */
-    --box-shadow-large: 0 5px 15px rgba(0, 0, 0, 0.2); /* Ombre prononcée */
+    --box-shadow-large: 0 10px 20px rgba(0, 0, 0, 0.2); /* Ombre prononcée */
 
     /* ================================ */
     /* Transitions et Animations        */
@@ -103,17 +103,7 @@
     --transition-default: 0.3s ease;    /* Animation standard */
     --transition-slow: 0.5s ease-out;  /* Animation lente */
 
-    /* ================================ */
-    /* Breakpoints                      */
-    /* ================================ */
-    --watch: 260px;
-    --small-phone-min: 261px;
-    --small-phone-max: 375px;
-    --foldable-min: 600px;
-    --foldable-max: 900px;
-    --tablet: 768px;
-    --desktop-min: 1024px;
-    --large-desktop: 1440px;
+
 }
 
 

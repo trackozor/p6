@@ -1,27 +1,4 @@
 
-// ============================================================================
-// 1. Variables et Mixins
-//    Importation des variables globales et des mixins pour une configuration
-//    centralisée  des styles.
-// ============================================================================
-@use './base/variables'; // Variables globales (couleurs, typographie, etc.).
-@use './base/mixins' ;    // Mixins SCSS pour des styles modulaires et réutilisables.
 
-// ============================================================================
-// 2. Réinitialisation et Styles Globaux
-//    Réinitialisation des styles des navigateurs et application de styles globaux.
-// ============================================================================
-@use './base/reset';  // Normalisation des styles CSS pour une base cohérente.
-@use './base/global'; // Styles globaux : typographie principale, classes génériques.
-
-// ============================================================================
-// 3. Composants
-//    Importation des composants réutilisables nécessaires pour cette page.
-// ============================================================================
-@use './components/button'; // Boutons (utilisés sur la page d'accueil).
-@use './components/cards';  // Cartes pour afficher du contenu.
-
-
-
-@use 'pages-scss/index-main';
-@use 'pages-scss/photographer-main';
+@import 'pages-scss/index-main';
+@import 'pages-scss/photographer-main';

@@ -93,36 +93,19 @@
   --border-radius-large: 1rem; /* Coins très arrondis */
   --box-shadow-small: 0 1px 3px rgba(0, 0, 0, 0.1); /* Ombre légère */
   --box-shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.15); /* Ombre moyenne */
-  --box-shadow-large: 0 5px 15px rgba(0, 0, 0, 0.2); /* Ombre prononcée */
+  --box-shadow-large: 0 10px 20px rgba(0, 0, 0, 0.2); /* Ombre prononcée */
   /* ================================ */
   /* Transitions et Animations        */
   /* ================================ */
   --transition-fast: 0.2s ease-in-out; /* Animation rapide */
   --transition-default: 0.3s ease; /* Animation standard */
   --transition-slow: 0.5s ease-out; /* Animation lente */
-  /* ================================ */
-  /* Breakpoints                      */
-  /* ================================ */
-  --watch: 260px;
-  --small-phone-min: 261px;
-  --small-phone-max: 375px;
-  --foldable-min: 600px;
-  --foldable-max: 900px;
-  --tablet: 768px;
-  --desktop-min: 1024px;
-  --large-desktop: 1440px;
 }
 
-/* =============================================================================
-    Projet      :   Fisheye
-    Fichier     :   _mixins.scss
-    Auteur      :   Trackozor
-    Date        :   01/01/2025
-    Version     :   1.2.0
-    Description :   Contient des mixins réutilisables, basés sur des variables
-                    CSS pour la gestion des media queries, avec une approche 
-                    Mobile First.
-============================================================================= */
+/* _mixins.scss */
+/* Ce fichier contient des mixins pour gérer l'orientation portrait et paysage sur les appareils mobiles */
+/* Mixin pour gérer les écrans mobile en mode paysage */
+/* Mixin pour gérer les écrans desktop*/
 /* =============================================================================
     Projet      : Fisheye
     Fichier     : _reset.scss
@@ -325,6 +308,26 @@ a:focus {
   cursor: pointer; /* Change le curseur au survol */
   text-decoration: none; /* Supprime les décorations de texte */
 }
+@media (min-width: 767px) {
+  .photographer-card {
+    padding: 0; /* Supprime les espacements internes */
+    width: 90%; /* Réduit légèrement la largeur pour un alignement centré */
+  }
+}
+@media (min-width: 1024px) {
+  .photographer-card {
+    padding: 0; /* Supprime les espacements */
+    width: 90%; /* Maintient une largeur adaptée */
+  }
+}
+@media (min-width: 1440px) {
+  .photographer-card {
+    width: 50%; /* Diminue la largeur pour mieux occuper l'espace */
+    border-radius: 1rem; /* Ajoute des coins légèrement arrondis */
+    margin-bottom: 1%; /* Réduit l'espacement vertical */
+    padding: 0; /* Supprime les espacements internes */
+  }
+}
 
 /* -------------------------------------------------------------------------- */
 /* Effet hover sur la carte                                                   */
@@ -332,7 +335,7 @@ a:focus {
 /* -------------------------------------------------------------------------- */
 .photographer-card:hover {
   transform: scale(1.2); /* Agrandit légèrement la carte */
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Ajoute une ombre subtile */
+  box-shadow: var(--box-shadow-large);
   text-decoration: none; /* Assure qu'il n'y ait pas de soulignement de texte */
 }
 
@@ -351,6 +354,27 @@ a:focus {
   transition: transform 0.3s ease; /* Ajoute une animation fluide */
   cursor: pointer; /* Change le curseur au survol */
 }
+@media (min-width: 767px) {
+  .photographer-card-portrait {
+    width: 12vw; /* Ajuste la largeur de l'image en fonction de la fenêtre */
+    height: 12vw; /* Ajuste la hauteur de l'image */
+    margin: 1% 0 3% 0; /* Diminue les marges autour de l'image */
+  }
+}
+@media (min-width: 1024px) {
+  .photographer-card-portrait {
+    width: 10vw; /* Ajuste la taille de l'image */
+    height: 10vw; /* Hauteur proportionnelle */
+    margin: 5% 0 8% 0; /* Ajuste les espacements verticaux */
+  }
+}
+@media (min-width: 1440px) {
+  .photographer-card-portrait {
+    width: 8vw; /* Réduit la taille de l'image */
+    height: 8vw; /* Hauteur proportionnelle */
+    margin: 8% 0; /* Augmente l'espacement autour de l'image */
+  }
+}
 
 /* -------------------------------------------------------------------------- */
 /* Nom du photographe                                                        */
@@ -361,6 +385,16 @@ a:focus {
   color: var(--text-color-name); /* Utilise une couleur d'accentuation */
   font-weight: bold; /* Affiche le texte en gras */
   margin-bottom: 2%; /* Ajoute un espace en dessous du nom */
+}
+@media (min-width: 767px) {
+  .photographer-card-name {
+    font-size: var(--font-size-large); /* Réduit la taille du texte */
+  }
+}
+@media (min-width: 1024px) {
+  .photographer-card-name {
+    font-size: var(--font-size-large); /* Ajuste la taille du texte */
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -403,16 +437,6 @@ a:focus {
 /* Description : Optimisation des styles pour les tablettes                   */
 /* -------------------------------------------------------------------------- */
 @media screen and (min-width: 768px) {
-  .photographer-card {
-    display: flex; /* Maintient l'utilisation de Flexbox */
-    padding: 0; /* Supprime les espacements internes */
-    width: 90%; /* Réduit légèrement la largeur pour un alignement centré */
-  }
-  .photographer-card-portrait {
-    width: 12vw; /* Ajuste la largeur de l'image en fonction de la fenêtre */
-    height: 12vw; /* Ajuste la hauteur de l'image */
-    margin: 1% 0 3% 0; /* Diminue les marges autour de l'image */
-  }
   .photographer-card-name {
     font-size: var(--font-size-large); /* Réduit la taille du texte */
   }
@@ -427,15 +451,6 @@ a:focus {
 /* Description : Ajustements des styles pour les ordinateurs                  */
 /* -------------------------------------------------------------------------- */
 @media screen and (min-width: 1024px) {
-  .photographer-card {
-    padding: 0; /* Supprime les espacements */
-    width: 90%; /* Maintient une largeur adaptée */
-  }
-  .photographer-card-portrait {
-    width: 10vw; /* Ajuste la taille de l'image */
-    height: 10vw; /* Hauteur proportionnelle */
-    margin: 5% 0 8% 0; /* Ajuste les espacements verticaux */
-  }
   .photographer-card-name {
     font-size: var(--font-size-large); /* Ajuste la taille du texte */
   }
@@ -450,20 +465,6 @@ a:focus {
 /* Description : Ajustements pour les écrans larges                           */
 /* -------------------------------------------------------------------------- */
 @media screen and (min-width: 1440px) {
-  .photographer-card {
-    width: 50%; /* Diminue la largeur pour mieux occuper l'espace */
-    border-radius: 1rem; /* Ajoute des coins légèrement arrondis */
-    margin-bottom: 1%; /* Réduit l'espacement vertical */
-    padding: 0; /* Supprime les espacements internes */
-  }
-  .photographer-card-portrait {
-    width: 8vw; /* Réduit la taille de l'image */
-    height: 8vw; /* Hauteur proportionnelle */
-    margin: 8% 0; /* Augmente l'espacement autour de l'image */
-  }
-  .photographer-card-name {
-    font-size: var(--font-size-xlarge); /* Agrandit le texte pour plus d'impact */
-  }
   .photographer-card-location,
   .photographer-card-tagline,
   .photographer-card-price {
@@ -493,6 +494,23 @@ header {
   padding: 5% 0 7% 0; /* Espacement en haut et en bas */
   gap: 2%; /* Espace horizontal entre les éléments enfants */
   margin: 0 auto; /* Centre le header horizontalement */
+  /* ------------------------ Responsives ----------------------------------- */
+}
+@media (min-width: 767px) {
+  header {
+    width: 80%; /* Réduit la largeur pour un alignement visuel plus centré */
+    padding: 3% 0 2% 0; /* Diminue les marges verticales pour plus de compacité */
+  }
+}
+@media (min-width: 1024px) {
+  header {
+    width: 85%; /* Augmente la largeur pour équilibrer les proportions */
+  }
+}
+@media (min-width: 1440px) {
+  header {
+    width: 80%; /* Réduit légèrement la largeur pour une meilleure mise en page */
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -504,60 +522,33 @@ header {
   max-width: 120px; /* Limite la largeur maximale pour éviter une taille excessive */
   height: auto; /* Garde les proportions originales */
   padding-left: 15%; /* Ajoute un espacement à gauche pour éloigner du bord */
+  /* ------------------------ Responsives -------------------------------- */
 }
-
-/* -------------------------------------------------------------------------- */
-/* Titre                                                                      */
-/* Description : Définit les dimensions la typographie et le positionnement   */
-/* -------------------------------------------------------------------------- */
-h1 {
-  position: relative;
-  top: 4%;
-  font-size: var(--font-size-base); /* Taille de police définie dans les variables */
-  color: var(--primary-color); /* Applique la couleur principale au titre */
-  margin: 0; /* Supprime les marges par défaut */
-}
-
-/* ============================================================================*/
-/*                          MEDIA QUERIES                                      */
-/* Description : Ajustements des styles pour différents écrans                 */
-/* =========================================================================== */
-/* -------------------------------------------------------------------------- */
-/* Tablette (min-width : 768px)                                               */
-/* Description : Optimisation des styles pour les tablettes                   */
-/* -------------------------------------------------------------------------- */
-@media (min-width: 768px) {
-  header {
-    width: 80%; /* Réduit la largeur pour un alignement visuel plus centré */
-    padding: 3% 0 2% 0; /* Diminue les marges verticales pour plus de compacité */
-  }
+@media (min-width: 767px) {
   .logo {
     max-width: 200px; /* Augmente la taille maximale pour les écrans moyens */
     padding-left: 10%; /* Réduit l'espacement à gauche pour une meilleure proportion */
   }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Titre                                                                      */
+/* Description : Définit les dimensions, la typographie et le positionnement  */
+/* -------------------------------------------------------------------------- */
+h1 {
+  position: relative; /* Permet un ajustement fin de la position */
+  top: 4%; /* Décale légèrement le titre vers le bas */
+  font-size: var(--font-size-base); /* Taille de police définie dans les variables */
+  color: var(--primary-color); /* Applique la couleur principale au titre */
+  margin: 0; /* Supprime les marges par défaut */
+  /* ------------------------ Responsives ---------------------------------- */
+}
+@media (min-width: 767px) {
   h1 {
     font-size: var(--font-size-large); /* Augmente la taille du texte pour une meilleure lisibilité */
-    padding-bottom: 0; /* Supprime l'espacement sous le titre */
   }
 }
-/* -------------------------------------------------------------------------- */
-/* Desktop (min-width : 1024px)                                               */
-/* Description : Ajustements des styles pour les ordinateurs                  */
-/* -------------------------------------------------------------------------- */
-@media (min-width: 1024px) {
-  header {
-    width: 85%; /* Augmente la largeur pour équilibrer les proportions */
-  }
-}
-/* -------------------------------------------------------------------------- */
-/* Grands écrans (min-width : 1440px)                                         */
-/* Description : Ajustements pour les écrans larges                           */
-/* -------------------------------------------------------------------------- */
-@media (min-width: 1440px) {
-  header {
-    width: 80%; /* Réduit légèrement la largeur pour une meilleure mise en page */
-  }
-}
+
 /* =============================================================================
     Projet      : Fisheye
     Fichier     : _footer.scss

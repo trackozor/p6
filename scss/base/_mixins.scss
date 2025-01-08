@@ -1,101 +1,27 @@
-/* =============================================================================
-    Projet      :   Fisheye
-    Fichier     :   _mixins.scss
-    Auteur      :   Trackozor
-    Date        :   01/01/2025
-    Version     :   1.2.0
-    Description :   Contient des mixins réutilisables, basés sur des variables
-                    CSS pour la gestion des media queries, avec une approche 
-                    Mobile First.
-============================================================================= */
-
-@mixin respond($breakpoint, $orientation: null) {
-    /* ======================================================================= */
-    /* Points de rupture basés sur les variables CSS                          */
-    /* ======================================================================= */
-
-    /* ----------------------------------------------------------------------- */
-    /* watch (Montres connectées ou écrans ultra-petits)                       */
-    /* Description : Écrans très petits, max-width de 260px                    */
-    /* ----------------------------------------------------------------------- */
-    @if $breakpoint == watch {
-        @media (max-width: var(--watch)) {
-            @content;
-        }
+/* _mixins.scss */
+/* Ce fichier contient des mixins pour gérer l'orientation portrait et paysage sur les appareils mobiles */
+/* Mixin pour gérer les écrans mobile en mode paysage */
+@mixin mobile-landscape {
+    @media (max-width: 768px) and (orientation: landscape) {
+        @content;
     }
+}
 
-    /* ----------------------------------------------------------------------- */
-    /* small-phone                                                             */
-    /* Description : Petit téléphone, entre 261px et 375px                    */
-    /* ----------------------------------------------------------------------- */
-    @else if $breakpoint == small-phone {
-        @media (min-width: var(--small-phone-min)) and (max-width: var(--small-phone-max)) {
-            @content;
-        }
+@mixin tablet {
+    @media (min-width: 767px) {
+    @content;
     }
+}
 
-    /* ----------------------------------------------------------------------- */
-    /* foldable                                                                */
-    /* Description : Écran pliable ou hybride, entre 600px et 900px            */
-    /* ----------------------------------------------------------------------- */
-    @else if $breakpoint == foldable {
-        @media (min-width: var(--foldable-min)) and (max-width: var(--foldable-max)) {
-            @content;
-        }
+/* Mixin pour gérer les écrans desktop*/
+@mixin desktop {
+    @media (min-width: 1024px) {
+    @content;
     }
+}
 
-    /* ----------------------------------------------------------------------- */
-    /* tablet                                                                  */
-    /* Description : Tablette, min-width 768px                                 */
-    /* ----------------------------------------------------------------------- */
-    @else if $breakpoint == tablet {
-        @media (min-width: var(--tablet))  {
-            @content;
-        }
-    }
-
-    /* ----------------------------------------------------------------------- */
-    /* desktop                                                                 */
-    /* Description : Ordinateurs de bureau standards, min-width 1024px         */
-    /* ----------------------------------------------------------------------- */
-    @else if $breakpoint == desktop {
-        @media (min-width: var(--desktop-min)) {
-            @content;
-        }
-    }
-
-    /* ----------------------------------------------------------------------- */
-    /* large-desktop                                                           */
-    /* Description : Grands écrans, min-width 1440px                           */
-    /* ----------------------------------------------------------------------- */
-    @else if $breakpoint == large-desktop {
-        @media (min-width: var(--large-desktop)) {
-            @content;
-        }
-    }
-
-    /* ----------------------------------------------------------------------- */
-    /* Gestion des cas non définis                                             */
-    /* ----------------------------------------------------------------------- */
-    @else {
-        @warn "Le point de rupture #{$breakpoint} n'est pas défini. Veuillez vérifier.";
-    }
-
-    /* ======================================================================= */
-    /* Gestion optionnelle des orientations                                   */
-    /* ======================================================================= */
-
-    // Orientation portrait
-    @if $orientation == portrait {
-        @media (orientation: portrait) {
-            @content;
-        }
-    }
-
-    // Orientation paysage
-    @else if $orientation == landscape {
-        @media (orientation: landscape) {
-            @content;
-        }
+@mixin large-desktop {
+    @media (min-width: 1440px) {
+    @content;
     }
 }
