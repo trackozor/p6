@@ -78,7 +78,6 @@
     </main>
     
     <!-- Lightbox -->
-    <!-- Lightbox -->
     <div id="lightbox" class="lightbox" role="dialog" aria-labelledby="lightbox-title" aria-hidden="true">
       <!-- Conteneur principal du contenu de la lightbox -->
       <div class="lightbox-content" tabindex="-1">
@@ -144,7 +143,7 @@
       <p>&copy; 2025 Fisheye. Tous droits réservés.</p>
     </footer>
     
-    <div class="modal-overlay" >
+    <div id="contact-overlay" class="modal-overlay" >
       <div id="contact-modal" class="modal-container" aria-hidden="true" >
 
         <!-- Contenu de la modale -->
@@ -156,7 +155,15 @@
               class="modal-close" 
               aria-label="Fermer la modale" 
               data-action="close-modal">
-              &times;
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon icon-close"
+                viewBox="0 0 24 24"
+                role="img"
+                focusable="false"
+                aria-hidden="true">
+                <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.12 5.7A1 1 0 0 0 5.7 7.11l4.88 4.88-4.88 4.88a1 1 0 1 0 1.41 1.41L12 13.41l4.88 4.88a1 1 0 0 0 1.41-1.41l-4.88-4.88 4.88-4.88a1 1 0 0 0 0-1.41z"/>
+              </svg>
             </button>
           </header>
           <form action="#" method="POST" aria-label="Formulaire de contact" novalidate>

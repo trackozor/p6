@@ -3,4 +3,14 @@
     flex-direction: column;
     align-items: center;
     background: #FAFAFA ;
+
+    @include tablet {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    @include desktop {
+        flex-direction: row;
+        justify-content: space-around;
+    }
 }
