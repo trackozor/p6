@@ -103,10 +103,14 @@
   /* ================================ */
   /* Breakpoints                      */
   /* ================================ */
-  --breakpoint-mobile: 480px;
-  --breakpoint-tablet: 768px;
-  --breakpoint-desktop: 1024px;
-  --breakpoint-large-desktop: 1440px;
+  --watch: 260px;
+  --small-phone-min: 261px;
+  --small-phone-max: 375px;
+  --foldable-min: 600px;
+  --foldable-max: 900px;
+  --tablet: 768px;
+  --desktop-min: 1024px;
+  --large-desktop: 1440px;
 }
 
 /* =============================================================================
@@ -114,9 +118,10 @@
     Fichier     :   _mixins.scss
     Auteur      :   Trackozor
     Date        :   01/01/2025
-    Version     :   1.0.0
-    Description :   Contient des mixins réutilisables, notamment pour la gestion
-                    des media queries dans une approche Mobile First.
+    Version     :   1.2.0
+    Description :   Contient des mixins réutilisables, basés sur des variables
+                    CSS pour la gestion des media queries, avec une approche 
+                    Mobile First.
 ============================================================================= */
 /* =============================================================================
     Projet      : Fisheye
@@ -404,8 +409,8 @@ a:focus {
     width: 90%; /* Réduit légèrement la largeur pour un alignement centré */
   }
   .photographer-card-portrait {
-    width: 10vw; /* Ajuste la largeur de l'image en fonction de la fenêtre */
-    height: 10vw; /* Ajuste la hauteur de l'image */
+    width: 12vw; /* Ajuste la largeur de l'image en fonction de la fenêtre */
+    height: 12vw; /* Ajuste la hauteur de l'image */
     margin: 1% 0 3% 0; /* Diminue les marges autour de l'image */
   }
   .photographer-card-name {
@@ -485,7 +490,7 @@ header {
   align-items: center; /* Centre les éléments verticalement */
   width: 95%; /* Largeur relative pour s'adapter à différentes tailles d'écran */
   height: auto; /* La hauteur s'ajuste automatiquement au contenu */
-  padding: 5% 0 10% 0; /* Espacement en haut et en bas */
+  padding: 5% 0 7% 0; /* Espacement en haut et en bas */
   gap: 2%; /* Espace horizontal entre les éléments enfants */
   margin: 0 auto; /* Centre le header horizontalement */
 }
@@ -495,8 +500,8 @@ header {
 /* Description : Définit les dimensions et le positionnement                  */
 /* -------------------------------------------------------------------------- */
 .logo {
-  width: 25vw; /* Largeur relative au viewport pour le logo */
-  max-width: 100px; /* Limite la largeur maximale pour éviter une taille excessive */
+  width: 30vw; /* Largeur relative au viewport pour le logo */
+  max-width: 120px; /* Limite la largeur maximale pour éviter une taille excessive */
   height: auto; /* Garde les proportions originales */
   padding-left: 15%; /* Ajoute un espacement à gauche pour éloigner du bord */
 }
@@ -506,10 +511,11 @@ header {
 /* Description : Définit les dimensions la typographie et le positionnement   */
 /* -------------------------------------------------------------------------- */
 h1 {
+  position: relative;
+  top: 4%;
   font-size: var(--font-size-base); /* Taille de police définie dans les variables */
   color: var(--primary-color); /* Applique la couleur principale au titre */
   margin: 0; /* Supprime les marges par défaut */
-  padding-bottom: 2%; /* Ajoute un espacement sous le titre */
 }
 
 /* ============================================================================*/

@@ -112,7 +112,7 @@
 /* Description : Optimisation des styles pour les tablettes                   */
 /* -------------------------------------------------------------------------- */
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 768px)  {
 
     .photographer-card {
         display: flex; /* Maintient l'utilisation de Flexbox */
@@ -121,8 +121,8 @@
     }
 
     .photographer-card-portrait {
-        width: 10vw; /* Ajuste la largeur de l'image en fonction de la fenêtre */
-        height: 10vw; /* Ajuste la hauteur de l'image */
+        width: 12vw; /* Ajuste la largeur de l'image en fonction de la fenêtre */
+        height: 12vw; /* Ajuste la hauteur de l'image */
         margin: 1% 0 3% 0; /* Diminue les marges autour de l'image */
     }
 
@@ -171,7 +171,7 @@
 /* Description : Ajustements pour les écrans larges                           */
 /* -------------------------------------------------------------------------- */
 
-@media screen and (min-width: 1440px) {
+@media screen and (min-width: 1440px){
 
     .photographer-card {
         width: 50%; /* Diminue la largeur pour mieux occuper l'espace */

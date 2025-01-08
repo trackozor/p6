@@ -106,8 +106,14 @@
     /* ================================ */
     /* Breakpoints                      */
     /* ================================ */
-    --breakpoint-mobile: 480px;
-    --breakpoint-tablet: 768px;
-    --breakpoint-desktop: 1024px;
-    --breakpoint-large-desktop: 1440px;
+    --watch: 260px;
+    --small-phone-min: 261px;
+    --small-phone-max: 375px;
+    --foldable-min: 600px;
+    --foldable-max: 900px;
+    --tablet: 768px;
+    --desktop-min: 1024px;
+    --large-desktop: 1440px;
 }
+
+

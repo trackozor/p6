@@ -20,7 +20,7 @@ header {
     align-items: center; /* Centre les éléments verticalement */
     width: 95%; /* Largeur relative pour s'adapter à différentes tailles d'écran */
     height: auto; /* La hauteur s'ajuste automatiquement au contenu */
-    padding: 5% 0 10% 0; /* Espacement en haut et en bas */
+    padding: 5% 0 7% 0; /* Espacement en haut et en bas */
     gap: 2%; /* Espace horizontal entre les éléments enfants */
     margin: 0 auto; /* Centre le header horizontalement */
 }
@@ -31,8 +31,8 @@ header {
 /* -------------------------------------------------------------------------- */
 
 .logo {
-    width: 25vw; /* Largeur relative au viewport pour le logo */
-    max-width: 100px; /* Limite la largeur maximale pour éviter une taille excessive */
+    width: 30vw; /* Largeur relative au viewport pour le logo */
+    max-width: 120px; /* Limite la largeur maximale pour éviter une taille excessive */
     height: auto; /* Garde les proportions originales */
     padding-left: 15%; /* Ajoute un espacement à gauche pour éloigner du bord */
 }
@@ -43,10 +43,11 @@ header {
 /* -------------------------------------------------------------------------- */
 
 h1 {
+    position: relative;
+    top:4%;
     font-size: var(--font-size-base); /* Taille de police définie dans les variables */
     color: var(--primary-color); /* Applique la couleur principale au titre */
     margin: 0; /* Supprime les marges par défaut */
-    padding-bottom: 2%; /* Ajoute un espacement sous le titre */
 }
 
 /* ============================================================================*/
