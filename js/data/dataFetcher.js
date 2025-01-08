@@ -1,105 +1,73 @@
 // ========================================================
-// Nom du fichier : dataFetcher.js
-// Description    : Utilitaires pour la récupération des données JSON avec gestion des timeouts
-// Auteur         : Trackozor
-// Date           : 05/01/2025
-// Version        : 1.0.0
+// Nom du fichier : fetchJSON.js
+// Description    : Utilitaires pour la récupération des données JSON
+// avec gestion des timeouts et des erreurs
 // ========================================================
 
-import { logEvent } from '../utils/utils.js'; // Utilitaire de logging
+import { logEvent } from '../utils/utils.js';
 
 /**
- * ========================================================
- * Fonction : fetchWithTimeout
- * Description : Effectue une requête réseau avec un délai d'expiration (timeout).
- * ========================================================
- */
-
-/**
- * Effectue une requête réseau avec un délai d'expiration.
- * @async
- * @function fetchWithTimeout
- * @param {string} path - URL ou chemin vers la ressource à récupérer.
- * @param {number} [timeout=5000] - Temps maximum d'attente pour la réponse, en millisecondes.
- * @returns {Promise<Response>} La réponse de la requête fetch ou une erreur si le timeout est dépassé.
- * @throws {AbortError} Si le délai est dépassé ou que la requête est annulée.
- * @throws {Error} Si une erreur réseau survient.
+ * Effectue une requête réseau avec gestion d'un délai d'expiration.
+ * @param {string} path - Chemin ou URL à requêter.
+ * @param {number} [timeout=5000] - Temps maximum d'attente avant d'annuler la requête (ms).
+ * @returns {Promise<Response>} La réponse HTTP ou une erreur en cas d'échec/timeout.
  */
 async function fetchWithTimeout(path, timeout = 5000) {
-    const controller = new AbortController(); // Contrôleur pour gérer l'annulation
-    const id = setTimeout(() => controller.abort(), timeout); // Déclenche l'annulation après le délai spécifié
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
 
     try {
-        // Envoie la requête avec gestion d'annulation
         const response = await fetch(path, { signal: controller.signal });
-        clearTimeout(id); // Annule le timeout si la requête réussit
-        return response; // Retourne la réponse HTTP
+        clearTimeout(id);
+        return response;
     } catch (error) {
-        clearTimeout(id); // Nettoie le timeout en cas d'erreur
-        throw error; // Propagation de l'erreur pour gestion par l'appelant
+        clearTimeout(id);
+        throw error;
     }
 }
-
-/**
- * ========================================================
- * Fonction : fetchJSON
- * Description : Récupère et valide des données JSON depuis un chemin ou une URL.
- * ========================================================
- */
 
 /**
  * Récupère et valide des données JSON depuis une URL donnée.
- * @async
- * @function fetchJSON
- * @param {string} path - Chemin ou URL vers le fichier JSON à récupérer.
- * @returns {Promise<Object|null>} Les données JSON en cas de succès, ou `null` en cas d'erreur.
- * @throws {AbortError} Si la requête dépasse le délai spécifié.
- * @throws {Error} Si une erreur réseau ou d'analyse JSON survient.
+ * @param {string} path - Chemin ou URL du fichier JSON.
+ * @param {number} [timeout=10000] - Timeout personnalisé pour la requête (en ms).
+ * @returns {Promise<Object|null>} Données JSON récupérées, ou `null` en cas d'échec.
  */
-export async function fetchJSON(path) {
+export async function fetchJSON(path, timeout = 10000) {
     try {
-        // Validation du paramètre `path`
         if (typeof path !== 'string' || !path.trim()) {
-            logEvent('error', "Le chemin fourni est invalide ou vide.");
+            logEvent('error', "Chemin fourni invalide ou vide.");
             return null;
         }
 
-        // Début de la récupération des données
-        logEvent('test_start', `Début de la récupération des données depuis ${path}`);
+        // Nettoie le chemin pour éviter les doublons de `/`
+        const cleanPath = path.replace(/\/+/g, '/');
 
-        // Effectue la requête avec un timeout de 10 secondes
-        const response = await fetchWithTimeout(path);
+        logEvent('test_start', `Début de la récupération JSON depuis ${cleanPath}`);
 
-        // Vérification de l'état HTTP
+        const response = await fetchWithTimeout(cleanPath, timeout);
+
         if (!response.ok) {
-            logEvent('warn', `Erreur HTTP lors de la récupération de ${path}`, { status: response.status });
+            const logType = response.status === 404 ? 'error' : 'warn';
+            logEvent(logType, `Erreur HTTP (${response.status}) pour ${cleanPath}`, { statusText: response.statusText });
             return null;
         }
 
-        // Analyse des données JSON
         const jsonData = await response.json();
 
-        // Validation des données JSON
         if (typeof jsonData !== 'object' || jsonData === null) {
-            logEvent('error', "Les données récupérées ne sont pas un objet JSON valide.");
+            logEvent('error', "Données récupérées non valides ou non formatées en JSON.");
             return null;
         }
 
-        // Succès
-        logEvent('success', `Données récupérées avec succès depuis ${path}`, { data: jsonData });
+        logEvent('success', `JSON récupéré avec succès depuis ${cleanPath}`, { data: jsonData });
+        logEvent('test_end', `Fin de la récupération JSON depuis ${cleanPath}`);
         return jsonData;
     } catch (error) {
         if (error.name === 'AbortError') {
-            // Gestion des erreurs de timeout
-            logEvent('error', "La requête a expiré (timeout).", { path });
+            logEvent('error', "Timeout dépassé lors de la récupération des données JSON.", { path });
         } else {
-            // Gestion des erreurs réseau ou d'analyse JSON
-            logEvent('error', "Erreur lors de la récupération des données JSON.", {
-                message: error.message,
-                stack: error.stack,
-            });
+            logEvent('error', "Erreur inattendue lors de la récupération JSON.", { message: error.message });
         }
-        return null; // Retourne `null` en cas d'erreur
+        return null;
     }
 }
-

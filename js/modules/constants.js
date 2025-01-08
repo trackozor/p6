@@ -14,12 +14,12 @@ export const CONFIGLOG= {
      /* ====== Niveaux de Logs ====== */
     LOG_LEVELS: {
         default: true,
-        info: true,  // Activer/Désactiver les logs d'information
-        warn: true,  // Activer/Désactiver les avertissements
-        error: true, // Activer/Désactiver les erreurs
-        success: true, // Activer/Désactiver les logs de succès
-        test_start: true, // Activer/Désactiver les logs de la checkbox info
-        test_end:true,
+        info: true,  // Activer/Désactiver  les logs d'information
+        warn: true,  //                     les avertissements
+        error: true, //                     les erreurs
+        success: true, //                   les succès
+        test_start: true, //                les démarrage de tests
+        test_end:true, //                   les fins de tests
     },
 
     /*====== Classes CSS utilisées ======*/
@@ -28,11 +28,6 @@ export const CONFIGLOG= {
         ERROR_MODAL: 'error-modal', // Classe CSS pour afficher une erreur dans la modale.
         MODAL_ACTIVE: 'active',  // Classe CSS pour indiquer qu'une modale est active et visible.
         BODY_NO_SCROLL: 'no-scroll', // Classe CSS pour empêcher le défilement de la page lorsque la modale est ouverte.
-        NAV_RESPONSIVE: 'responsive', // Classe CSS pour activer le mode "responsive" du menu de navigation.
-        HERO_DEFAULT: 'hero-default', // Classe CSS pour le style par défaut de la section "hero".
-        HERO_RESPONSIVE: 'hero-responsive', // Classe CSS pour ajuster la section "hero" en mode responsive.
-        MODAL_DEFAULT: 'modal-default', // Classe CSS pour le style par défaut de la modale.
-        MODAL_RESPONSIVE: 'modal-responsive',  // Classe CSS pour adapter la modale au mode responsive.
     },
 
 
@@ -43,8 +38,8 @@ export const CONFIGLOG= {
         error: "color: red; font-weight: bold;", // Style pour les erreurs critiques.
         success: "color: green; font-weight: bold;", // Style pour les messages indiquant une réussite.
         default: "color: black;", // Style par défaut pour les messages qui ne correspondent pas à un type spécifique.
-        test_start: "background-color: orange; color: purple;font-weight: bold;", // Style pour la checkbox d'info
-        test_end:"background-color: green; color: white;font-weight: bold;", // Style pour la checkbox d'info
+        test_start: "background-color: #4682B4; color: white; font-weight: bold;", // Style pour la checkbox d'info
+        test_end:"background-color:#00CED1; color: black; font-weight: bold;", // Style pour la checkbox d'info
     },
 
     /*====== styles icône log ======*/
@@ -56,4 +51,5 @@ export const CONFIGLOG= {
         default: '🔵', // Icône par défaut si le type de message n'est pas défini.
     },
 
+    // Variable globale pour suivre l'état de la modale
 };

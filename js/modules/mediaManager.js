@@ -3,12 +3,7 @@
 // Description    : Gestion des médias et affichage dans la galerie
 // Auteur         : Trackozor
 // Date           : 05/01/2025
-// Version        : 1.3.0
-// ========================================================
-
-// ========================================================
-// Nom du fichier : mediaManager.js
-// Description    : Gestion des médias et affichage dans la galerie
+// Version        : 1.3.1
 // ========================================================
 
 import { fetchJSON } from '../data/dataFetcher.js';
@@ -18,11 +13,15 @@ import { logEvent } from '../utils/utils.js';
 const DATA_JSON_PATH = '../../../assets/data/photographers.json';
 
 /**
- * Récupère les données des photographes et des médias.
+ * ========================================================
+ * Fonction : getPhotographersAndMedia
+ * Description : Récupère les données des photographes et des médias
+ * ========================================================
  */
 export async function getPhotographersAndMedia() {
+    logEvent('test_start', "Début de la récupération des données JSON...");
+
     try {
-        logEvent('info', "Début de la récupération des données JSON...");
         const data = await fetchJSON(DATA_JSON_PATH);
 
         if (!data || !Array.isArray(data.photographers) || !Array.isArray(data.media)) {
@@ -34,36 +33,57 @@ export async function getPhotographersAndMedia() {
             mediaCount: data.media.length,
         });
 
+        logEvent('test_end', "Fin de la récupération des données JSON.");
         return { photographers: data.photographers, media: data.media };
     } catch (error) {
         logEvent('error', "Erreur lors de la récupération des données JSON.", {
             message: error.message,
             stack: error.stack,
         });
+        logEvent('test_end', "Fin de la tentative de récupération des données JSON avec erreur.");
         return { photographers: [], media: [] };
     }
 }
 
 /**
- * Filtre les médias pour un photographe spécifique.
+ * ========================================================
+ * Fonction : filterMediaByPhotographer
+ * Description : Filtre les médias pour un photographe spécifique
+ * ========================================================
+ * @param {Array} mediaList - Liste complète des médias.
+ * @param {number} photographerId - ID du photographe.
+ * @returns {Array} Médias filtrés pour le photographe.
  */
 export function filterMediaByPhotographer(mediaList, photographerId) {
+    logEvent('test_start', `Début du filtrage des médias pour le photographe ID ${photographerId}...`);
+
     const filteredMedia = mediaList.filter(media => media.photographerId === photographerId);
+
     logEvent('info', `Médias filtrés pour le photographe ID ${photographerId}.`, {
         totalFilteredMedia: filteredMedia.length,
     });
+
+    logEvent('test_end', `Fin du filtrage des médias pour le photographe ID ${photographerId}.`);
     return filteredMedia;
 }
 
 /**
- * Affiche les médias dans la galerie.
+ * ========================================================
+ * Fonction : displayMedia
+ * Description : Génère et affiche les médias dans la galerie
+ * ========================================================
+ * @param {Array} mediaList - Liste des médias à afficher.
+ * @param {HTMLElement} galleryContainer - Conteneur de la galerie.
  */
 export function displayMedia(mediaList, galleryContainer) {
+    logEvent('test_start', "Début de l'affichage des médias dans la galerie...");
+
     galleryContainer.innerHTML = ''; // Réinitialiser la galerie
 
     if (!mediaList || mediaList.length === 0) {
         galleryContainer.innerHTML = `<p>Aucune œuvre trouvée pour ce photographe.</p>`;
         logEvent('warn', "Aucun média à afficher.");
+        logEvent('test_end', "Fin de l'affichage des médias (aucun média trouvé).");
         return;
     }
 
@@ -93,4 +113,5 @@ export function displayMedia(mediaList, galleryContainer) {
     });
 
     logEvent('success', `${mediaList.length} médias affichés dans la galerie.`);
+    logEvent('test_end', "Fin de l'affichage des médias dans la galerie.");
 }
