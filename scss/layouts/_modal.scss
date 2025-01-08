@@ -64,9 +64,9 @@
 /* -------------------------------------------------------------------------- */
 
 #contact-modal {
-    display: flex; /* Masqué par défaut */
+    display: none; /* Masqué par défaut */
     margin: 0 auto; /* Centre le contenu horizontalement */
-    opacity: 1; /* Rendre la modal invisible par défaut */
+    opacity: 0; /* Rendre la modal invisible par défaut */
     transform: scale(0.9); /* Réduire légèrement la taille initiale */
     transition: opacity 0.3s ease, transform 0.3s ease; /* Ajout d'une transition */
 }
