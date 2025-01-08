@@ -27,6 +27,8 @@
     cursor: pointer; /* Change le curseur au survol */
     text-decoration: none; /* Supprime les décorations de texte */
 
+    /*----------------------- Responsive --------------------------------*/
+
     @include tablet {
         padding: 0; /* Supprime les espacements internes */
         width: 90%; /* Réduit légèrement la largeur pour un alignement centré */
@@ -72,6 +74,8 @@
     transition: transform 0.3s ease; /* Ajoute une animation fluide */
     cursor: pointer; /* Change le curseur au survol */
 
+    /* ------------------------- Responsive ------------------------*/
+
     @include tablet {
         width: 12vw; /* Ajuste la largeur de l'image en fonction de la fenêtre */
         height: 12vw; /* Ajuste la hauteur de l'image */
@@ -102,6 +106,7 @@
     font-weight: bold; /* Affiche le texte en gras */
     margin-bottom: 2%; /* Ajoute un espace en dessous du nom */
 
+    /*---------------------------Responsive --------------------------------*/
     @include tablet {
         font-size: var(--font-size-large); /* Réduit la taille du texte */
     }
@@ -133,6 +138,20 @@
     font-weight: 500; /* Texte avec une importance moyenne */
     color: var(--text-color-primary); /* Couleur principale du texte */
     margin-bottom: 2%; /* Ajoute un espace en dessous */
+
+    /*--------------------------- Responsive -------------------------------*/
+
+    @include tablet {
+        font-size: var(--font-size-base); /* Unifie les tailles de texte */
+    }
+
+    @include desktop {
+        font-size: var(--font-size-base); /* Unifie les tailles de texte */
+    }
+
+    @include large-desktop {
+        font-size: var(--font-size-base); /* Unifie les tailles de texte */
+    }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -144,64 +163,22 @@
     font-size: var(--font-size-small); /* Texte de taille discrète */
     font-weight: 500; /* Texte légèrement mis en avant */
     color: var(--text-color-tertiary); /* Couleur tertiaire pour moins de priorité */
-}
 
-/* ============================================================================*/
-/*                          MEDIA QUERIES                                      */
-/* Description : Ajustements des styles pour différents écrans                 */
-/* =========================================================================== */
-
-/* -------------------------------------------------------------------------- */
-/* Tablette (min-width : 768px)                                               */
-/* Description : Optimisation des styles pour les tablettes                   */
-/* -------------------------------------------------------------------------- */
-
-@media screen and (min-width: 768px)  {
-
-
-
-    .photographer-card-name {
-        font-size: var(--font-size-large); /* Réduit la taille du texte */
+    /*-------------------------- Responsive -------------------------------*/
+    
+    @include tablet {
+        font-size: var(--font-size-base); /* Unifie les tailles de texte */
     }
 
-    .photographer-card-location,
-    .photographer-card-tagline,
-    .photographer-card-price {
+    @include desktop {
+        font-size: var(--font-size-base); /* Unifie les tailles de texte */
+    }
+
+    @include large-desktop {
         font-size: var(--font-size-base); /* Unifie les tailles de texte */
     }
 }
 
-/* -------------------------------------------------------------------------- */
-/* Desktop (min-width : 1024px)                                               */
-/* Description : Ajustements des styles pour les ordinateurs                  */
-/* -------------------------------------------------------------------------- */
-
-@media screen and (min-width: 1024px) {
-
-    
-    .photographer-card-name {
-        font-size: var(--font-size-large); /* Ajuste la taille du texte */
-    }
-
-    .photographer-card-location,
-    .photographer-card-tagline,
-    .photographer-card-price {
-        font-size: var(--font-size-base); /* Uniformise les tailles */
-    }
-}
-
-/* -------------------------------------------------------------------------- */
-/* Grands écrans (min-width : 1440px)                                         */
-/* Description : Ajustements pour les écrans larges                           */
-/* -------------------------------------------------------------------------- */
-
-@media screen and (min-width: 1440px){
 
 
-    
-    .photographer-card-location,
-    .photographer-card-tagline,
-    .photographer-card-price {
-        font-size: var(--font-size-base); /* Uniformise les tailles de texte */
-    }
-}
+
