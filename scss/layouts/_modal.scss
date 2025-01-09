@@ -34,10 +34,16 @@
     /* Description : Ajuste la modal pour s'adapter à des écrans moyens       */
     /* ---------------------------------------------------------------------- */
     @include tablet {
-        top: 8%; /* Décale davantage la modal du haut */
-        left: 30%; /* Ajuste horizontalement pour un centrage optimal */
-        width: 40%; /* Réduit la largeur pour un meilleur affichage */
-        height: auto; /* Ajuste automatiquement la hauteur au contenu */
+        top:10%;
+        left: 12%; /* Ajuste horizontalement pour un centrage optimal */
+        width: 65%; /* Réduit la largeur pour un meilleur affichage */
+        height: 70%; /* Ajuste automatiquement la hauteur au contenu */
+    }
+
+    @include desktop {
+        left: 20%; /* Ajuste horizontalement pour un centrage optimal */
+        width: 60%; /* Réduit la largeur pour un meilleur affichage */
+        height: 70%; /* Ajuste automatiquement la hauteur au contenu */
     }
 }
 
@@ -90,6 +96,11 @@
     max-width: 500px; /* Limite la largeur sur les écrans plus grands */
     display: flex; /* Utilisation de Flexbox pour organiser les labels et champs */
     flex-direction: column; /* Les labels et champs sont empilés verticalement */
+
+    @include tablet {
+        width:100%;
+        max-width: 800px;
+    }
 }
 
 /* Styles pour les labels */

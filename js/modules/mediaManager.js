@@ -10,7 +10,7 @@ import { fetchJSON } from '../data/dataFetcher.js';
 import { logEvent } from '../utils/utils.js';
 
 // Chemin vers le fichier JSON contenant les photographes et médias
-const DATA_JSON_PATH = '../../../assets/data/photographers.json';
+const DATA_JSON_PATH = '../../assets/data/photographers.json';
 
 /**
  * ========================================================

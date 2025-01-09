@@ -155,3 +155,15 @@ export function removeClass(element, className) {
     }
 }
 
+// utils/pathHelper.js
+
+/**
+ * Ajoute un préfixe au chemin absolu si le site est hébergé sur GitHub Pages.
+ * @param {string} path - Le chemin absolu à ajuster.
+ * @returns {string} Le chemin ajusté avec ou sans préfixe.
+ */
+export function getAbsolutePath(path) {
+    const isGitHubPages = window.location.hostname === 'username.github.io';
+    const basePath = isGitHubPages ? '/fisheye' : ''; // Remplacez "fisheye" par le nom de votre dépôt
+    return `${basePath}${path}`;
+}

@@ -1,0 +1,152 @@
+// ========================================================
+// Nom du fichier : lightbox.scss
+// Description    : Styles pour la lightbox de l'application Fisheye
+// Auteur         : Trackozor
+// Date           : 08/01/2025
+// Version        : 1.0.0
+// ========================================================
+
+
+// Lightbox
+.lightbox {
+    position: fixed;
+    inset: 0; // Top, right, bottom, left = 0
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary-color); // Fond de la lightbox
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000; // Peut être remplacé par une nouvelle variable si nécessaire
+    transition: opacity var(--transition-default), visibility var(--transition-default);
+
+    &[aria-hidden="false"] {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+// Contenu principal
+.lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--neutral-color); // Couleur d'arrière-plan claire
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--box-shadow-large); // Ombre pour le relief
+    overflow: hidden;
+    outline: none;
+
+    @media (max-width: 768px) {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0; // Supprimer les arrondis sur mobile
+    }
+}
+
+// Boutons d'action
+button {
+    all: unset;
+    position: absolute;
+    background: transparent;
+    cursor: pointer;
+    border: none;
+    color: var(--text-color-primary); // Texte noir par défaut
+    font-size: var(--font-size-large); // Police adaptable avec vos variables
+    padding: var(--spacing-xsmall);
+    transition: opacity var(--transition-fast);
+
+    svg {
+        fill: currentColor;
+        width: var(--size-medium); // Icône adaptative
+        height: var(--size-medium);
+    }
+
+    &:hover,
+    &:focus {
+        opacity: 0.8;
+    }
+}
+
+// Bouton de fermeture
+.lightbox-close {
+    top: var(--spacing-small);
+    right: var(--spacing-small);
+}
+
+// Boutons de navigation
+.lightbox-prev,
+.lightbox-next {
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--primary-color-light); // Rouge plus clair pour hover
+    color: var(--neutral-color); // Texte blanc
+    border-radius: var(--border-radius-small);
+    padding: var(--spacing-xsmall);
+
+    &:hover {
+        background-color: var(--secondary-color); // Couleur secondaire pour l'interaction
+    }
+}
+
+.lightbox-prev {
+    left: var(--spacing-medium);
+}
+
+.lightbox-next {
+    right: var(--spacing-medium);
+}
+
+// Conteneur des médias
+.lightbox-media-container {
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img,
+    video {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+}
+
+// Légende
+.lightbox-caption {
+    margin-top: var(--spacing-small);
+    font-size: var(--font-size-small);
+    color: var(--text-color-secondary); // Texte rouge secondaire
+    text-align: center;
+    max-width: 90%;
+    line-height: var(--line-height-normal);
+}
+
+// Animations
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.lightbox[aria-hidden="false"] .lightbox-media-container {
+    animation: fadeIn var(--transition-default);
+}

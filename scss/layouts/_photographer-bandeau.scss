@@ -20,6 +20,7 @@
     flex-direction: column; /* Par défaut, les éléments sont empilés verticalement */
     align-items: center; /* Centre les éléments horizontalement */
     background: #FAFAFA; /* Couleur de fond gris clair pour un contraste doux */
+    padding: 2% 0; /* Espacement intérieur en haut et en bas */
 
     /* ---------------------------------------------------------------------- */
     /* Styles pour les tablettes                                              */
@@ -28,6 +29,7 @@
     @include tablet {
         flex-direction: row; /* Passe à une disposition horizontale */
         justify-content: space-around; /* Espacement égal entre les éléments */
+        margin-bottom:5%;
     }
 
     /* ---------------------------------------------------------------------- */
@@ -39,4 +41,7 @@
         justify-content: space-around; /* Répartit les éléments avec un espace égal */
         margin:0 2%;
     }
+}
+.photographer-profile {
+    margin-right: 30%;
 }

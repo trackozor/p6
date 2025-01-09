@@ -579,6 +579,10 @@ h1 {
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/* photographer-header                                                        */
+/* Description : ajustement spécifique à la pages photographer.html           */
+/* -------------------------------------------------------------------------- */
 /* =============================================================================
     Projet      : Fisheye
     Fichier     : _footer.scss
@@ -628,10 +632,17 @@ footer {
 }
 @media (min-width: 767px) {
   .modal-container {
-    top: 8%; /* Décale davantage la modal du haut */
-    left: 30%; /* Ajuste horizontalement pour un centrage optimal */
-    width: 40%; /* Réduit la largeur pour un meilleur affichage */
-    height: auto; /* Ajuste automatiquement la hauteur au contenu */
+    top: 10%;
+    left: 12%; /* Ajuste horizontalement pour un centrage optimal */
+    width: 65%; /* Réduit la largeur pour un meilleur affichage */
+    height: 70%; /* Ajuste automatiquement la hauteur au contenu */
+  }
+}
+@media (min-width: 1024px) {
+  .modal-container {
+    left: 20%; /* Ajuste horizontalement pour un centrage optimal */
+    width: 60%; /* Réduit la largeur pour un meilleur affichage */
+    height: 70%; /* Ajuste automatiquement la hauteur au contenu */
   }
 }
 
@@ -682,6 +693,12 @@ footer {
   display: flex; /* Utilisation de Flexbox pour organiser les labels et champs */
   flex-direction: column; /* Les labels et champs sont empilés verticalement */
 }
+@media (min-width: 767px) {
+  .form-group {
+    width: 100%;
+    max-width: 800px;
+  }
+}
 
 /* Styles pour les labels */
 .form-group label {
@@ -715,6 +732,7 @@ footer {
   flex-direction: column; /* Par défaut, les éléments sont empilés verticalement */
   align-items: center; /* Centre les éléments horizontalement */
   background: #FAFAFA; /* Couleur de fond gris clair pour un contraste doux */
+  padding: 2% 0; /* Espacement intérieur en haut et en bas */
   /* ---------------------------------------------------------------------- */
   /* Styles pour les tablettes                                              */
   /* Description : Ajuste la disposition pour un affichage horizontal       */
@@ -728,6 +746,7 @@ footer {
   .photographer-info {
     flex-direction: row; /* Passe à une disposition horizontale */
     justify-content: space-around; /* Espacement égal entre les éléments */
+    margin-bottom: 5%;
   }
 }
 @media (min-width: 1024px) {
@@ -736,6 +755,140 @@ footer {
     justify-content: space-around; /* Répartit les éléments avec un espace égal */
     margin: 0 2%;
   }
+}
+
+.photographer-profile {
+  margin-right: 30%;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-color);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1000;
+  transition: opacity var(--transition-default), visibility var(--transition-default);
+}
+.lightbox[aria-hidden=false] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--neutral-color);
+  border-radius: var(--border-radius-medium);
+  box-shadow: var(--box-shadow-large);
+  overflow: hidden;
+  outline: none;
+}
+@media (max-width: 768px) {
+  .lightbox-content {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0;
+  }
+}
+
+button {
+  all: unset;
+  position: absolute;
+  background: transparent;
+  cursor: pointer;
+  border: none;
+  color: var(--text-color-primary);
+  font-size: var(--font-size-large);
+  padding: var(--spacing-xsmall);
+  transition: opacity var(--transition-fast);
+}
+button svg {
+  fill: currentColor;
+  width: var(--size-medium);
+  height: var(--size-medium);
+}
+button:hover, button:focus {
+  opacity: 0.8;
+}
+
+.lightbox-close {
+  top: var(--spacing-small);
+  right: var(--spacing-small);
+}
+
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--primary-color-light);
+  color: var(--neutral-color);
+  border-radius: var(--border-radius-small);
+  padding: var(--spacing-xsmall);
+}
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background-color: var(--secondary-color);
+}
+
+.lightbox-prev {
+  left: var(--spacing-medium);
+}
+
+.lightbox-next {
+  right: var(--spacing-medium);
+}
+
+.lightbox-media-container {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.lightbox-media-container img,
+.lightbox-media-container video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.lightbox-caption {
+  margin-top: var(--spacing-small);
+  font-size: var(--font-size-small);
+  color: var(--text-color-secondary);
+  text-align: center;
+  max-width: 90%;
+  line-height: var(--line-height-normal);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.lightbox[aria-hidden=false] .lightbox-media-container {
+  animation: fadeIn var(--transition-default);
 }
 
 /*# sourceMappingURL=photographer.css.map */
