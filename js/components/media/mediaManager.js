@@ -54,7 +54,7 @@ export async function getPhotographersAndMedia() {
  * @param {number} photographerId - ID du photographe.
  * @returns {Array} Médias filtrés pour le photographe.
  */
-export function filterMediaByPhotographer(mediaList, photographerId) {
+export function filterMediaByPhotographer(mediaList, photographerId,) {
     logEvent('test_start', `Début du filtrage des médias pour le photographe ID ${photographerId}...`);
 
     const filteredMedia = mediaList.filter(media => media.photographerId === photographerId);
@@ -89,8 +89,8 @@ export function displayMedia(mediaList, galleryContainer) {
 
     mediaList.forEach(media => {
         const mediaSrc = media.image
-            ? `../../../assets/photographers/${media.folderName}/${media.image}`
-            : `../../../assets/photographers/${media.folderName}/${media.video}`;
+            ? `./assets/photographers/${media.folderName}/${media.image}`
+            : `./assets/photographers/${media.folderName}/${media.video}`;
 
         const figure = document.createElement('figure');
         figure.classList.add('gallery-item');

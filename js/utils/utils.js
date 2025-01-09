@@ -18,6 +18,31 @@ import { CONFIGLOG } from "../modules/constants.js";
 /*                       =========== Fonctions utilitaires ===================            */
 /*========================================================================================*/
 
+
+
+
+/**
+ * Détermine si un type de log doit être affiché en fonction de la 
+ * configuration globale et des paramètres personnalisés.
+ *
+ * @param {string} type - Type de log (info, warn, error, etc.)
+ * @param {Object} config - Configuration globale (e.g., CONFIGLOG)
+ * @returns {boolean} - `true` si le log doit être affiché, sinon `false`.
+ */
+export function isLogEnabled(type, config) {
+    // Si les logs globaux sont désactivés, retourne `false`
+    if (!config.ENABLE_LOGS) {
+        return false;
+    }
+
+    // Priorité : CUSTOM_LOG_SETTINGS > LOG_LEVELS
+    if (type in config.CUSTOM_LOG_SETTINGS) {
+        return config.CUSTOM_LOG_SETTINGS[type]; // Retourne la valeur personnalisée
+    }
+
+    // Sinon, retourne la configuration par défaut
+    return config.LOG_LEVELS[type] || false;
+}
 /*======================Fonction log console==============================================*/
 /**
  * Log les événements dans la console avec horodatage, icônes et styles personnalisés.
@@ -40,42 +65,44 @@ import { CONFIGLOG } from "../modules/constants.js";
  */
 
 export function logEvent(type, message, data = {}) {
-    
-    /* 1. Vérifie si les logs sont activés via CONFIG.ENABLE_LOGS.*/  
+    // 1. Vérifie si les logs sont activés globalement via ENABLE_LOGS.
     if (!CONFIGLOG.ENABLE_LOGS) {
-        return; // Si les logs sont désactivés, sortir de la fonction immédiatement.
+      return;
     }
 
-    // Vérifie si le type de log est activé dans LOG_LEVELS
-    if (!CONFIGLOG.LOG_LEVELS[type]) {
-        return; // Si le type de log est désactivé, ne rien afficher
-    }
+    // 2. Détermine si le type de log est activé selon l'environnement.
+    const isLogEnabled =
+        CONFIGLOG.ENVIRONMENT === 'development'
+            ? CONFIGLOG.CUSTOM_LOG_SETTING[type] // En dev, utilise les paramètres personnalisés
+            : CONFIGLOG.LOG_LEVELS[type];       // En prod, utilise les niveaux définis
 
-    /* 2. Récupère l'horodatage et construit un préfixe pour identifier la source du log.*/
-    const timestamp = new Date().toLocaleTimeString(); // Récupère l'heure actuelle au format HH:MM:SS.
-    const prefix = `[Fisheye][${timestamp}]`; // Préfixe standard pour identifier les logs et horodatage.
+    if (!isLogEnabled) {
+      return;
+    } // Sort si le log est désactivé.
 
-    /*3. Sélectionne une icône, un style en fonction du type de log  et construit le message complet avec le type, l'icône, et le contenu.*/
-    const icon = CONFIGLOG.LOG_ICONS[type] || CONFIGLOG.LOG_ICONS.default;// Icône par défaut si le type est inconnu    
-    const style = CONFIGLOG.LOG_STYLES[type] || CONFIGLOG.LOG_STYLES.default ;// Récupère le style approprié depuis `logStyles` en fonction du type (info, warn, error).
-    const fullMessage = `${icon} ${prefix} ${type.toUpperCase()}: ${message}`; // Message complet à afficher.
+    // 3. Récupère l'horodatage et construit le préfixe.
+    const timestamp = new Date().toLocaleTimeString();
+    const prefix = `[Fisheye][${timestamp}]`;
 
-    /*4. Vérifie si le message est vide pour éviter les logs inutiles.*/
-    if (!message) {
-        console.warn('%c[AVERTISSEMENT] Aucun message fourni dans logEvent', style);
-        return;
-    }
+    // 4. Récupère l'icône et le style pour le type de log.
+    const icon = CONFIGLOG.LOG_ICONS?.[type] || CONFIGLOG.LOG_ICONS?.default || '';
+    const style = CONFIGLOG.LOG_STYLES?.[type] || CONFIGLOG.LOG_STYLES?.default || '';
 
-    /* 5. Affiche le log dans la console en utilisant le type dynamique (info, warn, error, etc.).*/
+    // 5. Construit le message complet.
+    const fullMessage = `${icon} ${prefix} ${type.toUpperCase()}: ${message}`;
+
+    // 6. Affiche le log dans la console.
     try {
-    console[type] 
-        ? console[type](`%c${fullMessage}`, style, data) 
-        : console.log(`%c${fullMessage}`, style, data);
+        if (console[type] && typeof console[type] === 'function') {
+            console[type](`%c${fullMessage}`, style, data);
+        } else {
+            console.log(`%c${fullMessage}`, style, data);
+        }
     } catch (error) {
-        console.error('Erreur dans logEvent :', error);
+        console.error('%cErreur dans logEvent :', CONFIGLOG.LOG_STYLES.error, error);
     }
-
 }
+
 
 /* ========================= Fonction pour ajouter une classe CSS =================*/
 /**

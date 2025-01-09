@@ -1,6 +1,6 @@
 // ========================================================
 // Nom du fichier : mediaManager.js
-// Description    : Gestion des médias et opérations associées.
+// Description    : Gestion des médias et intégration avec la lightbox.
 // Auteur         : Trackozor
 // Date           : 08/01/2025
 // Version        : 1.4.0
@@ -9,6 +9,7 @@
 import { fetchJSON } from '../data/dataFetcher.js'; // Utilitaire pour récupérer les données JSON.
 import { logEvent } from '../utils/utils.js'; // Utilitaire pour enregistrer les événements dans les logs.
 import { PATHS } from '../config/constants.js'; // Centralisation des chemins.
+import { initializeLightbox } from './lightbox.js'; // Gestion de la lightbox.
 
 // ========================================================
 // Constante : Chemin vers le fichier JSON contenant les médias.
@@ -17,7 +18,7 @@ const MEDIA_JSON_PATH = PATHS.DATA.MEDIA_JSON;
 
 /**
  * ========================================================
- *                 isValidMedia
+ *               isValidMedia
  * ========================================================
  * Description : Vérifie si un média possède toutes les propriétés requises.
  * @typedef {Object} Media
@@ -83,43 +84,74 @@ export async function getMedia() {
 
 /**
  * ========================================================
- *               filterMediaByPhotographer
+ *               displayMedia
  * ========================================================
- * Description : Filtre les médias en fonction de l'ID du photographe.
+ * Description : Génère et affiche les médias dans la galerie.
+ * Intègre la lightbox pour permettre un affichage en pleine vue.
  *
- * @param {Media[]} mediaList - Liste des médias à filtrer.
- * @param {number} photographerId - ID unique du photographe.
- * @returns {Media[]} Liste des médias appartenant au photographe spécifié.
+ * @param {Media[]} mediaList - Liste des médias à afficher.
+ * @param {HTMLElement} galleryContainer - Conteneur de la galerie.
  */
-export function filterMediaByPhotographer(mediaList, photographerId) {
-    logEvent('test_start', `Début du filtrage des médias pour le photographe ID ${photographerId}...`);
+export function displayMedia(mediaList, galleryContainer) {
+    logEvent('test_start', "Début de l'affichage des médias dans la galerie...");
 
-    if (!Array.isArray(mediaList) || typeof photographerId !== 'number') {
-        logEvent('warn', "Paramètres invalides pour le filtrage des médias.");
-        logEvent('test_end', "Fin du filtrage des médias (échec).");
-        return [];
+    // Réinitialiser la galerie
+    galleryContainer.innerHTML = '';
+
+    if (!mediaList || mediaList.length === 0) {
+        galleryContainer.innerHTML = `<p>Aucune œuvre trouvée pour ce photographe.</p>`;
+        logEvent('warn', "Aucun média à afficher.");
+        logEvent('test_end', "Fin de l'affichage des médias (aucun média trouvé).");
+        return;
     }
 
-    const filteredMedia = mediaList.filter(media => media.photographerId === photographerId);
+    // Stocker les médias pour la lightbox
+    const lightboxItems = [];
 
-    logEvent('success', `Médias filtrés pour le photographe ID ${photographerId}.`, {
-        totalFilteredMedia: filteredMedia.length,
+    // Générer et afficher les médias
+    mediaList.forEach((media, index) => {
+        const mediaFile = media.image || media.video;
+        const mediaSrc = `${PATHS.ASSETS.IMAGES}photographers/${media.folderName}/${mediaFile}`;
+        const mediaType = media.image ? 'image' : 'video';
+
+        // Ajout de l'élément au tableau lightbox
+        lightboxItems.push({
+            type: mediaType,
+            src: mediaSrc,
+            title: media.title || 'Œuvre sans titre',
+        });
+
+        // Création de l'élément figure
+        const figure = document.createElement('figure');
+        figure.classList.add('gallery-item');
+        figure.setAttribute('tabindex', '0');
+
+        // Création de l'élément média (img ou video)
+        const mediaElement = media.image ? document.createElement('img') : document.createElement('video');
+        mediaElement.src = mediaSrc;
+        mediaElement.alt = media.title || 'Œuvre sans titre';
+        if (media.video) {
+          mediaElement.controls = true;
+        }
+
+        // Création de la légende
+        const caption = document.createElement('figcaption');
+        caption.textContent = media.title || 'Œuvre sans titre';
+
+        // Ajout des événements pour ouvrir la lightbox
+        figure.addEventListener('click', () => initializeLightbox(lightboxItems, index));
+        figure.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                initializeLightbox(lightboxItems, index);
+            }
+        });
+
+        // Construction de la figure
+        figure.appendChild(mediaElement);
+        figure.appendChild(caption);
+        galleryContainer.appendChild(figure);
     });
 
-    logEvent('test_end', `Fin du filtrage des médias pour le photographe ID ${photographerId}.`);
-    return filteredMedia;
-}
-
-/**
- * ========================================================
- *               getMediaPath
- * ========================================================
- * Description : Génère un chemin complet pour les médias (images ou vidéos).
- *
- * @param {string} folderName - Nom du dossier du photographe.
- * @param {string} fileName - Nom du fichier (image ou vidéo).
- * @returns {string} Chemin complet vers le fichier média.
- */
-export function getMediaPath(folderName, fileName) {
-    return `${PATHS.ASSETS.IMAGES}photographers/${folderName}/${fileName}`;
+    logEvent('success', `${mediaList.length} médias affichés dans la galerie.`);
+    logEvent('test_end', "Fin de l'affichage des médias dans la galerie.");
 }
