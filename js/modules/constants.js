@@ -3,112 +3,111 @@
     Fichier     : constants.js
     Auteur      : trackozor
     Date        : 01/01/2025
-    Version     : 1.2
-    Description : Fichier englobant toutes les variables et chemins utilisés
-                  dans l'application, incluant une gestion dynamique des chemins
-                  pour GitHub Pages ou un environnement local.
+    Version     : 1.3
+    Description : Fichier centralisant toutes les constantes globales du projet.
+                  Ce fichier inclut une gestion dynamique des chemins pour GitHub Pages
+                  ou un environnement local, des configurations pour les logs et 
+                  des styles CSS prédéfinis.
 ============================================================================= */
 
 // === Détection de l'environnement (local ou GitHub Pages) ===
+// Cette variable permet de différencier un environnement local (localhost)
+// d'un environnement de production (hébergé sur GitHub Pages).
 const ENVIRONMENT = window.location.hostname === 'username.github.io' ? 'production' : 'development';
 
 // === Définition du chemin de base en fonction de l'environnement ===
+// Le chemin de base est ajusté en fonction de l'environnement pour permettre
+// un chargement correct des ressources (images, scripts, JSON, etc.).
 const BASE_PATH = ENVIRONMENT === 'production' ? '/fisheye/' : './';
 
-/**
- * Ajoute dynamiquement le préfixe nécessaire aux chemins absolus.
- * @param {string} path - Le chemin absolu à ajuster.
- * @returns {string} Le chemin ajusté avec le préfixe approprié.
- */
-function getAbsolutePath(path) {
-    return `${BASE_PATH}${path.replace(/^\//, '')}`; // Supprime le slash initial pour éviter les doublons
-}
+/* =============================================================================
+    Configuration Globale de l'Application
+============================================================================= */
 
 export const CONFIGLOG = {
-    /* ====== Informations sur l'environnement ====== */
-    ENVIRONMENT, // Environnement actuel ('production' ou 'development')
-    BASE_PATH, // Chemin de base pour les ressources
+    /* -------------------------------------------------------------------------
+        Informations sur l'Environnement
+        - ENVIRONMENT : Permet de savoir si l'application est en production ou développement.
+        - BASE_PATH : Préfixe des chemins pour les fichiers du projet.
+    ------------------------------------------------------------------------- */
+    ENVIRONMENT, // 'production' ou 'development'
+    BASE_PATH,   // Préfixe des chemins relatifs (ajouté dynamiquement)
 
-    /* ====== Configuration des logs ====== */
+    /* -------------------------------------------------------------------------
+        Configuration des Logs
+        - Ces options permettent de personnaliser les messages dans la console.
+        - Les logs peuvent être désactivés en production pour éviter les fuites
+          d'informations sensibles.
+    ------------------------------------------------------------------------- */
     ENABLE_LOGS: ENVIRONMENT === 'development', // Activer les logs uniquement en développement
+
     LOG_LEVELS: {
-        default: true,
-        info: ENVIRONMENT === 'development', // Activer les logs d'information en dev uniquement
-        warn: true, // Toujours activer les avertissements
-        error: true, // Toujours activer les erreurs critiques
-        success: true, // Toujours activer les succès
-        test_start: ENVIRONMENT === 'development', // Logs de tests activés en dev uniquement
-        test_end: ENVIRONMENT === 'development', // Logs de fin de tests activés en dev uniquement
+        default: true,                  // Activer les logs par défaut (génériques)
+        info: ENVIRONMENT === 'development', // Logs d'information (dev uniquement)
+        warn: true,                     // Logs d'avertissement (toujours activés)
+        error: true,                    // Logs d'erreurs critiques (toujours activés)
+        success: true,                  // Logs de succès (toujours activés)
+        test_start: ENVIRONMENT === 'development', // Début des tests (dev uniquement)
+        test_end: ENVIRONMENT === 'development',   // Fin des tests (dev uniquement)
     },
 
-    /* ====== Classes CSS utilisées ====== */
+    /* -------------------------------------------------------------------------
+        Classes CSS Utilisées
+        - Ces classes CSS standardisées peuvent être appliquées aux éléments HTML
+          pour styliser dynamiquement des erreurs, modales, etc.
+    ------------------------------------------------------------------------- */
     CSS_CLASSES: {
-        ERROR_INPUT: 'error-input', // Classe CSS pour styliser un champ avec une erreur (ex : bordure rouge).
-        ERROR_MODAL: 'error-modal', // Classe CSS pour afficher une erreur dans la modale.
-        MODAL_ACTIVE: 'active', // Classe CSS pour indiquer qu'une modale est active et visible.
-        BODY_NO_SCROLL: 'no-scroll', // Classe CSS pour empêcher le défilement de la page lorsque la modale est ouverte.
+        ERROR_INPUT: 'error-input',     // Pour styliser un champ de formulaire invalide
+        ERROR_MODAL: 'error-modal',     // Pour afficher une erreur dans une modale
+        MODAL_ACTIVE: 'active',         // Indique qu'une modale est ouverte
+        BODY_NO_SCROLL: 'no-scroll',    // Empêche le défilement du body lorsque la modale est ouverte
     },
 
-    /* ====== Styles des logs ====== */
+    /* -------------------------------------------------------------------------
+        Styles pour les Logs
+        - Ces styles permettent de personnaliser les messages affichés dans la console.
+        - Ils aident à identifier visuellement les différents types de logs.
+    ------------------------------------------------------------------------- */
     LOG_STYLES: {
-        info: "color: blue; font-weight: bold;", // Style pour les messages d'information.
-        warn: "color: orange; font-weight: bold;", // Style pour les avertissements.
-        error: "color: red; font-weight: bold;", // Style pour les erreurs critiques.
-        success: "color: green; font-weight: bold;", // Style pour les messages indiquant une réussite.
-        default: "color: black;", // Style par défaut pour les messages qui ne correspondent pas à un type spécifique.
-        test_start: "background-color: #4682B4; color: white; font-weight: bold;", // Style pour les logs de début de test.
-        test_end: "background-color:#00CED1; color: black; font-weight: bold;", // Style pour les logs de fin de test.
+        info: "color: blue; font-weight: bold;",      // Style pour les logs d'information
+        warn: "color: orange; font-weight: bold;",    // Style pour les avertissements
+        error: "color: red; font-weight: bold;",      // Style pour les erreurs critiques
+        success: "color: green; font-weight: bold;",  // Style pour les succès
+        default: "color: black;",                     // Style par défaut (neutre)
+        test_start: "background-color: #4682B4; color: white; font-weight: bold;", // Style pour le début des tests
+        test_end: "background-color:#00CED1; color: black; font-weight: bold;",    // Style pour la fin des tests
     },
 
-    /* ====== Icônes des logs ====== */
+    /* -------------------------------------------------------------------------
+        Icônes des Logs
+        - Ces icônes peuvent être utilisées pour rendre les logs plus visuels.
+        - Chaque type de log est associé à une icône descriptive.
+    ------------------------------------------------------------------------- */
     LOG_ICONS: {
-        info: 'ℹ️', // Icône pour les messages d'information.
-        warn: '⚠️', // Icône pour les avertissements.
-        error: '❌', // Icône pour les erreurs critiques.
-        success: '✅', // Icône pour indiquer une réussite.
-        default: '🔵', // Icône par défaut si le type de message n'est pas défini.
+        info: 'ℹ️',      // Icône pour les messages d'information
+        warn: '⚠️',      // Icône pour les avertissements
+        error: '❌',      // Icône pour les erreurs critiques
+        success: '✅',    // Icône pour indiquer un succès
+        default: '🔵',    // Icône par défaut (neutre)
     },
 
-    /* ====== Chemins des fichiers ====== */
+    /* -------------------------------------------------------------------------
+        Chemins des Fichiers et des Ressources
+        - Centralisation des chemins pour les fichiers JSON, images, vidéos, etc.
+        - Utilise BASE_PATH pour ajuster dynamiquement les chemins en fonction
+          de l'environnement (local ou production).
+    ------------------------------------------------------------------------- */
     PATHS: {
-        // === Chemins pour les données JSON ===
+        // === Données JSON ===
         DATA: {
-            PHOTOGRAPHERS_JSON: getAbsolutePath('/assets/data/photographers.json'), // Données des photographes
+            PHOTOGRAPHERS_JSON: `${BASE_PATH}assets/data/photographers.json`, // Fichier JSON des photographes
         },
 
-        // === Chemins pour les modules JS ===
-        MODULES: {
-            CONSTANTS: getAbsolutePath('/js/modules/constants.js'),
-            DOM_SELECTORS: getAbsolutePath('/js/modules/domSelectors.js'),
-            EVENT_LISTENERS: getAbsolutePath('/js/modules/eventListeners.js'),
-            LIGHTBOX: getAbsolutePath('/js/modules/lightbox.js'),
-            LISTENERS: getAbsolutePath('/js/modules/listeners.js'),
-            MEDIA_MANAGER: getAbsolutePath('/js/modules/mediaManager.js'),
-            MODAL_MANAGER: getAbsolutePath('/js/modules/modalManager.js'),
-            PHOTOGRAPHER_MANAGER: getAbsolutePath('/js/modules/photographerManager.js'),
-        },
-
-        // === Chemins pour les templates ===
-        TEMPLATES: {
-            INDEX: getAbsolutePath('/js/templates/index.js'),
-            MEDIA_TEMPLATE: getAbsolutePath('/js/templates/media-template-logic.js'),
-            PHOTOGRAPHER_LOGIC: getAbsolutePath('/js/templates/photographer-logic.js'),
-            PHOTOGRAPHER_PAGE: getAbsolutePath('/js/templates/photographer-page.js'),
-        },
-
-        // === Chemins pour les utilitaires ===
-        UTILS: {
-            ACCESSIBILITY: getAbsolutePath('/js/utils/accessibility.js'),
-            CONTACT_FORM: getAbsolutePath('/js/utils/contactForm.js'),
-            UTILS: getAbsolutePath('/js/utils/utils.js'),
-            MAIN: getAbsolutePath('/js/utils/main.js'),
-        },
-
-        // === Chemins spécifiques aux assets ===
+        // === Ressources Statiques (Assets) ===
         ASSETS: {
-            IMAGES: getAbsolutePath('/assets/images/'),
-            VIDEOS: getAbsolutePath('/assets/videos/'),
-            ICONS: getAbsolutePath('/assets/icons/'),
+            IMAGES: `${BASE_PATH}assets/images/`, // Dossier contenant les images
+            VIDEOS: `${BASE_PATH}assets/videos/`, // Dossier contenant les vidéos
+            ICONS: `${BASE_PATH}assets/icons/`,   // Dossier contenant les icônes
         },
     },
 };
