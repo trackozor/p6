@@ -13,25 +13,26 @@
 
 /* Conteneur principal des photographes */
 #photographers-container {
-    display: grid; /* Utilisation de la grille CSS pour organiser les cartes */
-    gap: var(--spacing-base); /* Espacement entre les éléments, basé sur une variable */
-    margin-top: var(--spacing-xxsmall); /* Petit espace au-dessus du conteneur */
-    padding: 0 var(--spacing-base); /* Espacement horizontal pour aligner le contenu */
+  display: grid; /* Utilisation de la grille CSS pour organiser les cartes */
+  gap: var(
+    --spacing-base
+  ); /* Espacement entre les éléments, basé sur une variable */
+  margin-top: var(--spacing-xxsmall); /* Petit espace au-dessus du conteneur */
+  padding: 0 var(--spacing-base); /* Espacement horizontal pour aligner le contenu */
 
-    /* ------------------------- Responsives -------------------------------- */
-    /* Styles spécifiques pour les écrans de type tablette */
-    @include tablet {
-        grid-template-columns: repeat(2, 1fr); /* 2 colonnes pour les tablettes */
-    }
+  /* ------------------------- Responsives -------------------------------- */
+  /* Styles spécifiques pour les écrans de type tablette */
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes pour les tablettes */
+  }
 
-    /* Styles spécifiques pour les écrans de type ordinateur */
-    @include desktop {
-        grid-template-columns: repeat(3, 1fr); /* 3 colonnes pour les ordinateurs */
-    }
+  /* Styles spécifiques pour les écrans de type ordinateur */
+  @include desktop {
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes pour les ordinateurs */
+  }
 
-    /* Styles spécifiques pour les écrans larges (grands ordinateurs) */
-    @include large-desktop {
-        grid-template-columns: repeat(3, 1fr); /* 4 colonnes pour écrans larges */
-    }
+  /* Styles spécifiques pour les écrans larges (grands ordinateurs) */
+  @include large-desktop {
+    grid-template-columns: repeat(3, 1fr); /* 4 colonnes pour écrans larges */
+  }
 }
-

@@ -22,18 +22,18 @@
   /* ================================ */
   /* Palette principale               */
   /* ================================ */
-  --primary-color: #901C1C; /* Rouge foncé pour accentuation */
-  --primary-color-light: #D3573C; /* Rouge plus clair pour hover */
-  --secondary-color: #D3573C; /* Rouge clair pour éléments secondaires */
-  --neutral-color: #FAFAFA; /* Blanc cassé pour les fonds */
+  --primary-color: #901c1c; /* Rouge foncé pour accentuation */
+  --primary-color-light: #d3573c; /* Rouge plus clair pour hover */
+  --secondary-color: #d3573c; /* Rouge clair pour éléments secondaires */
+  --neutral-color: #fafafa; /* Blanc cassé pour les fonds */
   /* Couleurs complémentaires */
-  --accent-color: #FF5722; /* Orange vif pour les appels à l'action */
+  --accent-color: #ff5722; /* Orange vif pour les appels à l'action */
   --secondary-neutral: #525252; /* Gris foncé pour textes secondaires */
   /* Couleurs de texte */
   --text-color-primary: #000; /* Texte principal (noir) */
-  --text-color-secondary: #901C1C; /* Texte secondaire */
+  --text-color-secondary: #901c1c; /* Texte secondaire */
   --text-color-tertiary: #757575; /* Texte peu important */
-  --text-color-name: #D3573C; /* Texte pour noms ou accents */
+  --text-color-name: #d3573c; /* Texte pour noms ou accents */
   /* Couleurs d'état */
   --success-color: #4caf50; /* Succès */
   --warning-color: #ff9800; /* Avertissement */
@@ -119,19 +119,87 @@
 /* Général                          */
 /* ================================ */
 /* Remet à zéro les marges, paddings, bordures et styles par défaut */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -145,8 +213,17 @@ time, mark, audio, video {
 /* HTML5 : Compatibilité des blocs  */
 /* ================================ */
 /* Assure une prise en charge correcte des éléments HTML5 */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
   display: block; /* Rend les éléments block-level */
 }
 
@@ -157,7 +234,7 @@ footer, header, hgroup, menu, nav, section {
 body {
   line-height: 1; /* Normalise l'interligne */
   font-family: var(--font-primary, sans-serif); /* Police par défaut */
-  background-color: var(--neutral-color); /* Fond par défaut */
+  background-color: white; /* Fond par défaut */
   color: var(--text-color-primary); /* Texte par défaut */
 }
 
@@ -165,7 +242,8 @@ body {
 /* Listes                           */
 /* ================================ */
 /* Supprime les styles par défaut des listes */
-ol, ul {
+ol,
+ul {
   list-style: none; /* Retire les puces ou numérotations */
 }
 
@@ -173,13 +251,16 @@ ol, ul {
 /* Citations                        */
 /* ================================ */
 /* Supprime les guillemets automatiques des citations */
-blockquote, q {
+blockquote,
+q {
   quotes: none;
 }
 
 /* Empêche les pseudo-éléments de guillemets */
-blockquote:before, blockquote:after,
-q:before, q:after {
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
   content: "";
 }
 
@@ -196,7 +277,8 @@ table {
 /* Médias                           */
 /* ================================ */
 /* Adapte les images et vidéos au conteneur parent */
-img, video {
+img,
+video {
   max-width: 100%; /* Limite la largeur à celle du conteneur */
   height: auto; /* Conserve les proportions des médias */
 }
@@ -262,19 +344,21 @@ a:focus {
   font-size: 1rem; /* Taille de la police pour le texte du bouton */
   font-weight: bold; /* Texte en gras pour plus de visibilité */
   color: white; /* Couleur du texte */
-  padding: 3% 3%; /* Espacement interne pour rendre le bouton plus grand */
+  padding: 3%; /* Espacement interne pour rendre le bouton plus grand */
   max-width: 150px; /* Limite la largeur maximale du bouton */
   max-height: 70px; /* Limite la hauteur maximale du bouton */
   border: none; /* Supprime les bordures */
-  background-color: #901C1C; /* Couleur de fond rouge foncé */
+  background-color: #901c1c; /* Couleur de fond rouge foncé */
   border-radius: 0.3rem; /* Coins légèrement arrondis */
-  margin: 5% 0; /* Ajoute un espace vertical autour du bouton */
+  margin-bottom: 12%; /* Ajoute un espace vertical autour du bouton */
   cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
 }
 @media (min-width: 767px) {
   .contact_button {
-    max-height: 50px; /* Réduit la hauteur maximale sur tablette */
-    padding: 2%; /* Diminue les espacements internes */
+    max-height: 20px; /* Réduit la hauteur maximale sur tablette */
+    padding: 2% 1%; /* Diminue les espacements internes */
+    margin-bottom: 0;
+    margin-left: 7%;
   }
 }
 
@@ -304,7 +388,10 @@ a:focus {
 /* Appliqué aux boutons suivants : lightbox-prev, lightbox-close,             */
 /* lightbox-next, modal-close.                                                */
 /* -------------------------------------------------------------------------- */
-.lightbox-prev, .lightbox-close, .lightbox-next, .modal-close {
+.lightbox-prev,
+.lightbox-close,
+.lightbox-next,
+.modal-close {
   background: none; /* Supprime tout arrière-plan pour un design minimal */
   border: none; /* Supprime les bordures par défaut */
   padding: 0; /* Supprime les espacements internes */
@@ -316,6 +403,30 @@ a:focus {
   justify-content: center; /* Centre les icônes horizontalement */
   width: auto; /* Ajuste automatiquement la largeur au contenu */
   height: auto; /* Ajuste automatiquement la hauteur au contenu */
+}
+
+.fa-heart::before {
+  color: #901c1c;
+}
+
+.sorting {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5%;
+}
+
+#sort-options {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  color: white;
+  background-color: #901c1c;
+  align-items: center;
+  margin: 2%;
+  border: none;
+  border-radius: 0.2rem;
 }
 
 /* =============================================================================
@@ -338,7 +449,7 @@ a:focus {
   flex-direction: column; /* Les éléments sont empilés verticalement */
   align-items: center; /* Centre les éléments horizontalement */
   text-align: center; /* Centre le texte à l'intérieur */
-  background-color: var(--neutral-color); /* Fond neutre pour la carte */
+  background-color: white; /* Fond neutre pour la carte */
   max-width: 100%; /* Adapte la largeur de la carte à celle du conteneur */
   margin: 6% auto; /* Centre la carte avec un espace vertical */
   transition: transform 0.3s ease; /* Ajoute une animation fluide sur hover */
@@ -520,7 +631,7 @@ header {
   align-items: center; /* Centre les éléments verticalement */
   width: 95%; /* Largeur relative pour s'adapter à différentes tailles d'écran */
   height: auto; /* La hauteur s'ajuste automatiquement au contenu */
-  padding: 5% 0 7% 0; /* Espacement en haut et en bas */
+  padding: 5% 0; /* Espacement en haut et en bas */
   gap: 2%; /* Espace horizontal entre les éléments enfants */
   margin: 0 auto; /* Centre le header horizontalement */
   /* ------------------------ Responsives ----------------------------------- */
@@ -582,6 +693,36 @@ h1 {
 /* photographer-header                                                        */
 /* Description : ajustement spécifique à la pages photographer.html           */
 /* -------------------------------------------------------------------------- */
+.photographer-header {
+  width: 100%; /* Largeur relative au viewport pour le logo */
+  height: auto; /* Garde les proportions originales */
+  margin: 0 auto;
+  justify-content: center;
+}
+@media (min-width: 767px) {
+  .photographer-header {
+    width: 85%; /* Réduit la largeur pour un alignement visuel plus centré */
+    padding: 2% 0; /* Diminue les marges verticales pour plus de compacité */
+    justify-content: left;
+  }
+}
+
+.photographer-header img {
+  padding-left: 0;
+}
+@media (min-width: 767px) {
+  .photographer-header img {
+    width: 70%;
+    padding-left: 5%; /* Réduit l'espacement à gauche pour une meilleure proportion */
+  }
+}
+@media (min-width: 1440px) {
+  .photographer-header img {
+    width: 80%;
+    padding-left: 10%;
+  }
+}
+
 /* =============================================================================
     Projet      : Fisheye
     Fichier     : _footer.scss
@@ -659,18 +800,18 @@ footer {
   /* ================================ */
   /* Palette principale               */
   /* ================================ */
-  --primary-color: #901C1C; /* Rouge foncé pour accentuation */
-  --primary-color-light: #D3573C; /* Rouge plus clair pour hover */
-  --secondary-color: #D3573C; /* Rouge clair pour éléments secondaires */
-  --neutral-color: #FAFAFA; /* Blanc cassé pour les fonds */
+  --primary-color: #901c1c; /* Rouge foncé pour accentuation */
+  --primary-color-light: #d3573c; /* Rouge plus clair pour hover */
+  --secondary-color: #d3573c; /* Rouge clair pour éléments secondaires */
+  --neutral-color: #fafafa; /* Blanc cassé pour les fonds */
   /* Couleurs complémentaires */
-  --accent-color: #FF5722; /* Orange vif pour les appels à l'action */
+  --accent-color: #ff5722; /* Orange vif pour les appels à l'action */
   --secondary-neutral: #525252; /* Gris foncé pour textes secondaires */
   /* Couleurs de texte */
   --text-color-primary: #000; /* Texte principal (noir) */
-  --text-color-secondary: #901C1C; /* Texte secondaire */
+  --text-color-secondary: #901c1c; /* Texte secondaire */
   --text-color-tertiary: #757575; /* Texte peu important */
-  --text-color-name: #D3573C; /* Texte pour noms ou accents */
+  --text-color-name: #d3573c; /* Texte pour noms ou accents */
   /* Couleurs d'état */
   --success-color: #4caf50; /* Succès */
   --warning-color: #ff9800; /* Avertissement */
@@ -756,19 +897,87 @@ footer {
 /* Général                          */
 /* ================================ */
 /* Remet à zéro les marges, paddings, bordures et styles par défaut */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -782,8 +991,17 @@ time, mark, audio, video {
 /* HTML5 : Compatibilité des blocs  */
 /* ================================ */
 /* Assure une prise en charge correcte des éléments HTML5 */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
   display: block; /* Rend les éléments block-level */
 }
 
@@ -794,7 +1012,7 @@ footer, header, hgroup, menu, nav, section {
 body {
   line-height: 1; /* Normalise l'interligne */
   font-family: var(--font-primary, sans-serif); /* Police par défaut */
-  background-color: var(--neutral-color); /* Fond par défaut */
+  background-color: white; /* Fond par défaut */
   color: var(--text-color-primary); /* Texte par défaut */
 }
 
@@ -802,7 +1020,8 @@ body {
 /* Listes                           */
 /* ================================ */
 /* Supprime les styles par défaut des listes */
-ol, ul {
+ol,
+ul {
   list-style: none; /* Retire les puces ou numérotations */
 }
 
@@ -810,13 +1029,16 @@ ol, ul {
 /* Citations                        */
 /* ================================ */
 /* Supprime les guillemets automatiques des citations */
-blockquote, q {
+blockquote,
+q {
   quotes: none;
 }
 
 /* Empêche les pseudo-éléments de guillemets */
-blockquote:before, blockquote:after,
-q:before, q:after {
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
   content: "";
 }
 
@@ -833,7 +1055,8 @@ table {
 /* Médias                           */
 /* ================================ */
 /* Adapte les images et vidéos au conteneur parent */
-img, video {
+img,
+video {
   max-width: 100%; /* Limite la largeur à celle du conteneur */
   height: auto; /* Conserve les proportions des médias */
 }
@@ -899,19 +1122,21 @@ a:focus {
   font-size: 1rem; /* Taille de la police pour le texte du bouton */
   font-weight: bold; /* Texte en gras pour plus de visibilité */
   color: white; /* Couleur du texte */
-  padding: 3% 3%; /* Espacement interne pour rendre le bouton plus grand */
+  padding: 3%; /* Espacement interne pour rendre le bouton plus grand */
   max-width: 150px; /* Limite la largeur maximale du bouton */
   max-height: 70px; /* Limite la hauteur maximale du bouton */
   border: none; /* Supprime les bordures */
-  background-color: #901C1C; /* Couleur de fond rouge foncé */
+  background-color: #901c1c; /* Couleur de fond rouge foncé */
   border-radius: 0.3rem; /* Coins légèrement arrondis */
-  margin: 5% 0; /* Ajoute un espace vertical autour du bouton */
+  margin-bottom: 12%; /* Ajoute un espace vertical autour du bouton */
   cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
 }
 @media (min-width: 767px) {
   .contact_button {
-    max-height: 50px; /* Réduit la hauteur maximale sur tablette */
-    padding: 2%; /* Diminue les espacements internes */
+    max-height: 20px; /* Réduit la hauteur maximale sur tablette */
+    padding: 2% 1%; /* Diminue les espacements internes */
+    margin-bottom: 0;
+    margin-left: 7%;
   }
 }
 
@@ -941,7 +1166,10 @@ a:focus {
 /* Appliqué aux boutons suivants : lightbox-prev, lightbox-close,             */
 /* lightbox-next, modal-close.                                                */
 /* -------------------------------------------------------------------------- */
-.lightbox-prev, .lightbox-close, .lightbox-next, .modal-close {
+.lightbox-prev,
+.lightbox-close,
+.lightbox-next,
+.modal-close {
   background: none; /* Supprime tout arrière-plan pour un design minimal */
   border: none; /* Supprime les bordures par défaut */
   padding: 0; /* Supprime les espacements internes */
@@ -953,6 +1181,30 @@ a:focus {
   justify-content: center; /* Centre les icônes horizontalement */
   width: auto; /* Ajuste automatiquement la largeur au contenu */
   height: auto; /* Ajuste automatiquement la hauteur au contenu */
+}
+
+.fa-heart::before {
+  color: #901c1c;
+}
+
+.sorting {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5%;
+}
+
+#sort-options {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  color: white;
+  background-color: #901c1c;
+  align-items: center;
+  margin: 2%;
+  border: none;
+  border-radius: 0.2rem;
 }
 
 /* =============================================================================
@@ -975,7 +1227,7 @@ a:focus {
   flex-direction: column; /* Les éléments sont empilés verticalement */
   align-items: center; /* Centre les éléments horizontalement */
   text-align: center; /* Centre le texte à l'intérieur */
-  background-color: var(--neutral-color); /* Fond neutre pour la carte */
+  background-color: white; /* Fond neutre pour la carte */
   max-width: 100%; /* Adapte la largeur de la carte à celle du conteneur */
   margin: 6% auto; /* Centre la carte avec un espace vertical */
   transition: transform 0.3s ease; /* Ajoute une animation fluide sur hover */
@@ -1157,7 +1409,7 @@ header {
   align-items: center; /* Centre les éléments verticalement */
   width: 95%; /* Largeur relative pour s'adapter à différentes tailles d'écran */
   height: auto; /* La hauteur s'ajuste automatiquement au contenu */
-  padding: 5% 0 7% 0; /* Espacement en haut et en bas */
+  padding: 5% 0; /* Espacement en haut et en bas */
   gap: 2%; /* Espace horizontal entre les éléments enfants */
   margin: 0 auto; /* Centre le header horizontalement */
   /* ------------------------ Responsives ----------------------------------- */
@@ -1219,6 +1471,36 @@ h1 {
 /* photographer-header                                                        */
 /* Description : ajustement spécifique à la pages photographer.html           */
 /* -------------------------------------------------------------------------- */
+.photographer-header {
+  width: 100%; /* Largeur relative au viewport pour le logo */
+  height: auto; /* Garde les proportions originales */
+  margin: 0 auto;
+  justify-content: center;
+}
+@media (min-width: 767px) {
+  .photographer-header {
+    width: 85%; /* Réduit la largeur pour un alignement visuel plus centré */
+    padding: 2% 0; /* Diminue les marges verticales pour plus de compacité */
+    justify-content: left;
+  }
+}
+
+.photographer-header img {
+  padding-left: 0;
+}
+@media (min-width: 767px) {
+  .photographer-header img {
+    width: 70%;
+    padding-left: 5%; /* Réduit l'espacement à gauche pour une meilleure proportion */
+  }
+}
+@media (min-width: 1440px) {
+  .photographer-header img {
+    width: 80%;
+    padding-left: 10%;
+  }
+}
+
 /* =============================================================================
     Projet      : Fisheye
     Fichier     : _footer.scss
@@ -1246,28 +1528,30 @@ footer {
 /* Conteneur principal de la modal                                            */
 /* Description : Style principal pour afficher une modal centrée             */
 /* -------------------------------------------------------------------------- */
-.modal-container {
+.modal {
   display: flex; /* Active l'affichage Flexbox pour structurer les enfants */
-  position: absolute; /* Permet un positionnement relatif à la page */
-  z-index: 10; /* Positionne la modal au-dessus des autres éléments */
-  top: 5%; /* Décale la modal légèrement du haut de la fenêtre */
+  position: fixed; /* Permet un positionnement relatif à la fenêtre */
+  z-index: 1; /* Positionne la modal au-dessus des autres éléments */
+  top: 0; /* Décale la modal du haut de la fenêtre */
+  left: 0; /* Décale la modal du bord gauche */
   width: 100%; /* La modal occupe toute la largeur de l'écran */
   height: 100%; /* La modal occupe toute la hauteur de l'écran */
-  max-width: 600px; /* Limite la largeur de la modal sur les écrans larges */
-  background-color: #DB8876; /* Couleur de fond pour un style cohérent */
+  background-color: #db8876; /* Couleur de fond pour un style cohérent */
   border-radius: 5px; /* Coins arrondis pour un design moderne */
   flex-direction: column; /* Les éléments enfants sont empilés verticalement */
   align-items: center; /* Centre les enfants horizontalement */
-  justify-content: space-between; /* Espace uniforme entre les éléments */
-  padding: 0; /* Pas de marges internes */
-  margin: auto; /* Centre la modal dans la fenêtre */
+  justify-content: center; /* Centre verticalement les éléments */
+  padding: 1rem; /* Espacement interne */
+  opacity: 0; /* Modal invisible par défaut */
+  transform: scale(0.9); /* Réduction initiale pour un effet visuel */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Animation fluide */
   /* ---------------------------------------------------------------------- */
   /* Styles pour les tablettes                                              */
   /* Description : Ajuste la modal pour s'adapter à des écrans moyens       */
   /* ---------------------------------------------------------------------- */
 }
 @media (min-width: 767px) {
-  .modal-container {
+  .modal {
     top: 10%;
     left: 12%; /* Ajuste horizontalement pour un centrage optimal */
     width: 65%; /* Réduit la largeur pour un meilleur affichage */
@@ -1275,7 +1559,7 @@ footer {
   }
 }
 @media (min-width: 1024px) {
-  .modal-container {
+  .modal {
     left: 20%; /* Ajuste horizontalement pour un centrage optimal */
     width: 60%; /* Réduit la largeur pour un meilleur affichage */
     height: 70%; /* Ajuste automatiquement la hauteur au contenu */
@@ -1305,7 +1589,7 @@ footer {
 /* Conteneur spécifique : Modal de contact                                    */
 /* Description : Styles spécifiques pour l'affichage de la modal de contact   */
 /* -------------------------------------------------------------------------- */
-#contact-modal {
+#modal {
   display: none; /* Masque la modal par défaut */
   margin: 0 auto; /* Centre le contenu horizontalement */
   opacity: 0; /* Rendre la modal invisible par défaut */
@@ -1313,7 +1597,7 @@ footer {
   transition: opacity 0.3s ease, transform 0.3s ease; /* Animation fluide pour l'apparition */
 }
 
-#contact-modal.active {
+#modal.active {
   display: flex; /* Affiche la modal lorsqu'elle est activée */
   opacity: 1; /* Rendre la modal visible */
   transform: scale(1); /* Ramène la modal à sa taille normale */
@@ -1328,6 +1612,7 @@ footer {
   max-width: 500px; /* Limite la largeur sur les écrans plus grands */
   display: flex; /* Utilisation de Flexbox pour organiser les labels et champs */
   flex-direction: column; /* Les labels et champs sont empilés verticalement */
+  margin: 0 auto;
 }
 @media (min-width: 767px) {
   .form-group {
@@ -1367,34 +1652,98 @@ footer {
   display: flex; /* Active le modèle Flexbox pour l'agencement des éléments */
   flex-direction: column; /* Par défaut, les éléments sont empilés verticalement */
   align-items: center; /* Centre les éléments horizontalement */
-  background: #FAFAFA; /* Couleur de fond gris clair pour un contraste doux */
-  padding: 2% 0; /* Espacement intérieur en haut et en bas */
-  /* ---------------------------------------------------------------------- */
-  /* Styles pour les tablettes                                              */
-  /* Description : Ajuste la disposition pour un affichage horizontal       */
-  /* ---------------------------------------------------------------------- */
-  /* ---------------------------------------------------------------------- */
-  /* Styles pour les ordinateurs de bureau                                  */
-  /* Description : Maintient la disposition horizontale et l'espacement     */
-  /* ---------------------------------------------------------------------- */
+  background: #fafafa; /* Couleur de fond gris clair pour un contraste doux */
+  justify-content: space-around; /* Espace égal entre les éléments */
+  margin-bottom: 5%; /* Espace en bas pour séparer des autres sections */
+  padding: 2% 0; /* Espace intérieur pour un design respirant */
 }
 @media (min-width: 767px) {
   .photographer-info {
-    flex-direction: row; /* Passe à une disposition horizontale */
-    justify-content: space-around; /* Espacement égal entre les éléments */
-    margin-bottom: 5%;
+    display: flex; /* Flexbox reste actif pour les écrans tablettes */
+    flex-direction: row; /* Les éléments sont alignés horizontalement */
+    width: 100%; /* La largeur s'étend à 100% */
+    padding: 1% 0; /* Réduit le padding pour un design compact */
+    justify-content: space-around; /* Garde l'espacement entre les éléments */
+    align-items: center; /* Centre les éléments verticalement */
+    margin-bottom: 1%;
   }
 }
 @media (min-width: 1024px) {
   .photographer-info {
-    flex-direction: row; /* Disposition horizontale pour les grands écrans */
-    justify-content: space-around; /* Répartit les éléments avec un espace égal */
-    margin: 0 2%;
+    padding: 0; /* Réduit le padding pour un design compact */
+    width: 90%;
+    margin: 0 auto;
   }
 }
 
 .photographer-profile {
-  margin-right: 30%;
+  width: 100%; /* La largeur occupe tout l'espace disponible */
+  margin: 0 auto; /* Centre horizontalement le contenu */
+  text-align: center; /* Texte centré pour les petits écrans */
+}
+@media (min-width: 767px) {
+  .photographer-profile {
+    width: 60%; /* Réduit la largeur pour mieux s'adapter */
+    text-align: left; /* Texte aligné à gauche pour une meilleure lecture */
+  }
+}
+@media (min-width: 1024px) {
+  .photographer-profile {
+    width: 100%; /* Largeur plus grande pour les écrans plus grands */
+  }
+}
+
+.photographer-info .photographer-card-portrait {
+  margin-top: 45%; /* Espacement supérieur important pour les petits écrans */
+}
+@media (min-width: 767px) {
+  .photographer-info .photographer-card-portrait {
+    margin-top: 2%; /* Réduit l'espacement pour les écrans tablettes */
+    margin-right: 10%; /* Ajoute un espace à droite pour mieux structurer */
+  }
+}
+@media (min-width: 1024px) {
+  .photographer-info .photographer-card-portrait {
+    display: flex;
+    position: relative;
+    margin-right: 5%; /* Réduit l'espace à droite pour les écrans plus grands */
+    top: 3vh;
+    width: 12%;
+    height: 12%;
+    padding: 0;
+  }
+}
+
+.photographer-profile h2 {
+  color: #D3573C; /* Couleur de texte pour une meilleure mise en valeur */
+  font-size: 1.8rem; /* Taille par défaut pour les petits écrans */
+  margin-bottom: 1%; /* Espace sous le titre pour séparer des autres éléments */
+}
+@media (min-width: 767px) {
+  .photographer-profile h2 {
+    font-size: 2.4rem; /* Augmente la taille du texte pour les écrans plus grands */
+  }
+}
+
+#gallery {
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+textarea #message {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 20vh;
+  margin: 0 auto;
+  padding: 1%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 5%;
 }
 
 .lightbox {

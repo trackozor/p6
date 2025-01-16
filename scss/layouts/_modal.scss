@@ -13,38 +13,40 @@
 /* Description : Style principal pour afficher une modal centrée             */
 /* -------------------------------------------------------------------------- */
 
-.modal-container {
-    display: flex; /* Active l'affichage Flexbox pour structurer les enfants */
-    position: absolute; /* Permet un positionnement relatif à la page */
-    z-index: 10; /* Positionne la modal au-dessus des autres éléments */
-    top: 5%; /* Décale la modal légèrement du haut de la fenêtre */
-    width: 100%; /* La modal occupe toute la largeur de l'écran */
-    height: 100%; /* La modal occupe toute la hauteur de l'écran */
-    max-width: 600px; /* Limite la largeur de la modal sur les écrans larges */
-    background-color: #DB8876; /* Couleur de fond pour un style cohérent */
-    border-radius: 5px; /* Coins arrondis pour un design moderne */
-    flex-direction: column; /* Les éléments enfants sont empilés verticalement */
-    align-items: center; /* Centre les enfants horizontalement */
-    justify-content: space-between; /* Espace uniforme entre les éléments */
-    padding: 0; /* Pas de marges internes */
-    margin: auto; /* Centre la modal dans la fenêtre */
+.modal {
+  display: flex; /* Active l'affichage Flexbox pour structurer les enfants */
+  position: fixed; /* Permet un positionnement relatif à la fenêtre */
+  z-index: 1; /* Positionne la modal au-dessus des autres éléments */
+  top: 0; /* Décale la modal du haut de la fenêtre */
+  left: 0; /* Décale la modal du bord gauche */
+  width: 100%; /* La modal occupe toute la largeur de l'écran */
+  height: 100%; /* La modal occupe toute la hauteur de l'écran */
+  background-color: #db8876; /* Couleur de fond pour un style cohérent */
+  border-radius: 5px; /* Coins arrondis pour un design moderne */
+  flex-direction: column; /* Les éléments enfants sont empilés verticalement */
+  align-items: center; /* Centre les enfants horizontalement */
+  justify-content: center; /* Centre verticalement les éléments */
+  padding: 1rem; /* Espacement interne */
+  opacity: 0; /* Modal invisible par défaut */
+  transform: scale(0.9); /* Réduction initiale pour un effet visuel */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Animation fluide */
 
-    /* ---------------------------------------------------------------------- */
-    /* Styles pour les tablettes                                              */
-    /* Description : Ajuste la modal pour s'adapter à des écrans moyens       */
-    /* ---------------------------------------------------------------------- */
-    @include tablet {
-        top:10%;
-        left: 12%; /* Ajuste horizontalement pour un centrage optimal */
-        width: 65%; /* Réduit la largeur pour un meilleur affichage */
-        height: 70%; /* Ajuste automatiquement la hauteur au contenu */
-    }
+  /* ---------------------------------------------------------------------- */
+  /* Styles pour les tablettes                                              */
+  /* Description : Ajuste la modal pour s'adapter à des écrans moyens       */
+  /* ---------------------------------------------------------------------- */
+  @include tablet {
+    top: 10%;
+    left: 12%; /* Ajuste horizontalement pour un centrage optimal */
+    width: 65%; /* Réduit la largeur pour un meilleur affichage */
+    height: 70%; /* Ajuste automatiquement la hauteur au contenu */
+  }
 
-    @include desktop {
-        left: 20%; /* Ajuste horizontalement pour un centrage optimal */
-        width: 60%; /* Réduit la largeur pour un meilleur affichage */
-        height: 70%; /* Ajuste automatiquement la hauteur au contenu */
-    }
+  @include desktop {
+    left: 20%; /* Ajuste horizontalement pour un centrage optimal */
+    width: 60%; /* Réduit la largeur pour un meilleur affichage */
+    height: 70%; /* Ajuste automatiquement la hauteur au contenu */
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -53,18 +55,23 @@
 /* -------------------------------------------------------------------------- */
 
 #modal-overlay {
-    display: none; /* Masque l'overlay par défaut */
-    position: fixed; /* L'overlay couvre l'écran indépendamment du défilement */
-    top: 0; /* Ancrage au bord supérieur */
-    left: 0; /* Ancrage au bord gauche */
-    width: 100%; /* L'overlay couvre toute la largeur de la fenêtre */
-    height: 100%; /* L'overlay couvre toute la hauteur de la fenêtre */
-    background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent pour un effet visuel */
-    z-index: 5; /* Place l'overlay sous la modal mais au-dessus du contenu */
+  display: none; /* Masque l'overlay par défaut */
+  position: fixed; /* L'overlay couvre l'écran indépendamment du défilement */
+  top: 0; /* Ancrage au bord supérieur */
+  left: 0; /* Ancrage au bord gauche */
+  width: 100%; /* L'overlay couvre toute la largeur de la fenêtre */
+  height: 100%; /* L'overlay couvre toute la hauteur de la fenêtre */
+  background: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Fond semi-transparent pour un effet visuel */
+  z-index: 5; /* Place l'overlay sous la modal mais au-dessus du contenu */
 }
 
 #modal-overlay.active {
-    display: flex; /* Affiche l'overlay lorsqu'il est activé */
+  display: flex; /* Affiche l'overlay lorsqu'il est activé */
 }
 
 /* -------------------------------------------------------------------------- */
@@ -72,18 +79,20 @@
 /* Description : Styles spécifiques pour l'affichage de la modal de contact   */
 /* -------------------------------------------------------------------------- */
 
-#contact-modal {
-    display: none; /* Masque la modal par défaut */
-    margin: 0 auto; /* Centre le contenu horizontalement */
-    opacity: 0; /* Rendre la modal invisible par défaut */
-    transform: scale(0.9); /* Réduction initiale de la taille de la modal */
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Animation fluide pour l'apparition */
+#modal {
+  display: none; /* Masque la modal par défaut */
+  margin: 0 auto; /* Centre le contenu horizontalement */
+  opacity: 0; /* Rendre la modal invisible par défaut */
+  transform: scale(0.9); /* Réduction initiale de la taille de la modal */
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease; /* Animation fluide pour l'apparition */
 }
 
-#contact-modal.active {
-    display: flex; /* Affiche la modal lorsqu'elle est activée */
-    opacity: 1; /* Rendre la modal visible */
-    transform: scale(1); /* Ramène la modal à sa taille normale */
+#modal.active {
+  display: flex; /* Affiche la modal lorsqu'elle est activée */
+  opacity: 1; /* Rendre la modal visible */
+  transform: scale(1); /* Ramène la modal à sa taille normale */
 }
 
 /* -------------------------------------------------------------------------- */
@@ -92,25 +101,28 @@
 /* -------------------------------------------------------------------------- */
 
 .form-group {
-    width: 85vw; /* Largeur relative pour s'adapter aux petits écrans */
-    max-width: 500px; /* Limite la largeur sur les écrans plus grands */
-    display: flex; /* Utilisation de Flexbox pour organiser les labels et champs */
-    flex-direction: column; /* Les labels et champs sont empilés verticalement */
+  width: 85vw; /* Largeur relative pour s'adapter aux petits écrans */
+  max-width: 500px; /* Limite la largeur sur les écrans plus grands */
+  display: flex; /* Utilisation de Flexbox pour organiser les labels et champs */
+  flex-direction: column; /* Les labels et champs sont empilés verticalement */
+  margin:0 auto;
 
-    @include tablet {
-        width:100%;
-        max-width: 800px;
-    }
+  @include tablet {
+    width: 100%;
+    max-width: 800px;
+  }
 }
 
 /* Styles pour les labels */
 .form-group label {
-    font-size: var(--font-size-base); /* Taille de la police basée sur la variable */
-    margin: 2% 0; /* Ajoute un espacement au-dessus et en dessous des labels */
+  font-size: var(
+    --font-size-base
+  ); /* Taille de la police basée sur la variable */
+  margin: 2% 0; /* Ajoute un espacement au-dessus et en dessous des labels */
 }
 
 /* Styles pour les champs de saisie */
 .form-group input {
-    font-size: var(--font-size-base); /* Taille de police standard */
-    padding: 2%; /* Ajoute un rembourrage interne pour une meilleure lisibilité */
+  font-size: var(--font-size-base); /* Taille de police standard */
+  padding: 2%; /* Ajoute un rembourrage interne pour une meilleure lisibilité */
 }

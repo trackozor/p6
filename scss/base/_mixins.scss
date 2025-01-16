@@ -2,26 +2,26 @@
 /* Ce fichier contient des mixins pour gérer l'orientation portrait et paysage sur les appareils mobiles */
 /* Mixin pour gérer les écrans mobile en mode paysage */
 @mixin mobile-landscape {
-    @media (max-width: 768px) and (orientation: landscape) {
-        @content;
-    }
+  @media (max-width: 768px) and (orientation: landscape) {
+    @content;
+  }
 }
 
 @mixin tablet {
-    @media (min-width: 767px) {
+  @media (min-width: 767px) {
     @content;
-    }
+  }
 }
 
 /* Mixin pour gérer les écrans desktop*/
 @mixin desktop {
-    @media (min-width: 1024px) {
+  @media (min-width: 1024px) {
     @content;
-    }
+  }
 }
 
 @mixin large-desktop {
-    @media (min-width: 1440px) {
+  @media (min-width: 1440px) {
     @content;
-    }
+  }
 }

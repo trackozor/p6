@@ -4,19 +4,25 @@
   "description": "## Démarrer le projet",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --fix",
+    "test": "jest",
     "sass": "sass --watch scss:./css scss/pages-scss/photographer-main.scss:./css/pages/photographer.css"
-
-
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@eslint/js": "^9.17.0",
-    "eslint": "^9.17.0",
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@eslint/js": "^9.18.0",
+    "babel-jest": "^29.7.0",
+    "eslint": "^9.18.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jest": "^28.10.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "globals": "^15.14.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "sass": "^1.83.0"
   },
   "type": "module"

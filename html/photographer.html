@@ -1,67 +1,94 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Explorez les œuvres d'un photographe talentueux, découvrez sa galerie et contactez-le facilement.">
-    <meta name="keywords" content="photographe, Fisheye, galerie, contact, photographie, professionnel, artistique">
-    <meta property="og:title" content="Fisheye - Photographe professionnel">
-    <meta property="og:description" content="Explorez les photographies uniques d'un talent exceptionnel.">
-    <meta property="og:image" content="/assets/images/og-image.jpg">
-    <meta property="og:url" content="https://www.fisheye-photographe.com">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" href="assets/favicon.png" type="image/png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explorez les œuvres d'un photographe talentueux, découvrez sa galerie et contactez-le facilement."
+    />
+    <meta
+      name="keywords"
+      content="photographe, Fisheye, galerie, contact, photographie, professionnel, artistique"
+    />
+    <meta property="og:title" content="Fisheye - Photographe professionnel" />
+    <meta
+      property="og:description"
+      content="Explorez les photographies uniques d'un talent exceptionnel."
+    />
+    <meta property="og:image" content="/assets/images/og-image.jpg" />
+    <meta property="og:url" content="https://www.fisheye-photographe.com" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="../../assets/favicon.png" type="image/png" />
     <title>Fisheye - Photographe professionnel</title>
 
     <!-- Polices et styles -->
-    
-    <link href="../css/pages/photographer.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="../css/pages/photographer.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
   </head>
-
   <body>
     <!-- Lien d'accès rapide -->
     <a href="#main" class="sr-only">Passer au contenu principal</a>
 
     <!-- En-tête -->
     <header class="photographer-header">
-      <a href="/index.html" aria-label="Retour à la page d'accueil">
-        <img src="/assets/images/logo.png" alt="Logo de Fisheye - Retour à l'accueil" class="logo">
+      <a href="../index.html" aria-label="Retour à la page d'accueil">
+        <img
+          src="../../assets/images/logo.png"
+          alt="Logo de Fisheye - Retour à l'accueil"
+          class="logo"
+        />
       </a>
     </header>
 
     <!-- Contenu principal -->
     <main id="main" tabindex="-1">
-      <!-- Section des informations du photographe -->
-      <section id="photograph-info" class="photographer-info" aria-labelledby="photograph-title">
-        <article class="photographer-profile" aria-labelledby="photograph-title">
-          <h2 id="photograph-title" >Titre par défaut</h2>
+      <!-- Section Informations du photographe -->
+      <section
+        id="photograph-info"
+        class="photographer-info"
+        aria-labelledby="photograph-title"
+      >
+        <article class="photographer-profile">
+          <h2 id="photograph-title">Titre par défaut</h2>
           <p class="photographer-card-location">Ville, Pays par défaut</p>
           <p class="photographer-card-tagline">Slogan par défaut</p>
-          
         </article>
-        <button 
+        <button
           type="button"
-          class="contact_button" 
-          data-action="open-modal" 
-          aria-haspopup="dialog" 
-          aria-controls="contact_modal">
+          class="contact-button"
+          data-action="open-modal"
+          aria-haspopup="dialog"
+          aria-controls="contact_modal"
+        >
           Contactez-moi
         </button>
         <div class="photographer-card-portrait-wrapper">
-          <img 
-            src="" 
-            alt="Portrait {{name}}" 
-            class="photographer-card-portrait" 
-            loading="lazy">
+          <img
+            src=""
+            alt="Portrait par défaut du photographe"
+            class="photographer-card-portrait"
+            loading="lazy"
+          />
+        </div>
+        <div id="photographer-stats" class="photographer-stats">
+          <span id="total-likes" class="total-likes">
+            <!-- Nombre de likes inséré dynamiquement -->
+          </span>
+          <span id="daily-rate" class="daily-rate">
+            <!-- Tarif journalier inséré dynamiquement -->
+          </span>
         </div>
       </section>
 
       <!-- Section de tri -->
       <section class="sorting" aria-labelledby="sorting-title">
-        <h2 id="sorting-title"class="sr-only">trier par</h2>
-        <label for="sort-options">Trier par</label>
-        <select id="sort-options" aria-label="Trier par">
+        <h2 id="sorting-title" class="sr-only">Trier les médias</h2>
+        <label for="sort-options">Trier  par</label>
+        <select id="sort-options" aria-label="Options de tri des médias">
           <option value="popularity">Popularité</option>
           <option value="date">Date</option>
           <option value="title">Titre</option>
@@ -69,27 +96,32 @@
       </section>
 
       <!-- Section Galerie -->
-      <section class="photograph-gallery" aria-labelledby="gallery-title" role="region">
+      <section
+        class="photograph-gallery"
+        aria-labelledby="gallery-title"
+        role="region"
+      >
         <h2 id="gallery-title" class="sr-only">Galerie de photos et vidéos</h2>
-        <div id="gallery" class="gallery" role="group" aria-labelledby="gallery-title">
-          <!-- Autres items de galerie -->
+        <div
+          id="gallery"
+          class="gallery"
+          role="group"
+          aria-labelledby="gallery-title"
+        >
+          <!-- Médias injectés dynamiquement -->
         </div>
       </section>
     </main>
-    
-    <!-- Lightbox -->
-    <div id="lightbox" class="lightbox" role="dialog" aria-labelledby="lightbox-title" aria-hidden="true">
-      <!-- Conteneur principal du contenu de la lightbox -->
-      <div class="lightbox-content" tabindex="-1">
-        <!-- Titre principal (accessible pour les lecteurs d’écran) -->
-        <h2 id="lightbox-title" class="sr-only">Visionneuse multimédia</h2>
-        
-        <!-- Bouton pour fermer la lightbox -->
-        <button
-          type="button"
-          class="lightbox-close"
-          aria-label="Fermer la lightbox"
-          data-action="close-lightbox">
+
+    <!-- Modale de contact -->
+    <div class="modal" role="dialog" aria-hidden="true">
+      <header class="modal-header">
+        <h2 id="modal-title">Contactez-moi</h2>
+        <button 
+          type="button" 
+          class="modal-close" 
+          aria-label="Fermer la modale" 
+          data-action="close-modal">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="icon icon-close"
@@ -100,150 +132,92 @@
             <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.12 5.7A1 1 0 0 0 5.7 7.11l4.88 4.88-4.88 4.88a1 1 0 1 0 1.41 1.41L12 13.41l4.88 4.88a1 1 0 0 0 1.41-1.41l-4.88-4.88 4.88-4.88a1 1 0 0 0 0-1.41z"/>
           </svg>
         </button>
+      </header>
+      <form action="#" method="POST" aria-label="Formulaire de contact" novalidate>
+        <fieldset>
+          <legend class="sr-only">Informations de contact</legend>
+          <div class="form-group">
+            <label for="first-name">Prénom</label>
+            <input 
+              type="text" 
+              id="first-name" 
+              name="first-name" 
+              required 
+              placeholder="Votre prénom" 
+              aria-describedby="first-name-help">
+          </div>
+          <div class="form-group">
+            <label for="last-name">Nom</label>
+            <input 
+              type="text" 
+              id="last-name" 
+              name="last-name" 
+              required 
+              placeholder="Votre nom" 
+              aria-describedby="last-name-help">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required 
+              placeholder="Votre email">
+          </div>
+          <div class="form-group">
+            <label for="message">Votre message</label>
+            <textarea 
+              id="message" 
+              name="message" 
+              rows="5" 
+              required 
+              placeholder="Votre message"></textarea>
+          </div>
+        </fieldset>
+        <button type="submit" class="contact_button">Envoyer</button>
+      </form>
+    </div>
 
-        <!-- Bouton pour aller à la photo précédente -->
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-hidden="true">
+      <div class="lightbox-content">
         <button
-          type="button"
-          class="lightbox-prev"
-          aria-label="Photo précédente"
-          data-action="prev-lightbox">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-chevron-left"
-            viewBox="0 0 24 24"
-            role="img"
-            focusable="false"
-            aria-hidden="true">
-            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-          </svg>
+          class="lightbox-close"
+          aria-label="Fermer la lightbox"
+          data-action="close-lightbox"
+        >
+          &times;
         </button>
-        
-        <!-- Conteneur des médias -->
-        <div class="lightbox-media-container" role="group" aria-labelledby="lightbox-caption">
-          <!-- Les médias seront injectés ici dynamiquement -->
-        </div>
-
-        <!-- Légende de la lightbox -->
-        <div id="lightbox-caption" class="lightbox-caption" aria-live="polite"></div>
-        
-        <!-- Bouton pour aller à la photo suivante -->
         <button
-          type="button"
+          class="lightbox-prev"
+          aria-label="Image précédente"
+          data-action="prev-lightbox"
+        >
+          &lsaquo;
+        </button>
+        <div class="lightbox-media" aria-labelledby="lightbox-caption">
+          <!-- Média (image ou vidéo) inséré dynamiquement -->
+        </div>
+        <div id="lightbox-caption" class="lightbox-caption">
+          <!-- Légende insérée dynamiquement -->
+        </div>
+        <button
           class="lightbox-next"
-          aria-label="Photo suivante"
-          data-action="next-lightbox">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-chevron-right" viewBox="0 0 24 24" role="img" focusable="false" aria-hidden="true">
-            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
-          </svg>
+          aria-label="Image suivante"
+          data-action="next-lightbox"
+        >
+          &rsaquo;
         </button>
       </div>
     </div>
+
     <!-- Pied de page -->
     <footer>
       <p>&copy; 2025 Fisheye. Tous droits réservés.</p>
     </footer>
-    
-    <div id="contact-overlay" class="modal-overlay" >
-      <div id="contact-modal" class="modal-container" aria-hidden="true" >
-
-        <!-- Contenu de la modale -->
-        <div class="modal">
-          <header class="modal-header">
-            <h2 id="modal-title">Contactez-moi</h2>
-            <button 
-              type="button" 
-              class="modal-close" 
-              aria-label="Fermer la modale" 
-              data-action="close-modal">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-close"
-                viewBox="0 0 24 24"
-                role="img"
-                focusable="false"
-                aria-hidden="true">
-                <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.12 5.7A1 1 0 0 0 5.7 7.11l4.88 4.88-4.88 4.88a1 1 0 1 0 1.41 1.41L12 13.41l4.88 4.88a1 1 0 0 0 1.41-1.41l-4.88-4.88 4.88-4.88a1 1 0 0 0 0-1.41z"/>
-              </svg>
-            </button>
-          </header>
-          <form action="#" method="POST" aria-label="Formulaire de contact" novalidate>
-            <fieldset>
-              <legend class="sr-only">Informations de contact</legend>
-              <div class="form-group">
-                <label for="first-name">Prénom</label>
-                <input 
-                  type="text" 
-                  id="first-name" 
-                  name="first-name" 
-                  required 
-                  placeholder="Votre prénom" 
-                  aria-describedby="first-name-help">
-                <p id="first-name-help" class="sr-only">Entrez votre prénom.</p>
-              </div>
-              <div class="form-group">
-                <label for="last-name">Nom</label>
-                <input 
-                  type="text" 
-                  id="last-name" 
-                  name="last-name" 
-                  required 
-                  placeholder="Votre nom" 
-                  aria-describedby="last-name-help">
-                <p id="last-name-help" class="sr-only">Entrez votre nom.</p>
-              </div>
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  name="email" 
-                  required 
-                  placeholder="Votre email" 
-                  aria-invalid="false">
-              </div>
-              <div class="form-group">
-                <label for="message">Votre message</label>
-                <textarea 
-                  id="message" 
-                  name="message" 
-                  rows="5" 
-                  required 
-                  placeholder="Votre message"></textarea>
-              </div>
-            </fieldset>
-            <button type="submit" class="contact_button">Envoyer</button>
-          </form>
-        </div>
-      </div>
-    </div>    
-    <!-- Templates -->
-    <template id="photographer-template">
-      <article class="photographer-card" aria-labelledby="photographer-name">
-        <h3 id="photographer-name">{{name}}</h3>
-        <p class="photographer-card-location">{{city}}, {{country}}</p>
-        <p class="photographer-card-tagline">{{tagline}}</p>
-      </article>
-    </template>
-    <template id="photographer-card-portrait-template">
-      <div class="photographer-card-portrait-wrapper">
-        <img 
-          src="" 
-          alt="Portrait {{name}}" 
-          class="photographer-card-portrait1" 
-          loading="lazy">
-      </div>
-    </template>
-    <template id="gallery-item-template">
-      <figure class="gallery-item" tabindex="0" data-index="{{index}}">
-        <img 
-          src="{{imageSrc}}" 
-          alt="{{imageAlt}}" 
-          loading="lazy">
-        <figcaption>{{title}}</figcaption>
-      </figure>
-    </template>
 
     <!-- Scripts -->
-    <script type="module" src="../js/templates/photographer-page.js"></script>
+    <script type="module" src="../js/pages/photographer-page.js"></script>
   </body>
 </html>

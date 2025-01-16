@@ -13,24 +13,92 @@
 /* Général                          */
 /* ================================ */
 /* Remet à zéro les marges, paddings, bordures et styles par défaut */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
   margin: 0;
   padding: 0;
   border: 0;
   font-size: 100%; /* Taille de police par défaut */
-  font: inherit;   /* Hérite de la famille de police du parent */
+  font: inherit; /* Hérite de la famille de police du parent */
   vertical-align: baseline; /* Normalise l'alignement vertical */
   color: black;
 }
@@ -39,8 +107,17 @@ time, mark, audio, video {
 /* HTML5 : Compatibilité des blocs  */
 /* ================================ */
 /* Assure une prise en charge correcte des éléments HTML5 */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
   display: block; /* Rend les éléments block-level */
 }
 
@@ -51,7 +128,7 @@ footer, header, hgroup, menu, nav, section {
 body {
   line-height: 1; /* Normalise l'interligne */
   font-family: var(--font-primary, sans-serif); /* Police par défaut */
-  background-color: var(--neutral-color); /* Fond par défaut */
+  background-color: white; /* Fond par défaut */
   color: var(--text-color-primary); /* Texte par défaut */
 }
 
@@ -59,7 +136,8 @@ body {
 /* Listes                           */
 /* ================================ */
 /* Supprime les styles par défaut des listes */
-ol, ul {
+ol,
+ul {
   list-style: none; /* Retire les puces ou numérotations */
 }
 
@@ -67,14 +145,17 @@ ol, ul {
 /* Citations                        */
 /* ================================ */
 /* Supprime les guillemets automatiques des citations */
-blockquote, q {
+blockquote,
+q {
   quotes: none;
 }
 
 /* Empêche les pseudo-éléments de guillemets */
-blockquote:before, blockquote:after,
-q:before, q:after {
-  content: '';
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
 }
 
 /* ================================ */
@@ -90,7 +171,8 @@ table {
 /* Médias                           */
 /* ================================ */
 /* Adapte les images et vidéos au conteneur parent */
-img, video {
+img,
+video {
   max-width: 100%; /* Limite la largeur à celle du conteneur */
   height: auto; /* Conserve les proportions des médias */
 }

@@ -16,32 +16,69 @@
 /* -------------------------------------------------------------------------- */
 
 .photographer-info {
-    display: flex; /* Active le modèle Flexbox pour l'agencement des éléments */
-    flex-direction: column; /* Par défaut, les éléments sont empilés verticalement */
-    align-items: center; /* Centre les éléments horizontalement */
-    background: #FAFAFA; /* Couleur de fond gris clair pour un contraste doux */
-    padding: 2% 0; /* Espacement intérieur en haut et en bas */
+  display: flex; /* Active le modèle Flexbox pour l'agencement des éléments */
+  flex-direction: column; /* Par défaut, les éléments sont empilés verticalement */
+  align-items: center; /* Centre les éléments horizontalement */
+  background: #fafafa; /* Couleur de fond gris clair pour un contraste doux */
+  justify-content: space-around; /* Espace égal entre les éléments */
+  margin-bottom: 5%; /* Espace en bas pour séparer des autres sections */
+  padding: 2% 0; /* Espace intérieur pour un design respirant */
 
-    /* ---------------------------------------------------------------------- */
-    /* Styles pour les tablettes                                              */
-    /* Description : Ajuste la disposition pour un affichage horizontal       */
-    /* ---------------------------------------------------------------------- */
-    @include tablet {
-        flex-direction: row; /* Passe à une disposition horizontale */
-        justify-content: space-around; /* Espacement égal entre les éléments */
-        margin-bottom:5%;
-    }
-
-    /* ---------------------------------------------------------------------- */
-    /* Styles pour les ordinateurs de bureau                                  */
-    /* Description : Maintient la disposition horizontale et l'espacement     */
-    /* ---------------------------------------------------------------------- */
-    @include desktop {
-        flex-direction: row; /* Disposition horizontale pour les grands écrans */
-        justify-content: space-around; /* Répartit les éléments avec un espace égal */
-        margin:0 2%;
-    }
+  @include tablet {
+    display: flex; /* Flexbox reste actif pour les écrans tablettes */
+    flex-direction: row; /* Les éléments sont alignés horizontalement */
+    width: 100%; /* La largeur s'étend à 100% */
+    padding: 1% 0; /* Réduit le padding pour un design compact */
+    justify-content: space-around; /* Garde l'espacement entre les éléments */
+    align-items: center; /* Centre les éléments verticalement */
+    margin-bottom: 1%;;
+  }
+  @include desktop {
+    padding: 0; /* Réduit le padding pour un design compact */
+    width:90%;
+    margin: 0 auto;
+  }
 }
+
 .photographer-profile {
-    margin-right: 30%;
+  width: 100%; /* La largeur occupe tout l'espace disponible */
+  margin: 0 auto; /* Centre horizontalement le contenu */
+  text-align: center; /* Texte centré pour les petits écrans */
+
+  @include tablet {
+    width: 60%; /* Réduit la largeur pour mieux s'adapter */
+    text-align: left; /* Texte aligné à gauche pour une meilleure lecture */
+  }
+  @include desktop {
+    width: 100%; /* Largeur plus grande pour les écrans plus grands */
+  }
+}
+
+.photographer-info .photographer-card-portrait {
+  margin-top: 45%; /* Espacement supérieur important pour les petits écrans */
+
+  @include tablet {
+    margin-top: 2%; /* Réduit l'espacement pour les écrans tablettes */
+    margin-right: 10%; /* Ajoute un espace à droite pour mieux structurer */
+  }
+  @include desktop {
+    display: flex;
+    position: relative;
+
+    margin-right: 5%; /* Réduit l'espace à droite pour les écrans plus grands */
+    top:3vh;
+    width: 12%;
+    height:12%;
+    padding:0;
+  }
+}
+
+.photographer-profile h2 {
+  color: #D3573C; /* Couleur de texte pour une meilleure mise en valeur */
+  font-size: 1.8rem; /* Taille par défaut pour les petits écrans */
+  margin-bottom: 1%; /* Espace sous le titre pour séparer des autres éléments */
+
+  @include tablet {
+    font-size: 2.4rem; /* Augmente la taille du texte pour les écrans plus grands */
+  }
 }

@@ -1,81 +1,164 @@
 // ========================================================
 // Nom du fichier : photographer-page.js
-// Description    : Gestion de la page photographe (détails et galerie)
+// Description    : Gestion de la page photographe, orchestration des médias,
+//                  affichage dynamique et événements.
 // Auteur         : Trackozor
-// Date           : 05/01/2025
-// Version        : 1.4.1
+// Date           : 08/01/2025
+// Version        : 2.3.0
 // ========================================================
 
-import { getPhotographersAndMedia, filterMediaByPhotographer, displayMedia } from '../modules/mediaManager.js';
-import { logEvent } from '../utils/utils.js';
-import domSelectors from '../modules/domSelectors.js';
-import initEventListeners from '../modules/eventlisteners.js';
+import { logEvent } from "../utils/utils.js"; // Gestion des logs
+import domSelectors from "../config/domSelectors.js"; // Sélecteurs centralisés
+import {
+  loadPhotographerMedia,
+  renderMediaGallery,
+} from "../templates/media-template-logic.js"; // Chargement et rendu des médias
+import { photographerTemplate } from "../templates/photographer-logic.js"; // Template photographe
+import initEventListeners from "../events/eventlisteners.js";
 
+// =============================
+// CONFIGURATION ET VARIABLES
+// =============================
+
+/** @constant {string} Chemin vers le fichier JSON contenant les données. */
+const mediaDataUrl = "../../../assets/data/photographers.json";
+
+// =============================
+// FONCTIONS UTILITAIRES
+// =============================
+
+/**
+ * Récupère l'ID du photographe depuis l'URL de la page.
+ *
+ * @returns {number|null} L'ID du photographe ou `null` si invalide.
+ */
+function getPhotographerIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const id = parseInt(params.get("id"), 10);
+
+  if (!id || isNaN(id)) {
+    logEvent(
+      "error",
+      "Aucun ID de photographe valide trouvé dans l'URL. Vérifiez que l'URL contient un paramètre 'id'.",
+    );
+    return null;
+  }
+
+  logEvent("info", `ID du photographe récupéré depuis l'URL : ${id}`);
+  return id;
+}
+
+// =============================
+// FONCTIONS PRINCIPALES
+// =============================
+
+/**
+ * Affiche les informations du photographe dans la bannière.
+ */
+async function displayPhotographerBanner() {
+  const photographerId = getPhotographerIdFromUrl();
+  if (!photographerId) {
+    logEvent("error", "Aucun ID de photographe trouvé dans l'URL.");
+    return;
+  }
+
+  try {
+    const response = await fetch(mediaDataUrl);
+    const data = await response.json();
+
+    if (!data || !data.photographers) {
+      throw new Error("Les données JSON sont invalides ou introuvables.");
+    }
+
+    const photographerData = data.photographers.find(
+      (photographer) => photographer.id === photographerId,
+    );
+
+    if (!photographerData) {
+      throw new Error(
+        `Photographe avec l'ID ${photographerId} introuvable dans les données.`,
+      );
+    }
+
+    const bannerContainer = domSelectors.photographerPage.photographerHeader;
+    if (!bannerContainer) {
+      throw new Error("Conteneur de la bannière introuvable.");
+    }
+
+    const { getBannerDOM } = photographerTemplate(photographerData);
+    const bannerDOM = getBannerDOM();
+
+    bannerContainer.innerHTML = ""; // Nettoyer le contenu précédent
+    bannerContainer.appendChild(bannerDOM);
+    logEvent("success", "Bannière du photographe affichée avec succès.");
+  } catch (error) {
+    logEvent("error", `Erreur lors de l'affichage de la bannière : ${error}`);
+  }
+}
+
+/**
+ * Affiche la galerie de médias du photographe.
+ */
+async function displayMediaGallery() {
+  const photographerId = getPhotographerIdFromUrl();
+  if (!photographerId) {
+    logEvent(
+      "error",
+      "Impossible de continuer : ID du photographe non valide.",
+    );
+    return;
+  }
+
+  try {
+    const { galleryContainer } = domSelectors.photographerPage;
+    if (!galleryContainer) {
+      throw new Error("Conteneur de galerie introuvable.");
+    }
+
+    const mediaList = await loadPhotographerMedia(photographerId, mediaDataUrl);
+
+    if (mediaList && mediaList.length > 0) {
+      const folderName = `../../assets/photographers/${photographerId}`;
+      renderMediaGallery(mediaList, folderName, galleryContainer);
+      logEvent("success", "Galerie de médias affichée avec succès.");
+    } else {
+      galleryContainer.innerHTML =
+        "<p>Aucun média disponible pour ce photographe.</p>";
+      logEvent(
+        "warn",
+        `Aucun média trouvé pour le photographe ID ${photographerId}.`,
+      );
+    }
+  } catch (error) {
+    logEvent("error", `Erreur lors de l'affichage de la galerie : ${error}`);
+  }
+}
 
 /**
  * Initialise la page du photographe.
+ *
+ * Cette fonction orchestre :
+ * - L'affichage de la bannière du photographe.
+ * - L'affichage de la galerie de médias.
+ * - L'ajout des gestionnaires d'événements.
  */
 async function initPhotographerPage() {
-    logEvent('test_start', "Initialisation de la page photographe...");
+  logEvent("info", "Début de l'initialisation de la page photographe...");
 
-    try {
-        const photographerId = getPhotographerIdFromURL();
-        validatePhotographerId(photographerId);
+  await displayPhotographerBanner(); // Affichage de la bannière
+  await displayMediaGallery(); // Affichage de la galerie
 
-        const { photographers, media } = await getPhotographersAndMedia();
-        validateData(photographers, media);
+  // Initialisation des gestionnaires d'événements
+  initEventListeners();
 
-        const photographer = findPhotographer(photographers, photographerId);
-
-
-        const photographerMedia = filterMediaByPhotographer(media, photographer.id);
-        displayMedia(photographerMedia, domSelectors.photographerPage.galleryContainer);
-
-        logEvent('success', "Page photographe initialisée avec succès.");
- 
-
-    } finally {
-        logEvent('test_end', "Fin de l'initialisation de la page photographe.");
-    }
+  logEvent("success", "Page photographe initialisée avec succès.");
 }
 
-function getPhotographerIdFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    console.log(`Photographer ID from URL: ${id}`);
-    return id;
-}
+// =============================
+// ÉVÉNEMENT DOM
+// =============================
 
-function validatePhotographerId(photographerId) {
-    if (!photographerId) {
-        logEvent('warn', "L'ID du photographe est manquant ou invalide.");
-        throw new Error("ID du photographe manquant ou invalide dans l'URL.");
-    }
-}
-
-function validateData(photographers, media) {
-    if (!Array.isArray(photographers) || photographers.length === 0) {
-        throw new Error("Liste des photographes introuvable ou vide.");
-    }
-    if (!Array.isArray(media)) {
-        throw new Error("Liste des médias introuvable ou invalide.");
-    }
-}
-
-function findPhotographer(photographers, photographerId) {
-    const photographer = photographers.find(p => p.id === Number(photographerId));
-    if (!photographer) {
-        logEvent('warn', `Photographe introuvable pour l'ID ${photographerId}.`);
-        throw new Error(`Photographe avec l'ID ${photographerId} introuvable.`);
-    }
-    return photographer;
-}
-;
-
-    // Afficher un message d'erreur dans le DO
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    initPhotographerPage();
-    initEventListeners();
-});
+/**
+ * Ajoute un événement DOM pour initialiser la page après chargement.
+ */
+document.addEventListener("DOMContentLoaded", initPhotographerPage);

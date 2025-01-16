@@ -14,27 +14,27 @@
 //    Importation des variables globales et des mixins pour une configuration
 //    centralisée  des styles.
 // ============================================================================
-@import '../base/variables'; // Variables globales (couleurs, typographie, etc.).
-@import '../base/mixins';    // Mixins SCSS pour des styles modulaires et réutilisables.
+@import "../base/variables"; // Variables globales (couleurs, typographie, etc.).
+@import "../base/mixins"; // Mixins SCSS pour des styles modulaires et réutilisables.
 
 // ============================================================================
 // 2. Réinitialisation et Styles Globaux
 //    Réinitialisation des styles des navigateurs et application de styles globaux.
 // ============================================================================
-@import '../base/reset';  // Normalisation des styles CSS pour une base cohérente.
-@import '../base/global'; // Styles globaux : typographie principale, classes génériques.
+@import "../base/reset"; // Normalisation des styles CSS pour une base cohérente.
+@import "../base/global"; // Styles globaux : typographie principale, classes génériques.
 
 // ============================================================================
 // 3. Composants
 //    Importation des composants réutilisables nécessaires pour cette page.
 // ============================================================================
-@import '../components/button'; // Boutons (utilisés sur la page d'accueil).
-@import '../components/cards';  // Cartes pour afficher du contenu.
+@import "../components/button"; // Boutons (utilisés sur la page d'accueil).
+@import "../components/cards"; // Cartes pour afficher du contenu.
 
 // ============================================================================
 // 4. Layouts
 //    Définition de la structure générale utilisée sur la page d'accueil.
 // ============================================================================
-@import '../layouts/header';              // Styles pour l'en-tête du site.
-@import '../layouts/footer';              // Styles pour le pied de page.
-@import '../layouts/photographersection'; // Section spécifique aux photographes.
+@import "../layouts/header"; // Styles pour l'en-tête du site.
+@import "../layouts/footer"; // Styles pour le pied de page.
+@import "../layouts/photographersection"; // Section spécifique aux photographes.

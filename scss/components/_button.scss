@@ -5,22 +5,24 @@
 /* -------------------------------------------------------------------------- */
 
 .contact_button {
-    font-size: 1rem; /* Taille de la police pour le texte du bouton */
-    font-weight: bold; /* Texte en gras pour plus de visibilité */
-    color: white; /* Couleur du texte */
-    padding: 3% 3%; /* Espacement interne pour rendre le bouton plus grand */
-    max-width: 150px; /* Limite la largeur maximale du bouton */
-    max-height: 70px; /* Limite la hauteur maximale du bouton */
-    border: none; /* Supprime les bordures */
-    background-color: #901C1C; /* Couleur de fond rouge foncé */
-    border-radius: 0.3rem; /* Coins légèrement arrondis */
-    margin: 5% 0; /* Ajoute un espace vertical autour du bouton */
-    cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
+  font-size: 1rem; /* Taille de la police pour le texte du bouton */
+  font-weight: bold; /* Texte en gras pour plus de visibilité */
+  color: white; /* Couleur du texte */
+  padding: 3%; /* Espacement interne pour rendre le bouton plus grand */
+  max-width: 150px; /* Limite la largeur maximale du bouton */
+  max-height: 70px; /* Limite la hauteur maximale du bouton */
+  border: none; /* Supprime les bordures */
+  background-color: #901c1c; /* Couleur de fond rouge foncé */
+  border-radius: 0.3rem; /* Coins légèrement arrondis */
+  margin-bottom: 12%; /* Ajoute un espace vertical autour du bouton */
+  cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
 
-    @include tablet {
-        max-height: 50px; /* Réduit la hauteur maximale sur tablette */
-        padding: 2%; /* Diminue les espacements internes */
-    }
+  @include tablet {
+    max-height: 20px; /* Réduit la hauteur maximale sur tablette */
+    padding:2% 1%; /* Diminue les espacements internes */
+    margin-bottom:0;
+    margin-left:7%;
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -30,10 +32,10 @@
 /* -------------------------------------------------------------------------- */
 
 .icon {
-    width: 24px; /* Largeur fixe pour toutes les icônes */
-    height: 24px; /* Hauteur fixe pour toutes les icônes */
-    fill: #fff; /* Couleur de l'icône par défaut (blanc) */
-    transition: fill 0.3s ease; /* Ajoute une transition pour le changement de couleur au survol */
+  width: 24px; /* Largeur fixe pour toutes les icônes */
+  height: 24px; /* Hauteur fixe pour toutes les icônes */
+  fill: #fff; /* Couleur de l'icône par défaut (blanc) */
+  transition: fill 0.3s ease; /* Ajoute une transition pour le changement de couleur au survol */
 }
 
 /* -------------------------------------------------------------------------- */
@@ -42,7 +44,7 @@
 /* -------------------------------------------------------------------------- */
 
 .lightbox-prev:hover .icon {
-    fill: #f00; /* Change la couleur de l'icône au survol (rouge) */
+  fill: #f00; /* Change la couleur de l'icône au survol (rouge) */
 }
 
 /* -------------------------------------------------------------------------- */
@@ -52,16 +54,41 @@
 /* lightbox-next, modal-close.                                                */
 /* -------------------------------------------------------------------------- */
 
-.lightbox-prev, .lightbox-close, .lightbox-next, .modal-close {
-    background: none; /* Supprime tout arrière-plan pour un design minimal */
-    border: none; /* Supprime les bordures par défaut */
-    padding: 0; /* Supprime les espacements internes */
-    margin: 0; /* Supprime les marges externes */
-    box-shadow: none; /* Supprime les ombres éventuelles */
-    cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
-    display: flex; /* Utilise Flexbox pour organiser le contenu */
-    align-items: center; /* Centre les icônes verticalement */
-    justify-content: center; /* Centre les icônes horizontalement */
-    width: auto; /* Ajuste automatiquement la largeur au contenu */
-    height: auto; /* Ajuste automatiquement la hauteur au contenu */
+.lightbox-prev,
+.lightbox-close,
+.lightbox-next,
+.modal-close {
+  background: none; /* Supprime tout arrière-plan pour un design minimal */
+  border: none; /* Supprime les bordures par défaut */
+  padding: 0; /* Supprime les espacements internes */
+  margin: 0; /* Supprime les marges externes */
+  box-shadow: none; /* Supprime les ombres éventuelles */
+  cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
+  display: flex; /* Utilise Flexbox pour organiser le contenu */
+  align-items: center; /* Centre les icônes verticalement */
+  justify-content: center; /* Centre les icônes horizontalement */
+  width: auto; /* Ajuste automatiquement la largeur au contenu */
+  height: auto; /* Ajuste automatiquement la hauteur au contenu */
+}
+.fa-heart::before {
+  color:#901c1c
+}
+
+.sorting {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5%;
+}
+#sort-options {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  color:white;
+  background-color: #901c1c;
+  align-items: center;
+  margin: 2%;
+  border:none;
+  border-radius: 0.2rem;
 }

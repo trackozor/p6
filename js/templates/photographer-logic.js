@@ -1,68 +1,199 @@
 /**
- * Crée une carte de photographe à partir des données fournies
- * @param {Object} data - Données du photographe
- * @param {string} data.name - Nom du photographe
- * @param {string} data.portrait - Nom du fichier portrait
- * @param {number} data.id - Identifiant du photographe
- * @param {string} data.city - Ville du photographe
- * @param {string} data.country - Pays du photographe
- * @param {string} data.tagline - Slogan du photographe
- * @param {number} data.price - Prix journalier du photographe
- * @returns {Object} Objet contenant les données et une méthode pour générer le DOM
+ * ========================================================
+ * Nom du fichier : photographer-logic.js
+ * Description    : Génère des structures DOM pour afficher
+ *                  les données des photographes sur différentes pages.
+ * Auteur         : Trackozor
+ * Date           : 01/01/2025
+ * Version        : 2.2.0
+ * ========================================================
+ */
+
+/**
+ * Crée une structure pour afficher les données du photographe.
+ *
+ * @param {Object} data - Données du photographe.
+ * @param {string} data.name - Nom du photographe.
+ * @param {string} data.portrait - Nom du fichier portrait.
+ * @param {number} data.id - Identifiant du photographe.
+ * @param {string} data.city - Ville du photographe.
+ * @param {string} data.country - Pays du photographe.
+ * @param {string} [data.tagline=""] - Slogan du photographe.
+ * @param {number} [data.price=0] - Prix journalier du photographe.
+ * @returns {Object} Objet contenant les méthodes pour générer différents DOM.
+ * @throws {Error} Si les données fournies sont invalides.
  */
 export function photographerTemplate(data) {
-    // Validation des données fournies
-    if (!data || !data.name || !data.portrait || !data.id) {
-        throw new Error("Données du photographe invalides ou incomplètes.");
+  // =============================
+  // VALIDATION DES DONNÉES
+  // =============================
+  if (!data || typeof data !== "object") {
+    throw new Error("Les données du photographe doivent être un objet valide.");
+  }
+
+  const requiredFields = ["name", "portrait", "id", "city", "country"];
+  const missingFields = requiredFields.filter((field) => !data[field]);
+
+  if (missingFields.length > 0) {
+    throw new Error(
+      `Données du photographe invalides. Champs manquants : ${missingFields.join(
+        ", ",
+      )}.`,
+    );
+  }
+
+  // =============================
+  // EXTRACTION DES DONNÉES
+  // =============================
+  const { name, portrait, id, city, country, tagline = "", price = 0 } = data;
+  const picture = `../../assets/photographers/Photographer/${portrait}`;
+
+  // =============================
+  // FONCTIONS UTILITAIRES
+  // =============================
+
+  /**
+   * Crée un élément DOM avec des classes, du contenu textuel et des attributs supplémentaires.
+   *
+   * @param {string} tagName - Nom de la balise HTML.
+   * @param {Object} [options] - Options pour personnaliser l'élément.
+   * @param {string} [options.className] - Classe CSS à ajouter.
+   * @param {string} [options.textContent] - Contenu textuel de l'élément.
+   * @param {Object} [options.attributes] - Attributs supplémentaires à ajouter.
+   * @returns {HTMLElement} Élément DOM créé.
+   */
+  const createElement = (
+    tagName,
+    { className, textContent, attributes } = {},
+  ) => {
+    const element = document.createElement(tagName);
+    if (className) {
+      element.classList.add(className);
     }
+    if (textContent) {
+      element.textContent = textContent;
+    }
+    if (attributes) {
+      Object.entries(attributes).forEach(([key, value]) =>
+        element.setAttribute(key, value),
+      );
+    }
+    return element;
+  };
 
-    const { name, portrait, id, city, country, tagline, price } = data;
+  // =============================
+  // MÉTHODES DE GÉNÉRATION DE DOM
+  // =============================
 
-    // Générer le chemin complet de l'image du photographe
-    const picture = `../../assets/photographers/Photographer/${portrait}`;
+  /**
+   * Génère le DOM pour la carte du photographe (utilisée sur la page d'accueil).
+   *
+   * @returns {HTMLElement} Élément DOM contenant la carte du photographe.
+   */
+  const getUserCardDOM = () => {
+    const article = createElement("article", {
+      className: "photographer-card",
+    });
 
-    // Crée un élément DOM avec une classe et un contenu textuel
-    const createElement = (tagName, className, textContent) => {
-        const element = document.createElement(tagName);
-        if (className) {
-            element.classList.add(className);
-        }
-        if (textContent) {
-            element.textContent = textContent;
-        }
-        return element;
-    };
+    const img = createElement("img", {
+      attributes: {
+        src: picture,
+        alt: `Portrait de ${name}`,
+      },
+      className: "photographer-card-portrait",
+    });
 
-    // Génère le DOM de la carte du photographe
-    const getUserCardDOM = () => {
-        // Conteneur principal (article)
-        const article = document.createElement('article');
-        article.classList.add('photographer-card');
+    const h3 = createElement("h3", {
+      className: "photographer-card-name",
+      textContent: name,
+    });
 
-        // Image circulaire
-        const img = document.createElement('img');
-        img.setAttribute("src", picture);
-        img.setAttribute("alt", `Portrait de ${name}`);
-        img.classList.add('photographer-card-portrait');
+    const location = createElement("p", {
+      className: "photographer-card-location",
+      textContent: `${city}, ${country}`,
+    });
 
-        // Crée les autres éléments
-        const h3 = createElement('h3', 'photographer-card-name', name);
-        const location = createElement('p', 'photographer-card-location', `${city}, ${country}`);
-        const taglineElement = createElement('p', 'photographer-card-tagline', tagline);
-        const priceElement = createElement('p', 'photographer-card-price', `${price}€/jour`);
+    const taglineElement = createElement("p", {
+      className: "photographer-card-tagline",
+      textContent: tagline,
+    });
 
-        // Ajouter les éléments dans l'article
-        article.append(img, h3, location, taglineElement, priceElement);
+    const priceElement = createElement("p", {
+      className: "photographer-card-price",
+      textContent: `${price}€/jour`,
+    });
 
-        // Ajouter un lien qui encapsule l'article
-        const link = document.createElement('a');
-        link.setAttribute("href", `../../html/photographer.html?id=${id}`);
-        link.setAttribute("aria-label", `Voir la page de ${name}`);
-        link.appendChild(article); // L'article est à l'intérieur du lien
+    article.append(img, h3, location, taglineElement, priceElement);
 
-        return link; // Retourne le lien complet
-    };
+    const link = createElement("a", {
+      attributes: {
+        href: `../../html/photographer.html?id=${id}`,
+        "aria-label": `Voir la page de ${name}`,
+      },
+    });
 
-    // Retourne les données du photographe et la méthode pour générer le DOM
-    return { name, picture, getUserCardDOM };
+    link.appendChild(article);
+    return link;
+  };
+
+  /**
+   * Génère le DOM pour la bannière du photographe (utilisée sur la page photographe).
+   *
+   * @returns {HTMLElement} Élément DOM contenant la bannière du photographe.
+   */
+  const getBannerDOM = () => {
+    const section = createElement("section", {
+      className: "photographer-info",
+      attributes: { "aria-labelledby": "photograph-title" },
+    });
+
+    const article = createElement("article", {
+      className: "photographer-profile",
+    });
+
+    const h2 = createElement("h2", {
+      id: "photograph-title",
+      textContent: name,
+    });
+
+    const location = createElement("p", {
+      className: "photographer-card-location",
+      textContent: `${city}, ${country}`,
+    });
+
+    const taglineElement = createElement("p", {
+      className: "photographer-card-tagline",
+      textContent: tagline,
+    });
+
+    const img = createElement("img", {
+      attributes: {
+        src: picture,
+        alt: `Portrait de ${name}`,
+        loading: "lazy",
+      },
+      className: "photographer-card-portrait",
+    });
+
+    const button = createElement("button", {
+      className: "contact_button",
+      textContent: "Contactez-moi",
+      attributes: {
+        type: "button",
+        "aria-haspopup": "dialog",
+        "aria-controls": "contact_modal",
+      },
+    });
+
+    article.append(h2, location, taglineElement);
+    section.append(article, button, img);
+
+    return section;
+  };
+
+  // =============================
+  // RETOUR DES MÉTHODES
+  // =============================
+
+  return { name, picture, getUserCardDOM, getBannerDOM };
 }

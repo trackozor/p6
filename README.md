@@ -1,4 +1,3 @@
-
 # 📸 **Photographers Directory**
 
 > **"Photographers Directory a été conçu pour simplifier la recherche et le contact avec des photographes talentueux, que ce soit pour des projets professionnels ou personnels. La plateforme offre une expérience utilisateur fluide, en connectant facilement les utilisateurs aux photographes via une interface intuitive et moderne."**
@@ -76,18 +75,42 @@
 ## **5. Structure du projet**
 
 ```plaintext
-📦 Photographers Directory
-├── 📁 assets                     # Ressources statiques
-│   ├── 📁 data                   # Données JSON des photographes
-│   ├── 📁 screenshots            # Captures d’écran pour la documentation
-│   ├── 📁 icons                  # Icônes SVG/PNG pour l’interface
-│   └── 📁 photographers          # Photos des photographes
+📦 photographers-directory
+├── 📁 assets                    # Ressources statiques
+│   ├── 📁 data                  # Données JSON
+│   ├── 📁 images                # Images et captures d'écran
+│   │   ├── 📁 photographers     # Portraits des photographes
+│   │   ├── 📁 icons             # Icônes pour l'interface
+│   │   └── 📁 screenshots       # Captures pour la documentation
+│   └── 📁 fonts                 # Polices utilisées
 │
-├── 📁 css                        # Styles CSS compilés
-├── 📁 html                       # Pages HTML (accueil, profils)
-├── 📁 js                         # Scripts JS pour la logique dynamique
-├── 📁 scss                       # Fichiers SCSS pour les styles modulaires
-└── 📄 README.md                  # Documentation complète
+├── 📁 css                       # Styles CSS compilés
+├── 📁 html                      # Pages HTML
+│   ├── index.html               # Page d'accueil
+│   └── photographer.html        # Page d'informations des photographes
+│
+├── 📁 js                        # Scripts JavaScript
+│   ├── 📁 components            # Modules réutilisables
+│   ├── 📁 pages                 # Scripts spécifiques aux pages
+│   ├── 📁 templates             # Templates dynamiques
+│   ├── 📁 utils                 # Fonctions utilitaires
+│   └── main.js                  # Point d'entrée principal
+│
+├── 📁 scss                      # Fichiers SCSS
+│   ├── 📁 base                  # Variables, mixins et reset
+│   ├── 📁 components            # Styles des composants
+│   ├── 📁 layouts               # Styles des sections principales
+│   └── 📁 pages-scss            # Styles spécifiques aux pages
+│
+├── 📁 test                      # Tests unitaires avec Jest
+│   ├── mediaManager.test.js
+│   └── photographerManager.test.js
+│
+├── 📄 .babelrc                  # Configuration Babel
+├── 📄 .eslintrc.js              # Configuration ESLint
+├── 📄 LICENSE                   # Licence du projet
+├── 📄 package.json              # Dépendances et scripts
+└── 📄 README.md                 # Documentation principale
 ```
 
 ---
@@ -142,7 +165,7 @@
 
 #### **5. Ouvrez votre navigateur à l'adresse suivante :**
 
-   [http://localhost:8080](http://localhost:8080).
+[http://localhost:8080](http://localhost:8080).
 
 ---
 
@@ -178,7 +201,7 @@
 - **Log de succès :**
 
 ```javascript
-  logEvent('success', 'Données récupérées avec succès.');
+logEvent("success", "Données récupérées avec succès.");
 ```
 
 ---
@@ -195,10 +218,10 @@
 Exemple avec Jest :
 
 ```javascript
-test('photographerTemplate génère une carte valide', () => {
-    const mockData = { name: "John Doe", city: "Paris", price: 300 };
-    const result = photographerTemplate(mockData).getUserCardDOM();
-    expect(result).toBeInstanceOf(HTMLElement);
+test("photographerTemplate génère une carte valide", () => {
+  const mockData = { name: "John Doe", city: "Paris", price: 300 };
+  const result = photographerTemplate(mockData).getUserCardDOM();
+  expect(result).toBeInstanceOf(HTMLElement);
 });
 ```
 

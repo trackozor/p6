@@ -3,112 +3,108 @@
     Fichier     : constants.js
     Auteur      : trackozor
     Date        : 01/01/2025
-    Version     : 1.3
-    Description : Fichier centralisant toutes les constantes globales du projet.
-                  Gère les chemins dynamiques pour GitHub Pages ou environnement local,
-                  les configurations de logs et les styles CSS standardisés.
+    Version     : 2.1
+    Description : Fichier centralisant les constantes globales du projet.
+                  Optimisation pour une gestion flexible des environnements,
+                  des logs et des styles CSS standardisés.
 ============================================================================= */
 
-// =============================================================================
-// Détection de l'environnement (local ou GitHub Pages)
-// =============================================================================
+/**
+ * =============================================================================
+ * Détection et Gestion des Environnements
+ * =============================================================================
+ */
 
-// Différencie l'environnement local (localhost) de la production (GitHub Pages).
-const ENVIRONMENT = window.location.hostname === 'username.github.io' ? 'production' : 'development';
+// Définition des environnements possibles.
+const ENVIRONMENTS = {
+  DEVELOPMENT: "development",
+  STAGING: "staging",
+  PRODUCTION: "production",
+};
 
-// Permet de forcer le mode développement, quelle que soit l'URL.
-let FORCE_DEV_MODE = false;
+/**
+ * Détecte l'environnement actif en fonction du domaine.
+ * @returns {string} L'environnement détecté (development, staging ou production).
+ */
+const detectEnvironment = () => {
+  const { hostname } = window.location;
+  if (hostname === "username.github.io") {
+    return ENVIRONMENTS.PRODUCTION;
+  }
+  if (hostname === "staging.domain.com") {
+    return ENVIRONMENTS.STAGING;
+  }
+  return ENVIRONMENTS.DEVELOPMENT;
+};
 
-// Déterminer l'environnement actif.
-const ACTIVE_ENVIRONMENT = FORCE_DEV_MODE ? 'development' : ENVIRONMENT;
+// Force le mode développement, quelle que soit l'URL (utile pour les tests locaux).
+const FORCE_DEV_MODE = true;
 
-// Définir le chemin de base en fonction de l'environnement pour un chargement correct des ressources.
-const BASE_PATH = ENVIRONMENT === 'production' ? '/fisheye/' : './';
+// Détermination de l'environnement actif.
+const ACTIVE_ENVIRONMENT = FORCE_DEV_MODE
+  ? ENVIRONMENTS.DEVELOPMENT
+  : detectEnvironment();
 
-// =============================================================================
-// Configuration Globale de l'Application
-// =============================================================================
-
+/**
+ * =============================================================================
+ * Configuration Globale de l'Application
+ * =============================================================================
+ * Toutes les configurations sont regroupées dans une constante exportée.
+ * Cela inclut la gestion des logs, des styles CSS, et des comportements par environnement.
+ */
 export const CONFIGLOG = {
-    // -------------------------------------------------------------------------
-    // Informations sur l'Environnement
-    // -------------------------------------------------------------------------
-    ENVIRONMENT: ACTIVE_ENVIRONMENT, // Environnement actif
-    ENABLE_LOGS: ACTIVE_ENVIRONMENT === 'development', // Activer les logs uniquement en dev
+  // -------------------------------------------------------------------------
+  // Informations sur l'Environnement
+  // -------------------------------------------------------------------------
+  ENVIRONMENT: ACTIVE_ENVIRONMENT, // Environnement actif.
+  ENABLE_LOGS: ACTIVE_ENVIRONMENT === ENVIRONMENTS.DEVELOPMENT, // Activer les logs uniquement en dev.
 
-    // -------------------------------------------------------------------------
-    // Configuration des Logs
-    // -------------------------------------------------------------------------
-    LOG_LEVELS: {
-        default: true, // Logs génériques toujours activés
-        info: ACTIVE_ENVIRONMENT === 'development', // Logs d'information (dev uniquement)
-        warn: true, // Logs d'avertissement activés en tout temps
-        error: true, // Logs d'erreurs critiques toujours activés
-        success: true, // Logs de succès toujours activés
-        test_start: ACTIVE_ENVIRONMENT === 'development', // Début des tests (dev uniquement)
-        test_end: ACTIVE_ENVIRONMENT === 'development', // Fin des tests (dev uniquement)
-    },
+  // -------------------------------------------------------------------------
+  // Configuration des Logs
+  // -------------------------------------------------------------------------
+  LOG_LEVELS: {
+    default: true, // Toujours activé.
+    info: true, // Logs informatifs.
+    warn: true, // Toujours activé : avertissements.
+    error: true, // Toujours activé : erreurs critiques.
+    success: true, // Toujours activé : succès des opérations.
+    test_start: ACTIVE_ENVIRONMENT === ENVIRONMENTS.DEVELOPMENT, // Activé en mode développement.
+    test_end: ACTIVE_ENVIRONMENT === ENVIRONMENTS.DEVELOPMENT, // Activé en mode développement.
+  },
 
-    // Configuration personnalisée des logs.
-    CUSTOM_LOG_SETTING: {
-        info: true, 
-        test_start: true,
-        test_end: true,
-        warn: true,
-        error: true,
-        success: true,
-    },
+  // -------------------------------------------------------------------------
+  // Classes CSS Utilisées
+  // -------------------------------------------------------------------------
+  CSS_CLASSES: {
+    ERROR_INPUT: "error-input", // Classe pour les champs en erreur.
+    ERROR_MODAL: "error-modal", // Classe pour les modales d'erreur.
+    MODAL_ACTIVE: "active", // Classe pour les modales actives.
+    BODY_NO_SCROLL: "no-scroll", // Classe pour empêcher le scroll en arrière-plan.
+  },
 
-    // -------------------------------------------------------------------------
-    // Classes CSS Utilisées
-    // -------------------------------------------------------------------------
-    CSS_CLASSES: {
-        ERROR_INPUT: 'error-input', // Champ invalide
-        ERROR_MODAL: 'error-modal', // Modale d'erreur
-        MODAL_ACTIVE: 'active', // Indicateur de modale ouverte
-        BODY_NO_SCROLL: 'no-scroll', // Bloque le défilement quand la modale est active
-    },
+  // -------------------------------------------------------------------------
+  // Styles pour les Logs
+  // -------------------------------------------------------------------------
+  LOG_STYLES: {
+    default: "color: black;", // Style par défaut.
+    info: "color: blue; font-weight: bold;", // Style pour les infos.
+    warn: "color: orange; font-weight: bold;", // Style pour les avertissements.
+    error: "color: red; font-weight: bold;", // Style pour les erreurs.
+    success: "color: green; font-weight: bold;", // Style pour les succès.
+    test_start: "background-color: purple; color: white; font-weight: bold;", // Style pour le début des tests.
+    test_end: "background-color: brown; color: white; font-weight: bold;", // Style pour la fin des tests.
+  },
 
-    // -------------------------------------------------------------------------
-    // Styles pour les Logs
-    // -------------------------------------------------------------------------
-    LOG_STYLES: {
-        info: "color: blue; font-weight: bold;", // Information
-        warn: "color: orange; font-weight: bold;", // Avertissements
-        error: "color: red; font-weight: bold;", // Erreurs critiques
-        success: "color: green; font-weight: bold;", // Succès
-        default: "color: black;", // Neutre
-        test_start: "background-color: purple; color: white; font-weight: bold;", // Début des tests
-        test_end: "background-color: brown; color: white; font-weight: bold;", // Fin des tests
-    },
-
-    // -------------------------------------------------------------------------
-    // Icônes des Logs
-    // -------------------------------------------------------------------------
-    LOG_ICONS: {
-        info: 'ℹ️', // Information
-        warn: '⚠️', // Avertissements
-        error: '❌', // Erreurs critiques
-        success: '✅', // Succès
-        default: '🔵', // Neutre
-        test_start: '🔧',  // Début des tests
-        est_end: '🏁',    // Fin des tests
-    },
-
-    // -------------------------------------------------------------------------
-    // Chemins des Fichiers et des Ressources
-    // -------------------------------------------------------------------------
-    PATHS: {
-        // Données JSON
-        DATA: {
-            PHOTOGRAPHERS_JSON: `${BASE_PATH}assets/data/photographers.json`, // Données des photographes
-        },
-
-        // Ressources Statiques (Assets)
-        ASSETS: {
-            IMAGES: `${BASE_PATH}assets/images/`, // Dossier des images
-            VIDEOS: `${BASE_PATH}assets/videos/`, // Dossier des vidéos
-            ICONS: `${BASE_PATH}assets/icons/`, // Dossier des icônes
-        },
-    },
+  // -------------------------------------------------------------------------
+  // Icônes des Logs
+  // -------------------------------------------------------------------------
+  LOG_ICONS: {
+    default: "🔵", // Icône par défaut.
+    info: "ℹ️", // Icône pour les infos.
+    warn: "⚠️", // Icône pour les avertissements.
+    error: "❌", // Icône pour les erreurs.
+    success: "✅", // Icône pour les succès.
+    test_start: "🔧", // Icône pour le début des tests.
+    test_end: "🏁", // Icône pour la fin des tests.
+  },
 };

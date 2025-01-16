@@ -15,32 +15,30 @@
 //    Importation des variables globales et des mixins pour utiliser des styles
 //    réutilisables et cohérents.
 // ============================================================================
-@import '../base/variables'; // Variables globales (couleurs, typographie, etc.).
-@import '../base/mixins' ;    // Mixins pour des styles modulaires et flexibles.
+@import "../base/variables"; // Variables globales (couleurs, typographie, etc.).
+@import "../base/mixins"; // Mixins pour des styles modulaires et flexibles.
 
 // ============================================================================
 // 2. Réinitialisation et Styles Globaux
 //    Réinitialisation des styles des navigateurs et application de styles globaux.
 // ============================================================================
-@import '../base/reset';  // Normalisation des styles CSS.
-@import '../base/global'; // Styles globaux (si nécessaire pour la page).
+@import "../base/reset"; // Normalisation des styles CSS.
+@import "../base/global"; // Styles globaux (si nécessaire pour la page).
 
 // ============================================================================
 // 3. Composants
 //    Importation des composants réutilisables spécifiques à la page.
 // ============================================================================
-@import '../components/button'; // Boutons (si utilisés dans la page).
-@import '../components/cards';  // Cartes (si utilisées pour les photographes).
+@import "../components/button"; // Boutons (si utilisés dans la page).
+@import "../components/cards"; // Cartes (si utilisées pour les photographes).
 
 // ============================================================================
 // 4. Layouts
 //    Mise en page générale utilisée dans la page des photographes.
 // ============================================================================
-@import '../layouts/header'; // Header (si utilisé dans cette page).
-@import '../layouts/footer'; // Footer (si utilisé dans cette page).
-@import '../layouts/modal';  // Modals (fenêtres modales) pour des interactions spécifiques
-@import '../layouts/photographer-bandeau';
-@import '../layouts/lightbox'; // Lightbox 
-
-
-
+@import "../layouts/header"; // Header (si utilisé dans cette page).
+@import "../layouts/footer"; // Footer (si utilisé dans cette page).
+@import "../layouts/modal"; // Modals (fenêtres modales) pour des interactions spécifiques
+@import "../layouts/photographer-bandeau";
+@import "../layouts/gallery"; // Section spécifique aux photographes.
+@import "../layouts/lightbox"; // Lightbox

@@ -13,26 +13,29 @@
 /* =========================================================================== */
 /* Masque visuellement un élément tout en le gardant accessible aux lecteurs d'écran */
 .sr-only {
-    position: absolute; /* Retire l'élément du flux visuel */
-    width: 1px; /* Taille réduite à 1 pixel */
-    height: 1px; /* Taille réduite à 1 pixel */
-    padding: 0; /* Pas de padding */
-    margin: -1px; /* Place l'élément hors écran */
-    overflow: hidden; /* Masque le contenu débordant */
-    clip: rect(0, 0, 0, 0); /* Masque visuellement l'élément */
-    border: 0; /* Supprime les bordures */
+  position: absolute; /* Retire l'élément du flux visuel */
+  width: 1px; /* Taille réduite à 1 pixel */
+  height: 1px; /* Taille réduite à 1 pixel */
+  padding: 0; /* Pas de padding */
+  margin: -1px; /* Place l'élément hors écran */
+  overflow: hidden; /* Masque le contenu débordant */
+  clip: rect(0, 0, 0, 0); /* Masque visuellement l'élément */
+  border: 0; /* Supprime les bordures */
 }
 
 /* Affiche un élément précédemment masqué pour les lecteurs d'écran */
 .sr-only-focusable:focus {
-    position: static; /* Rétablit la position par défaut */
-    width: auto; /* Rétablit la largeur */
-    height: auto; /* Rétablit la hauteur */
-    padding: var(--padding-small, 0.5rem); /* Ajoute du padding pour plus de clarté */
-    margin: 0; /* Supprime les marges négatives */
-    overflow: visible; /* Rend le contenu visible */
-    clip: auto; /* Rétablit le contenu */
-    border: 2px solid var(--primary-color); /* Ajoute une bordure pour la mise en évidence */
+  position: static; /* Rétablit la position par défaut */
+  width: auto; /* Rétablit la largeur */
+  height: auto; /* Rétablit la hauteur */
+  padding: var(
+    --padding-small,
+    0.5rem
+  ); /* Ajoute du padding pour plus de clarté */
+  margin: 0; /* Supprime les marges négatives */
+  overflow: visible; /* Rend le contenu visible */
+  clip: auto; /* Rétablit le contenu */
+  border: 2px solid var(--primary-color); /* Ajoute une bordure pour la mise en évidence */
 }
 
 /* =========================================================================== */
@@ -40,13 +43,13 @@
 /* =========================================================================== */
 /* Retire les soulignements des liens */
 a {
-    text-decoration: none; /* Supprime la décoration par défaut */
-    color: inherit; /* Hérite de la couleur du texte parent */
+  text-decoration: none; /* Supprime la décoration par défaut */
+  color: inherit; /* Hérite de la couleur du texte parent */
 }
 
 /* Ajoute une décoration au survol pour les liens */
 a:hover,
 a:focus {
-    text-decoration: none; /* Ajoute une décoration */
-    color: var(--primary-color); /* Applique une couleur d'accentuation */
+  text-decoration: none; /* Ajoute une décoration */
+  color: var(--primary-color); /* Applique une couleur d'accentuation */
 }

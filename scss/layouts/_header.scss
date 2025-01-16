@@ -14,34 +14,30 @@
 /* ------------------------------------------------------------------------- */
 
 header {
-    display: flex; /* Utilise Flexbox pour organiser les éléments enfants */
-    flex-direction: row; /* Aligne les éléments horizontalement */
-    justify-content: space-between; /* Crée un espace entre le logo et le titre */
-    align-items: center; /* Centre les éléments verticalement */
-    width: 95%; /* Largeur relative pour s'adapter à différentes tailles d'écran */
-    height: auto; /* La hauteur s'ajuste automatiquement au contenu */
-    padding: 5% 0 7% 0; /* Espacement en haut et en bas */
-    gap: 2%; /* Espace horizontal entre les éléments enfants */
-    margin: 0 auto; /* Centre le header horizontalement */
+  display: flex; /* Utilise Flexbox pour organiser les éléments enfants */
+  flex-direction: row; /* Aligne les éléments horizontalement */
+  justify-content: space-between; /* Crée un espace entre le logo et le titre */
+  align-items: center; /* Centre les éléments verticalement */
+  width: 95%; /* Largeur relative pour s'adapter à différentes tailles d'écran */
+  height: auto; /* La hauteur s'ajuste automatiquement au contenu */
+  padding: 5%  0; /* Espacement en haut et en bas */
+  gap: 2%; /* Espace horizontal entre les éléments enfants */
+  margin: 0 auto; /* Centre le header horizontalement */
 
+  /* ------------------------ Responsives ----------------------------------- */
 
+  @include tablet {
+    width: 80%; /* Réduit la largeur pour un alignement visuel plus centré */
+    padding: 3% 0 2% 0; /* Diminue les marges verticales pour plus de compacité */
+  }
 
-    /* ------------------------ Responsives ----------------------------------- */
+  @include desktop {
+    width: 85%; /* Augmente la largeur pour équilibrer les proportions */
+  }
 
-    @include tablet {
-        width: 80%; /* Réduit la largeur pour un alignement visuel plus centré */
-        padding: 3% 0 2% 0; /* Diminue les marges verticales pour plus de compacité */
-    }
-
-    
-    @include desktop {
-        width: 85%; /* Augmente la largeur pour équilibrer les proportions */
-    }
-
-
-    @include large-desktop {
-        width: 80%; /* Réduit légèrement la largeur pour une meilleure mise en page */
-    }
+  @include large-desktop {
+    width: 80%; /* Réduit légèrement la largeur pour une meilleure mise en page */
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -50,16 +46,16 @@ header {
 /* -------------------------------------------------------------------------- */
 
 .logo {
-    width: 30vw; /* Largeur relative au viewport pour le logo */
-    max-width: 120px; /* Limite la largeur maximale pour éviter une taille excessive */
-    height: auto; /* Garde les proportions originales */
-    padding-left: 15%; /* Ajoute un espacement à gauche pour éloigner du bord */
+  width: 30vw; /* Largeur relative au viewport pour le logo */
+  max-width: 120px; /* Limite la largeur maximale pour éviter une taille excessive */
+  height: auto; /* Garde les proportions originales */
+  padding-left: 15%; /* Ajoute un espacement à gauche pour éloigner du bord */
 
-    /* ------------------------ Responsives -------------------------------- */
-    @include tablet {
-        max-width: 200px; /* Augmente la taille maximale pour les écrans moyens */
-        padding-left: 10%; /* Réduit l'espacement à gauche pour une meilleure proportion */
-    }
+  /* ------------------------ Responsives -------------------------------- */
+  @include tablet {
+    max-width: 200px; /* Augmente la taille maximale pour les écrans moyens */
+    padding-left: 10%; /* Réduit l'espacement à gauche pour une meilleure proportion */
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -68,25 +64,50 @@ header {
 /* -------------------------------------------------------------------------- */
 
 h1 {
-    position: relative; /* Permet un ajustement fin de la position */
-    top: 4%; /* Décale légèrement le titre vers le bas */
-    font-size: var(--font-size-base); /* Taille de police définie dans les variables */
-    color: var(--primary-color); /* Applique la couleur principale au titre */
-    margin: 0; /* Supprime les marges par défaut */
+  position: relative; /* Permet un ajustement fin de la position */
+  top: 4%; /* Décale légèrement le titre vers le bas */
+  font-size: var(
+    --font-size-base
+  ); /* Taille de police définie dans les variables */
+  color: var(--primary-color); /* Applique la couleur principale au titre */
+  margin: 0; /* Supprime les marges par défaut */
 
-    /* ------------------------ Responsives ---------------------------------- */
-    @include tablet {
-        font-size: var(--font-size-large); /* Augmente la taille du texte pour une meilleure lisibilité */
-    }
+  /* ------------------------ Responsives ---------------------------------- */
+  @include tablet {
+    font-size: var(
+      --font-size-large
+    ); /* Augmente la taille du texte pour une meilleure lisibilité */
+  }
 }
 
 /* -------------------------------------------------------------------------- */
 /* photographer-header                                                        */
 /* Description : ajustement spécifique à la pages photographer.html           */
 /* -------------------------------------------------------------------------- */
+.photographer-header  {
+  width: 100%; /* Largeur relative au viewport pour le logo */
+  height: auto; /* Garde les proportions originales */
+  margin:0 auto;
+  justify-content: center;
+  
+  @include tablet {
+    width: 85%; /* Réduit la largeur pour un alignement visuel plus centré */
+    padding:2% 0; /* Diminue les marges verticales pour plus de compacité */
+    justify-content: left;
+  }
+}
 
+.photographer-header img {
+  padding-left:0;
 
+  @include tablet {
+    width:70%;
+    padding-left: 5%; /* Réduit l'espacement à gauche pour une meilleure proportion */
+  }
 
-
-
-
+  @include large-desktop {
+    width:80%;
+    padding-left: 10%;
+  }
+  
+}

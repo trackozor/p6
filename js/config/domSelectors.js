@@ -4,108 +4,190 @@
  * Description    : Centralisation des sélecteurs DOM pour l'application Fisheye.
  * Auteur         : Trackozor
  * Date           : 05/01/2025
- * Version        : 1.1.0
+ * Version        : 1.6.1 (Optimisée avec documentation enrichie)
  * ===============================================================
- * 
- * Ce fichier regroupe tous les sélecteurs DOM utilisés dans l'application.
+ *
  * Objectifs :
- * - Améliorer la lisibilité et la maintenabilité du code.
- * - Centraliser les sélecteurs pour éviter les redondances et les erreurs.
- * - Fournir une documentation claire et détaillée pour faciliter la compréhension.
+ * - Charger dynamiquement les sélecteurs selon la page en cours.
+ * - Vérifier la présence des sélecteurs essentiels au bon fonctionnement.
+ * - Ajouter des logs détaillés pour chaque élément trouvé ou manquant.
  * ===============================================================
  */
 
-const domSelectors = {
-    /**
-     * ===========================================================
-     * Section : Sélecteurs spécifiques à la page index.html
-     * Description : Ces sélecteurs permettent de manipuler les éléments
-     * principaux de la page d'accueil (liste des photographes).
-     * ===========================================================
-     */
+import { logEvent } from "../utils/utils.js";
+
+/**
+ * Centralisation des sélecteurs DOM et vérification dynamique.
+ */
+const domSelectors = (() => {
+  /**
+   * Récupère un élément DOM en toute sécurité, avec gestion des erreurs.
+   * @param {string} selector - Sélecteur CSS de l'élément.
+   * @param {boolean} [isOptional=false] - Si true, ne génère pas d'erreur si l'élément est introuvable.
+   * @returns {Element|null} Élément DOM trouvé ou null si introuvable.
+   */
+  const safeQuerySelector = (selector, isOptional = false) => {
+    const element = document.querySelector(selector);
+
+    if (!element && !isOptional) {
+      logEvent(
+        "error",
+        `❌ Élément non trouvé pour le sélecteur : ${selector}`,
+      );
+    } else if (element) {
+      logEvent("info", `✅ Élément trouvé : ${selector}`);
+    }
+
+    return element;
+  };
+
+  /**
+   * Identifie la page actuelle en se basant sur le chemin de l'URL.
+   * @returns {string} Nom de la page (par exemple, "index" ou "photographer").
+   */
+  const getCurrentPage = () => {
+    const path = window.location.pathname;
+    if (path.includes("index.html")) {
+      return "index";
+    }
+    if (path.includes("photographer.html")) {
+      return "photographer";
+    }
+    return "unknown";
+  };
+
+  /**
+   * Définit les sélecteurs spécifiques pour la page `index.html`.
+   * @returns {Object} Sélecteurs pour la page d'accueil.
+   */
+  const getIndexSelectors = () => ({
     indexPage: {
-        header: document.querySelector('header'), // En-tête principal de la page (logo et titre).
-        logoLink: document.querySelector('.logo-link'), // Lien du logo pour revenir à la page d'accueil.
-        mainContent: document.querySelector('#main'), // Conteneur principal du contenu.
-        photographersSection: document.querySelector('.photographer-section'), // Section contenant la liste des photographes.
-        photographersContainer: document.querySelector('#photographers-container'), // Conteneur dynamique pour les cartes des photographes.
-        photographerTemplate: document.querySelector('#photographer-template'), // Template HTML pour afficher chaque photographe.
-        footer: document.querySelector('footer'), // Pied de page affiché en bas.
+      header: safeQuerySelector("header"),
+      logoLink: safeQuerySelector(".logo-link"),
+      mainContent: safeQuerySelector("#main"),
+      photographersSection: safeQuerySelector(".photographer-section"),
+      photographersContainer: safeQuerySelector("#photographers-container"),
+      photographerTemplate: safeQuerySelector("#photographer-template", true),
+      footer: safeQuerySelector("footer"),
     },
-
-    /**
-     * ===========================================================
-     * Section : Sélecteurs spécifiques à la page photographer.html
-     * Description : Ces sélecteurs permettent de manipuler les éléments
-     * liés aux détails et à la galerie d'un photographe spécifique.
-     * ===========================================================
-     */
-    photographerPage: {
-        photographerTitle: document.querySelector('#photograph-title'), // Titre affichant le nom complet du photographe.
-        photographerLocation: document.querySelector('.photographer-card-location'), // Localisation (ville et pays).
-        photographerTagline: document.querySelector('.photographer-card-tagline'), // Slogan ou description courte.
-        photographerProfileImage: document.querySelector('.photographer-card-portrait'), // Portrait du photographe.
-        galleryContainer: document.getElementById('gallery'), // Conteneur pour la galerie des médias.
-    },
-
-    /**
-     * ===========================================================
-     * Section : Sélecteurs pour les templates HTML
-     * Description : Ces sélecteurs regroupent les templates pour
-     * la génération dynamique d'éléments réutilisables.
-     * ===========================================================
-     */
     templates: {
-        photographerTemplate: document.querySelector('#photographer-template'), // Template pour un photographe sur la page d'accueil.
-        galleryItemTemplate: document.querySelector('#gallery-item-template'), // Template pour un média dans la galerie.
-        portraitWrapperTemplate: document.querySelector('#photographer-card-portrait-wrapper'), // Template pour le conteneur de portrait.
+      photographerTemplate: safeQuerySelector("#photographer-template"),
     },
+  });
 
-    /**
-     * ===========================================================
-     * Section : Sélecteurs pour la lightbox
-     * Description : Ces sélecteurs permettent de manipuler la lightbox,
-     * utilisée pour afficher les médias en plein écran.
-     * ===========================================================
-     */
+  /**
+   * Définit les sélecteurs spécifiques pour la page `photographer.html`.
+   * @returns {Object} Sélecteurs pour la page photographe.
+   */
+  const getPhotographerSelectors = () => ({
+    photographerPage: {
+      photographerHeader: safeQuerySelector(".photographer-info"),
+      photographerTitle: safeQuerySelector("#photograph-title"),
+      photographerLocation: safeQuerySelector(".photographer-card-location"),
+      photographerTagline: safeQuerySelector(".photographer-card-tagline"),
+      photographerProfileImage: safeQuerySelector(
+        ".photographer-card-portrait",
+      ),
+      galleryContainer: safeQuerySelector("#gallery"),
+      sortingSelect: safeQuerySelector("#sort-options"),
+      contactButton: safeQuerySelector(".contact-button"),
+      photographerStats: safeQuerySelector("#photographer-stats"),
+      totalLikes: safeQuerySelector("#total-likes"),
+      dailyRate: safeQuerySelector("#daily-rate"),
+    },
     lightbox: {
-        lightboxContainer: document.querySelector('#lightbox'), // Conteneur principal de la lightbox.
-        lightboxCloseButton: document.querySelector('.lightbox-close'), // Bouton pour fermer la lightbox.
-        lightboxPrevButton: document.querySelector('.lightbox-prev'), // Bouton pour naviguer vers le média précédent.
-        lightboxNextButton: document.querySelector('.lightbox-next'), // Bouton pour naviguer vers le média suivant.
-        lightboxMediaContainer: document.querySelector('.lightbox-media-container'), // Conteneur des médias dans la lightbox.
-        lightboxCaption: document.querySelector('#lightbox-caption'), // Légende descriptive des médias.
+      lightboxContainer: safeQuerySelector("#lightbox"),
+      lightboxCloseButton: safeQuerySelector(".lightbox-close"),
+      lightboxPrevButton: safeQuerySelector(".lightbox-prev"),
+      lightboxNextButton: safeQuerySelector(".lightbox-next"),
+      lightboxMediaContainer: safeQuerySelector(".lightbox-media"),
+      lightboxCaption: safeQuerySelector("#lightbox-caption"),
     },
-
-    /**
-     * ===========================================================
-     * Section : Sélecteurs pour la modal de contact
-     * Description : Ces sélecteurs permettent de gérer l'ouverture
-     * et la fermeture de la modal de contact.
-     * ===========================================================
-     */
     modal: {
-        contactOverlay: document.querySelector('#contact-overlay'), // Overlay semi-transparent affiché derrière la modal.
-        contactModal: document.querySelector('#contact-modal'), // Conteneur principal de la modal de contact.
-        contactOpenButton: document.querySelector('.contact_button'), // Bouton pour ouvrir la modal ("Contactez-moi").
-        contactCloseButton: document.querySelector('.modal-close'), // Bouton pour fermer la modal.
+      container: safeQuerySelector(".modal"),
+      closeButton: safeQuerySelector(".modal-close"),
+      form: {
+        formElement: safeQuerySelector(
+          "form[aria-label='Formulaire de contact']",
+        ),
+        firstName: safeQuerySelector("#first-name"),
+        lastName: safeQuerySelector("#last-name"),
+        email: safeQuerySelector("#email"),
+        message: safeQuerySelector("#message"),
+        submitButton: safeQuerySelector(".contact_button[type='submit']"),
+      },
     },
-
-    /**
-     * ===========================================================
-     * Section : Sélecteurs pour le tri des médias
-     * Description : Ces sélecteurs permettent de manipuler les
-     * options de tri de la galerie des médias.
-     * ===========================================================
-     */
     sorting: {
-        sortOptions: document.querySelector('#sort-options'), // Menu déroulant pour sélectionner les options de tri.
+      sortOptions: safeQuerySelector("#sort-options"),
     },
-};
+  });
+
+  /**
+   * Vérifie la présence de tous les sélecteurs pour une page donnée.
+   * @param {Object} selectors - Sélecteurs de la page en cours.
+   * @returns {boolean} True si tous les sélecteurs sont présents, sinon False.
+   */
+  const verifySelectors = (selectors) => {
+    const missingSelectors = [];
+
+    const checkSelectors = (obj, parentKey = "") => {
+      Object.entries(obj).forEach(([key, value]) => {
+        if (typeof value === "object" && value !== null) {
+          checkSelectors(value, `${parentKey}${key}.`);
+        } else if (!value) {
+          missingSelectors.push(`${parentKey}${key}`);
+        }
+      });
+    };
+
+    checkSelectors(selectors);
+
+    if (missingSelectors.length > 0) {
+      logEvent(
+        "error",
+        `⚠️ Les sélecteurs suivants sont manquants : ${missingSelectors.join(
+          ", ",
+        )}.`,
+      );
+      return false;
+    }
+
+    logEvent("success", "✅ Tous les sélecteurs nécessaires sont présents.");
+    return true;
+  };
+
+  /**
+   * Charge dynamiquement les sélecteurs pour la page actuelle et les vérifie.
+   * @returns {Object} Sélecteurs spécifiques à la page.
+   */
+  const loadSelectorsForCurrentPage = () => {
+    const currentPage = getCurrentPage();
+    logEvent("info", `🔍 Page détectée : ${currentPage}`);
+
+    if (currentPage === "index") {
+      const selectors = getIndexSelectors();
+      verifySelectors(selectors);
+      return selectors;
+    }
+
+    if (currentPage === "photographer") {
+      const selectors = getPhotographerSelectors();
+      verifySelectors(selectors);
+      return selectors;
+    }
+
+    logEvent("warn", "⚠️ Page inconnue, aucun sélecteur spécifique chargé.");
+    return {}; // Objet vide si page inconnue
+  };
+
+  return {
+    safeQuerySelector,
+    getCurrentPage,
+    ...loadSelectorsForCurrentPage(), // Charge dynamiquement les sélecteurs
+  };
+})();
 
 // ===============================================================
 // Export des sélecteurs
-// Ce module est utilisé dans tous les fichiers JS de l'application
-// pour centraliser les interactions avec le DOM de manière propre et efficace.
 // ===============================================================
 export default domSelectors;
