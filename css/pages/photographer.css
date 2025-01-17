@@ -415,7 +415,20 @@ a:focus {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5%;
+  margin: 5%;
+}
+@media (min-width: 767px) {
+  .sorting {
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 10%;
+    margin: 2% 0 3% 10%;
+  }
+}
+
+.sorting label {
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 #sort-options {
@@ -735,7 +748,12 @@ h1 {
 footer {
   display: flex;
   justify-content: center;
-  margin: 2% 0 1% 0;
+  margin: 1% 0;
+}
+
+footer p {
+  color: var(--text-color-secondary);
+  font-weight: bold;
 }
 
 /* =============================================================================
@@ -752,9 +770,8 @@ footer {
 /* Description : Style principal pour afficher une modal centrée             */
 /* -------------------------------------------------------------------------- */
 .modal {
-  display: flex; /* Active l'affichage Flexbox pour structurer les enfants */
-  position: fixed; /* Permet un positionnement relatif à la fenêtre */
-  z-index: 1; /* Positionne la modal au-dessus des autres éléments */
+  display: flex; /* Active l'affichage Flexbox pour structurer les enfants */ /* Permet un positionnement relatif à la fenêtre */
+  z-index: 10; /* Positionne la modal au-dessus des autres éléments */
   top: 0; /* Décale la modal du haut de la fenêtre */
   left: 0; /* Décale la modal du bord gauche */
   width: 100%; /* La modal occupe toute la largeur de l'écran */
@@ -956,9 +973,26 @@ footer {
   align-items: center;
   margin: 0 auto;
 }
+@media (min-width: 767px) {
+  #gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 45%);
+    margin: 0 10%;
+    width: 100%;
+  }
+}
+@media (min-width: 1024px) {
+  #gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 30%);
+    margin: 0 auto;
+    width: 90%;
+  }
+}
 
 textarea #message {
-  width: 100%;
+  width: 30vw;
+  color: #901c1c;
   display: flex;
   flex-direction: row;
   height: 20vh;
@@ -967,6 +1001,28 @@ textarea #message {
   border-radius: 5px;
   border: 1px solid #ccc;
   margin-bottom: 5%;
+}
+
+.photographer-stats {
+  display: flex;
+  position: absolute;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 90vw;
+  background-color: red;
+  margin: 0 auto;
+  margin-bottom: 5%;
+}
+@media (min-width: 767px) {
+  .photographer-stats {
+    width: 80vw;
+  }
+}
+@media (min-width: 1024px) {
+  .photographer-stats {
+    width: 60vw;
+  }
 }
 
 .lightbox {

@@ -14,9 +14,8 @@
 /* -------------------------------------------------------------------------- */
 
 .modal {
-  display: flex; /* Active l'affichage Flexbox pour structurer les enfants */
-  position: fixed; /* Permet un positionnement relatif à la fenêtre */
-  z-index: 1; /* Positionne la modal au-dessus des autres éléments */
+  display: flex; /* Active l'affichage Flexbox pour structurer les enfants */; /* Permet un positionnement relatif à la fenêtre */
+  z-index: 10; /* Positionne la modal au-dessus des autres éléments */
   top: 0; /* Décale la modal du haut de la fenêtre */
   left: 0; /* Décale la modal du bord gauche */
   width: 100%; /* La modal occupe toute la largeur de l'écran */

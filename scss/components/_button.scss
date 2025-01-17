@@ -79,7 +79,19 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5%;
+  margin: 5%;
+
+  @include tablet {
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 10%;
+    margin:2% 0 3% 10%;
+  }
+}
+
+.sorting label {
+  font-size: 1rem;
+  font-weight: bold;
 }
 #sort-options {
   display: flex;
