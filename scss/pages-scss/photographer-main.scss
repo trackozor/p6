@@ -38,7 +38,7 @@
 // ============================================================================
 @import "../layouts/header"; // Header (si utilisé dans cette page).
 @import "../layouts/footer"; // Footer (si utilisé dans cette page).
-@import "../layouts/modal"; // Modals (fenêtres modales) pour des interactions spécifiques
-@import "../layouts/photographer-bandeau";
-@import "../layouts/gallery"; // Section spécifique aux photographes.
-@import "../layouts/lightbox"; // Lightbox
+@import "../layouts/photographer/modal"; // Modals (fenêtres modales) pour des interactions spécifiques
+@import "../layouts/photographer/photographer-bandeau";
+@import "../layouts/photographer/gallery"; // Section spécifique aux photographes.
+@import "../layouts/photographer/lightbox"; // Lightbox

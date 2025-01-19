@@ -9,10 +9,10 @@
                     l'adaptation aux différents écrans.
 ============================================================================= */
 
-/* -------------------------------------------------------------------------- */
+/*============================================================================*/
 /* Carte du photographe (Mobile First)                                        */
 /* Description : Style principal pour la carte des photographes               */
-/* -------------------------------------------------------------------------- */
+/*============================================================================*/
 
 .photographer-card {
   position: relative; /* Nécessaire pour placer des éléments enfants en absolu */
@@ -183,3 +183,89 @@
     font-size: var(--font-size-base); /* Unifie les tailles de texte */
   }
 }
+
+/*============================================================================*/
+/* Carte des médias (Mobile First)                                            */
+/* Description : Style principal pour la carte des médias                     */
+/*============================================================================*/
+
+.media-item {
+  display:block;
+  background-color: var(--color-background-light); /* Fond clair */
+  border-radius: var(--radius-base); /* Coins arrondis */
+  overflow: hidden;
+  width:90%;
+  margin:5% auto;
+  height:40vh;
+  transition: transform 0.3s, box-shadow 0.3s;
+
+  /* Animation au survol */
+  &:hover {
+    transform: scale(1.05); /* Légère augmentation */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* image ou video                                                            */
+/* Description : Définit les dimensions et le style du média                 */
+/* -------------------------------------------------------------------------- */
+.media {
+  width: 100%;/* Prend toute la largeur */
+  height: 90%; /* Conserve les proportions */
+  object-fit: cover;
+  margin:0 auto;
+  overflow: hidden ;
+  display: flex; /* S'assure que c'est un bloc */
+  object-position: center;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Légende sous le média (conteneur)                                          */
+/* Description : Définit les dimensions et le style du conteneur               */
+/* -------------------------------------------------------------------------- */
+.media-caption {
+  padding: var(--spacing-small) 0; /* Espacement interne */
+  font-size: var(--font-size-small); /* Taille de police réduite */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Légende sous le média (titre)                                              */
+/* Description : Définit les dimensions et le style du titre                  */
+/* -------------------------------------------------------------------------- */
+.media-caption h3 {
+  font-size: 0.8rem; /* Titre du média */
+  color: var(--text-color-secondary); /* Couleur principale */
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Légende sous le média (nombre de likes)                                    */
+/* Description : Définit les dimensions et le style du nombre de likes        */
+/* -------------------------------------------------------------------------- */
+
+.media-caption p {
+  display: flex;
+  font-size: 0.8rem;
+  align-items: center;
+  justify-content:flex-end;
+  gap: var(--spacing-xxsmall); /* Espace entre les likes et l'icône */
+  color: var(--text-color-secondary);
+  font-weight: bold;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Légende sous le média (icône)                                              */
+/* Description : Définit les dimensions et le style de l'icône                */
+/* -------------------------------------------------------------------------- */
+.media-likes {
+  font-weight: bold;
+  color: var(--color-secondary); /* Couleur des likes */
+  font-size: 0.8rem;
+}
+
+

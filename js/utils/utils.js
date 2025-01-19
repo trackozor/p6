@@ -165,26 +165,3 @@ export const addClass = (element, className) =>
  */
 export const removeClass = (element, className) =>
   modifyClass(element, className, false);
-
-/**
- * Construit dynamiquement le chemin d'une image ou d'une ressource.
- * @param {string} folder - Nom du dossier principal (e.g., "photographers").
- * @param {string} fileName - Nom du fichier (e.g., "Mimi Keel.jpg").
- * @returns {string} Chemin complet vers la ressource.
- */
-export function buildImagePath(folder, fileName) {
-  if (!folder || !fileName) {
-    logEvent(
-      "warn",
-      "Impossible de construire le chemin d'image. Informations manquantes.",
-      {
-        folder,
-        fileName,
-      },
-    );
-    return ""; // Retourne une chaîne vide si les informations sont manquantes
-  }
-
-  // Utilise encodeURIComponent pour gérer les caractères spéciaux et les espaces
-  return `../../assets/images/${folder}/${encodeURIComponent(fileName)}`;
-}

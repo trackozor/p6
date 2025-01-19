@@ -90,10 +90,10 @@ const domSelectors = (() => {
       ),
       galleryContainer: safeQuerySelector("#gallery"),
       sortingSelect: safeQuerySelector("#sort-options"),
-      contactButton: safeQuerySelector(".contact-button"),
-      photographerStats: safeQuerySelector("#photographer-stats"),
-      totalLikes: safeQuerySelector("#total-likes"),
-      dailyRate: safeQuerySelector("#daily-rate"),
+      contactButton: safeQuerySelector(".contact-button"), // Corrected
+      photographerStatsTemplate: safeQuerySelector("#photographer-stats", true), // Nouveau sélecteur pour le template
+      totalLikes: null, // Initialement `null` car il sera extrait du template
+      dailyRate: null, // Idem
     },
     lightbox: {
       lightboxContainer: safeQuerySelector("#lightbox"),
@@ -114,7 +114,7 @@ const domSelectors = (() => {
         lastName: safeQuerySelector("#last-name"),
         email: safeQuerySelector("#email"),
         message: safeQuerySelector("#message"),
-        submitButton: safeQuerySelector(".contact_button[type='submit']"),
+        submitButton: safeQuerySelector(".contact-button[type='submit']"),
       },
     },
     sorting: {

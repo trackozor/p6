@@ -1,0 +1,154 @@
+/* =============================================================================
+    Projet      :   Fisheye
+    Fichier     :   _modal.scss
+    Auteur      :   Trackozor
+    Date        :   08/01/2025
+    Version     :   1.1.0
+    Description :   Styles pour les modales de l'application Fisheye.
+                    Ce fichier inclut :
+                      - Le conteneur principal de la modal
+                      - L'overlay
+                      - Les animations
+                      - La gestion responsive
+============================================================================= */
+
+/* -------------------------------------------------------------------------- */
+/* Conteneur principal de la modal                                            */
+/* Description : Définit l'apparence et le comportement de la modal           */
+/* -------------------------------------------------------------------------- */
+
+.modal {
+  display: flex; /* Flexbox pour structurer les enfants */
+  position: fixed; /* Permet à la modal de rester fixe par rapport à la fenêtre */
+  z-index: 10; /* Place la modal au-dessus des autres éléments */
+  top: 0; /* Ancre la modal au haut de l'écran */
+  left: -100%; /* Décale la modal en dehors de l'écran */
+  width: 100%; /* La modal occupe toute la largeur de la fenêtre */
+  height: 100%; /* La modal occupe toute la hauteur de la fenêtre */
+  background-color: #db8876; /* Couleur de fond de la modal */
+  border-radius: 5px; /* Coins arrondis pour un design moderne */
+  flex-direction: column; /* Empile les enfants verticalement */
+  align-items: center; /* Centre horizontalement les enfants */
+  justify-content: center; /* Centre verticalement les enfants */
+  padding: 1rem; /* Ajoute un espacement interne */
+  opacity: 0; /* La modal est invisible par défaut */
+  transform: scale(0.9); /* Réduction initiale pour un effet visuel */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Animation fluide */
+
+  /* ----------------------- Responsiveness : Tablette ----------------------- */
+  @include tablet {
+    top: 10%; /* Décale légèrement du haut de l'écran */
+    left: 12%; /* Centrage horizontal */
+    width: 65%; /* Réduction de la largeur pour une meilleure lisibilité */
+    height: 70%; /* Ajuste automatiquement la hauteur */
+  }
+
+  /* ----------------------- Responsiveness : Ordinateur --------------------- */
+  @include desktop {
+    left: 20%; /* Décale davantage à gauche pour recentrer */
+    width: 60%; /* Réduit la largeur pour plus d'espace blanc */
+    height: 70%; /* Conserve la hauteur */
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* État actif de la modal                                                     */
+/* Description : Styles appliqués lorsque la modal est visible                */
+/* -------------------------------------------------------------------------- */
+
+.modal.active {
+  left: 0; /* La modal est centrée dans la fenêtre */
+  opacity: 1; /* La modal devient visible */
+  transform: scale(1); /* Taille normale pour une transition fluide */
+}
+
+/* -------------------------------------------------------------------------- */
+/* Overlay de la modal                                                        */
+/* Description : Couche semi-transparente qui masque l'arrière-plan           */
+/* -------------------------------------------------------------------------- */
+
+#modal-overlay {
+  display: none; /* Masque l'overlay par défaut */
+  position: fixed; /* Couvre tout l'écran */
+  top: 0; /* Ancrage au sommet */
+  left: 0; /* Ancrage au bord gauche */
+  width: 100%; /* Largeur pleine */
+  height: 100%; /* Hauteur pleine */
+  background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  z-index: 5; /* L'overlay est derrière la modal mais devant le contenu */
+}
+
+/* État actif de l'overlay */
+#modal-overlay.active {
+  display: flex; /* L'overlay devient visible lorsqu'il est activé */
+}
+
+/* -------------------------------------------------------------------------- */
+/* Conteneur spécifique : Modal de contact                                    */
+/* Description : Ajuste les styles pour la modal utilisée dans le formulaire  */
+/* -------------------------------------------------------------------------- */
+
+#modal {
+  display: none; /* La modal est masquée par défaut */
+  margin: 0 auto; /* Centre la modal horizontalement */
+  opacity: 0; /* Modal invisible par défaut */
+  transform: scale(0.9); /* Taille réduite pour effet d'animation */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Animation fluide */
+}
+
+#modal.active {
+  display: flex; /* Affiche la modal lorsqu'elle est activée */
+  opacity: 1; /* Modal visible */
+  transform: scale(1); /* Restaure la taille normale */
+}
+
+/* -------------------------------------------------------------------------- */
+/* Groupe de champs de formulaire                                             */
+/* Description : Définit les styles des champs et labels dans le formulaire   */
+/* -------------------------------------------------------------------------- */
+
+.form-group {
+  width: 85vw; /* Largeur relative pour les petits écrans */
+  max-width: 500px; /* Limite la largeur sur les écrans plus grands */
+  display: flex; /* Flexbox pour organiser les champs */
+  flex-direction: column; /* Les champs sont empilés verticalement */
+  margin: 0 auto; /* Centre le formulaire horizontalement */
+
+  /* Responsiveness : Tablette */
+  @include tablet {
+    width: 100%; /* Prend toute la largeur */
+    max-width: 800px; /* Ajuste la largeur maximale */
+  }
+}
+
+/* Labels des champs */
+.form-group label {
+  font-size: var(--font-size-base); /* Taille standard pour les textes */
+  margin: 2% 0; /* Espacement au-dessus et en dessous des labels */
+}
+
+/* Champs de saisie */
+.form-group input,
+.form-group textarea {
+  font-size: var(--font-size-base); /* Taille standard pour les champs */
+  padding: 2%; /* Espacement interne pour une meilleure lisibilité */
+  border: 1px solid var(--color-border); /* Ajoute une bordure discrète */
+  border-radius: var(--radius-small); /* Coins légèrement arrondis */
+  width: 100%; /* Prend toute la largeur du conteneur */
+  box-sizing: border-box; /* Inclut le padding dans la largeur totale */
+}
+
+/* Bouton d'envoi */
+.contact-button {
+  background-color: var(--color-primary); /* Couleur principale */
+  color: var(--text-color-light); /* Texte en couleur claire */
+  padding: var(--spacing-small); /* Espacement interne */
+  border: none; /* Supprime les bordures par défaut */
+  border-radius: var(--radius-base); /* Coins arrondis pour un design moderne */
+  cursor: pointer; /* Indique que le bouton est cliquable */
+  transition: background-color 0.3s ease; /* Animation de couleur fluide */
+
+  &:hover {
+    background-color: var(--color-primary-dark); /* Couleur foncée au survol */
+  }
+}

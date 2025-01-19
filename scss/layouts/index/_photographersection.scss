@@ -14,10 +14,11 @@
 /* Conteneur principal des photographes */
 #photographers-container {
   display: grid; /* Utilisation de la grille CSS pour organiser les cartes */
+  max-width:80%;
   gap: var(
     --spacing-base
   ); /* Espacement entre les éléments, basé sur une variable */
-  margin-top: var(--spacing-xxsmall); /* Petit espace au-dessus du conteneur */
+  margin:2% auto;
   padding: 0 var(--spacing-base); /* Espacement horizontal pour aligner le contenu */
 
   /* ------------------------- Responsives -------------------------------- */

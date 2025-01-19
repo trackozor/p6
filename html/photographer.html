@@ -104,6 +104,19 @@
         role="region"
       >
         <h2 id="gallery-title" class="sr-only">Galerie de photos et vidéos</h2>
+        <template id="media-template">
+          <article class="media-item">
+            <img src="" alt="Image par défaut" class="media" />
+            <div class="media-caption">
+              <h3>Titre du média</h3>
+              <p>
+                <span class="media-likes">0</span>
+                <i class="fas fa-heart" aria-hidden="true"></i>
+              </p>
+            </div>
+          </article>
+        </template>
+
         <div
           id="gallery"
           class="gallery"

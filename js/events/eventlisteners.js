@@ -18,6 +18,7 @@ import { logEvent } from "../utils/utils.js";
  * @param {Function} callback - Fonction callback exécutée lorsque l'événement est déclenché.
  * @param {string} [logMessage=''] - Message descriptif pour enrichir les journaux.
  */
+
 function attachEvent(selectors, eventType, callback, logMessage = "") {
   if (!selectors) {
     logEvent(
@@ -25,11 +26,13 @@ function attachEvent(selectors, eventType, callback, logMessage = "") {
       `Aucun élément DOM trouvé pour l'événement "${eventType}". Aucun gestionnaire attaché.`,
       { eventType, logMessage },
     );
-    return;
+    return false; // Retour explicite pour signaler l'absence d'attachement
   }
 
   const elements =
     selectors instanceof NodeList ? Array.from(selectors) : [selectors];
+
+  let attachedCount = 0;
 
   elements.forEach((selector) => {
     if (selector instanceof HTMLElement) {
@@ -54,6 +57,7 @@ function attachEvent(selectors, eventType, callback, logMessage = "") {
           );
         }
       });
+      attachedCount++;
     } else {
       logEvent(
         "warn",
@@ -62,6 +66,24 @@ function attachEvent(selectors, eventType, callback, logMessage = "") {
       );
     }
   });
+
+  if (attachedCount > 0) {
+    logEvent(
+      "info",
+      `Gestionnaires d'événements attachés avec succès : ${attachedCount}`,
+      {
+        eventType,
+        logMessage,
+      },
+    );
+  } else {
+    logEvent(
+      "error",
+      `Aucun gestionnaire d'événement n'a été attaché pour "${eventType}".`,
+    );
+  }
+
+  return attachedCount > 0; // Retourne true si au moins un gestionnaire a été attaché
 }
 
 /**
@@ -73,37 +95,45 @@ function initModalEvents() {
     "Initialisation des événements pour la modale de contact...",
   );
 
-  try {
-    attachEvent(
-      domSelectors.photographerPage.contactButton,
-      "click",
-      () => {
-        logEvent("test-start", "Ouverture de la modale de contact...");
-        launchModal();
-        logEvent("test-end", "Modale de contact ouverte avec succès.");
-      },
-      "Gestionnaire pour l'ouverture de la modale de contact",
-    );
-
-    attachEvent(
-      domSelectors.modal.closeButton,
-      "click",
-      () => {
-        logEvent("test-start", "Fermeture de la modale de contact...");
-        closeModal();
-        logEvent("test-end", "Modale de contact fermée avec succès.");
-      },
-      "Gestionnaire pour la fermeture de la modale de contact",
-    );
-
-    logEvent("success", "Événements pour la modale initialisés avec succès.");
-  } catch (error) {
+  if (!domSelectors.photographerPage.contactButton) {
     logEvent(
       "error",
-      `Erreur lors de l'initialisation des événements pour la modale : ${error.message}`,
-      { stack: error.stack },
+      "Bouton de contact introuvable. Gestionnaire non attaché.",
     );
+    return;
   }
+
+  if (!domSelectors.modal.closeButton) {
+    logEvent(
+      "error",
+      "Bouton de fermeture de la modale introuvable. Gestionnaire non attaché.",
+    );
+    return;
+  }
+
+  attachEvent(
+    domSelectors.photographerPage.contactButton,
+    "click",
+    () => {
+      logEvent("test-start", "Ouverture de la modale de contact...");
+      launchModal();
+      logEvent("test-end", "Modale de contact ouverte avec succès.");
+    },
+    "Gestionnaire pour l'ouverture de la modale de contact",
+  );
+
+  attachEvent(
+    domSelectors.modal.closeButton,
+    "click",
+    () => {
+      logEvent("test-start", "Fermeture de la modale de contact...");
+      closeModal();
+      logEvent("test-end", "Modale de contact fermée avec succès.");
+    },
+    "Gestionnaire pour la fermeture de la modale de contact",
+  );
+
+  logEvent("success", "Événements pour la modale initialisés avec succès.");
 }
 
 /**
@@ -190,6 +220,61 @@ function initSortingEvents() {
   logEvent("success", "Événements pour le tri des médias initialisés.");
 }
 
+const initializePhotographerStats = (photographerData, mediaList) => {
+  const template = domSelectors.photographerPage.photographerStatsTemplate;
+
+  if (!template) {
+    logEvent("warn", "Template `#photographer-stats` introuvable.");
+    return;
+  }
+
+  const clone = template.content.cloneNode(true);
+  const statsContainer = domSelectors.photographerPage.photographerHeader;
+
+  if (statsContainer) {
+    statsContainer.appendChild(clone);
+
+    // Mise à jour des sélecteurs pour totalLikes et dailyRate
+    domSelectors.photographerPage.totalLikes =
+      document.querySelector("#total-likes");
+    domSelectors.photographerPage.dailyRate =
+      document.querySelector("#daily-rate");
+
+    // 1. Calcul des likes totaux à partir des médias
+    const totalLikes = mediaList.reduce(
+      (sum, media) => sum + (media.likes || 0),
+      0,
+    );
+
+    // 2. Mise à jour des statistiques dynamiques
+    if (domSelectors.photographerPage.totalLikes) {
+      domSelectors.photographerPage.totalLikes.textContent = totalLikes;
+    } else {
+      logEvent("error", "Impossible de mettre à jour `#total-likes`.");
+    }
+
+    if (domSelectors.photographerPage.dailyRate) {
+      domSelectors.photographerPage.dailyRate.textContent = `${photographerData.price}€/jour`;
+    } else {
+      logEvent("error", "Impossible de mettre à jour `#daily-rate`.");
+    }
+
+    logEvent(
+      "success",
+      "Statistiques du photographe initialisées avec succès.",
+      {
+        totalLikes,
+        dailyRate: `${photographerData.price}€/jour`,
+      },
+    );
+  } else {
+    logEvent(
+      "error",
+      "Impossible de trouver le conteneur pour insérer les statistiques.",
+    );
+  }
+};
+
 /**
  * Point d'entrée pour l'enregistrement des gestionnaires d'événements.
  */
@@ -203,6 +288,7 @@ function initEventListeners() {
     initModalEvents();
     initLightboxEvents();
     initSortingEvents();
+    initializePhotographerStats();
 
     logEvent(
       "success",
