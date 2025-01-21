@@ -8,7 +8,6 @@
 
 import { fetchJSON } from "../data/dataFetcher.js";
 import { logEvent } from "../utils/utils.js";
-
 /**
  * Récupère et filtre les médias pour un photographe spécifique à partir des données JSON.
  *

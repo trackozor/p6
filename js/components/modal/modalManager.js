@@ -28,6 +28,8 @@ let modalOpen = false; // Variable globale pour suivre l'état de la modale
  * @returns {void}
  */
 export function launchModal() {
+  logEvent("test-start", "Début de la tentative d'ouverture de la modale.");
+
   try {
     logEvent("info", "Tentative d'ouverture de la modale...");
 
@@ -47,7 +49,7 @@ export function launchModal() {
       modalClasses: contactModal.classList.value,
     });
 
-    // Étape 3 : Désactive le défilement de l'arrière-plan (vérifie d'abord s'il est déjà désactivé)
+    // Étape 3 : Désactive le défilement de l'arrière-plan
     if (
       !document.body.classList.contains(CONFIGLOG.CSS_CLASSES.BODY_NO_SCROLL)
     ) {
@@ -69,6 +71,8 @@ export function launchModal() {
       stack: error.stack,
     });
   }
+
+  logEvent("test-end", "Fin de la tentative d'ouverture de la modale.");
 }
 
 /*==============================================*/
@@ -81,6 +85,8 @@ export function launchModal() {
  * @returns {void}
  */
 export function closeModal() {
+  logEvent("test-start", "Début de la tentative de fermeture de la modale.");
+
   try {
     logEvent("info", "Tentative de fermeture de la modale...");
 
@@ -105,7 +111,7 @@ export function closeModal() {
       modalClasses: contactModal.classList.value,
     });
 
-    // Étape 3 : Réactive le défilement de l'arrière-plan (vérifie d'abord s'il est déjà activé)
+    // Étape 3 : Réactive le défilement de l'arrière-plan
     if (
       document.body.classList.contains(CONFIGLOG.CSS_CLASSES.BODY_NO_SCROLL)
     ) {
@@ -127,4 +133,6 @@ export function closeModal() {
       stack: error.stack,
     });
   }
+
+  logEvent("test-end", "Fin de la tentative de fermeture de la modale.");
 }

@@ -14,8 +14,8 @@ import {
   renderMediaGallery,
 } from "../templates/media-template-logic.js"; // Chargement et rendu des médias
 import { photographerTemplate } from "../templates/photographer-logic.js"; // Template photographe
-import initEventListeners from "../events/eventlisteners.js";
-
+import { initEventListeners } from "../events/eventlisteners.js";
+import { initstatscalculator } from "../components/statsCalculator.js";
 // =============================
 // CONFIGURATION ET VARIABLES
 // =============================
@@ -32,7 +32,7 @@ const mediaDataUrl = "../../../assets/data/photographers.json";
  *
  * @returns {number|null} L'ID du photographe ou `null` si invalide.
  */
-function getPhotographerIdFromUrl() {
+export function getPhotographerIdFromUrl() {
   try {
     const params = new URLSearchParams(window.location.search);
     const id = parseInt(params.get("id"), 10);
@@ -196,6 +196,7 @@ async function initPhotographerPage() {
 
     // Initialisation des gestionnaires d'événements
     initEventListeners();
+    initstatscalculator();
 
     logEvent("success", "Page photographe initialisée avec succès.");
   } catch (error) {

@@ -90,10 +90,10 @@ const domSelectors = (() => {
       ),
       galleryContainer: safeQuerySelector("#gallery"),
       sortingSelect: safeQuerySelector("#sort-options"),
-      contactButton: safeQuerySelector(".contact-button"), // Corrected
+      contactButton: safeQuerySelector("#contact-button"),
       photographerStatsTemplate: safeQuerySelector("#photographer-stats", true), // Nouveau sélecteur pour le template
-      totalLikes: null, // Initialement `null` car il sera extrait du template
-      dailyRate: null, // Idem
+      totalLikes: null,
+      dailyRate: null,
     },
     lightbox: {
       lightboxContainer: safeQuerySelector("#lightbox"),

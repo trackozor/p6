@@ -36,12 +36,12 @@ const initializeComponents = async () => {
 /**
  * Fonction principale de l'application.
  */
-async function main() {
+function main() {
   try {
     logEvent("info", "Lancement de l'application...");
 
     // Initialisation principale
-    await initializeComponents();
+    initializeComponents();
 
     logEvent("success", "Application lancée avec succès.");
   } catch (error) {

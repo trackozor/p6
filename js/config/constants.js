@@ -31,14 +31,14 @@ const detectEnvironment = () => {
   if (hostname === "username.github.io") {
     return ENVIRONMENTS.PRODUCTION;
   }
-  if (hostname === "staging.domain.com") {
+  if (hostname === "http://127.0.0.1:5500/") {
     return ENVIRONMENTS.STAGING;
   }
   return ENVIRONMENTS.DEVELOPMENT;
 };
 
 // Force le mode développement, quelle que soit l'URL (utile pour les tests locaux).
-const FORCE_DEV_MODE = true;
+const FORCE_DEV_MODE = false;
 
 // Détermination de l'environnement actif.
 const ACTIVE_ENVIRONMENT = FORCE_DEV_MODE
@@ -56,7 +56,7 @@ export const CONFIGLOG = {
   // -------------------------------------------------------------------------
   // Informations sur l'Environnement
   // -------------------------------------------------------------------------
-  ENVIRONMENT: ACTIVE_ENVIRONMENT, // Environnement actif.
+  ENVIRONMENT: ENVIRONMENTS.DEVELOPMENT, // Environnement actif.
   ENABLE_LOGS: ACTIVE_ENVIRONMENT === ENVIRONMENTS.DEVELOPMENT, // Activer les logs uniquement en dev.
 
   // -------------------------------------------------------------------------
@@ -68,8 +68,8 @@ export const CONFIGLOG = {
     warn: true, // Toujours activé : avertissements.
     error: true, // Toujours activé : erreurs critiques.
     success: true, // Toujours activé : succès des opérations.
-    test_start: ACTIVE_ENVIRONMENT === ENVIRONMENTS.DEVELOPMENT, // Activé en mode développement.
-    test_end: ACTIVE_ENVIRONMENT === ENVIRONMENTS.DEVELOPMENT, // Activé en mode développement.
+    test_start: true, // Activé en mode développement.
+    test_end: true, // Activé en mode développement.
   },
 
   // -------------------------------------------------------------------------

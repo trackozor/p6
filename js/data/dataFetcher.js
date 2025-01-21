@@ -8,7 +8,11 @@
 // ========================================================
 
 import { logEvent } from "../utils/utils.js";
-
+/**
+ * Cache global pour éviter les appels réseau répétitifs.
+ * @type {Object|null}
+ */
+let mediaDataCache = null;
 /**
  * Effectue une requête réseau avec gestion d'un délai d'expiration.
  * @async
@@ -123,23 +127,26 @@ export async function fetchJSON(
   return null;
 }
 
-/**
+/*
  * Récupère les données JSON pour les photographes et leurs médias.
+ * Utilise un cache pour éviter les requêtes répétées.
  * @async
  * @function fetchMedia
  * @param {string} url - URL du fichier JSON contenant les données des médias.
  * @returns {Promise<Object|null>} Données JSON validées ou `null` en cas d'échec.
  * @throws {Error} Si les données récupérées ne respectent pas la structure attendue.
  */
-export async function fetchMedia() {
-  const mediaDataUrl = "../../../assets/data/photographers.json"; // Chemin vers le fichier JSON
+export async function fetchMedia(
+  url = "../../../assets/data/photographers.json",
+) {
+  if (mediaDataCache) {
+    logEvent("info", "Données récupérées depuis le cache.");
+    return mediaDataCache;
+  }
 
   try {
-    logEvent(
-      "info",
-      `Début de la récupération des données depuis : ${mediaDataUrl}`,
-    );
-    const data = await fetchJSON(mediaDataUrl);
+    logEvent("info", `Début de la récupération des données depuis : ${url}`);
+    const data = await fetchJSON(url);
 
     if (!data || !data.photographers || !data.media) {
       throw new Error(
@@ -148,6 +155,7 @@ export async function fetchMedia() {
     }
 
     logEvent("success", "Données récupérées et validées avec succès.");
+    mediaDataCache = data; // Stocker dans le cache
     return data;
   } catch (error) {
     logEvent(

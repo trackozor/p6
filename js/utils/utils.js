@@ -81,87 +81,112 @@ export const logEvent = (type, message, data = {}) => {
   }
 };
 
-/* ========================= Fonctions utilitaires : Gestion des classes CSS ========================= */
-/**
- * Modifie une classe CSS sur un élément HTML.
- *
- * @param {HTMLElement} element - Élément HTML cible.
- * @param {string} className - Nom de la classe CSS à modifier.
- * @param {boolean} shouldAdd - `true` pour ajouter la classe, `false` pour la supprimer.
- * @returns {boolean} - `true` si l'opération a réussi, sinon `false`.
- */
-const modifyClass = (element, className, shouldAdd) => {
-  if (!(element instanceof HTMLElement)) {
-    logEvent("error", "modifyClass: L'élément fourni n'est pas valide.", {
-      element,
-    });
-    return false;
-  }
-
-  if (typeof className !== "string" || className.trim() === "") {
-    logEvent("error", "modifyClass: Le nom de la classe est invalide.", {
-      className,
-    });
-    return false;
-  }
-
-  try {
-    if (shouldAdd) {
-      if (element.classList.contains(className)) {
-        logEvent(
-          "info",
-          `modifyClass: La classe "${className}" est déjà présente.`,
-          { element },
-        );
-        return false;
-      }
-      element.classList.add(className);
-      logEvent(
-        "success",
-        `modifyClass: La classe "${className}" a été ajoutée.`,
-        { element },
-      );
-    } else {
-      if (!element.classList.contains(className)) {
-        logEvent("info", `modifyClass: La classe "${className}" est absente.`, {
-          element,
-        });
-        return false;
-      }
-      element.classList.remove(className);
-      logEvent(
-        "success",
-        `modifyClass: La classe "${className}" a été supprimée.`,
-        { element },
-      );
-    }
-    return true;
-  } catch (error) {
-    logEvent(
-      "error",
-      "modifyClass: Une erreur est survenue lors de la modification de la classe.",
-      { error },
-    );
-    return false;
-  }
-};
-
 /**
  * Ajoute une classe CSS à un élément HTML.
  *
  * @param {HTMLElement} element - Élément HTML cible.
  * @param {string} className - Nom de la classe CSS à ajouter.
- * @returns {boolean} - `true` si réussi, sinon `false`.
+ * @returns {boolean} - `true` si la classe a été ajoutée, `false` si elle était déjà présente ou en cas d'erreur.
  */
-export const addClass = (element, className) =>
-  modifyClass(element, className, true);
+export function addClass(element, className) {
+  // Vérifie si l'élément est valide
+  if (!(element instanceof HTMLElement)) {
+    logEvent(
+      "error",
+      'addClass: Le paramètre "element" n\'est pas un élément HTML valide.',
+      { element },
+    );
+    return false; // Échec de l'opération
+  }
 
+  // Vérifie si la classe est une chaîne de caractères valide
+  if (typeof className !== "string" || className.trim() === "") {
+    logEvent("error", 'addClass: Le paramètre "className" est invalide.', {
+      className,
+    });
+    return false; // Échec de l'opération
+  }
+
+  // Vérifie si la classe est déjà présente
+  if (element.classList.contains(className)) {
+    logEvent(
+      "info"`addClass: La classe "${className}" est déjà présente sur l'élément.`,
+      { element },
+    );
+    return false; // Pas besoin d'ajouter la classe
+  }
+
+  // Ajoute la classe à l'élément
+  try {
+    element.classList.add(className);
+    logEvent(
+      "success",
+      `addClass: La classe "${className}" a été ajoutée avec succès.`,
+      { element },
+    );
+    return true; // Succès de l'opération
+  } catch (error) {
+    logEvent(
+      "error",
+      "addClass: Une erreur est survenue lors de l'ajout de la classe.",
+      { error },
+    );
+    return false; // Échec de l'opération
+  }
+}
+
+/* ========================= Fonction pour supprimer une classe CSS =================*/
 /**
  * Supprime une classe CSS d'un élément HTML.
  *
  * @param {HTMLElement} element - Élément HTML cible.
  * @param {string} className - Nom de la classe CSS à supprimer.
- * @returns {boolean} - `true` si réussi, sinon `false`.
+ * @returns {boolean} - `true` si la classe a été supprimée, `false` si elle n'était pas présente ou en cas d'erreur.
  */
-export const removeClass = (element, className) =>
-  modifyClass(element, className, false);
+export function removeClass(element, className) {
+  // 1. Vérifie que l'élément est un élément HTML valide
+  if (!(element instanceof HTMLElement)) {
+    logEvent(
+      "error",
+      'removeClass: Le paramètre "element" n\'est pas un élément HTML valide.',
+      { element },
+    );
+    return false; // Échec de l'opération
+  }
+
+  // 2. Vérifie que le nom de la classe est une chaîne non vide
+  if (typeof className !== "string" || className.trim() === "") {
+    logEvent("error", 'removeClass: Le paramètre "className" est invalide.', {
+      className,
+    });
+    return false; // Échec de l'opération
+  }
+
+  // 3. Vérifie si la classe est présente sur l'élément
+  if (!element.classList.contains(className)) {
+    logEvent(
+      "info",
+      `removeClass: La classe "${className}" n'est pas présente sur l'élément.`,
+      { element },
+    );
+    return false; // Pas besoin de retirer la classe
+  }
+
+  // 4. Retire la classe de l'élément
+  try {
+    element.classList.remove(className);
+    logEvent(
+      "success",
+      `removeClass: La classe "${className}" a été retirée avec succès.`,
+      { element },
+    );
+    return true; // Succès de l'opération
+  } catch (error) {
+    logEvent(
+      "error",
+      "removeClass: Une erreur est survenue lors de la suppression de la classe.",
+      { error },
+    );
+    return false; // Échec de l'opération
+  }
+}
