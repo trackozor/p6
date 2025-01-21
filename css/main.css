@@ -1944,6 +1944,18 @@ footer p {
   }
 }
 
+.photographer-stats {
+  background-color: #D88876;
+  padding: 2%;
+  color: black;
+  margin-bottom: 2%;
+  font-weight: 600;
+}
+
+.photographer-stats i {
+  color: black;
+}
+
 #gallery {
   width: 90%;
   display: flex;

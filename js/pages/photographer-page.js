@@ -16,6 +16,7 @@ import {
 import { photographerTemplate } from "../templates/photographer-logic.js"; // Template photographe
 import { initEventListeners } from "../events/eventlisteners.js";
 import { initstatscalculator } from "../components/statsCalculator.js";
+
 // =============================
 // CONFIGURATION ET VARIABLES
 // =============================

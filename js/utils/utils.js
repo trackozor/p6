@@ -6,7 +6,11 @@
  * Version        : 1.1.0 (Optimisée)
  * ======================================================== */
 
-import { CONFIGLOG } from "../config/constants.js";
+import {
+  CONFIGLOG,
+  ENVIRONMENTS,
+  ACTIVE_ENVIRONMENT,
+} from "../config/constants.js";
 
 /* ========================= Fonction utilitaire : Vérification des logs ========================= */
 /**
@@ -15,20 +19,27 @@ import { CONFIGLOG } from "../config/constants.js";
  * @param {string} type - Type de log (info, warn, error, etc.).
  * @returns {boolean} - `true` si le log est activé, sinon `false`.
  */
-const isLogEnabled = (type) => {
-  if (!CONFIGLOG || !CONFIGLOG.ENABLE_LOGS) {
-    console.warn(
-      "CONFIGLOG est invalide ou les logs sont désactivés.",
-      CONFIGLOG,
-    );
-    return false;
-  }
 
-  // Vérifie que les objets nécessaires existent et renvoie `false` par défaut en cas de problème
-  const customLogSetting = CONFIGLOG.CUSTOM_LOG_SETTING?.[type];
-  const logLevel = CONFIGLOG.LOG_LEVELS?.[type];
+export const isLogEnabled = (level) => {
+  // Cartographie des niveaux de log autorisés par niveau de verbosité
+  const verbosityMap = {
+    low: ["error", "warn"], // Verbosité basse : uniquement les erreurs et avertissements
+    medium: ["error", "warn", "success"], // Verbosité moyenne : ajoute les succès
+    high: ["error", "warn", "success", "info", "test_start", "test_end"], // Verbosité haute : tous les niveaux
+  };
 
-  return customLogSetting ?? logLevel ?? false;
+  // Obtenir les niveaux autorisés selon la verbosité
+  const allowedLevels = verbosityMap[CONFIGLOG.VERBOSITY] || [];
+
+  // Conditions pour déterminer si un log est activé
+  const isLevelEnabledInConfig = CONFIGLOG.LOG_LEVELS[level]; // Niveau activé dans la config
+  const isAllowedByVerbosity = allowedLevels.includes(level); // Niveau autorisé par la verbosité
+  const isEnvironmentAllowed =
+    ACTIVE_ENVIRONMENT === ENVIRONMENTS.DEVELOPMENT || // Autoriser tous les logs en dev
+    !["info", "test_start", "test_end"].includes(level); // Limiter certains logs aux dev/staging
+
+  // Retourner `true` si toutes les conditions sont remplies
+  return isLevelEnabledInConfig && isAllowedByVerbosity && isEnvironmentAllowed;
 };
 
 /* ========================= Fonction utilitaire : Logger ========================= */
@@ -40,39 +51,33 @@ const isLogEnabled = (type) => {
  * @param {Object} [data={}] - Données supplémentaires pour contexte.
  */
 export const logEvent = (type, message, data = {}) => {
+  // Validation du type de log
   if (!type || typeof type !== "string") {
     console.error("logEvent : Type de log invalide ou non défini.", { type });
     return;
   }
 
-  if (!isLogEnabled(type)) {
-    console.warn(`logEvent : Le type de log "${type}" est désactivé.`, {
-      type,
-    });
-    return;
-  }
-
+  // Récupération des métadonnées pour le log
   const timestamp = new Date().toLocaleTimeString();
   const prefix = `[Fisheye][${timestamp}]`;
-
-  // Protection contre les propriétés inexistantes
   const icon =
     CONFIGLOG.LOG_ICONS?.[type] || CONFIGLOG.LOG_ICONS?.default || "🔵";
   const style =
     CONFIGLOG.LOG_STYLES?.[type] ||
     CONFIGLOG.LOG_STYLES?.default ||
     "color: black;";
-
   const fullMessage = `${icon} ${prefix} ${type.toUpperCase()}: ${message}`;
 
   try {
-    // Vérifie si `console[type]` est disponible, sinon utilise `console.log`
+    // Vérifie si `console[type]` est disponible
     if (console[type] && typeof console[type] === "function") {
       console[type](`%c${fullMessage}`, style, data);
     } else {
+      // Fallback sur `console.log` si `console[type]` n'existe pas
       console.log(`%c${fullMessage}`, style, data);
     }
   } catch (error) {
+    // Gestion des erreurs dans logEvent
     console.error(
       "%cErreur dans logEvent :",
       CONFIGLOG.LOG_STYLES?.error || "color: red;",
@@ -190,3 +195,81 @@ export function removeClass(element, className) {
     return false; // Échec de l'opération
   }
 }
+
+/**
+ * Détecte la page actuelle à partir de l'URL.
+ * @returns {string} Nom de la page actuelle (par exemple, "index", "photographer").
+ */
+export const getCurrentPage = () => {
+  const path = window.location.pathname;
+  if (path.includes("index.html") || path === "/") {
+    return "index";
+  }
+  if (path.includes("photographer.html")) {
+    return "photographer";
+  }
+  return "unknown"; // Retourne "unknown" si la page est inconnue
+};
+
+/**
+ * Vérifie la présence de tous les sélecteurs pour une page donnée.
+ * @param {Object} selectors - Sélecteurs de la page en cours.
+ * @returns {boolean} True si tous les sélecteurs sont présents, sinon False.
+ */
+export const verifySelectors = (selectors) => {
+  const missingSelectors = [];
+
+  const checkSelectors = (obj, parentKey = "") => {
+    Object.entries(obj).forEach(([key, value]) => {
+      const fullKey = `${parentKey}${key}`;
+
+      // Exclure les sélecteurs spécifiques
+      if (
+        fullKey === "photographerPage.totalLikes" ||
+        fullKey === "photographerPage.dailyRate"
+      ) {
+        return;
+      }
+
+      if (typeof value === "object" && value !== null) {
+        checkSelectors(value, `${fullKey}.`);
+      } else if (!value) {
+        missingSelectors.push(fullKey);
+      }
+    });
+  };
+
+  checkSelectors(selectors);
+
+  if (missingSelectors.length > 0) {
+    logEvent(
+      "error",
+      `⚠️ Les sélecteurs suivants sont manquants : ${missingSelectors.join(", ")}.`,
+      {},
+    );
+    return false;
+  }
+
+  logEvent("success", "✅ Tous les sélecteurs nécessaires sont présents.");
+  return true;
+};
+
+/**
+ * Sélectionne de manière sécurisée un élément DOM.
+ * @param {string} selector - Le sélecteur CSS.
+ * @returns {Element|null} Élément DOM correspondant ou null s'il n'existe pas.
+ */
+export const safeQuerySelector = (selector) => {
+  try {
+    return document.querySelector(selector);
+  } catch (error) {
+    logEvent(
+      "error",
+      `Erreur lors de la sélection de l'élément : ${selector}`,
+      {
+        error,
+      },
+    );
+    return null;
+  }
+};

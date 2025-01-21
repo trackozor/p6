@@ -11,7 +11,6 @@
 // Import des modules nécessaires
 import { logEvent } from "./utils/utils.js";
 import { init } from "./pages/index.js";
-
 /**
  * Initialisation de chaque composant ou module principal de l'application.
  * Ajoutez ici toutes les fonctions nécessaires à d'autres modules.

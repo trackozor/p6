@@ -3,7 +3,7 @@
 // Description    : Gestion des données et des statistiques du photographe.
 // Auteur         : Trackozor
 // Date           : 01/01/2025
-// Version        : 1.0.0 (Initialisation du module)
+// Version        : 2.0.0 (Amélioration des logs, gestion des exceptions et validations)
 // ========================================================
 
 /*==============================================*/
@@ -13,6 +13,7 @@ import { fetchMedia } from "../data/dataFetcher.js";
 import { logEvent } from "../utils/utils.js";
 import domSelectors from "../config/domSelectors.js"; // Sélecteurs centralisés
 import { getPhotographerIdFromUrl } from "../pages/photographer-page.js";
+
 /*==============================================*/
 /*         Gestion des données principales      */
 /*=============================================*/
@@ -113,23 +114,28 @@ async function calculateTotalLikes(mediaList) {
     return 0; // Retourne 0 si la liste est invalide ou vide.
   }
 
-  // Calcule la somme des likes
-  const totalLikes = mediaList.reduce(
-    (sum, media) => sum + (media.likes || 0),
-    0,
-  );
+  try {
+    // Calcule la somme des likes
+    const totalLikes = mediaList.reduce(
+      (sum, media) => sum + (media.likes || 0),
+      0,
+    );
 
-  logEvent(
-    "success",
-    `Calcul des likes terminé. Total des likes : ${totalLikes}.`,
-    {
-      totalLikes,
-      mediaList,
-    },
-  );
+    logEvent(
+      "success",
+      `Calcul des likes terminé. Total des likes : ${totalLikes}.`,
+      { totalLikes, mediaList },
+    );
 
-  logEvent("test-end", "Fin du calcul des likes totaux.");
-  return totalLikes;
+    logEvent("test-end", "Fin du calcul des likes totaux.");
+    return totalLikes;
+  } catch (error) {
+    logEvent("error", "Erreur lors du calcul des likes totaux.", {
+      message: error.message,
+      stack: error.stack,
+    });
+    throw error;
+  }
 }
 
 /*==============================================*/
@@ -205,19 +211,29 @@ async function updatePhotographerStatsDOM(photographerData, totalLikes) {
   }
 }
 
+/*==============================================*/
+/*        Initialisation et exportation         */
+/*=============================================*/
+
 export async function initstatscalculator() {
-  logEvent("info", "Début de l'initialisation de la page photographe...");
+  logEvent(
+    "info",
+    "Début de l'initialisation des statistiques du photographe.",
+  );
 
   try {
-    await getPhotographerDataAndMedia(); // Affichage de la bannière
-    calculateTotalLikes(); //
-    await updatePhotographerStatsDOM(); // Affichage des statistiques
+    const { photographerData, mediaList } = await getPhotographerDataAndMedia();
+    const totalLikes = await calculateTotalLikes(mediaList);
+    await updatePhotographerStatsDOM(photographerData, totalLikes);
 
-    logEvent("success", "stats-likes du photographe initialisée avec succès.");
+    logEvent(
+      "success",
+      "Statistiques du photographe initialisées avec succès.",
+    );
   } catch (error) {
     logEvent(
       "error",
-      "Erreur lors de l'initialisation des stats-likes photographe.",
+      "Erreur lors de l'initialisation des statistiques du photographe.",
       { error },
     );
   }

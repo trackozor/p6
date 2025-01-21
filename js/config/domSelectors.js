@@ -90,7 +90,7 @@ const domSelectors = (() => {
       ),
       galleryContainer: safeQuerySelector("#gallery"),
       sortingSelect: safeQuerySelector("#sort-options"),
-      contactButton: safeQuerySelector("#contact-button"),
+      contactButton: safeQuerySelector('[data-action="open-modal"]'),
       photographerStatsTemplate: safeQuerySelector("#photographer-stats", true), // Nouveau sélecteur pour le template
       totalLikes: null,
       dailyRate: null,
@@ -114,7 +114,9 @@ const domSelectors = (() => {
         lastName: safeQuerySelector("#last-name"),
         email: safeQuerySelector("#email"),
         message: safeQuerySelector("#message"),
-        submitButton: safeQuerySelector(".contact-button[type='submit']"),
+        submitButton: safeQuerySelector(
+          ".contact-submit-button[type='submit']",
+        ),
       },
     },
     sorting: {
@@ -130,24 +132,43 @@ const domSelectors = (() => {
   const verifySelectors = (selectors) => {
     const missingSelectors = [];
 
+    /**
+     * Vérifie récursivement les sélecteurs.
+     * @param {Object} obj - Objet contenant les sélecteurs.
+     * @param {string} parentKey - Chemin complet vers le sélecteur parent.
+     */
     const checkSelectors = (obj, parentKey = "") => {
       Object.entries(obj).forEach(([key, value]) => {
+        // Concaténation du chemin complet du sélecteur
+        const fullKey = `${parentKey}${key}`;
+
+        // Exclusion des sélecteurs `.totalLikes` et `.dailyRate`
+        if (
+          fullKey === "photographerPage.totalLikes" ||
+          fullKey === "photographerPage.dailyRate"
+        ) {
+          return; // Ignorer ces sélecteurs spécifiques
+        }
+
         if (typeof value === "object" && value !== null) {
-          checkSelectors(value, `${parentKey}${key}.`);
+          // Vérification récursive pour les objets imbriqués
+          checkSelectors(value, `${fullKey}.`);
         } else if (!value) {
-          missingSelectors.push(`${parentKey}${key}`);
+          // Ajout du sélecteur manquant à la liste
+          missingSelectors.push(fullKey);
         }
       });
     };
 
+    // Lancer la vérification sur l'objet des sélecteurs
     checkSelectors(selectors);
 
+    // Gestion des sélecteurs manquants
     if (missingSelectors.length > 0) {
       logEvent(
         "error",
-        `⚠️ Les sélecteurs suivants sont manquants : ${missingSelectors.join(
-          ", ",
-        )}.`,
+        `⚠️ Les sélecteurs suivants sont manquants : ${missingSelectors.join(", ")}.`,
+        {},
       );
       return false;
     }

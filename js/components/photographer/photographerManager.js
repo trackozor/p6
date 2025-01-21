@@ -1,4 +1,4 @@
-import { fetchJSON } from "../../data/datafetcher.js";
+import { fetchJSON } from "../../data/dataFetcher.js";
 import { photographerTemplate } from "../../templates/photographer-logic.js"; // Modèle pour les cartes
 import { logEvent } from "../../utils/utils.js";
 

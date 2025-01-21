@@ -10,13 +10,12 @@
 ============================================================================= */
 
 /**
- * =============================================================================
  * Détection et Gestion des Environnements
  * =============================================================================
  */
 
 // Définition des environnements possibles.
-const ENVIRONMENTS = {
+export const ENVIRONMENTS = {
   DEVELOPMENT: "development",
   STAGING: "staging",
   PRODUCTION: "production",
@@ -26,24 +25,31 @@ const ENVIRONMENTS = {
  * Détecte l'environnement actif en fonction du domaine.
  * @returns {string} L'environnement détecté (development, staging ou production).
  */
-const detectEnvironment = () => {
+export const detectEnvironment = () => {
   const { hostname } = window.location;
+
   if (hostname === "username.github.io") {
     return ENVIRONMENTS.PRODUCTION;
   }
-  if (hostname === "http://127.0.0.1:5500/") {
+
+  // Vérification correcte pour le localhost ou autre domaine local
+  if (hostname === "127.0.0.1" || hostname === "localhost") {
     return ENVIRONMENTS.STAGING;
   }
+
+  // Par défaut, retourner l'environnement développement
   return ENVIRONMENTS.DEVELOPMENT;
 };
 
 // Force le mode développement, quelle que soit l'URL (utile pour les tests locaux).
-const FORCE_DEV_MODE = false;
+export const FORCE_DEV_MODE = true;
 
 // Détermination de l'environnement actif.
-const ACTIVE_ENVIRONMENT = FORCE_DEV_MODE
+export const ACTIVE_ENVIRONMENT = FORCE_DEV_MODE
   ? ENVIRONMENTS.DEVELOPMENT
   : detectEnvironment();
+
+console.log(`Environnement actif : ${ACTIVE_ENVIRONMENT}`);
 
 /**
  * =============================================================================
@@ -56,21 +62,72 @@ export const CONFIGLOG = {
   // -------------------------------------------------------------------------
   // Informations sur l'Environnement
   // -------------------------------------------------------------------------
-  ENVIRONMENT: ENVIRONMENTS.DEVELOPMENT, // Environnement actif.
+  ENVIRONMENT: ACTIVE_ENVIRONMENT, // Environnement actif.
   ENABLE_LOGS: ACTIVE_ENVIRONMENT === ENVIRONMENTS.DEVELOPMENT, // Activer les logs uniquement en dev.
 
   // -------------------------------------------------------------------------
-  // Configuration des Logs
+  // Niveau de verbosité global
   // -------------------------------------------------------------------------
-  LOG_LEVELS: {
-    default: true, // Toujours activé.
-    info: true, // Logs informatifs.
-    warn: true, // Toujours activé : avertissements.
-    error: true, // Toujours activé : erreurs critiques.
-    success: true, // Toujours activé : succès des opérations.
-    test_start: true, // Activé en mode développement.
-    test_end: true, // Activé en mode développement.
-  },
+  VERBOSITY: (() => {
+    switch (ACTIVE_ENVIRONMENT) {
+      case ENVIRONMENTS.DEVELOPMENT:
+        return "high"; // Tous les logs sont activés
+      case ENVIRONMENTS.STAGING:
+        return "medium"; // Logs essentiels pour staging
+      case ENVIRONMENTS.PRODUCTION:
+        return "low"; // Logs critiques uniquement
+      default:
+        return "low"; // Par défaut, verbosité minimale
+    }
+  })(),
+
+  // -------------------------------------------------------------------------
+  // Configuration des logs par environnement
+  // -------------------------------------------------------------------------
+  LOG_LEVELS: (() => {
+    switch (ACTIVE_ENVIRONMENT) {
+      case ENVIRONMENTS.DEVELOPMENT:
+        return {
+          default: true,
+          info: true, // Tout afficher
+          warn: true,
+          error: true,
+          success: true,
+          test_start: true, // Logs pour les tests activés
+          test_end: true, // Logs pour les tests activés
+        };
+      case ENVIRONMENTS.STAGING:
+        return {
+          default: true,
+          info: true, // Afficher uniquement les informations clés
+          warn: true,
+          error: true,
+          success: true,
+          test_start: true, // Pas de logs de tests
+          test_end: true, // Pas de logs de tests
+        };
+      case ENVIRONMENTS.PRODUCTION:
+        return {
+          default: true,
+          info: false, // Désactiver les logs d'informations
+          warn: true,
+          error: true, // Logs critiques activés
+          success: true,
+          test_start: true, // Aucun log inutile
+          test_end: true, // Aucun log inutile
+        };
+      default:
+        return {
+          default: true,
+          info: false,
+          warn: true,
+          error: true,
+          success: true,
+          test_start: true,
+          test_end: true,
+        };
+    }
+  })(),
 
   // -------------------------------------------------------------------------
   // Classes CSS Utilisées
