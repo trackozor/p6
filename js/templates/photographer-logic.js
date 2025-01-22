@@ -226,5 +226,5 @@ export function photographerTemplate(data) {
   // =============================
   // RETOUR DES MÉTHODES
   // =============================
-  return { name, picture, getUserCardDOM, getBannerDOM };
+  return { name, getUserCardDOM, getBannerDOM };
 }

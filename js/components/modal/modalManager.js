@@ -24,54 +24,42 @@ let modalOpen = false; // Variable globale pour suivre l'état de la modale
  *
  * @returns {void}
  */
-export function launchModal() {
-  logEvent(
-    "test_start_modal",
-    "Début de la tentative d'ouverture de la modale.",
-  );
+export function launchModal(photographerData) {
+  logEvent("test_start_modal", "Début de l'ouverture de la modale.");
 
   try {
-    logEvent("info", "Vérification des éléments DOM nécessaires...");
+    if (!photographerData || !photographerData.name) {
+      throw new Error("Données du photographe invalides ou manquantes.");
+    }
+
+    logEvent("info", "Données du photographe valides.", { photographerData });
+
+    // Sélection des éléments DOM
     const contactOverlay = document.getElementById("modal-overlay");
     const contactModal = document.getElementById("contact-modal");
 
     if (!contactOverlay || !contactModal) {
-      logEvent("error", "Éléments DOM requis pour la modale introuvables.", {
-        contactOverlay,
-        contactModal,
-      });
       throw new Error("Éléments DOM requis pour la modale introuvables.");
     }
 
-    logEvent("info", "Ajout des classes pour afficher la modale...");
+    // Insertion du nom dans la modale
+    const modalTitle = contactModal.querySelector(".modal-photographer-name");
+    modalTitle.textContent = `${photographerData.name}`;
+
+    // Affichage de la modale
     contactOverlay.classList.add("modal-active");
     contactModal.classList.add("modal-active");
+    document.body.classList.add("no-scroll");
 
-    logEvent("success", "Modale affichée avec succès.", {
-      overlayClasses: contactOverlay.classList.value,
-      modalClasses: contactModal.classList.value,
-    });
-
-    logEvent("info", "Désactivation du défilement de l'arrière-plan...");
-    if (!document.body.classList.contains("no-scroll")) {
-      document.body.classList.add("no-scroll");
-      logEvent("success", "Défilement désactivé.", {
-        bodyClasses: document.body.classList.value,
-      });
-    }
-
-    modalOpen = true;
-    logEvent("info", 'État global de la modale mis à jour : "ouvert".', {
-      modalOpen,
-    });
+    logEvent("success", "Modale affichée avec succès.");
   } catch (error) {
     logEvent("error", "Erreur lors de l'ouverture de la modale.", {
       message: error.message,
       stack: error.stack,
     });
   }
-
-  logEvent("test_end_modal", "Fin de la tentative d'ouverture de la modale.");
+  modalOpen = true;
+  logEvent("test_end_modal", "Fin de l'ouverture de la modale.");
 }
 
 /*==============================================*/

@@ -11,7 +11,7 @@ import { logEvent } from "../utils/utils.js";
 import { launchModal, closeModal } from "../components/modal/modalManager.js";
 import { handleMediaSort } from "../components/sort/sortlogic.js";
 import domSelectors from "../config/domSelectors.js";
-
+import { fetchMedia } from "../data/dataFetcher.js";
 /*==============================================*/
 /*         Gestion de la modale                 */
 /*==============================================*/
@@ -19,13 +19,58 @@ import domSelectors from "../config/domSelectors.js";
 /**
  * Ouvre la modale.
  */
-export function handleModalOpen() {
+/**
+ * Ouvre la modale avec les données du photographe.
+ */
+/**
+ * Ouvre la modale avec les données du photographe.
+ */
+export async function handleModalOpen() {
   logEvent("info", "Appel à l'ouverture de la modale.");
+
+  document.body.classList.add("loading"); // Indicateur de chargement
+
   try {
-    launchModal(); // Ouvre la modale
+    const mediaData = await fetchMedia();
+
+    if (!mediaData || !mediaData.photographers) {
+      throw new Error("Données des photographes introuvables ou invalides.");
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const photographerId = parseInt(params.get("id"), 10);
+
+    if (!photographerId || isNaN(photographerId)) {
+      throw new Error("ID de photographe invalide ou manquant dans l'URL.");
+    }
+
+    const photographerData = mediaData.photographers.find(
+      (photographer) => photographer.id === photographerId,
+    );
+
+    if (!photographerData) {
+      throw new Error(`Photographe avec l'ID ${photographerId} introuvable.`);
+    }
+
+    if (!photographerData.name || !photographerData.id) {
+      throw new Error("Les données du photographe sont incomplètes.");
+    }
+
+    logEvent("info", "Données du photographe récupérées avec succès.", {
+      photographerData,
+    });
+
+    launchModal(photographerData);
     logEvent("success", "Modale ouverte avec succès.");
   } catch (error) {
-    logEvent("error", `Erreur dans handleModalOpen : ${error.message}`);
+    logEvent("error", `Erreur dans handleModalOpen : ${error.message}`, {
+      error,
+    });
+    alert(
+      "Une erreur est survenue lors du chargement de la modale. Veuillez réessayer.",
+    );
+  } finally {
+    document.body.classList.remove("loading"); // Cache l'indicateur de chargement
   }
 }
 
