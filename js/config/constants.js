@@ -42,7 +42,7 @@ export const detectEnvironment = () => {
 };
 
 // Force le mode développement, quelle que soit l'URL (utile pour les tests locaux).
-export const FORCE_DEV_MODE = true;
+export const FORCE_DEV_MODE = false;
 
 // Détermination de l'environnement actif.
 export const ACTIVE_ENVIRONMENT = FORCE_DEV_MODE
@@ -62,7 +62,6 @@ export const CONFIGLOG = {
   // -------------------------------------------------------------------------
   // Informations sur l'Environnement
   // -------------------------------------------------------------------------
-  ENVIRONMENT: ACTIVE_ENVIRONMENT, // Environnement actif.
   ENABLE_LOGS: ACTIVE_ENVIRONMENT === ENVIRONMENTS.DEVELOPMENT, // Activer les logs uniquement en dev.
 
   // -------------------------------------------------------------------------
@@ -94,7 +93,7 @@ export const CONFIGLOG = {
           error: true,
           success: true,
           test_start: true, // Logs pour les tests activés
-          test_end: true, // Logs pour les tests activés
+          test_end: false, // Logs pour les tests activés
         };
       case ENVIRONMENTS.STAGING:
         return {
@@ -103,8 +102,8 @@ export const CONFIGLOG = {
           warn: true,
           error: true,
           success: true,
-          test_start: true, // Pas de logs de tests
-          test_end: true, // Pas de logs de tests
+          test_start: false, // Pas de logs de tests
+          test_end: false, // Pas de logs de tests
         };
       case ENVIRONMENTS.PRODUCTION:
         return {
@@ -113,8 +112,8 @@ export const CONFIGLOG = {
           warn: true,
           error: true, // Logs critiques activés
           success: true,
-          test_start: true, // Aucun log inutile
-          test_end: true, // Aucun log inutile
+          test_start: false, // Aucun log inutile
+          test_end: false, // Aucun log inutile
         };
       default:
         return {
@@ -123,8 +122,8 @@ export const CONFIGLOG = {
           warn: true,
           error: true,
           success: true,
-          test_start: true,
-          test_end: true,
+          test_start: false,
+          test_end: false,
         };
     }
   })(),
@@ -132,6 +131,7 @@ export const CONFIGLOG = {
   // -------------------------------------------------------------------------
   // Classes CSS Utilisées
   // -------------------------------------------------------------------------
+
   CSS_CLASSES: {
     ERROR_INPUT: "error-input", // Classe pour les champs en erreur.
     ERROR_MODAL: "error-modal", // Classe pour les modales d'erreur.
@@ -143,13 +143,28 @@ export const CONFIGLOG = {
   // Styles pour les Logs
   // -------------------------------------------------------------------------
   LOG_STYLES: {
-    default: "color: black;", // Style par défaut.
-    info: "color: blue; font-weight: bold;", // Style pour les infos.
-    warn: "color: orange; font-weight: bold;", // Style pour les avertissements.
-    error: "color: red; font-weight: bold;", // Style pour les erreurs.
-    success: "color: green; font-weight: bold;", // Style pour les succès.
-    test_start: "background-color: purple; color: white; font-weight: bold;", // Style pour le début des tests.
-    test_end: "background-color: brown; color: white; font-weight: bold;", // Style pour la fin des tests.
+    default: "color: black;",
+    info: "color: blue; font-weight: bold;",
+    warn: "color: orange; font-weight: bold;",
+    error: "color: red; font-weight: bold;",
+    success: "color: green; font-weight: bold;",
+    test_start: "background-color: purple; color: white; font-weight: bold;",
+    test_end: "background-color: brown; color: white; font-weight: bold;",
+    test_start_modal:
+      "background-color: purple; color: white; font-weight: bold;",
+    test_end_modal: "background-color: brown; color: white; font-weight: bold;",
+    test_start_lightbox:
+      "background-color: darkblue; color: white; font-weight: bold;",
+    test_end_lightbox:
+      "background-color: teal; color: white; font-weight: bold;",
+    test_start_sort:
+      "background-color: lightgreen; color: white; font-weight: bold;",
+    test_end_sort:
+      "background-color: darkgreen; color: white; font-weight: bold;",
+    test_start_events:
+      "background-color: lightpink; color: white; font-weight: bold;",
+    test_end_events:
+      "background-color: darkpink; color: white; font-weight: bold;",
   },
 
   // -------------------------------------------------------------------------

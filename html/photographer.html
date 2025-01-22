@@ -58,12 +58,9 @@
           <p class="photographer-card-tagline">Slogan par défaut</p>
         </article>
         <button
-          id="contact-button"
+          id="contact-btn"
           type="button"
           class="contact-button"
-          data-action="open-modal"
-          aria-haspopup="dialog"
-          aria-controls="contact_modal"
         >
           Contactez-moi
         </button>
@@ -130,6 +127,13 @@
       </section>
     </main>
     <div id="modal-overlay" aria-hidden="true"></div> <!-- Modale de contact -->
+    <div class="content"> <!-- Contenu de la fenêtre modale -->
+
+      <!-- Bouton de fermeture de la fenêtre modale -->
+      <button type="button" class="close" aria-label="Fermer la fenêtre"> 
+          <span>+</span>
+      </button>
+
     <div
         id="contact-modal"
         class="modal"

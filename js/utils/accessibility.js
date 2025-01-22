@@ -1,12 +1,24 @@
-/* ========================================================
- * Nom du fichier : accessibility.js
- * Description    : Fonctionnalités d'accessibilité (a11y) optimisées
- * Auteur         : Trackozor
- * Date           : 01/01/2025
- * Version        : 2.1.0 (Optimisée)
- * ======================================================== */
+/* =============================================================================
+ * Projet      : Fisheye
+ * Fichier     : accessibility.js
+ * Auteur      : Trackozor
+ * Date        : 01/01/2025
+ * Version     : 2.1.0
+ * Description : Ce fichier contient les fonctionnalités d'accessibilité (a11y)
+ *               optimisées pour :
+ *               - Navigation au clavier.
+ *               - Gestion des liens d'accès rapide.
+ *               - Mise à jour des attributs ARIA.
+ *               - Détection des médias et des couleurs.
+ * =============================================================================
+ */
 
-/* ======================= Navigation au clavier ======================= */
+import { logEvent } from "../utils/utils.js";
+
+/* =============================================================================
+ * SECTION : NAVIGATION AU CLAVIER
+ * =============================================================================
+ */
 
 /**
  * Active la navigation au clavier pour tous les éléments focusables d'un conteneur donné.
@@ -20,7 +32,7 @@ export function enableKeyboardNavigation(
   includeDynamic = false,
 ) {
   if (!(container instanceof HTMLElement)) {
-    console.error("enableKeyboardNavigation: Conteneur invalide.", {
+    logEvent("error", "enableKeyboardNavigation: Conteneur invalide.", {
       container,
     });
     return;
@@ -28,7 +40,6 @@ export function enableKeyboardNavigation(
 
   const getFocusableElements = () =>
     Array.from(container.querySelectorAll(selector));
-
   let focusableElements = getFocusableElements();
   let currentIndex = 0;
 
@@ -40,7 +51,7 @@ export function enableKeyboardNavigation(
 
   container.addEventListener("keydown", (e) => {
     if (e.key === "Tab") {
-      e.preventDefault(); // Empêche le comportement par défaut
+      e.preventDefault();
       focusableElements[currentIndex]?.focus();
       currentIndex =
         (currentIndex + (e.shiftKey ? -1 : 1) + focusableElements.length) %
@@ -51,13 +62,18 @@ export function enableKeyboardNavigation(
   if (includeDynamic) {
     const observer = new MutationObserver(updateFocusableElements);
     observer.observe(container, { childList: true, subtree: true });
-    console.log("Observation des éléments focusables activée.");
+    logEvent("info", "Observation des éléments focusables activée.");
   }
 
-  console.log("Navigation au clavier activée pour", container);
+  logEvent("success", "Navigation au clavier activée pour le conteneur.", {
+    container,
+  });
 }
 
-/* ======================= Gestion des liens d'accès rapide ======================= */
+/* =============================================================================
+ * SECTION : LIENS D'ACCÈS RAPIDE
+ * =============================================================================
+ */
 
 /**
  * Ajoute un lien d'accès rapide pour atteindre le contenu principal.
@@ -66,7 +82,7 @@ export function enableKeyboardNavigation(
  */
 export function enableSkipLink(skipLink, target) {
   if (!(skipLink instanceof HTMLElement) || !(target instanceof HTMLElement)) {
-    console.error("enableSkipLink: Paramètres invalides.", {
+    logEvent("error", "enableSkipLink: Paramètres invalides.", {
       skipLink,
       target,
     });
@@ -75,14 +91,17 @@ export function enableSkipLink(skipLink, target) {
 
   skipLink.addEventListener("click", (e) => {
     e.preventDefault();
-    target.setAttribute("tabindex", "-1"); // Temporise le focus
+    target.setAttribute("tabindex", "-1");
     target.focus();
     target.removeAttribute("tabindex");
-    console.log("Lien d'accès rapide activé.", { skipLink, target });
+    logEvent("success", "Lien d'accès rapide activé.", { skipLink, target });
   });
 }
 
-/* ======================= Gestion des attributs ARIA ======================= */
+/* =============================================================================
+ * SECTION : ATTRIBUTS ARIA
+ * =============================================================================
+ */
 
 /**
  * Met à jour dynamiquement un attribut ARIA d'un élément HTML.
@@ -92,24 +111,28 @@ export function enableSkipLink(skipLink, target) {
  */
 export function updateAriaAttribute(element, ariaAttr, value) {
   if (!(element instanceof HTMLElement)) {
-    console.error("updateAriaAttribute: Élément non valide.", { element });
+    logEvent("error", "updateAriaAttribute: Élément non valide.", { element });
     return;
   }
 
   if (!ariaAttr.startsWith("aria-")) {
-    console.warn(
+    logEvent(
+      "warn",
       `updateAriaAttribute: "${ariaAttr}" n'est pas un attribut ARIA valide.`,
     );
   }
 
   element.setAttribute(ariaAttr, value.toString());
-  console.log(
-    `Attribut ARIA "${ariaAttr}" mis à jour avec la valeur "${value}".`,
-    { element },
-  );
+  logEvent("success", `Attribut ARIA "${ariaAttr}" mis à jour avec succès.`, {
+    element,
+    value,
+  });
 }
 
-/* ======================= Détection des médias ======================= */
+/* =============================================================================
+ * SECTION : DÉTECTION DES MÉDIAS
+ * =============================================================================
+ */
 
 /**
  * Détecte si l'utilisateur est sur un appareil mobile.
@@ -117,11 +140,14 @@ export function updateAriaAttribute(element, ariaAttr, value) {
  */
 export function isMobile() {
   const result = window.matchMedia("(max-width: 1023px)").matches;
-  console.log(`Détection de mobile : ${result}`);
+  logEvent("info", `Détection de mobile : ${result}`);
   return result;
 }
 
-/* ======================= Vérification du contraste des couleurs ======================= */
+/* =============================================================================
+ * SECTION : CONTRASTE DES COULEURS
+ * =============================================================================
+ */
 
 /**
  * Vérifie le contraste entre deux couleurs selon les normes WCAG 2.1.
@@ -150,11 +176,17 @@ export function checkColorContrast(color1, color2) {
   const contrastRatio =
     (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05);
 
-  console.log(`Contraste ${color1} vs ${color2} : ${contrastRatio.toFixed(2)}`);
+  logEvent(
+    "info",
+    `Contraste entre ${color1} et ${color2} : ${contrastRatio.toFixed(2)}`,
+  );
   return contrastRatio >= 4.5;
 }
 
-/* ======================= Gestion des animations clavier ======================= */
+/* =============================================================================
+ * SECTION : ANIMATIONS CLAVIER
+ * =============================================================================
+ */
 
 /**
  * Désactive les animations pour les utilisateurs de clavier.
@@ -170,5 +202,5 @@ export function disableAnimationsForKeyboardUsers() {
   );
   window.addEventListener("mousemove", enableAnimations);
 
-  console.log("Gestion des animations clavier activée.");
+  logEvent("info", "Gestion des animations clavier activée.");
 }

@@ -353,6 +353,11 @@ a:focus {
   border-radius: 0.3rem; /* Coins légèrement arrondis */
   margin-bottom: 12%; /* Ajoute un espace vertical autour du bouton */
   cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
+  /* Effet au survol (hover) */
+}
+.contact_button:hover {
+  background-color: #ff00ff; /* Couleur rose flashy sur hover */
+  transform: scale(1.05); /* Agrandissement légèrement au survol */
 }
 @media (min-width: 767px) {
   .contact_button {
@@ -635,11 +640,21 @@ a:focus {
   border-radius: var(--radius-base); /* Coins arrondis */
   overflow: hidden;
   width: 90%;
-  margin: 5% auto;
+  margin: 1% auto;
+  height: 100%;
   height: 40vh;
   transition: transform 0.3s, box-shadow 0.3s;
-  /* Animation au survol */
+  object-position: center;
 }
+@media (min-width: 767px) {
+  .media-item {
+    height: 40%;
+    margin: 2% auto;
+    width: 70%;
+  }
+}
+
+/* Animation au survol */
 .media-item:hover {
   transform: scale(1.05); /* Légère augmentation */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
@@ -651,12 +666,18 @@ a:focus {
 /* -------------------------------------------------------------------------- */
 .media {
   width: 100%; /* Prend toute la largeur */
-  height: 90%; /* Conserve les proportions */
+  height: 100%; /* Conserve les proportions */
+  max-height: 30vh;
   object-fit: cover;
   margin: 0 auto;
   overflow: hidden;
   display: flex; /* S'assure que c'est un bloc */
   object-position: center;
+}
+@media (min-width: 767px) {
+  .media {
+    max-height: 35vh;
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -670,6 +691,7 @@ a:focus {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  height: 5%;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -837,143 +859,112 @@ footer p {
 }
 
 /* =============================================================================
-    Projet      :   Fisheye
-    Fichier     :   _modal.scss
-    Auteur      :   Trackozor
-    Date        :   08/01/2025
-    Version     :   1.2.0
-    Description :   Styles pour les modales de l'application Fisheye.
-                    Ce fichier inclut :
-                      - Le conteneur principal de la modal
-                      - L'overlay
-                      - Les animations
-                      - La gestion responsive
+    Projet      : Fisheye
+    Fichier     : _modal.scss
+    Auteur      : Trackozor
+    Date        : 08/01/2025
+    Version     : 1.2.0
+    Description : Styles pour les modales de l'application Fisheye
 ============================================================================= */
-/* -------------------------------------------------------------------------- */
-/* Conteneur principal de la modal                                            */
-/* -------------------------------------------------------------------------- */
+/* Conteneur principal de la modal */
 .modal {
-  display: none; /* Masquée par défaut */
-  position: fixed; /* Position fixe dans la fenêtre */
-  z-index: 100; /* Devant les autres éléments */
+  display: flex; /* Masquée par défaut */
+  position: fixed; /* Position fixe */
+  z-index: 100; /* Au-dessus des autres éléments */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: #db8876; /* Couleur de fond */
   border-radius: 5px;
-  flex-direction: column;
-  align-items: center;
+  display: flex; /* Flexbox pour centrer le contenu */
   justify-content: center;
-  padding: 1rem;
+  align-items: center;
   opacity: 0;
-  transform: scale(0.9); /* Effet d'apparition réduit */
+  transform: scale(0.9); /* Animation d'apparition */
   transition: opacity 0.3s ease, transform 0.3s ease;
-  /* Activation */
-  /* Responsiveness : Tablette */
-  /* Responsiveness : Ordinateur */
 }
 .modal.active {
-  display: flex; /* Rend visible */
-  opacity: 1; /* Apparente */
+  display: flex; /* Affiche la modal */
+  opacity: 1;
   transform: scale(1); /* Taille normale */
 }
-@media (min-width: 767px) {
-  .modal {
-    top: 10%;
-    left: 12%;
-    width: 65%;
-    height: 70%;
-  }
-}
-@media (min-width: 1024px) {
-  .modal {
-    left: 20%;
-    width: 60%;
-    height: 70%;
-  }
+.modal.error-modal {
+  background-color: #ff6b6b; /* Fond rouge en cas d'erreur */
 }
 
-/* -------------------------------------------------------------------------- */
-/* Overlay de la modal                                                        */
-/* -------------------------------------------------------------------------- */
+/* Overlay de la modal */
 #modal-overlay {
-  display: none; /* Masqué par défaut */
+  display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
-  z-index: 5; /* Derrière la modal */
-}
-#modal-overlay.active {
-  display: block; /* Visible lorsque activé */
+  z-index: 9999; /* Positionne la modale au-dessus des autres éléments */
+  left: 50%; /* Centre horizontalement */
+  transform: translateX(-50%); /* Corrige le centrage horizontal */
+  width: 100%; /* Occupe toute la largeur pour un effet plein écran */
+  height: 100%; /* Permet à la hauteur de s'adapter au contenu */
+  background-color: #232323; /* Définit un fond gris très foncé, idéal pour le contraste avec du texte clair */
+  color: white; /* Texte blanc */
+  overflow-y: auto; /* Permet le défilement si le contenu dépasse la hauteur visible */
+  border-radius: 1%; /* Coin arrondis */
 }
 
-/* -------------------------------------------------------------------------- */
-/* Conteneur spécifique : Modal de contact                                    */
-/* -------------------------------------------------------------------------- */
+/* Modal de contact */
 #contact-modal {
-  display: none; /* Masqué par défaut */
+  display: none;
   margin: 0 auto;
   opacity: 0;
-  transform: scale(0.9); /* Effet réduit initial */
+  transform: scale(0.9);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
+
 #contact-modal.active {
   display: flex;
   opacity: 1;
   transform: scale(1); /* Taille normale */
 }
 
-/* -------------------------------------------------------------------------- */
-/* Groupe de champs de formulaire                                             */
-/* -------------------------------------------------------------------------- */
+/* Groupe de champs de formulaire */
 .form-group {
   width: 85vw;
   max-width: 500px;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  /* Responsiveness : Tablette */
-}
-@media (min-width: 767px) {
-  .form-group {
-    width: 100%;
-    max-width: 800px;
-  }
 }
 
 /* Labels des champs */
 .form-group label {
-  font-size: var(--font-size-base);
+  font-size: 1rem;
   margin: 2% 0;
 }
 
 /* Champs de saisie */
 .form-group input,
 .form-group textarea {
-  font-size: var(--font-size-base);
+  font-size: 1rem;
   padding: 2%;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-small);
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
   width: 100%;
   box-sizing: border-box;
 }
 
 /* Bouton d'envoi */
 .contact-button {
-  background-color: var(--color-primary);
-  color: var(--text-color-light);
-  padding: var(--spacing-small);
+  background-color: #901c1c;
+  color: white;
+  padding: 3%;
   border: none;
-  border-radius: var(--radius-base);
+  border-radius: 0.3rem;
   cursor: pointer;
+  max-width: 150px;
+  max-height: 70px;
   transition: background-color 0.3s ease;
 }
-.contact-button:hover {
-  background-color: var(--color-primary-dark);
+
+/* Classe pour désactiver le défilement quand la modal est ouverte */
+body.no-scroll {
+  overflow: hidden; /* Désactive le défilement */
 }
 
 /* =============================================================================
@@ -1075,6 +1066,25 @@ footer p {
   margin-bottom: 2%;
   font-weight: 600;
 }
+@media (min-width: 767px) {
+  .photographer-stats {
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+    padding: 2% 3%;
+    position: absolute;
+    top: 33%;
+    right: 4%;
+  }
+}
+@media (min-width: 1024px) {
+  .photographer-stats {
+    position: fixed;
+    top: 85%;
+    right: 5%;
+    padding: 1%;
+  }
+}
 
 .photographer-stats i {
   color: black;
@@ -1094,7 +1104,7 @@ footer p {
   #gallery {
     display: grid;
     grid-template-columns: repeat(2, 45%);
-    margin: 0 10%;
+    margin: 0 auto;
     width: 100%;
   }
 }

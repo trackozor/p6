@@ -8,6 +8,9 @@
 
 import { fetchJSON } from "../data/dataFetcher.js";
 import { logEvent } from "../utils/utils.js";
+
+/* ===================== Fonction : Chargement des Médias ===================== */
+
 /**
  * Récupère et filtre les médias pour un photographe spécifique à partir des données JSON.
  *
@@ -24,13 +27,13 @@ export async function loadPhotographerMedia(photographerId, mediaDataUrl) {
     mediaDataUrl,
   });
 
-  // Validation des paramètres d'entrée
   if (!photographerId || typeof photographerId !== "number") {
     logEvent("error", "ID du photographe invalide ou manquant.", {
       photographerId,
     });
     throw new Error("L'ID du photographe est invalide.");
   }
+
   if (!mediaDataUrl || typeof mediaDataUrl !== "string") {
     logEvent("error", "URL des données médias invalide ou manquante.", {
       mediaDataUrl,
@@ -40,7 +43,8 @@ export async function loadPhotographerMedia(photographerId, mediaDataUrl) {
 
   try {
     const data = await fetchJSON(mediaDataUrl);
-    if (!data || !data.media || !Array.isArray(data.media)) {
+
+    if (!data || !Array.isArray(data.media)) {
       logEvent("error", "Structure de données JSON incorrecte ou manquante.", {
         data,
       });
@@ -68,6 +72,8 @@ export async function loadPhotographerMedia(photographerId, mediaDataUrl) {
   }
 }
 
+/* ===================== Fonction : Création d'un Média ===================== */
+
 /**
  * Crée un élément HTML représentant un média (image ou vidéo) avec ses métadonnées.
  *
@@ -79,11 +85,11 @@ export async function loadPhotographerMedia(photographerId, mediaDataUrl) {
 export function createMediaItem(media, folderName) {
   logEvent("info", "Création d'un élément média.", { media, folderName });
 
-  // Validation des paramètres d'entrée
   if (!media || typeof media !== "object") {
     logEvent("error", "Données de média invalides ou manquantes.", { media });
     return null;
   }
+
   if (!folderName || typeof folderName !== "string") {
     logEvent("error", "Nom du dossier invalide ou manquant.", { folderName });
     return null;
@@ -95,28 +101,20 @@ export function createMediaItem(media, folderName) {
 
     let mediaElement;
 
-    // Création de l'élément image ou vidéo
     if (media.image) {
       mediaElement = document.createElement("img");
-      mediaElement.src = `../../assets/photographers/${folderName}/${media.image
-        .trim()
-        .replace(/[\s_]+/g, "-")
-        .replace(/[^\w\-.]/g, "")}`;
+      mediaElement.src = `../../assets/photographers/${folderName}/${media.image}`;
       mediaElement.alt = media.title || "Image sans titre.";
       mediaElement.loading = "lazy";
       logEvent("info", `Image créée : ${media.image}`, { mediaElement });
     } else if (media.video) {
       mediaElement = document.createElement("video");
-      mediaElement.src = `../../assets/photographers/${folderName}/${media.video
-        .trim()
-        .replace(/[\s_]+/g, "-")
-        .replace(/[^\w\-.]/g, "")}`;
+      mediaElement.src = `../../assets/photographers/${folderName}/${media.video}`;
       mediaElement.controls = true;
       mediaElement.alt = media.title || "Vidéo sans titre.";
       logEvent("info", `Vidéo créée : ${media.video}`, { mediaElement });
     }
 
-    // Vérification de la validité de l'élément média
     if (!mediaElement) {
       logEvent("warn", `Élément média non valide pour l'ID ${media.id}.`, {
         media,
@@ -127,13 +125,13 @@ export function createMediaItem(media, folderName) {
     mediaElement.className = "media";
     mediaItem.appendChild(mediaElement);
 
-    // Création de la légende du média
     const caption = document.createElement("div");
     caption.className = "media-caption";
     caption.innerHTML = `
       <h3>${media.title}</h3>
       <p>${media.likes} <i class="fas fa-heart" aria-hidden="true"></i></p>
     `;
+
     mediaItem.appendChild(caption);
 
     logEvent("success", "Élément média créé avec succès.", { mediaItem });
@@ -141,11 +139,12 @@ export function createMediaItem(media, folderName) {
   } catch (error) {
     logEvent("error", "Erreur lors de la création d'un élément média.", {
       error,
-      media,
     });
     return null;
   }
 }
+
+/* ===================== Fonction : Rendu de la Galerie ===================== */
 
 /**
  * Récupère une liste de médias et les affiche dans un conteneur HTML spécifié.
@@ -162,24 +161,24 @@ export function renderMediaGallery(mediaList, folderName, galleryContainer) {
     folderName,
   });
 
-  // Validation des paramètres d'entrée
   if (!galleryContainer || !(galleryContainer instanceof HTMLElement)) {
     logEvent("error", "Conteneur de galerie invalide ou manquant.", {
       galleryContainer,
     });
     return;
   }
+
   if (!Array.isArray(mediaList)) {
     logEvent("error", "Liste de médias invalide ou manquante.", { mediaList });
     return;
   }
+
   if (!folderName || typeof folderName !== "string") {
     logEvent("error", "Nom du dossier invalide ou manquant.", { folderName });
     return;
   }
 
   try {
-    // Nettoyage du conteneur avant de remplir la galerie
     galleryContainer.innerHTML = "";
     mediaList.forEach((media) => {
       const mediaItem = createMediaItem(media, folderName);

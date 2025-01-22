@@ -26,7 +26,7 @@ import { getPhotographerIdFromUrl } from "../pages/photographer-page.js";
  */
 async function getPhotographerDataAndMedia() {
   logEvent(
-    "test-start",
+    "test_start",
     "Début de la récupération des données du photographe.",
   );
 
@@ -81,7 +81,7 @@ async function getPhotographerDataAndMedia() {
       },
     );
 
-    logEvent("test-end", "Fin de la récupération des données du photographe.");
+    logEvent("test_end", "Fin de la récupération des données du photographe.");
     return { photographerData, mediaList };
   } catch (error) {
     logEvent(
@@ -106,7 +106,7 @@ async function getPhotographerDataAndMedia() {
  * @returns {number} Total des likes.
  */
 async function calculateTotalLikes(mediaList) {
-  logEvent("test-start", "Début du calcul des likes totaux.");
+  logEvent("test_start", "Début du calcul des likes totaux.");
 
   // Vérifie si la liste des médias est valide
   if (!Array.isArray(mediaList) || mediaList.length === 0) {
@@ -127,7 +127,7 @@ async function calculateTotalLikes(mediaList) {
       { totalLikes, mediaList },
     );
 
-    logEvent("test-end", "Fin du calcul des likes totaux.");
+    logEvent("test_end", "Fin du calcul des likes totaux.");
     return totalLikes;
   } catch (error) {
     logEvent("error", "Erreur lors du calcul des likes totaux.", {
@@ -149,7 +149,7 @@ async function calculateTotalLikes(mediaList) {
  */
 async function updatePhotographerStatsDOM(photographerData, totalLikes) {
   logEvent(
-    "test-start",
+    "test_start",
     "Début de la mise à jour des statistiques dans le DOM.",
   );
 
@@ -197,7 +197,7 @@ async function updatePhotographerStatsDOM(photographerData, totalLikes) {
       logEvent("error", "Impossible de mettre à jour `#daily-rate`.");
     }
 
-    logEvent("test-end", "Fin de la mise à jour des statistiques dans le DOM.");
+    logEvent("test_end", "Fin de la mise à jour des statistiques dans le DOM.");
   } catch (error) {
     logEvent(
       "error",

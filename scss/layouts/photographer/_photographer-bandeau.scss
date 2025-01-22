@@ -64,7 +64,6 @@
   @include desktop {
     display: flex;
     position: relative;
-
     margin-right: 5%; /* Réduit l'espace à droite pour les écrans plus grands */
     top:3vh;
     width: 12%;
@@ -88,6 +87,22 @@
   color:black;
   margin-bottom: 2%;
   font-weight: 600;
+
+  @include tablet {
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+    padding:2% 3%;
+    position:absolute;
+    top:33%;
+    right: 4%;
+  }
+  @include desktop {
+    position:fixed;
+    top:85%;
+    right:5%;
+    padding:1%;
+  }
 }
 
 .photographer-stats i {

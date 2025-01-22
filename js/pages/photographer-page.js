@@ -21,7 +21,10 @@ import { initstatscalculator } from "../components/statsCalculator.js";
 // CONFIGURATION ET VARIABLES
 // =============================
 
-/** @constant {string} Chemin vers le fichier JSON contenant les données. */
+/**
+ * Chemin vers le fichier JSON contenant les données des photographes.
+ * @constant {string}
+ */
 const mediaDataUrl = "../../../assets/data/photographers.json";
 
 // =============================
@@ -63,6 +66,7 @@ export function getPhotographerIdFromUrl() {
 
 /**
  * Affiche les informations du photographe dans la bannière.
+ * Récupère les données JSON et génère dynamiquement la bannière.
  */
 async function displayPhotographerBanner() {
   const photographerId = getPhotographerIdFromUrl();
@@ -83,6 +87,7 @@ async function displayPhotographerBanner() {
 
     logEvent("info", "Données JSON récupérées avec succès.", { data });
 
+    // Recherche des données spécifiques au photographe
     const photographerData = data.photographers.find(
       (photographer) => photographer.id === photographerId,
     );
@@ -97,6 +102,7 @@ async function displayPhotographerBanner() {
       photographerData,
     });
 
+    // Mise à jour de la bannière
     const bannerContainer = domSelectors.photographerPage.photographerHeader;
     if (!bannerContainer) {
       throw new Error("Conteneur de la bannière introuvable.");
@@ -119,6 +125,7 @@ async function displayPhotographerBanner() {
 
 /**
  * Affiche la galerie de médias du photographe.
+ * Charge les médias depuis un fichier JSON et les rend dynamiquement.
  */
 async function displayMediaGallery() {
   const photographerId = getPhotographerIdFromUrl();
@@ -136,7 +143,7 @@ async function displayMediaGallery() {
       throw new Error("Conteneur de galerie introuvable.");
     }
 
-    // Charger les données des photographes
+    // Charger les données JSON
     const response = await fetch(mediaDataUrl);
     const data = await response.json();
 
@@ -144,7 +151,7 @@ async function displayMediaGallery() {
       throw new Error("Les données JSON des photographes sont invalides.");
     }
 
-    // Trouver le `folderName` correspondant à l'ID du photographe
+    // Récupération du `folderName`
     const photographerData = data.photographers.find(
       (photographer) => photographer.id === photographerId,
     );
@@ -182,11 +189,7 @@ async function displayMediaGallery() {
 
 /**
  * Initialise la page du photographe.
- *
- * Cette fonction orchestre :
- * - L'affichage de la bannière du photographe.
- * - L'affichage de la galerie de médias.
- * - L'ajout des gestionnaires d'événements.
+ * Orchestration des étapes : bannière, galerie, événements.
  */
 async function initPhotographerPage() {
   logEvent("info", "Début de l'initialisation de la page photographe...");
@@ -194,9 +197,12 @@ async function initPhotographerPage() {
   try {
     await displayPhotographerBanner(); // Affichage de la bannière
     await displayMediaGallery(); // Affichage de la galerie
-
+    // Vérification et initialisation des gestionnaires d'événements
+    if (!domSelectors.photographerPage.contactButton) {
+      logEvent("error", "Le bouton 'Contactez-moi' est manquant.");
+      return;
+    }
     // Initialisation des gestionnaires d'événements
-    initEventListeners();
     initstatscalculator();
 
     logEvent("success", "Page photographe initialisée avec succès.");
@@ -218,6 +224,7 @@ async function initPhotographerPage() {
  */
 document.addEventListener("DOMContentLoaded", () => {
   try {
+    initEventListeners();
     initPhotographerPage();
   } catch (error) {
     logEvent("error", "Erreur critique lors du chargement de la page.", {

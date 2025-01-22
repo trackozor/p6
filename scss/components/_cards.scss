@@ -195,16 +195,24 @@
   border-radius: var(--radius-base); /* Coins arrondis */
   overflow: hidden;
   width:90%;
-  margin:5% auto;
+  margin:1% auto;
+  height:100%;
   height:40vh;
   transition: transform 0.3s, box-shadow 0.3s;
+  object-position: center;
 
-  /* Animation au survol */
-  &:hover {
-    transform: scale(1.05); /* Légère augmentation */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
+  @include tablet{
+    height:40%;
+    margin: 2% auto;
+    width:70%;
   }
 }
+  /* Animation au survol */
+.media-item:hover {
+    transform: scale(1.05); /* Légère augmentation */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
+}
+
 
 /* -------------------------------------------------------------------------- */
 /* image ou video                                                            */
@@ -212,12 +220,17 @@
 /* -------------------------------------------------------------------------- */
 .media {
   width: 100%;/* Prend toute la largeur */
-  height: 90%; /* Conserve les proportions */
+  height: 100%; /* Conserve les proportions */
+  max-height:30vh;
   object-fit: cover;
   margin:0 auto;
   overflow: hidden ;
   display: flex; /* S'assure que c'est un bloc */
   object-position: center;
+
+  @include tablet{
+    max-height:35vh;
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -231,6 +244,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  height:5%;
 }
 
 /* -------------------------------------------------------------------------- */

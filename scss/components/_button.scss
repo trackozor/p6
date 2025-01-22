@@ -16,7 +16,12 @@
   border-radius: 0.3rem; /* Coins légèrement arrondis */
   margin-bottom: 12%; /* Ajoute un espace vertical autour du bouton */
   cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
-
+  /* Effet au survol (hover) */
+  &:hover {
+    background-color: #ff00ff; /* Couleur rose flashy sur hover */
+    transform: scale(1.05); /* Agrandissement légèrement au survol */
+  }
+ 
   @include tablet {
     max-height: 20px; /* Réduit la hauteur maximale sur tablette */
     padding:2% 1%; /* Diminue les espacements internes */

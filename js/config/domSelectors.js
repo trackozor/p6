@@ -89,8 +89,10 @@ const domSelectors = (() => {
         ".photographer-card-portrait",
       ),
       galleryContainer: safeQuerySelector("#gallery"),
+      overlayContainer: safeQuerySelector("#modal-overlay"),
       sortingSelect: safeQuerySelector("#sort-options"),
-      contactButton: safeQuerySelector('[data-action="open-modal"]'),
+      contactButton: document.querySelector("#contact-btn"),
+
       photographerStatsTemplate: safeQuerySelector("#photographer-stats", true), // Nouveau sélecteur pour le template
       totalLikes: null,
       dailyRate: null,
@@ -104,7 +106,8 @@ const domSelectors = (() => {
       lightboxCaption: safeQuerySelector("#lightbox-caption"),
     },
     modal: {
-      container: safeQuerySelector(".modal"),
+      contactOverlay: safeQuerySelector("#modal-overlay"),
+      container: safeQuerySelector("#contact-modal"),
       closeButton: safeQuerySelector(".modal-close"),
       form: {
         formElement: safeQuerySelector(

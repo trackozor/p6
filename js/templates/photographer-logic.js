@@ -9,6 +9,8 @@
  * ========================================================
  */
 
+import { logEvent } from "../utils/utils.js";
+
 /**
  * Crée une structure pour afficher les données du photographe.
  *
@@ -28,6 +30,11 @@ export function photographerTemplate(data) {
   // VALIDATION DES DONNÉES
   // =============================
   if (!data || typeof data !== "object") {
+    logEvent(
+      "error",
+      "Les données du photographe doivent être un objet valide.",
+      { data },
+    );
     throw new Error("Les données du photographe doivent être un objet valide.");
   }
 
@@ -35,11 +42,9 @@ export function photographerTemplate(data) {
   const missingFields = requiredFields.filter((field) => !data[field]);
 
   if (missingFields.length > 0) {
-    throw new Error(
-      `Données du photographe invalides. Champs manquants : ${missingFields.join(
-        ", ",
-      )}.`,
-    );
+    const errorMessage = `Données du photographe invalides. Champs manquants : ${missingFields.join(", ")}.`;
+    logEvent("error", errorMessage, { data });
+    throw new Error(errorMessage);
   }
 
   // =============================
@@ -66,19 +71,26 @@ export function photographerTemplate(data) {
     tagName,
     { className, textContent, attributes } = {},
   ) => {
-    const element = document.createElement(tagName);
-    if (className) {
-      element.classList.add(className);
+    try {
+      const element = document.createElement(tagName);
+      if (className) {
+        element.classList.add(className);
+      }
+      if (textContent) {
+        element.textContent = textContent;
+      }
+      if (attributes) {
+        Object.entries(attributes).forEach(([key, value]) =>
+          element.setAttribute(key, value),
+        );
+      }
+      return element;
+    } catch (error) {
+      logEvent("error", `Erreur lors de la création de l'élément ${tagName}.`, {
+        error,
+      });
+      throw error;
     }
-    if (textContent) {
-      element.textContent = textContent;
-    }
-    if (attributes) {
-      Object.entries(attributes).forEach(([key, value]) =>
-        element.setAttribute(key, value),
-      );
-    }
-    return element;
   };
 
   // =============================
@@ -91,49 +103,56 @@ export function photographerTemplate(data) {
    * @returns {HTMLElement} Élément DOM contenant la carte du photographe.
    */
   const getUserCardDOM = () => {
-    const article = createElement("article", {
-      className: "photographer-card",
-    });
+    try {
+      const article = createElement("article", {
+        className: "photographer-card",
+      });
 
-    const img = createElement("img", {
-      attributes: {
-        src: picture,
-        alt: `Portrait de ${name}`,
-      },
-      className: "photographer-card-portrait",
-    });
+      const img = createElement("img", {
+        attributes: { src: picture, alt: `Portrait de ${name}` },
+        className: "photographer-card-portrait",
+      });
 
-    const h3 = createElement("h3", {
-      className: "photographer-card-name",
-      textContent: name,
-    });
+      const h3 = createElement("h3", {
+        className: "photographer-card-name",
+        textContent: name,
+      });
 
-    const location = createElement("p", {
-      className: "photographer-card-location",
-      textContent: `${city}, ${country}`,
-    });
+      const location = createElement("p", {
+        className: "photographer-card-location",
+        textContent: `${city}, ${country}`,
+      });
 
-    const taglineElement = createElement("p", {
-      className: "photographer-card-tagline",
-      textContent: tagline,
-    });
+      const taglineElement = createElement("p", {
+        className: "photographer-card-tagline",
+        textContent: tagline,
+      });
 
-    const priceElement = createElement("p", {
-      className: "photographer-card-price",
-      textContent: `${price}€/jour`,
-    });
+      const priceElement = createElement("p", {
+        className: "photographer-card-price",
+        textContent: `${price}€/jour`,
+      });
 
-    article.append(img, h3, location, taglineElement, priceElement);
+      article.append(img, h3, location, taglineElement, priceElement);
 
-    const link = createElement("a", {
-      attributes: {
-        href: `../../html/photographer.html?id=${id}`,
-        "aria-label": `Voir la page de ${name}`,
-      },
-    });
+      const link = createElement("a", {
+        attributes: {
+          href: `../../html/photographer.html?id=${id}`,
+          "aria-label": `Voir la page de ${name}`,
+        },
+      });
 
-    link.appendChild(article);
-    return link;
+      link.appendChild(article);
+      logEvent("success", `Carte du photographe ${name} générée avec succès.`);
+      return link;
+    } catch (error) {
+      logEvent(
+        "error",
+        `Erreur lors de la génération de la carte pour ${name}.`,
+        { error },
+      );
+      throw error;
+    }
   };
 
   /**
@@ -142,58 +161,70 @@ export function photographerTemplate(data) {
    * @returns {HTMLElement} Élément DOM contenant la bannière du photographe.
    */
   const getBannerDOM = () => {
-    const section = createElement("section", {
-      className: "photographer-info",
-      attributes: { "aria-labelledby": "photograph-title" },
-    });
+    try {
+      const section = createElement("section", {
+        className: "photographer-info",
+        attributes: { "aria-labelledby": "photograph-title" },
+      });
 
-    const article = createElement("article", {
-      className: "photographer-profile",
-    });
+      const article = createElement("article", {
+        className: "photographer-profile",
+      });
 
-    const h2 = createElement("h2", {
-      id: "photograph-title",
-      textContent: name,
-    });
+      const h2 = createElement("h2", {
+        id: "photograph-title",
+        textContent: name,
+      });
 
-    const location = createElement("p", {
-      className: "photographer-card-location",
-      textContent: `${city}, ${country}`,
-    });
+      const location = createElement("p", {
+        className: "photographer-card-location",
+        textContent: `${city}, ${country}`,
+      });
 
-    const taglineElement = createElement("p", {
-      className: "photographer-card-tagline",
-      textContent: tagline,
-    });
+      const taglineElement = createElement("p", {
+        className: "photographer-card-tagline",
+        textContent: tagline,
+      });
 
-    const img = createElement("img", {
-      attributes: {
-        src: picture,
-        alt: `Portrait de ${name}`,
-        loading: "lazy",
-      },
-      className: "photographer-card-portrait",
-    });
+      const img = createElement("img", {
+        attributes: {
+          src: picture,
+          alt: `Portrait de ${name}`,
+          loading: "lazy",
+        },
+        className: "photographer-card-portrait",
+      });
 
-    const button = createElement("button", {
-      className: "contact_button",
-      textContent: "Contactez-moi",
-      attributes: {
-        type: "button",
-        "aria-haspopup": "dialog",
-        "aria-controls": "contact_modal",
-      },
-    });
+      const button = createElement("button", {
+        className: "contact_button",
+        textContent: "Contactez-moi",
+        attributes: {
+          type: "button",
+          "aria-haspopup": "dialog",
+          "aria-controls": "contact_modal",
+        },
+      });
 
-    article.append(h2, location, taglineElement);
-    section.append(article, button, img);
+      article.append(h2, location, taglineElement);
+      section.append(article, button, img);
 
-    return section;
+      logEvent(
+        "success",
+        `Bannière du photographe ${name} générée avec succès.`,
+      );
+      return section;
+    } catch (error) {
+      logEvent(
+        "error",
+        `Erreur lors de la génération de la bannière pour ${name}.`,
+        { error },
+      );
+      throw error;
+    }
   };
 
   // =============================
   // RETOUR DES MÉTHODES
   // =============================
-
   return { name, picture, getUserCardDOM, getBannerDOM };
 }

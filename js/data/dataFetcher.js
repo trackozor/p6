@@ -8,13 +8,24 @@
 // ========================================================
 
 import { logEvent } from "../utils/utils.js";
+
+// ========================================================
+// CACHE GLOBAL
+// ========================================================
+
 /**
  * Cache global pour éviter les appels réseau répétitifs.
  * @type {Object|null}
  */
 let mediaDataCache = null;
+
+// ========================================================
+// UTILITAIRE : FETCH AVEC TIMEOUT
+// ========================================================
+
 /**
  * Effectue une requête réseau avec gestion d'un délai d'expiration.
+ *
  * @async
  * @function fetchWithTimeout
  * @param {string} url - URL à requêter.
@@ -40,8 +51,13 @@ async function fetchWithTimeout(url, options = {}, timeout = 5000) {
   }
 }
 
+// ========================================================
+// FONCTION : RÉCUPÉRATION JSON AVEC GESTION DES RETRIES
+// ========================================================
+
 /**
  * Récupère et valide des données JSON depuis une URL donnée, avec gestion des retries.
+ *
  * @async
  * @function fetchJSON
  * @param {string} url - URL du fichier JSON à récupérer.
@@ -59,12 +75,14 @@ export async function fetchJSON(
   retries = 3,
   retryDelay = 1000,
 ) {
-  const cleanUrl = url?.replace(/\/+/g, "/").trim();
-
-  if (typeof cleanUrl !== "string" || cleanUrl === "") {
-    logEvent("error", "fetchJSON: URL fourni invalide ou vide.");
+  // Vérification explicite de `url`
+  if (typeof url !== "string" || !url.trim()) {
+    logEvent("error", "fetchJSON: URL fourni invalide ou vide.", { url });
     return null;
   }
+
+  // Nettoyage de l'URL
+  const cleanUrl = url.replace(/\/+/g, "/").trim();
 
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
@@ -73,18 +91,23 @@ export async function fetchJSON(
         `Tentative ${attempt} de récupération JSON depuis ${cleanUrl}.`,
       );
 
+      // Récupération avec timeout
       const response = await fetchWithTimeout(cleanUrl, options, timeout);
 
+      // Vérification de la réponse HTTP
       if (!response.ok) {
         const logType = response.status === 404 ? "error" : "warn";
         logEvent(logType, `Erreur HTTP (${response.status}) pour ${cleanUrl}`, {
           statusText: response.statusText,
         });
+
         if (response.status === 404) {
-          break;
-        } // Pas de retry pour une erreur 404
+          break; // Pas de retries pour une 404
+        }
       } else {
         const jsonData = await response.json();
+
+        // Validation des données JSON
         if (typeof jsonData === "object" && jsonData !== null) {
           logEvent("success", `JSON récupéré avec succès depuis ${cleanUrl}.`, {
             data: jsonData,
@@ -95,6 +118,7 @@ export async function fetchJSON(
         }
       }
     } catch (error) {
+      // Gestion des erreurs (Timeout ou autres)
       if (error.name === "AbortError") {
         logEvent("error", `Timeout dépassé pour ${cleanUrl}.`, { attempt });
       } else {
@@ -105,6 +129,7 @@ export async function fetchJSON(
         );
       }
 
+      // Gestion des retries
       if (attempt < retries) {
         logEvent(
           "info",
@@ -127,9 +152,14 @@ export async function fetchJSON(
   return null;
 }
 
-/*
+// ========================================================
+// FONCTION : RÉCUPÉRATION DES MÉDIAS AVEC CACHE
+// ========================================================
+
+/**
  * Récupère les données JSON pour les photographes et leurs médias.
  * Utilise un cache pour éviter les requêtes répétées.
+ *
  * @async
  * @function fetchMedia
  * @param {string} url - URL du fichier JSON contenant les données des médias.
