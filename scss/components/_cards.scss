@@ -15,270 +15,269 @@
 /*============================================================================*/
 
 .photographer-card {
-  position: relative; /* Nécessaire pour placer des éléments enfants en absolu */
-  display: flex; /* Utilise Flexbox pour organiser les éléments de la carte */
-  flex-direction: column; /* Les éléments sont empilés verticalement */
-  align-items: center; /* Centre les éléments horizontalement */
-  text-align: center; /* Centre le texte à l'intérieur */
-  background-color: white; /* Fond neutre pour la carte */
-  max-width: 100%; /* Adapte la largeur de la carte à celle du conteneur */
-  margin: 6% auto; /* Centre la carte avec un espace vertical */
-  transition: transform 0.3s ease; /* Ajoute une animation fluide sur hover */
-  cursor: pointer; /* Change le curseur au survol */
-  text-decoration: none; /* Supprime les décorations de texte */
-
-  /*----------------------- Responsive --------------------------------*/
-
-  @include tablet {
-    padding: 0; /* Supprime les espacements internes */
-    width: 90%; /* Réduit légèrement la largeur pour un alignement centré */
+    position: relative; /* Nécessaire pour placer des éléments enfants en absolu */
+    display: flex; /* Utilise Flexbox pour organiser les éléments de la carte */
+    flex-direction: column; /* Les éléments sont empilés verticalement */
+    align-items: center; /* Centre les éléments horizontalement */
+    text-align: center; /* Centre le texte à l'intérieur */
+    background-color: white; /* Fond neutre pour la carte */
+    max-width: 100%; /* Adapte la largeur de la carte à celle du conteneur */
+    margin: 6% auto; /* Centre la carte avec un espace vertical */
+    transition: transform 0.3s ease; /* Ajoute une animation fluide sur hover */
+    cursor: pointer; /* Change le curseur au survol */
+    text-decoration: none; /* Supprime les décorations de texte */
+  
+  
+    /*----------------------- Responsive --------------------------------*/
+  
+    @include tablet {
+      padding: 0; /* Supprime les espacements internes */
+      width: 90%; /* Réduit légèrement la largeur pour un alignement centré */
+    }
+  
+    @include desktop {
+      padding: 0; /* Supprime les espacements */
+      width: 90%; /* Maintient une largeur adaptée */
+    }
+  
+    @include large-desktop {
+      width: 50%; /* Diminue la largeur pour mieux occuper l'espace */
+      border-radius: 1rem; /* Ajoute des coins légèrement arrondis */
+      margin-bottom: 1%; /* Réduit l'espacement vertical */
+      padding: 0; /* Supprime les espacements internes */
+    }
   }
-
-  @include desktop {
-    padding: 0; /* Supprime les espacements */
-    width: 90%; /* Maintient une largeur adaptée */
+  
+  /* -------------------------------------------------------------------------- */
+  /* Effet hover sur la carte                                                   */
+  /* Description : Ajoute un effet visuel lorsque la carte est survolée          */
+  /* -------------------------------------------------------------------------- */
+  
+  .photographer-card:hover {
+    transform: scale(1.2); /* Agrandit légèrement la carte */
+    box-shadow: var(--box-shadow-large);
+    text-decoration: none; /* Assure qu'il n'y ait pas de soulignement de texte */
   }
-
-  @include large-desktop {
-    width: 50%; /* Diminue la largeur pour mieux occuper l'espace */
-    border-radius: 1rem; /* Ajoute des coins légèrement arrondis */
-    margin-bottom: 1%; /* Réduit l'espacement vertical */
-    padding: 0; /* Supprime les espacements internes */
+  
+  /* -------------------------------------------------------------------------- */
+  /* Image du photographe                                                      */
+  /* Description : Définit les dimensions et le style de l'image circulaire     */
+  /* -------------------------------------------------------------------------- */
+  
+  .photographer-card-portrait {
+    width: 10vh; /* Largeur de l'image basée sur la hauteur de la fenêtre */
+    height: 10vh; /* Hauteur de l'image */
+    border-radius: 50%; /* Rend l'image circulaire */
+    object-fit: cover; /* Assure que l'image garde ses proportions */
+    object-position: center; /* Centre le contenu de l'image */
+    transform: scale(1.2); /* Agrandit légèrement l'image */
+    margin: 5%  0; /* Ajoute un espacement autour de l'image */
+    transition: transform 0.3s ease; /* Ajoute une animation fluide */
+    cursor: pointer; /* Change le curseur au survol */
+  
+    /* ------------------------- Responsive ------------------------*/
+  
+    @include tablet {
+      width: 12vw; /* Ajuste la largeur de l'image en fonction de la fenêtre */
+      height: 12vw; /* Ajuste la hauteur de l'image */
+      margin: 1% 0 3% 0; /* Diminue les marges autour de l'image */
+    }
+  
+    @include desktop {
+      width: 10vw; /* Ajuste la taille de l'image */
+      height: 10vw; /* Hauteur proportionnelle */
+      margin: 5% 0 8% 0; /* Ajuste les espacements verticaux */
+    }
+  
+    @include large-desktop {
+      width: 8vw; /* Réduit la taille de l'image */
+      height: 8vw; /* Hauteur proportionnelle */
+      margin: 8% 0; /* Augmente l'espacement autour de l'image */
+    }
   }
-}
-
-/* -------------------------------------------------------------------------- */
-/* Effet hover sur la carte                                                   */
-/* Description : Ajoute un effet visuel lorsque la carte est survolée          */
-/* -------------------------------------------------------------------------- */
-
-.photographer-card:hover {
-  transform: scale(1.2); /* Agrandit légèrement la carte */
-  box-shadow: var(--box-shadow-large);
-  text-decoration: none; /* Assure qu'il n'y ait pas de soulignement de texte */
-}
-
-/* -------------------------------------------------------------------------- */
-/* Image du photographe                                                      */
-/* Description : Définit les dimensions et le style de l'image circulaire     */
-/* -------------------------------------------------------------------------- */
-
-.photographer-card-portrait {
-  width: 10vh; /* Largeur de l'image basée sur la hauteur de la fenêtre */
-  height: 10vh; /* Hauteur de l'image */
-  border-radius: 50%; /* Rend l'image circulaire */
-  object-fit: cover; /* Assure que l'image garde ses proportions */
-  object-position: center; /* Centre le contenu de l'image */
-  transform: scale(1.2); /* Agrandit légèrement l'image */
-  margin: 1% 0 5% 0; /* Ajoute un espacement autour de l'image */
-  transition: transform 0.3s ease; /* Ajoute une animation fluide */
-  cursor: pointer; /* Change le curseur au survol */
-
-  /* ------------------------- Responsive ------------------------*/
-
-  @include tablet {
-    width: 12vw; /* Ajuste la largeur de l'image en fonction de la fenêtre */
-    height: 12vw; /* Ajuste la hauteur de l'image */
-    margin: 1% 0 3% 0; /* Diminue les marges autour de l'image */
+  
+  /* -------------------------------------------------------------------------- */
+  /* Nom du photographe                                                        */
+  /* Description : Style pour le nom du photographe affiché en gras             */
+  /* -------------------------------------------------------------------------- */
+  
+  .photographer-card-name {
+    font-size: var(
+      --font-size-xlarge
+    ); /* Utilise une taille de texte importante */
+    color: var(--text-color-name); /* Utilise une couleur d'accentuation */
+    font-weight: bold; /* Affiche le texte en gras */
+    margin-bottom: 2%; /* Ajoute un espace en dessous du nom */
+  
+    /*---------------------------Responsive --------------------------------*/
+    @include tablet {
+      font-size: var(--font-size-large); /* Réduit la taille du texte */
+    }
+  
+    @include desktop {
+      font-size: var(--font-size-large); /* Ajuste la taille du texte */
+    }
   }
-
-  @include desktop {
-    width: 10vw; /* Ajuste la taille de l'image */
-    height: 10vw; /* Hauteur proportionnelle */
-    margin: 5% 0 8% 0; /* Ajuste les espacements verticaux */
+  
+  /* -------------------------------------------------------------------------- */
+  /* Localisation du photographe                                               */
+  /* Description : Affiche la ville et le pays du photographe                   */
+  /* -------------------------------------------------------------------------- */
+  
+  .photographer-card-location {
+    font-size: var(--font-size-base); /* Taille de texte standard */
+    color: var(
+      --text-color-secondary
+    ); /* Couleur secondaire pour moins d'importance */
+    margin-bottom: 2%; /* Ajoute un espace en dessous */
   }
-
-  @include large-desktop {
-    width: 8vw; /* Réduit la taille de l'image */
-    height: 8vw; /* Hauteur proportionnelle */
-    margin: 8% 0; /* Augmente l'espacement autour de l'image */
+  
+  /* -------------------------------------------------------------------------- */
+  /* Slogan du photographe                                                     */
+  /* Description : Style pour le slogan du photographe             */
+  /* -------------------------------------------------------------------------- */
+  
+  .photographer-card-tagline {
+    font-size: var(--font-size-small); /* Texte légèrement plus petit */
+    font-weight: 500; /* Texte avec une importance moyenne */
+    color: var(--text-color-primary); /* Couleur principale du texte */
+    margin-bottom: 2%; /* Ajoute un espace en dessous */
+  
+    /*--------------------------- Responsive -------------------------------*/
+  
+    @include tablet {
+      font-size: var(--font-size-base); /* Unifie les tailles de texte */
+    }
+  
+    @include desktop {
+      font-size: var(--font-size-base); /* Unifie les tailles de texte */
+    }
+  
+    @include large-desktop {
+      font-size: var(--font-size-base); /* Unifie les tailles de texte */
+    }
   }
-}
-
-/* -------------------------------------------------------------------------- */
-/* Nom du photographe                                                        */
-/* Description : Style pour le nom du photographe affiché en gras             */
-/* -------------------------------------------------------------------------- */
-
-.photographer-card-name {
-  font-size: var(
-    --font-size-xlarge
-  ); /* Utilise une taille de texte importante */
-  color: var(--text-color-name); /* Utilise une couleur d'accentuation */
-  font-weight: bold; /* Affiche le texte en gras */
-  margin-bottom: 2%; /* Ajoute un espace en dessous du nom */
-
-  /*---------------------------Responsive --------------------------------*/
-  @include tablet {
-    font-size: var(--font-size-large); /* Réduit la taille du texte */
+  
+  /* -------------------------------------------------------------------------- */
+  /* Prix par jour du photographe                                              */
+  /* Description : Affiche le tarif journalier du photographe                   */
+  /* -------------------------------------------------------------------------- */
+  
+  .photographer-card-price {
+    font-size: var(--font-size-small); /* Texte de taille discrète */
+    font-weight: 500; /* Texte légèrement mis en avant */
+    color: var(
+      --text-color-tertiary
+    ); /* Couleur tertiaire pour moins de priorité */
+  
+    /*-------------------------- Responsive -------------------------------*/
+  
+    @include tablet {
+      font-size: var(--font-size-base); /* Unifie les tailles de texte */
+    }
+  
+    @include desktop {
+      font-size: var(--font-size-base); /* Unifie les tailles de texte */
+    }
+  
+    @include large-desktop {
+      font-size: var(--font-size-base); /* Unifie les tailles de texte */
+    }
   }
-
-  @include desktop {
-    font-size: var(--font-size-large); /* Ajuste la taille du texte */
+  
+  /*============================================================================*/
+  /* Carte des médias (Mobile First)                                            */
+  /* Description : Style principal pour la carte des médias                     */
+  /*============================================================================*/
+  
+  .media-item {
+    display:block;
+    background-color: var(--color-background-light); /* Fond clair */
+    border-radius: var(--radius-base); /* Coins arrondis */
+    overflow: hidden;
+    width:90%;
+    margin:1% auto;
+    height:100%;
+    height:40vh;
+    transition: transform 0.3s, box-shadow 0.3s;
+    object-position: center;
+  
+    @include tablet{ 
+      margin: 2% auto;
+      width:70%;
+    }
   }
-}
-
-/* -------------------------------------------------------------------------- */
-/* Localisation du photographe                                               */
-/* Description : Affiche la ville et le pays du photographe                   */
-/* -------------------------------------------------------------------------- */
-
-.photographer-card-location {
-  font-size: var(--font-size-base); /* Taille de texte standard */
-  color: var(
-    --text-color-secondary
-  ); /* Couleur secondaire pour moins d'importance */
-  margin-bottom: 2%; /* Ajoute un espace en dessous */
-}
-
-/* -------------------------------------------------------------------------- */
-/* Slogan du photographe                                                     */
-/* Description : Style pour le slogan du photographe             */
-/* -------------------------------------------------------------------------- */
-
-.photographer-card-tagline {
-  font-size: var(--font-size-small); /* Texte légèrement plus petit */
-  font-weight: 500; /* Texte avec une importance moyenne */
-  color: var(--text-color-primary); /* Couleur principale du texte */
-  margin-bottom: 2%; /* Ajoute un espace en dessous */
-
-  /*--------------------------- Responsive -------------------------------*/
-
-  @include tablet {
-    font-size: var(--font-size-base); /* Unifie les tailles de texte */
+    /* Animation au survol */
+  .media-item:hover {
+      transform: scale(1.05); /* Légère augmentation */
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
   }
-
-  @include desktop {
-    font-size: var(--font-size-base); /* Unifie les tailles de texte */
+  
+  
+  /* -------------------------------------------------------------------------- */
+  /* image ou video                                                            */
+  /* Description : Définit les dimensions et le style du média                 */
+  /* -------------------------------------------------------------------------- */
+  .media {
+    width: 100%;/* Prend toute la largeur */
+    height: 100%; /* Conserve les proportions */
+    max-height:30vh;
+    object-fit: cover;
+    margin:0 auto;
+    overflow: hidden ;
+    display: flex; /* S'assure que c'est un bloc */
+    object-position: center;
+  
+    @include tablet{
+      max-height:35vh;
+    }
   }
-
-  @include large-desktop {
-    font-size: var(--font-size-base); /* Unifie les tailles de texte */
+  
+  /* -------------------------------------------------------------------------- */
+  /* Légende sous le média (conteneur)                                          */
+  /* Description : Définit les dimensions et le style du conteneur               */
+  /* -------------------------------------------------------------------------- */
+  .media-caption {
+    padding: var(--spacing-small) 0; /* Espacement interne */
+    font-size: var(--font-size-small); /* Taille de police réduite */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height:5%;
   }
-}
-
-/* -------------------------------------------------------------------------- */
-/* Prix par jour du photographe                                              */
-/* Description : Affiche le tarif journalier du photographe                   */
-/* -------------------------------------------------------------------------- */
-
-.photographer-card-price {
-  font-size: var(--font-size-small); /* Texte de taille discrète */
-  font-weight: 500; /* Texte légèrement mis en avant */
-  color: var(
-    --text-color-tertiary
-  ); /* Couleur tertiaire pour moins de priorité */
-
-  /*-------------------------- Responsive -------------------------------*/
-
-  @include tablet {
-    font-size: var(--font-size-base); /* Unifie les tailles de texte */
+  
+  /* -------------------------------------------------------------------------- */
+  /* Légende sous le média (titre)                                              */
+  /* Description : Définit les dimensions et le style du titre                  */
+  /* -------------------------------------------------------------------------- */
+  .media-caption h3 {
+    font-size: 0.8rem; /* Titre du média */
+    color: var(--text-color-secondary); /* Couleur principale */
   }
-
-  @include desktop {
-    font-size: var(--font-size-base); /* Unifie les tailles de texte */
+  
+  
+  /* -------------------------------------------------------------------------- */
+  /* Légende sous le média (nombre de likes)                                    */
+  /* Description : Définit les dimensions et le style du nombre de likes        */
+  /* -------------------------------------------------------------------------- */
+  
+  .media-caption p {
+    display: flex;
+    font-size: 0.8rem;
+    align-items: center;
+    justify-content:flex-end;
+    gap: var(--spacing-xxsmall); /* Espace entre les likes et l'icône */
+    color: var(--text-color-secondary);
+    font-weight: bold;
   }
-
-  @include large-desktop {
-    font-size: var(--font-size-base); /* Unifie les tailles de texte */
+  
+  /* -------------------------------------------------------------------------- */
+  /* Légende sous le média (icône)                                              */
+  /* Description : Définit les dimensions et le style de l'icône                */
+  /* -------------------------------------------------------------------------- */
+  .media-likes {
+    font-weight: bold;
+    color: var(--color-secondary); /* Couleur des likes */
+    font-size: 0.8rem;
   }
-}
-
-/*============================================================================*/
-/* Carte des médias (Mobile First)                                            */
-/* Description : Style principal pour la carte des médias                     */
-/*============================================================================*/
-
-.media-item {
-  display:block;
-  background-color: var(--color-background-light); /* Fond clair */
-  border-radius: var(--radius-base); /* Coins arrondis */
-  overflow: hidden;
-  width:90%;
-  margin:1% auto;
-  height:100%;
-  height:40vh;
-  transition: transform 0.3s, box-shadow 0.3s;
-  object-position: center;
-
-  @include tablet{ 
-    margin: 2% auto;
-    width:70%;
-  }
-}
-  /* Animation au survol */
-.media-item:hover {
-    transform: scale(1.05); /* Légère augmentation */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
-}
-
-
-/* -------------------------------------------------------------------------- */
-/* image ou video                                                            */
-/* Description : Définit les dimensions et le style du média                 */
-/* -------------------------------------------------------------------------- */
-.media {
-  width: 100%;/* Prend toute la largeur */
-  height: 100%; /* Conserve les proportions */
-  max-height:30vh;
-  object-fit: cover;
-  margin:0 auto;
-  overflow: hidden ;
-  display: flex; /* S'assure que c'est un bloc */
-  object-position: center;
-
-  @include tablet{
-    max-height:35vh;
-  }
-}
-
-/* -------------------------------------------------------------------------- */
-/* Légende sous le média (conteneur)                                          */
-/* Description : Définit les dimensions et le style du conteneur               */
-/* -------------------------------------------------------------------------- */
-.media-caption {
-  padding: var(--spacing-small) 0; /* Espacement interne */
-  font-size: var(--font-size-small); /* Taille de police réduite */
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  height:5%;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Légende sous le média (titre)                                              */
-/* Description : Définit les dimensions et le style du titre                  */
-/* -------------------------------------------------------------------------- */
-.media-caption h3 {
-  font-size: 0.8rem; /* Titre du média */
-  color: var(--text-color-secondary); /* Couleur principale */
-}
-
-
-/* -------------------------------------------------------------------------- */
-/* Légende sous le média (nombre de likes)                                    */
-/* Description : Définit les dimensions et le style du nombre de likes        */
-/* -------------------------------------------------------------------------- */
-
-.media-caption p {
-  display: flex;
-  font-size: 0.8rem;
-  align-items: center;
-  justify-content:flex-end;
-  gap: var(--spacing-xxsmall); /* Espace entre les likes et l'icône */
-  color: var(--text-color-secondary);
-  font-weight: bold;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Légende sous le média (icône)                                              */
-/* Description : Définit les dimensions et le style de l'icône                */
-/* -------------------------------------------------------------------------- */
-.media-likes {
-  font-weight: bold;
-  color: var(--color-secondary); /* Couleur des likes */
-  font-size: 0.8rem;
-}
-
-

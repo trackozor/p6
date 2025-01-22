@@ -82,8 +82,21 @@ export async function loadPhotographerMedia(photographerId, mediaDataUrl) {
  * @param {string} folderName - Nom du dossier contenant les fichiers du photographe.
  * @returns {HTMLElement|null} Un élément HTML `<article>` pour le média ou `null` en cas d'erreur.
  */
-export function createMediaItem(media, folderName) {
-  logEvent("info", "Création d'un élément média.", { media, folderName });
+/**
+ * Crée un élément HTML représentant un média (image ou vidéo) avec ses métadonnées.
+ *
+ * @function createMediaItem
+ * @param {Object} media - Objet représentant les données d'un média.
+ * @param {string} folderName - Nom du dossier contenant les fichiers du photographe.
+ * @param {number} position - Position du média dans la liste (optionnel).
+ * @returns {HTMLElement|null} Un élément HTML `<article>` pour le média ou `null` en cas d'erreur.
+ */
+export function createMediaItem(media, folderName, position) {
+  logEvent("info", "Création d'un élément média.", {
+    media,
+    folderName,
+    position,
+  });
 
   if (!media || typeof media !== "object") {
     logEvent("error", "Données de média invalides ou manquantes.", { media });
@@ -98,6 +111,10 @@ export function createMediaItem(media, folderName) {
   try {
     const mediaItem = document.createElement("article");
     mediaItem.className = "media-item";
+
+    // Ajouter les attributs data-id et data-position
+    mediaItem.setAttribute("data-id", media.id); // ID unique du média
+    mediaItem.setAttribute("data-position", position || 0); // Position dans la liste
 
     let mediaElement;
 
@@ -155,6 +172,15 @@ export function createMediaItem(media, folderName) {
  * @param {HTMLElement} galleryContainer - Conteneur HTML où afficher la galerie.
  * @returns {void}
  */
+/**
+ * Récupère une liste de médias et les affiche dans un conteneur HTML spécifié.
+ *
+ * @function renderMediaGallery
+ * @param {Array} mediaList - Liste des médias à afficher.
+ * @param {string} folderName - Nom du dossier contenant les fichiers.
+ * @param {HTMLElement} galleryContainer - Conteneur HTML où afficher la galerie.
+ * @returns {void}
+ */
 export function renderMediaGallery(mediaList, folderName, galleryContainer) {
   logEvent("info", "Début de l'affichage de la galerie média.", {
     mediaList,
@@ -180,8 +206,9 @@ export function renderMediaGallery(mediaList, folderName, galleryContainer) {
 
   try {
     galleryContainer.innerHTML = "";
-    mediaList.forEach((media) => {
-      const mediaItem = createMediaItem(media, folderName);
+    mediaList.forEach((media, index) => {
+      // Passer la position (index) au moment de la création du média
+      const mediaItem = createMediaItem(media, folderName, index);
       if (mediaItem) {
         galleryContainer.appendChild(mediaItem);
       }

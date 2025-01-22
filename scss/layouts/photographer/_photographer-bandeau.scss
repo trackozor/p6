@@ -21,7 +21,7 @@
   align-items: center; /* Centre les éléments horizontalement */
   background: #fafafa; /* Couleur de fond gris clair pour un contraste doux */
   justify-content: space-around; /* Espace égal entre les éléments */
-  margin-bottom: 5%; /* Espace en bas pour séparer des autres sections */
+  margin-bottom: 2%; /* Espace en bas pour séparer des autres sections */
   padding: 2% 0; /* Espace intérieur pour un design respirant */
 
   @include tablet {
@@ -31,8 +31,9 @@
     padding: 1% 0; /* Réduit le padding pour un design compact */
     justify-content: space-around; /* Garde l'espacement entre les éléments */
     align-items: center; /* Centre les éléments verticalement */
-    margin-bottom: 1%;;
+    margin-bottom: 1%;
   }
+  
   @include desktop {
     padding: 0; /* Réduit le padding pour un design compact */
     width:90%;
@@ -75,6 +76,7 @@
     width: 12%;
     height:12%;
     padding:0;
+    margin-top:3%;
   }
 }
 

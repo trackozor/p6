@@ -3,12 +3,9 @@
 // Description    : Gestion des médias et tri pour le projet Fisheye
 // Auteur         : Trackozor
 // Date           : 01/01/2025
-// Version        : 2.1.0
+// Version        : 2.4.0 (Synchronisation renforcée et logs améliorés)
 // ========================================================
 
-/*==============================================*/
-/*              Imports                         */
-/*==============================================*/
 import { logEvent } from "../../utils/utils.js";
 import { getPhotographerIdFromUrl } from "../../pages/photographer-page.js";
 
@@ -16,77 +13,37 @@ import { getPhotographerIdFromUrl } from "../../pages/photographer-page.js";
 /*              Fonctions de tri                */
 /*==============================================*/
 
-/**
- * Trie un tableau par le nombre de likes (descendant).
- * @param {Array} mediaList - Liste des médias.
- * @returns {Array} Liste triée.
- */
+const validateMediaList = (mediaList) => {
+  if (!Array.isArray(mediaList)) {
+    throw new TypeError("La liste des médias doit être un tableau.");
+  }
+};
+
 export const sortByLikes = (mediaList) => {
-  try {
-    logEvent("info", "Tri des médias par likes en cours.");
-    if (!Array.isArray(mediaList)) {
-      throw new TypeError("mediaList doit être un tableau.");
-    }
-
-    return [...mediaList].sort((a, b) => b.likes - a.likes);
-  } catch (error) {
-    logEvent("error", `Erreur lors du tri par likes : ${error.message}`);
-    return mediaList; // Retourne la liste originale en cas d'erreur
-  }
+  validateMediaList(mediaList);
+  return [...mediaList].sort((a, b) => b.likes - a.likes);
 };
 
-/**
- * Trie un tableau par ordre alphabétique (A -> Z) sur la propriété `title`.
- * @param {Array} mediaList - Liste des médias.
- * @returns {Array} Liste triée.
- */
 export const sortByTitle = (mediaList) => {
-  try {
-    logEvent("info", "Tri des médias par titre en cours.");
-    if (!Array.isArray(mediaList)) {
-      throw new TypeError("mediaList doit être un tableau.");
-    }
-
-    return [...mediaList].sort((a, b) => a.title.localeCompare(b.title));
-  } catch (error) {
-    logEvent("error", `Erreur lors du tri par titre : ${error.message}`);
-    return mediaList; // Retourne la liste originale en cas d'erreur
-  }
+  validateMediaList(mediaList);
+  return [...mediaList].sort((a, b) => a.title.localeCompare(b.title));
 };
 
-/**
- * Trie un tableau par date (récente -> ancienne).
- * @param {Array} mediaList - Liste des médias.
- * @returns {Array} Liste triée.
- */
 export const sortByDate = (mediaList) => {
-  try {
-    logEvent("info", "Tri des médias par date en cours.");
-    if (!Array.isArray(mediaList)) {
-      throw new TypeError("mediaList doit être un tableau.");
-    }
-
-    return [...mediaList].sort((a, b) => new Date(b.date) - new Date(a.date));
-  } catch (error) {
-    logEvent("error", `Erreur lors du tri par date : ${error.message}`);
-    return mediaList; // Retourne la liste originale en cas d'erreur
-  }
+  validateMediaList(mediaList);
+  return [...mediaList].sort((a, b) => new Date(b.date) - new Date(a.date));
 };
 
 /*==============================================*/
 /* Gestion des IDs et Positions des Médias      */
 /*==============================================*/
 
-/**
- * Associe les IDs des médias aux éléments DOM existants.
- * @param {Array} mediaList - Liste des médias récupérés.
- */
 export async function associateMediaIds(mediaList) {
   try {
-    logEvent("info", "Association des IDs aux éléments DOM en cours.");
+    validateMediaList(mediaList);
     const gallery = document.getElementById("gallery");
     if (!gallery) {
-      throw new Error("Galerie introuvable.");
+      throw new Error("Galerie introuvable dans le DOM.");
     }
 
     const mediaItems = gallery.querySelectorAll(".media-item");
@@ -101,11 +58,17 @@ export async function associateMediaIds(mediaList) {
       if (matchingMedia) {
         mediaItem.setAttribute("data-id", matchingMedia.id);
       } else {
-        logEvent("warn", `Aucun média trouvé pour le titre : "${title}"`);
+        logEvent(
+          "warn",
+          `Aucun média correspondant trouvé pour : "${title}".`,
+          {
+            element: mediaItem,
+          },
+        );
       }
     });
 
-    logEvent("success", "Association des IDs réussie.");
+    logEvent("success", "Association des IDs terminée.");
   } catch (error) {
     logEvent(
       "error",
@@ -114,30 +77,30 @@ export async function associateMediaIds(mediaList) {
   }
 }
 
-/**
- * Capture l'état actuel de la galerie en enregistrant les ID et positions.
- * @returns {Array} Liste des états des médias.
- */
 export async function captureGalleryState() {
   try {
-    logEvent("info", "Capture de l'état actuel de la galerie.");
     const gallery = document.getElementById("gallery");
     if (!gallery) {
-      throw new Error("Galerie introuvable.");
+      throw new Error("Galerie introuvable dans le DOM.");
     }
 
     const mediaItems = gallery.querySelectorAll(".media-item");
-    return Array.from(mediaItems).map((mediaItem, index) => {
-      const id = parseInt(mediaItem.getAttribute("data-id"), 10);
-      if (isNaN(id)) {
-        throw new Error(`ID invalide détecté à la position ${index}`);
-      }
-      return { id, position: index, element: mediaItem };
-    });
+    return Array.from(mediaItems)
+      .map((mediaItem, index) => {
+        const id = parseInt(mediaItem.getAttribute("data-id"), 10);
+        if (isNaN(id)) {
+          logEvent("warn", `ID invalide détecté à la position ${index}`, {
+            element: mediaItem,
+          });
+          return null;
+        }
+        return { id, position: index, element: mediaItem };
+      })
+      .filter(Boolean); // Supprime les éléments invalides
   } catch (error) {
     logEvent(
       "error",
-      `Erreur lors de la capture de l'état de la galerie : ${error.message}`,
+      `Erreur lors de la capture de la galerie : ${error.message}`,
     );
     return [];
   }
@@ -147,48 +110,45 @@ export async function captureGalleryState() {
 /* Fonction Principale : Gérer le Tri des Médias*/
 /*==============================================*/
 
-/**
- * Gère le tri des médias en fonction d'une option sélectionnée.
- * @param {string} sortOption - Option de tri sélectionnée (popularity, title, date).
- */
 export async function handleMediaSort(sortOption) {
-  logEvent("info", "Début du tri des médias.", { sortOption });
+  logEvent("test_start", "Début du processus de tri des médias.", {
+    sortOption,
+  });
 
   try {
-    // Récupérer l'ID du photographe
     const photographerId = getPhotographerIdFromUrl();
     if (!photographerId) {
       throw new Error("ID du photographe introuvable.");
     }
 
-    // Charger les données JSON des photographes
     const response = await fetch("../../assets/data/photographers.json");
     if (!response.ok) {
       throw new Error(`Erreur HTTP : ${response.status}`);
     }
 
     const data = await response.json();
-    const photographer = data.photographers.find(
-      (p) => p.id === parseInt(photographerId, 10),
+    const photographerMedia = data.media.filter(
+      (media) => media.photographerId === parseInt(photographerId, 10),
     );
 
-    if (!photographer || !Array.isArray(photographer.media)) {
-      throw new Error(
-        `Médias introuvables pour le photographe ID : ${photographerId}`,
+    if (!photographerMedia.length) {
+      logEvent(
+        "warn",
+        `Aucun média trouvé pour le photographe ID ${photographerId}.`,
       );
+      return;
     }
 
-    // Trier les médias
     let sortedMedia;
     switch (sortOption) {
       case "popularity":
-        sortedMedia = sortByLikes(photographer.media);
+        sortedMedia = sortByLikes(photographerMedia);
         break;
       case "title":
-        sortedMedia = sortByTitle(photographer.media);
+        sortedMedia = sortByTitle(photographerMedia);
         break;
       case "date":
-        sortedMedia = sortByDate(photographer.media);
+        sortedMedia = sortByDate(photographerMedia);
         break;
       default:
         throw new Error(`Option de tri inconnue : ${sortOption}`);
@@ -196,10 +156,7 @@ export async function handleMediaSort(sortOption) {
 
     logEvent("info", "Médias triés avec succès.", { sortedMedia });
 
-    // Capturer l'état actuel de la galerie
     const currentPositions = await captureGalleryState();
-
-    // Réorganiser les éléments dans le DOM
     const gallery = document.getElementById("gallery");
     if (!gallery) {
       throw new Error("Galerie introuvable dans le DOM.");
@@ -211,6 +168,10 @@ export async function handleMediaSort(sortOption) {
       );
       if (matchingMedia) {
         gallery.insertBefore(matchingMedia.element, gallery.children[index]);
+      } else {
+        logEvent("warn", `Aucun élément DOM pour l'ID : ${media.id}`, {
+          media,
+        });
       }
     });
 

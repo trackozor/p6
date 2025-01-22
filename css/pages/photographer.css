@@ -281,7 +281,7 @@ table {
 img,
 video {
   max-width: 100%; /* Limite la largeur à celle du conteneur */
-  height: auto; /* Conserve les proportions des médias */
+  height: 100%; /* Conserve les proportions des médias */
 }
 
 /* =============================================================================
@@ -336,6 +336,7 @@ a {
 /* -------------------------------------------------------------------------- */
 .contact_button {
   font-size: 1rem; /* Taille de la police pour le texte du bouton */
+  z-index: 50;
   font-weight: bold; /* Texte en gras pour plus de visibilité */
   color: white; /* Couleur du texte */
   padding: 3%; /* Espacement interne pour rendre le bouton plus grand */
@@ -517,7 +518,7 @@ a {
   object-fit: cover; /* Assure que l'image garde ses proportions */
   object-position: center; /* Centre le contenu de l'image */
   transform: scale(1.2); /* Agrandit légèrement l'image */
-  margin: 1% 0 5% 0; /* Ajoute un espacement autour de l'image */
+  margin: 5% 0; /* Ajoute un espacement autour de l'image */
   transition: transform 0.3s ease; /* Ajoute une animation fluide */
   cursor: pointer; /* Change le curseur au survol */
   /* ------------------------- Responsive ------------------------*/
@@ -1013,7 +1014,7 @@ body.no-scroll {
   align-items: center; /* Centre les éléments horizontalement */
   background: #fafafa; /* Couleur de fond gris clair pour un contraste doux */
   justify-content: space-around; /* Espace égal entre les éléments */
-  margin-bottom: 5%; /* Espace en bas pour séparer des autres sections */
+  margin-bottom: 2%; /* Espace en bas pour séparer des autres sections */
   padding: 2% 0; /* Espace intérieur pour un design respirant */
 }
 @media (min-width: 767px) {
@@ -1077,6 +1078,7 @@ body.no-scroll {
     width: 12%;
     height: 12%;
     padding: 0;
+    margin-top: 3%;
   }
 }
 

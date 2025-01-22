@@ -204,6 +204,7 @@ async function initPhotographerPage() {
     }
     // Initialisation des gestionnaires d'événements
     initstatscalculator();
+    initEventListeners();
 
     logEvent("success", "Page photographe initialisée avec succès.");
   } catch (error) {
@@ -224,7 +225,6 @@ async function initPhotographerPage() {
  */
 document.addEventListener("DOMContentLoaded", () => {
   try {
-    initEventListeners();
     initPhotographerPage();
   } catch (error) {
     logEvent("error", "Erreur critique lors du chargement de la page.", {
