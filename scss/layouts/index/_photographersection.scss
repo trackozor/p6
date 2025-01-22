@@ -1,39 +1,42 @@
 /* =============================================================================
-    Projet      :   Fisheye
-    Fichier     :   photographer-section.scss
-    Auteur      :   Trackozor
-    Date        :   01/01/2025
-    Version     :   1.0.0
-    Description :   Styles pour la section des photographes, incluant la gestion
-                    des conteneurs des cartes et leur adaptation responsive.
+    Projet      : Fisheye
+    Fichier     : photographer-section.scss
+    Auteur      : Trackozor
+    Date        : 01/01/2025
+    Version     : 1.0.0
+    Description : Styles pour la section des photographes, incluant la gestion
+                des conteneurs des cartes et leur adaptation responsive.
 ============================================================================= */
+
 /* -------------------------------------------------------------------------- */
-/* Styles pour les conteneurs des cartes                                      */
+/* Conteneur principal des photographes                                       */
+/* Description : Organisation des cartes des photographes dans une grille.    */
+/* Inclut une gestion responsive pour les tablettes et grands écrans.         */
 /* -------------------------------------------------------------------------- */
 
-/* Conteneur principal des photographes */
 #photographers-container {
-  display: grid; /* Utilisation de la grille CSS pour organiser les cartes */
-  max-width:80%;
-  gap: var(
-    --spacing-base
-  ); /* Espacement entre les éléments, basé sur une variable */
-  margin:2% auto;
-  padding: 0 var(--spacing-base); /* Espacement horizontal pour aligner le contenu */
+  display: grid; /* Mise en page avec une grille CSS */
+  max-width: 80%; /* Limite la largeur maximale du conteneur */
+  gap: var(--spacing-base); /* Espacement entre les éléments (utilise une variable) */
+  margin: 2% auto; /* Centre le conteneur verticalement et horizontalement */
+  padding: 0 var(--spacing-base); /* Espacement horizontal pour l'alignement */
 
-  /* ------------------------- Responsives -------------------------------- */
-  /* Styles spécifiques pour les écrans de type tablette */
+  /* ----------------------------------------------------------------------- */
+  /* Responsive : Tablettes                                                  */
+  /* Description : Adapte la grille pour afficher 2 colonnes sur tablette.   */
+  /* ----------------------------------------------------------------------- */
   @include tablet {
-    grid-template-columns: repeat(2, 1fr); /* 2 colonnes pour les tablettes */
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes de tailles égales */
   }
 
-  /* Styles spécifiques pour les écrans de type ordinateur */
+  /* ----------------------------------------------------------------------- */
+  /* Responsive : Ordinateurs                                                */
+  /* Description : Adapte la grille pour afficher 3 colonnes sur ordinateur. */
+  /* ----------------------------------------------------------------------- */
   @include desktop {
-    grid-template-columns: repeat(3, 1fr); /* 3 colonnes pour les ordinateurs */
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de tailles égales */
+    margin:0 auto;
   }
 
-  /* Styles spécifiques pour les écrans larges (grands ordinateurs) */
-  @include large-desktop {
-    grid-template-columns: repeat(3, 1fr); /* 4 colonnes pour écrans larges */
-  }
+  
 }

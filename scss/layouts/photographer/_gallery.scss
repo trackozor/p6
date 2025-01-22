@@ -1,3 +1,20 @@
+/* =============================================================================
+    Projet      : Fisheye
+    Fichier     : gallery.scss
+    Auteur      : Trackozor
+    Date        : 08/01/2025
+    Version     : 1.0.0
+    Description : Styles pour la galerie d'images, avec une mise en page 
+                responsive et une organisation en grille pour les tablettes 
+                et écrans de bureau.
+============================================================================= */
+
+
+/* -------------------------------------------------------------------------- */
+/* Conteneur principal de la galerie (#gallery)                               */
+/* Description : Mise en page par défaut avec Flexbox pour les petits écrans, */
+/*               et grille pour les écrans moyens et grands.                  */
+/* -------------------------------------------------------------------------- */
 #gallery {
     width: 90%;
     display: flex;

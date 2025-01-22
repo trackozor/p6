@@ -1,76 +1,91 @@
 /* =============================================================================
-    Projet      : Fisheye
-    Fichier     : _modal.scss
-    Auteur      : Trackozor
-    Date        : 08/01/2025
-    Version     : 1.2.0
-    Description : Styles pour les modales de l'application Fisheye
+   Projet      : Fisheye
+   Fichier     : _modal.scss
+   Auteur      : Trackozor
+   Date        : 08/01/2025
+   Version     : 1.2.0
+   Description : Styles pour les modales de l'application Fisheye,
+                 incluant les animations, les formulaires et la gestion 
+                 des états (erreur, actif, etc.).
 ============================================================================= */
 
-/* Conteneur principal de la modal */
+/* -------------------------------------------------------------------------- */
+/*                            MODAL GÉNÉRIQUE                                 */
+/* -------------------------------------------------------------------------- */
+/* Conteneur principal pour toutes les modales */
+
 .modal {
-  display: flex; /* Masquée par défaut */
-  position: fixed; /* Position fixe */
-  z-index: 100; /* Au-dessus des autres éléments */
+  display: flex; /* Flexbox pour centrer les éléments */
+  position: fixed; /* Positionne la modal au-dessus de la page */
+  z-index: 100; /* Priorité d'affichage élevée */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #db8876; /* Couleur de fond */
-  border-radius: 5px;
-  display: flex; /* Flexbox pour centrer le contenu */
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transform: scale(0.9); /* Animation d'apparition */
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  background-color: #db8876; /* Fond par défaut */
+  border-radius: 5px; /* Coins arrondis */
+  justify-content: center; /* Centre horizontalement */
+  align-items: center; /* Centre verticalement */
+  opacity: 0; /* Masquée par défaut */
+  transform: scale(0.9); /* Animation initiale réduite */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Animation fluide */
 
   &.active {
-    display: flex; /* Affiche la modal */
-    opacity: 1;
+    opacity: 1; /* Affiche la modal */
     transform: scale(1); /* Taille normale */
   }
 
   &.error-modal {
-    background-color: #ff6b6b; /* Fond rouge en cas d'erreur */
+    background-color: #ff6b6b; /* Style pour les erreurs */
   }
 }
 
-/* Overlay de la modal */
-#modal-overlay {
-  display: none;
-  position: fixed;
-  z-index: 9999; /* Positionne la modale au-dessus des autres éléments */
-  left: 50%; /* Centre horizontalement */
-  transform: translateX(-50%); /* Corrige le centrage horizontal */
-  width: 100%; /* Occupe toute la largeur pour un effet plein écran */
-  height: 100%; /* Permet à la hauteur de s'adapter au contenu */
-  background-color: #232323; /* Définit un fond gris très foncé, idéal pour le contraste avec du texte clair */
-  color: white; /* Texte blanc */
-  overflow-y: auto; /* Permet le défilement si le contenu dépasse la hauteur visible */
-  border-radius: 1%; /* Coin arrondis */
+/* -------------------------------------------------------------------------- */
+/*                               OVERLAY                                      */
+/* -------------------------------------------------------------------------- */
+/* Fond assombri derrière la modal */
 
+#modal-overlay {
+  display: none; /* Masqué par défaut */
+  position: fixed;
+  z-index: 9999; /* Sous la modal */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  background-color: #232323; /* Fond sombre */
+  color: white; /* Texte blanc pour le contraste */
+  overflow-y: auto; /* Permet le défilement */
+  border-radius: 1%; /* Coins arrondis */
 }
 
-/* Modal de contact */
+/* -------------------------------------------------------------------------- */
+/*                          MODAL DE CONTACT                                 */
+/* -------------------------------------------------------------------------- */
+/* Styles spécifiques pour la modal de contact */
+
 #contact-modal {
   display: none;
   margin: 0 auto;
   opacity: 0;
-  transform: scale(0.9);
+  transform: scale(0.9); /* Animation initiale réduite */
   transition: opacity 0.3s ease, transform 0.3s ease;
-}
 
-  #contact-modal.active {
+  &.active {
     display: flex;
-    opacity: 1;
+    opacity: 1; /* Affiche la modal */
     transform: scale(1); /* Taille normale */
+  }
 }
 
-/* Groupe de champs de formulaire */
+/* -------------------------------------------------------------------------- */
+/*                      FORMULAIRE DE LA MODAL                               */
+/* -------------------------------------------------------------------------- */
+/* Groupe des champs du formulaire */
+
 .form-group {
   width: 85vw;
-  max-width: 500px;
+  max-width: 500px; /* Largeur maximale pour s'adapter à l'écran */
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -79,35 +94,38 @@
 /* Labels des champs */
 .form-group label {
   font-size: 1rem;
-  margin: 2% 0;
+  margin: 2% 0; /* Espacement pour une meilleure lisibilité */
 }
 
 /* Champs de saisie */
 .form-group input,
 .form-group textarea {
   font-size: 1rem;
-  padding: 2%;
-  border: 1px solid #ccc;
-  border-radius: 0.3rem;
-  width: 100%;
-  box-sizing: border-box;
+  padding: 2%; /* Espacement intérieur */
+  border: 1px solid #ccc; /* Bordure grise */
+  border-radius: 0.3rem; /* Coins légèrement arrondis */
+  width: 100%; /* Occupe toute la largeur */
+  box-sizing: border-box; /* Inclut le padding dans la largeur */
 }
 
 /* Bouton d'envoi */
 .contact-button {
-  background-color: #901c1c;
-  color: white;
-  padding: 3%;
-  border: none;
-  border-radius: 0.3rem;
-  cursor: pointer;
+  background-color: #901c1c; /* Couleur principale */
+  color: white; /* Texte en blanc */
+  padding: 3%; /* Espacement intérieur */
+  border: none; /* Aucun contour */
+  border-radius: 0.3rem; /* Coins arrondis */
+  cursor: pointer; /* Curseur pointer pour indiquer l'action */
   max-width: 150px;
   max-height: 70px;
-  transition: background-color 0.3s ease;
-
+  transition: background-color 0.3s ease; /* Animation de couleur */
 }
 
-/* Classe pour désactiver le défilement quand la modal est ouverte */
+/* -------------------------------------------------------------------------- */
+/*                CLASSE POUR DÉSACTIVER LE DÉFILEMENT GLOBAL                 */
+/* -------------------------------------------------------------------------- */
+/* Utilisé quand une modal est ouverte */
+
 body.no-scroll {
-  overflow: hidden; /* Désactive le défilement */
+  overflow: hidden; /* Empêche le défilement de la page */
 }

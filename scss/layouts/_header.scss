@@ -1,113 +1,112 @@
-/* ===========================================================================================
-    Projet      :   Fisheye
-    Fichier     :   _header.scss
-    Auteur      :   Trackozor
-    Date        :   01/01/2025
-    Version     :   1.0.0
-    Description :   Styles pour le header du site, incluant le logo et le titre.
-                    Inclut une gestion responsive pour s'adapter à différentes tailles d'écran.
-================================================================================================= */
+/* =========================================================================================== */
+/* Projet      : Fisheye                                                                       */
+/* Fichier     : _header.scss                                                                  */
+/* Auteur      : Trackozor                                                                      */
+/* Date        : 01/01/2025                                                                    */
+/* Version     : 1.0.0                                                                         */
+/* Description : Styles pour le header du site, incluant le logo et le titre.                  */
+/*               Gestion responsive pour différentes tailles d'écran.                          */
+/* =========================================================================================== */
 
 /* ------------------------------------------------------------------------- */
-/*                        Styles par défaut (Mobile First)                   */
-/* Description : Styles principaux pour le header, optimisés pour mobiles.   */
+/*                              STYLES GÉNÉRAUX                              */
 /* ------------------------------------------------------------------------- */
+/* Description : Applique les styles principaux pour le header (Mobile First) 
+                 et gère les différentes tailles d'écran.                    */
 
 header {
-  display: flex; /* Utilise Flexbox pour organiser les éléments enfants */
-  flex-direction: row; /* Aligne les éléments horizontalement */
-  justify-content: space-between; /* Crée un espace entre le logo et le titre */
-  align-items: center; /* Centre les éléments verticalement */
-  width: 95%; /* Largeur relative pour s'adapter à différentes tailles d'écran */
-  height: auto; /* La hauteur s'ajuste automatiquement au contenu */
-  padding: 5%  0; /* Espacement en haut et en bas */
-  gap: 2%; /* Espace horizontal entre les éléments enfants */
-  margin: 0 auto; /* Centre le header horizontalement */
+  display: flex; /* Organisation des enfants en ligne */
+  flex-direction: row; /* Aligne horizontalement les éléments enfants */
+  justify-content: space-between; /* Espace entre le logo et le titre */
+  align-items: center; /* Centrage vertical des éléments */
+  width: 95%; /* Largeur adaptative */
+  height: auto; /* Hauteur dynamique */
+  padding: 5% 0; /* Marges verticales */
+  gap: 2%; /* Espacement horizontal entre les éléments */
+  margin: 0 auto; /* Centrage horizontal du header */
 
-  /* ------------------------ Responsives ----------------------------------- */
-
+  /* Styles Responsives */
   @include tablet {
-    width: 80%; /* Réduit la largeur pour un alignement visuel plus centré */
-    padding: 3% 0 2% 0; /* Diminue les marges verticales pour plus de compacité */
+    width: 80%; /* Ajustement pour tablettes */
+    padding: 3% 0 2% 0; /* Marges réduites */
   }
 
   @include desktop {
-    width: 85%; /* Augmente la largeur pour équilibrer les proportions */
+    width: 85%; /* Ajustement pour écrans de bureau */
   }
 
   @include large-desktop {
-    width: 80%; /* Réduit légèrement la largeur pour une meilleure mise en page */
+    width: 80%; /* Ajustement pour grands écrans */
   }
 }
 
 /* -------------------------------------------------------------------------- */
-/* Logo                                                                       */
-/* Description : Définit les dimensions et le positionnement                  */
+/* LOGO                                                                       */
 /* -------------------------------------------------------------------------- */
+/* Description : Définit les dimensions et le positionnement du logo */
 
 .logo {
-  width: 30vw; /* Largeur relative au viewport pour le logo */
-  max-width: 120px; /* Limite la largeur maximale pour éviter une taille excessive */
-  height: auto; /* Garde les proportions originales */
-  padding-left: 15%; /* Ajoute un espacement à gauche pour éloigner du bord */
+  width: 30vw; /* Largeur adaptative basée sur le viewport */
+  max-width: 120px; /* Limite la taille maximale */
+  height: auto; /* Conserve les proportions */
+  padding-left: 15%; /* Espacement à gauche */
 
-  /* ------------------------ Responsives -------------------------------- */
+  /* Styles Responsives */
   @include tablet {
-    max-width: 200px; /* Augmente la taille maximale pour les écrans moyens */
-    padding-left: 10%; /* Réduit l'espacement à gauche pour une meilleure proportion */
+    max-width: 200px; /* Taille maximale augmentée */
+    padding-left: 10%; /* Réduction de l'espacement gauche */
   }
 }
 
 /* -------------------------------------------------------------------------- */
-/* Titre                                                                      */
-/* Description : Définit les dimensions, la typographie et le positionnement  */
+/* TITRE                                                                      */
 /* -------------------------------------------------------------------------- */
+/* Description : Définit la typographie, le positionnement et les dimensions 
+                 du titre principal */
 
 h1 {
-  position: relative; /* Permet un ajustement fin de la position */
-  top: 4%; /* Décale légèrement le titre vers le bas */
-  font-size: var(
-    --font-size-base
-  ); /* Taille de police définie dans les variables */
-  color: var(--primary-color); /* Applique la couleur principale au titre */
+  position: relative; /* Permet des ajustements précis */
+  top: 4%; /* Décalage vertical léger */
+  font-size: var(--font-size-base); /* Taille de police par défaut */
+  color: var(--primary-color); /* Couleur principale */
   margin: 0; /* Supprime les marges par défaut */
 
-  /* ------------------------ Responsives ---------------------------------- */
+  /* Styles Responsives */
   @include tablet {
-    font-size: var(
-      --font-size-large
-    ); /* Augmente la taille du texte pour une meilleure lisibilité */
+    font-size: var(--font-size-large); /* Taille augmentée pour tablettes */
   }
 }
 
 /* -------------------------------------------------------------------------- */
-/* photographer-header                                                        */
-/* Description : ajustement spécifique à la pages photographer.html           */
+/* HEADER PHOTOGRAPHER                                                        */
 /* -------------------------------------------------------------------------- */
-.photographer-header  {
-  width: 100%; /* Largeur relative au viewport pour le logo */
-  height: auto; /* Garde les proportions originales */
-  margin:0 auto;
-  justify-content: center;
-  
+/* Description : Ajustements spécifiques pour la page photographer.html */
+
+.photographer-header {
+  width: 100%; /* Largeur complète */
+  height: auto; /* Conserve les proportions */
+  margin: 0 auto; /* Centrage horizontal */
+  justify-content: center; /* Centrage du contenu */
+
+  /* Styles Responsives */
   @include tablet {
-    width: 85%; /* Réduit la largeur pour un alignement visuel plus centré */
-    padding:2% 0; /* Diminue les marges verticales pour plus de compacité */
-    justify-content: left;
+    width: 85%; /* Largeur réduite */
+    padding: 2% 0; /* Marges verticales réduites */
+    justify-content: left; /* Alignement à gauche */
   }
 }
 
 .photographer-header img {
-  padding-left:0;
+  padding-left: 0; /* Suppression du padding gauche */
 
+  /* Styles Responsives */
   @include tablet {
-    width:70%;
-    padding-left: 5%; /* Réduit l'espacement à gauche pour une meilleure proportion */
+    width: 70%; /* Taille adaptée aux tablettes */
+    padding-left: 5%; /* Espacement gauche ajusté */
   }
 
   @include large-desktop {
-    width:80%;
-    padding-left: 10%;
+    width: 80%; /* Taille augmentée pour grands écrans */
+    padding-left: 10%; /* Espacement gauche ajusté */
   }
-  
 }

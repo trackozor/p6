@@ -201,8 +201,7 @@
   transition: transform 0.3s, box-shadow 0.3s;
   object-position: center;
 
-  @include tablet{
-    height:40%;
+  @include tablet{ 
     margin: 2% auto;
     width:70%;
   }

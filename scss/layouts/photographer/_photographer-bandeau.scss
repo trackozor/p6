@@ -36,7 +36,13 @@
   @include desktop {
     padding: 0; /* Réduit le padding pour un design compact */
     width:90%;
-    margin: 0 auto;
+    margin: 0 auto; 
+  }
+
+  @include large-desktop {
+    padding: 0; /* Réduit le padding pour un design compact */
+    width:90%;
+    margin: 0 auto;  /* Centre horizontalement le contenu */
   }
 }
 
@@ -65,7 +71,7 @@
     display: flex;
     position: relative;
     margin-right: 5%; /* Réduit l'espace à droite pour les écrans plus grands */
-    top:3vh;
+    top:2%;
     width: 12%;
     height:12%;
     padding:0;
@@ -103,8 +109,11 @@
     right:5%;
     padding:1%;
   }
+  @include large-desktop {
+    top:90%;
+  }
 }
 
-.photographer-stats i {
+#photographer-stats  .like-icon  {
   color:black;
 }

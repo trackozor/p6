@@ -6,7 +6,12 @@
 // Version        : 1.0.0
 // ========================================================
 
-// Lightbox
+// --------------------------------------------------------------------------
+// Lightbox principale
+// Description : Définit les styles généraux de la lightbox, incluant son 
+// positionnement, ses transitions, et sa gestion d'état (visible/masquée).
+// --------------------------------------------------------------------------
+
 .lightbox {
   position: fixed;
   inset: 0; // Top, right, bottom, left = 0
@@ -16,18 +21,23 @@
   background-color: var(--primary-color); // Fond de la lightbox
   opacity: 0;
   visibility: hidden;
-  z-index: 1000; // Peut être remplacé par une nouvelle variable si nécessaire
+  z-index: 1000; // Niveau d'empilement pour être au-dessus des autres éléments
   transition:
     opacity var(--transition-default),
     visibility var(--transition-default);
 
   &[aria-hidden="false"] {
-    opacity: 1;
+    opacity: 1; // Affiche la lightbox
     visibility: visible;
   }
 }
 
-// Contenu principal
+// --------------------------------------------------------------------------
+// Contenu de la lightbox
+// Description : Conteneur principal des médias et des boutons d'interaction.
+// Inclut une gestion responsive pour mobile.
+// --------------------------------------------------------------------------
+
 .lightbox-content {
   position: relative;
   max-width: 90%;
@@ -38,38 +48,42 @@
   align-items: center;
   background: var(--neutral-color); // Couleur d'arrière-plan claire
   border-radius: var(--border-radius-medium);
-  box-shadow: var(--box-shadow-large); // Ombre pour le relief
+  box-shadow: var(--box-shadow-large); // Ombre pour un effet de relief
   overflow: hidden;
   outline: none;
 
   @media (max-width: 768px) {
     max-width: 100%;
     max-height: 100%;
-    border-radius: 0; // Supprimer les arrondis sur mobile
+    border-radius: 0; // Suppression des arrondis sur mobile
   }
 }
 
+// --------------------------------------------------------------------------
 // Boutons d'action
+// Description : Styles pour les boutons génériques (fermeture, navigation).
+// Inclut des transitions et des états interactifs.
+// --------------------------------------------------------------------------
+
 button {
-  all: unset;
+  all: unset; // Supprime les styles par défaut des boutons
   position: absolute;
   background: transparent;
   cursor: pointer;
-  border: none;
-  color: var(--text-color-primary); // Texte noir par défaut
-  font-size: var(--font-size-large); // Police adaptable avec vos variables
+  color: var(--text-color-primary); // Couleur de texte principale
+  font-size: var(--font-size-large); // Taille adaptative
   padding: var(--spacing-xsmall);
   transition: opacity var(--transition-fast);
 
   svg {
     fill: currentColor;
-    width: var(--size-medium); // Icône adaptative
+    width: var(--size-medium); // Taille des icônes
     height: var(--size-medium);
   }
 
   &:hover,
   &:focus {
-    opacity: 0.8;
+    opacity: 0.8; // Interaction visuelle
   }
 }
 
@@ -84,15 +98,13 @@ button {
 .lightbox-next {
   top: 50%;
   transform: translateY(-50%);
-  background-color: var(--primary-color-light); // Rouge plus clair pour hover
+  background-color: var(--primary-color-light); // Fond clair par défaut
   color: var(--neutral-color); // Texte blanc
   border-radius: var(--border-radius-small);
   padding: var(--spacing-xsmall);
 
   &:hover {
-    background-color: var(
-      --secondary-color
-    ); // Couleur secondaire pour l'interaction
+    background-color: var(--secondary-color); // Couleur secondaire au survol
   }
 }
 
@@ -104,7 +116,12 @@ button {
   right: var(--spacing-medium);
 }
 
+// --------------------------------------------------------------------------
 // Conteneur des médias
+// Description : Zone où les images et vidéos sont affichées. 
+// Les médias s'adaptent à l'espace disponible.
+// --------------------------------------------------------------------------
+
 .lightbox-media-container {
   width: 100%;
   height: auto;
@@ -117,21 +134,29 @@ button {
   video {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain;
+    object-fit: contain; // Préserve les proportions des médias
   }
 }
 
+// --------------------------------------------------------------------------
 // Légende
+// Description : Styles pour afficher les légendes sous les médias.
+// --------------------------------------------------------------------------
+
 .lightbox-caption {
   margin-top: var(--spacing-small);
   font-size: var(--font-size-small);
-  color: var(--text-color-secondary); // Texte rouge secondaire
+  color: var(--text-color-secondary); // Couleur secondaire pour le texte
   text-align: center;
   max-width: 90%;
   line-height: var(--line-height-normal);
 }
 
+// --------------------------------------------------------------------------
 // Animations
+// Description : Animation d'apparition/disparition pour la lightbox.
+// --------------------------------------------------------------------------
+
 @keyframes fadeIn {
   from {
     opacity: 0;
