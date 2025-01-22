@@ -3,15 +3,13 @@
 // Description    : Gestion de la modale dans l'application Fisheye
 // Auteur         : Trackozor
 // Date           : 01/01/2025
-// Version        : 2.2.0 (Optimisations et robustesse accrue)
+// Version        : 2.3.0 (Ajout de logs enrichis pour toutes les étapes)
 // ========================================================
 
 /*==============================================*/
 /*              Imports                        */
 /*=============================================*/
-import { logEvent, addClass, removeClass } from "../../utils/utils.js";
-import { CONFIGLOG } from "../../config/constants.js";
-import domSelectors from "../../config/domSelectors.js";
+import { logEvent } from "../../utils/utils.js";
 
 /*==============================================*/
 /*              Variables                       */
@@ -21,7 +19,6 @@ let modalOpen = false; // Variable globale pour suivre l'état de la modale
 /*==============================================*/
 /*              Ouverture modale                */
 /*=============================================*/
-
 /**
  * Affiche la modale et empêche le défilement en arrière-plan.
  *
@@ -34,41 +31,40 @@ export function launchModal() {
   );
 
   try {
-    logEvent("info", "Tentative d'ouverture de la modale...");
+    logEvent("info", "Vérification des éléments DOM nécessaires...");
+    const contactOverlay = document.getElementById("modal-overlay");
+    const contactModal = document.getElementById("contact-modal");
 
-    // Étape 1 : Vérifie l'existence des éléments DOM requis
-    const { contactOverlay, contactModal } = domSelectors.modal;
     if (!contactOverlay || !contactModal) {
-      throw new Error(
-        "Éléments DOM requis pour la modale introuvables. Vérifiez les sélecteurs.",
-      );
+      logEvent("error", "Éléments DOM requis pour la modale introuvables.", {
+        contactOverlay,
+        contactModal,
+      });
+      throw new Error("Éléments DOM requis pour la modale introuvables.");
     }
 
-    // Étape 2 : Ajoute la classe pour afficher la modale
-    contactOverlay.classList.add(CONFIGLOG.CSS_CLASSES.MODAL_ACTIVE);
-    contactModal.classList.add(CONFIGLOG.CSS_CLASSES.MODAL_ACTIVE);
+    logEvent("info", "Ajout des classes pour afficher la modale...");
+    contactOverlay.classList.add("modal-active");
+    contactModal.classList.add("modal-active");
+
     logEvent("success", "Modale affichée avec succès.", {
       overlayClasses: contactOverlay.classList.value,
       modalClasses: contactModal.classList.value,
     });
 
-    // Étape 3 : Désactive le défilement de l'arrière-plan
-    if (
-      !document.body.classList.contains(CONFIGLOG.CSS_CLASSES.BODY_NO_SCROLL)
-    ) {
-      document.body.classList.add(CONFIGLOG.CSS_CLASSES.BODY_NO_SCROLL);
-      logEvent("success", "Défilement désactivé pour l'arrière-plan.", {
+    logEvent("info", "Désactivation du défilement de l'arrière-plan...");
+    if (!document.body.classList.contains("no-scroll")) {
+      document.body.classList.add("no-scroll");
+      logEvent("success", "Défilement désactivé.", {
         bodyClasses: document.body.classList.value,
       });
     }
 
-    // Étape 4 : Met à jour l'état global
     modalOpen = true;
     logEvent("info", 'État global de la modale mis à jour : "ouvert".', {
       modalOpen,
     });
   } catch (error) {
-    // Gestion des erreurs
     logEvent("error", "Erreur lors de l'ouverture de la modale.", {
       message: error.message,
       stack: error.stack,
@@ -81,7 +77,6 @@ export function launchModal() {
 /*==============================================*/
 /*              Fermeture modale                */
 /*=============================================*/
-
 /**
  * Ferme la modale et réactive le défilement de la page.
  *
@@ -94,14 +89,11 @@ export function closeModal() {
   );
 
   try {
-    logEvent("info", "Tentative de fermeture de la modale...");
+    logEvent("info", "Vérification de l'état de la modale...");
+    const contactOverlay = document.getElementById("modal-overlay");
+    const contactModal = document.getElementById("contact-modal");
 
-    // Étape 1 : Vérifie si la modale est ouverte
-    const { contactOverlay, contactModal } = domSelectors.modal;
-    if (
-      !modalOpen ||
-      !contactModal?.classList.contains(CONFIGLOG.CSS_CLASSES.MODAL_ACTIVE)
-    ) {
+    if (!modalOpen || !contactModal?.classList.contains("modal-active")) {
       logEvent("warn", "Modale déjà fermée ou état incohérent.", {
         modalOpen,
         modalClasses: contactModal?.classList.value || "Inexistant",
@@ -109,31 +101,28 @@ export function closeModal() {
       return;
     }
 
-    // Étape 2 : Supprime les classes pour masquer la modale
-    contactOverlay.classList.remove(CONFIGLOG.CSS_CLASSES.MODAL_ACTIVE);
-    contactModal.classList.remove(CONFIGLOG.CSS_CLASSES.MODAL_ACTIVE);
+    logEvent("info", "Suppression des classes pour masquer la modale...");
+    contactOverlay.classList.remove("modal-active");
+    contactModal.classList.remove("modal-active");
+
     logEvent("success", "Modale masquée avec succès.", {
       overlayClasses: contactOverlay.classList.value,
       modalClasses: contactModal.classList.value,
     });
 
-    // Étape 3 : Réactive le défilement de l'arrière-plan
-    if (
-      document.body.classList.contains(CONFIGLOG.CSS_CLASSES.BODY_NO_SCROLL)
-    ) {
-      document.body.classList.remove(CONFIGLOG.CSS_CLASSES.BODY_NO_SCROLL);
-      logEvent("success", "Défilement de l'arrière-plan réactivé.", {
+    logEvent("info", "Réactivation du défilement de l'arrière-plan...");
+    if (document.body.classList.contains("no-scroll")) {
+      document.body.classList.remove("no-scroll");
+      logEvent("success", "Défilement réactivé.", {
         bodyClasses: document.body.classList.value,
       });
     }
 
-    // Étape 4 : Met à jour l'état global
     modalOpen = false;
     logEvent("info", 'État global de la modale mis à jour : "fermé".', {
       modalOpen,
     });
   } catch (error) {
-    // Gestion des erreurs
     logEvent("error", "Erreur lors de la fermeture de la modale.", {
       message: error.message,
       stack: error.stack,
@@ -143,136 +132,103 @@ export function closeModal() {
   logEvent("test_end_modal", "Fin de la tentative de fermeture de la modale.");
 }
 
-/*===============================================================================================*/
-/*                                 ======= Modal de confirmation =======                         */
-/*===============================================================================================*/
-
-/* ============ Fonction pour ouvrir la modale de confirmation ============*/
+/*==============================================*/
+/*              Modale de confirmation          */
+/*=============================================*/
 /**
  * Ouvre la modale de confirmation.
- *
- * Étapes principales :
- * 1. Vérifie si la modale de confirmation est déjà active pour éviter les duplications.
- * 2. Ajoute les classes nécessaires pour afficher la modale et désactiver le défilement.
- * 3. Enregistre chaque action importante dans les logs pour le suivi.
- * 4. Gère les éventuelles erreurs et les journalise dans la console.
  *
  * @returns {void}
  */
 export function openConfirmationModal() {
+  logEvent(
+    "test_start_modal",
+    "Début de l'ouverture de la modale de confirmation.",
+  );
+
   try {
-    // Étape 2 : Vérifie si la modale est déjà active
-    if (
-      domSelectors.confirmationModal.classList.contains(
-        CONFIGLOG.CSS_CLASSES.MODAL_ACTIVE,
-      )
-    ) {
-      logEvent("warn", "La modale de confirmation est déjà ouverte.", {
-        modalState: "active",
-      });
-      return; // Sortie anticipée si la modale est déjà active
-    }
+    const confirmationModal = document.getElementById("confirmation-modal");
 
-    // Étape 3 : Affiche la modale de confirmation
-    addClass(
-      domSelectors.confirmationModal,
-      CONFIGLOG.CSS_CLASSES.MODAL_ACTIVE,
-    ); // Ajoute la classe CSS pour rendre la modale visible
-    domSelectors.confirmationModal.setAttribute("aria-hidden", "false"); // Met à jour l'accessibilité
-    logEvent("success", "Modale de confirmation affichée avec succès.", {
-      modalState: "active",
-    });
-
-    // Étape 4 : Place le focus sur un élément de la modale
-    const firstFocusableElement = domSelectors.confirmationModal.querySelector(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    );
-    if (firstFocusableElement) {
-      firstFocusableElement.focus(); // Place le focus sur le premier élément interactif
+    if (!confirmationModal) {
       logEvent(
-        "info",
-        "Focus placé sur le premier élément interactif de la modale.",
+        "error",
+        "Élément DOM de la modale de confirmation introuvable.",
       );
+      throw new Error("Élément DOM introuvable.");
     }
+
+    if (confirmationModal.classList.contains("modal-active")) {
+      logEvent("warn", "La modale de confirmation est déjà ouverte.");
+      return;
+    }
+
+    confirmationModal.classList.add("modal-active");
+    confirmationModal.setAttribute("aria-hidden", "false");
+
+    logEvent("success", "Modale de confirmation affichée avec succès.", {
+      modalClasses: confirmationModal.classList.value,
+    });
   } catch (error) {
-    // Étape 5 : Gestion des erreurs
     logEvent(
       "error",
       "Erreur lors de l'ouverture de la modale de confirmation.",
-      { error: error.message },
-    );
-    console.error(
-      "Erreur lors de l'ouverture de la modale de confirmation :",
-      error,
+      {
+        message: error.message,
+        stack: error.stack,
+      },
     );
   }
+
+  logEvent(
+    "test_end_modal",
+    "Fin de l'ouverture de la modale de confirmation.",
+  );
 }
 
-/* ============ Fonction pour fermer la modale de confirmation ============ */
 /**
- * Ferme la modale et réactive le défilement de la page.
- *
- * Étapes principales :
- * 1. Vérifie si la modale est active ou si l'état global indique qu'elle est déjà fermée.
- * 2. Supprime les classes CSS utilisées pour afficher la modale.
- * 3. Réactive le défilement de la page.
- * 4. Met à jour l'état global de la modale (`modalOpen`).
- * 5. Journalise chaque étape pour le suivi.
+ * Ferme la modale de confirmation.
  *
  * @returns {void}
  */
 export function closeConfirmationModal() {
+  logEvent(
+    "test_start_modal",
+    "Début de la fermeture de la modale de confirmation.",
+  );
+
   try {
-    // Étape 1 : Validation - Vérifie si la modale existe et est active
-    if (!domSelectors.confirmationModal) {
+    const confirmationModal = document.getElementById("confirmation-modal");
+
+    if (
+      !confirmationModal ||
+      !confirmationModal.classList.contains("modal-active")
+    ) {
       logEvent(
-        "error",
-        "Élément modaloverlay introuvable. Impossible de fermer la modale.",
+        "warn",
+        "La modale de confirmation est déjà fermée ou introuvable.",
       );
       return;
     }
 
-    if (
-      !modalOpen ||
-      !domSelectors.confirmationModal.classList.contains(
-        CONFIGLOG.CSS_CLASSES.MODAL_ACTIVE,
-      )
-    ) {
-      logEvent(
-        "warn",
-        "Tentative de fermeture d'une modale déjà fermée ou état incohérent.",
-        {
-          modalOpen,
-          modalState: domSelectors.confirmationModal.classList.value,
-        },
-      );
-      return; // Sortie anticipée si la modale est déjà fermée
-    }
+    confirmationModal.classList.remove("modal-active");
+    confirmationModal.setAttribute("aria-hidden", "true");
 
-    // Étape 2 : Masque la modale
-    removeClass(
-      domSelectors.confirmationModal,
-      CONFIGLOG.CSS_CLASSES.MODAL_ACTIVE,
-    );
-    domSelectors.confirmationModal.setAttribute("aria-hidden", "true"); // Rend la modale invisible pour les technologies d'assistance
-    logEvent("success", "Modale masquée avec succès.", {
-      modalState: domSelectors.confirmationModal.classList.value,
+    logEvent("success", "Modale de confirmation masquée avec succès.", {
+      modalClasses: confirmationModal.classList.value,
     });
-
-    // Étape 3 : Réactive le défilement de la page
-    removeClass(document.body, CONFIGLOG.CSS_CLASSES.BODY_NO_SCROLL);
-    logEvent("success", "Défilement de l'arrière-plan réactivé.", {
-      bodyClasses: document.body.classList.value,
-    });
-
-    // Étape 4 : Met à jour l'état global
-    modalOpen = true;
-    resetForm();
   } catch (error) {
-    // Étape 7 : Gestion des erreurs
-    logEvent("error", "Erreur lors de la fermeture de la modale.", {
-      error: error.message,
-    });
-    console.error("Erreur dans closeModal :", error);
+    logEvent(
+      "error",
+      "Erreur lors de la fermeture de la modale de confirmation.",
+      {
+        message: error.message,
+        stack: error.stack,
+      },
+    );
   }
+
+  logEvent(
+    "test_end_modal",
+    "Fin de la fermeture de la modale de confirmation.",
+  );
 }

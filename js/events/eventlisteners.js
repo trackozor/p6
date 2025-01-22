@@ -4,7 +4,7 @@
 //                  la lightbox et le tri des médias dans l'application.
 // Auteur         : Trackozor
 // Date           : 08/01/2025
-// Version        : 2.5.0 (Logs enrichis et TEST_START/END ajoutés)
+// Version        : 2.6.0 (Ajout de logs détaillés pour chaque action)
 // ========================================================
 
 import domSelectors from "../config/domSelectors.js";
@@ -29,16 +29,21 @@ import { logEvent } from "../utils/utils.js";
  * @param {HTMLElement | NodeListOf<HTMLElement>} selectors - Élément(s) DOM cible(s).
  * @param {string} eventType - Type d'événement (ex: "click").
  * @param {Function} callback - Fonction gestionnaire.
- * @param {string} logMessage - Message descriptif pour les logs.
+ * @param {string} _logMessage - Message descriptif pour les logs.
  * @returns {boolean} - `true` si des événements ont été attachés, sinon `false`.
  */
-function attachEvent(selectors, eventType, callback, logMessage = "") {
-  logEvent("test_start", `Attachement de l'événement "${eventType}"`);
+function attachEvent(selectors, eventType, callback) {
+  logEvent(
+    "test_start",
+    `Tentative d'attachement de l'événement "${eventType}"`,
+  );
 
-  // Vérifie les sélecteurs
   if (!selectors) {
-    logEvent("error", `Aucun élément trouvé pour l'événement "${eventType}".`);
-    logEvent("test_end", `Échec de l'attachement pour "${eventType}"`);
+    logEvent(
+      "error",
+      `Échec : Aucun élément DOM trouvé pour l'événement "${eventType}".`,
+    );
+    logEvent("test_end", `Attachement échoué pour "${eventType}".`);
     return false;
   }
 
@@ -46,11 +51,28 @@ function attachEvent(selectors, eventType, callback, logMessage = "") {
     selectors instanceof NodeList ? Array.from(selectors) : [selectors];
   let attachedCount = 0;
 
-  elements.forEach((element) => {
+  elements.forEach((element, index) => {
     if (element instanceof HTMLElement) {
-      element.addEventListener(eventType, callback);
-      logEvent("info", `Événement "${eventType}" attaché.`, { logMessage });
+      logEvent(
+        "info",
+        `Attachement en cours pour "${eventType}" à l'élément index: ${index}`,
+        { element },
+      );
+      element.addEventListener(eventType, (event) => {
+        logEvent(
+          "info",
+          `Événement "${eventType}" déclenché sur l'élément index: ${index}`,
+          { event, element },
+        );
+        callback(event);
+      });
       attachedCount++;
+    } else {
+      logEvent(
+        "warn",
+        `Élément non valide détecté pour l'événement "${eventType}".`,
+        { element },
+      );
     }
   });
 
@@ -59,7 +81,7 @@ function attachEvent(selectors, eventType, callback, logMessage = "") {
     `${attachedCount} événement(s) attaché(s) pour "${eventType}".`,
   );
 
-  logEvent("test_end", `Fin de l'attachement pour "${eventType}"`);
+  logEvent("test_end", `Fin de l'attachement pour "${eventType}".`);
   return attachedCount > 0;
 }
 
@@ -70,36 +92,60 @@ function attachEvent(selectors, eventType, callback, logMessage = "") {
 /**
  * Initialise les événements pour la modale.
  */
+
 export function initModalEvents() {
   logEvent("test_start", "Initialisation des événements pour la modale...");
-  const { contactButton } = domSelectors.photographerPage;
+
+  // Observer pour surveiller les changements dans le DOM
+  const observer = new MutationObserver(() => {
+    const contactButton = document.querySelector(".contact_button");
+    if (contactButton) {
+      contactButton.addEventListener("click", () => {
+        logEvent("info", "Bouton 'Contactez-moi' cliqué.");
+        handleModalOpen(); // Appelle la fonction d'ouverture de la modale
+      });
+      logEvent("success", "Événement attaché au bouton 'Contactez-moi'.");
+      observer.disconnect(); // Stopper l'observation une fois l'élément trouvé
+    }
+  });
+
+  // Démarrer l'observation du DOM pour surveiller les ajouts d'enfants
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  // Sélection des autres éléments pour la modale
   const {
     closeButton,
     form: { formElement },
   } = domSelectors.modal;
 
-  if (!contactButton || !closeButton || !formElement) {
+  if (!closeButton || !formElement) {
     logEvent(
       "error",
       "Certains éléments DOM pour la modale sont introuvables.",
+      { closeButton, formElement },
     );
-    logEvent("test_end", "Échec de l'initialisation pour la modale.");
+    logEvent(
+      "test_end",
+      "Échec de l'initialisation des événements pour la modale.",
+    );
     return;
   }
 
+  // Gestionnaires pour fermer la modale et soumettre le formulaire
   attachEvent(
-    contactButton,
+    closeButton,
     "click",
-    handleModalOpen,
-    "Ouverture de la modale",
+    handleModalClose,
+    "Fermeture de la modale via le bouton close",
   );
-  attachEvent(closeButton, "click", handleModalClose, "Fermeture de la modale");
+
   attachEvent(
     formElement,
     "submit",
     handleFormSubmit,
-    "Soumission du formulaire",
+    "Soumission du formulaire de contact",
   );
+
   logEvent("test_end", "Événements pour la modale initialisés avec succès.");
 }
 
@@ -108,8 +154,19 @@ export function initModalEvents() {
  */
 function initLightboxEvents() {
   logEvent("test_start", "Initialisation des événements pour la lightbox...");
+
   const { lightboxCloseButton, lightboxPrevButton, lightboxNextButton } =
     domSelectors.lightbox;
+
+  if (!lightboxCloseButton || !lightboxPrevButton || !lightboxNextButton) {
+    logEvent(
+      "error",
+      "Certains éléments DOM pour la lightbox sont introuvables.",
+      { lightboxCloseButton, lightboxPrevButton, lightboxNextButton },
+    );
+    logEvent("test_end", "Échec de l'initialisation pour la lightbox.");
+    return;
+  }
 
   attachEvent(
     lightboxCloseButton,
@@ -117,18 +174,21 @@ function initLightboxEvents() {
     handleLightboxClose,
     "Fermeture de la lightbox",
   );
+
   attachEvent(
     lightboxPrevButton,
     "click",
     handleLightboxPrev,
-    "Image précédente dans la lightbox",
+    "Passage à l'image précédente dans la lightbox",
   );
+
   attachEvent(
     lightboxNextButton,
     "click",
     handleLightboxNext,
-    "Image suivante dans la lightbox",
+    "Passage à l'image suivante dans la lightbox",
   );
+
   logEvent("test_end", "Événements pour la lightbox initialisés avec succès.");
 }
 
@@ -140,16 +200,29 @@ function initSortingEvents() {
     "test_start",
     "Initialisation des événements pour le tri des médias...",
   );
+
   const { sortOptions } = domSelectors.sorting;
 
   if (!sortOptions) {
-    logEvent("error", "Élément de tri introuvable.");
-    logEvent("test_end", "Échec de l'initialisation pour le tri des médias.");
+    logEvent("error", "Élément de tri introuvable.", { sortOptions });
+    logEvent(
+      "test_end",
+      "Échec de l'initialisation des événements pour le tri des médias.",
+    );
     return;
   }
 
-  attachEvent(sortOptions, "change", handleSortChange, "Changement de tri");
-  logEvent("test_end", "Événements pour le tri des médias initialisés.");
+  attachEvent(
+    sortOptions,
+    "change",
+    handleSortChange,
+    "Changement de tri des médias",
+  );
+
+  logEvent(
+    "test_end",
+    "Événements pour le tri des médias initialisés avec succès.",
+  );
 }
 
 /**
@@ -157,6 +230,7 @@ function initSortingEvents() {
  */
 export function initEventListeners() {
   logEvent("test_start", "Initialisation globale des événements...");
+
   try {
     initModalEvents();
     initLightboxEvents();
@@ -166,10 +240,9 @@ export function initEventListeners() {
     logEvent(
       "error",
       "Erreur critique lors de l'initialisation des événements.",
-      {
-        error,
-      },
+      { error },
     );
   }
+
   logEvent("test_end", "Fin de l'initialisation globale des événements.");
 }

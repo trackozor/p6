@@ -91,7 +91,7 @@ const domSelectors = (() => {
       galleryContainer: safeQuerySelector("#gallery"),
       overlayContainer: safeQuerySelector("#modal-overlay"),
       sortingSelect: safeQuerySelector("#sort-options"),
-      contactButton: document.querySelector("#contact-btn"),
+      contactButton: safeQuerySelector(".contact-button"),
 
       photographerStatsTemplate: safeQuerySelector("#photographer-stats", true), // Nouveau sélecteur pour le template
       totalLikes: null,

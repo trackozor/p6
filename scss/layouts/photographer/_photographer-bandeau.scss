@@ -57,10 +57,11 @@
     text-align: left; /* Texte aligné à gauche pour une meilleure lecture */
   }
   @include desktop {
-    width: 100%; /* Largeur plus grande pour les écrans plus grands */
+    width: 60%; 
+    text-align: left ;
+    margin:0;/* Largeur plus grande pour les écrans plus grands */
   }
 }
-
 .photographer-info .photographer-card-portrait {
   margin-top: 45%; /* Espacement supérieur important pour les petits écrans */
 
@@ -79,6 +80,25 @@
     margin-top:3%;
   }
 }
+.photographer-info1 .photographer-card-portrait {
+  margin-top: 45%; /* Espacement supérieur important pour les petits écrans */
+
+  @include tablet {
+    margin-top: 2%; /* Réduit l'espacement pour les écrans tablettes */
+    margin-right: 10%; /* Ajoute un espace à droite pour mieux structurer */
+  }
+  @include desktop {
+    display: flex;
+    position: relative;
+    margin-right: 5%; /* Réduit l'espace à droite pour les écrans plus grands */
+    top:2%;
+    width: 12%;
+    height:12%;
+    padding:0;
+    margin-top:3%;
+  }
+}
+
 
 .photographer-profile h2 {
   color: #D3573C; /* Couleur de texte pour une meilleure mise en valeur */

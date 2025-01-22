@@ -871,129 +871,6 @@ footer p {
 }
 
 /* =============================================================================
-   Projet      : Fisheye
-   Fichier     : _modal.scss
-   Auteur      : Trackozor
-   Date        : 08/01/2025
-   Version     : 1.2.0
-   Description : Styles pour les modales de l'application Fisheye,
-                 incluant les animations, les formulaires et la gestion 
-                 des états (erreur, actif, etc.).
-============================================================================= */
-/* -------------------------------------------------------------------------- */
-/*                            MODAL GÉNÉRIQUE                                 */
-/* -------------------------------------------------------------------------- */
-/* Conteneur principal pour toutes les modales */
-.modal {
-  display: flex; /* Flexbox pour centrer les éléments */
-  position: fixed; /* Positionne la modal au-dessus de la page */
-  z-index: 100; /* Priorité d'affichage élevée */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #db8876; /* Fond par défaut */
-  border-radius: 5px; /* Coins arrondis */
-  justify-content: center; /* Centre horizontalement */
-  align-items: center; /* Centre verticalement */
-  opacity: 0; /* Masquée par défaut */
-  transform: scale(0.9); /* Animation initiale réduite */
-  transition: opacity 0.3s ease, transform 0.3s ease; /* Animation fluide */
-}
-.modal.active {
-  opacity: 1; /* Affiche la modal */
-  transform: scale(1); /* Taille normale */
-}
-.modal.error-modal {
-  background-color: #ff6b6b; /* Style pour les erreurs */
-}
-
-/* -------------------------------------------------------------------------- */
-/*                               OVERLAY                                      */
-/* -------------------------------------------------------------------------- */
-/* Fond assombri derrière la modal */
-#modal-overlay {
-  display: none; /* Masqué par défaut */
-  position: fixed;
-  z-index: 9999; /* Sous la modal */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  height: 100%;
-  background-color: #232323; /* Fond sombre */
-  color: white; /* Texte blanc pour le contraste */
-  overflow-y: auto; /* Permet le défilement */
-  border-radius: 1%; /* Coins arrondis */
-}
-
-/* -------------------------------------------------------------------------- */
-/*                          MODAL DE CONTACT                                 */
-/* -------------------------------------------------------------------------- */
-/* Styles spécifiques pour la modal de contact */
-#contact-modal {
-  display: none;
-  margin: 0 auto;
-  opacity: 0;
-  transform: scale(0.9); /* Animation initiale réduite */
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-#contact-modal.active {
-  display: flex;
-  opacity: 1; /* Affiche la modal */
-  transform: scale(1); /* Taille normale */
-}
-
-/* -------------------------------------------------------------------------- */
-/*                      FORMULAIRE DE LA MODAL                               */
-/* -------------------------------------------------------------------------- */
-/* Groupe des champs du formulaire */
-.form-group {
-  width: 85vw;
-  max-width: 500px; /* Largeur maximale pour s'adapter à l'écran */
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-}
-
-/* Labels des champs */
-.form-group label {
-  font-size: 1rem;
-  margin: 2% 0; /* Espacement pour une meilleure lisibilité */
-}
-
-/* Champs de saisie */
-.form-group input,
-.form-group textarea {
-  font-size: 1rem;
-  padding: 2%; /* Espacement intérieur */
-  border: 1px solid #ccc; /* Bordure grise */
-  border-radius: 0.3rem; /* Coins légèrement arrondis */
-  width: 100%; /* Occupe toute la largeur */
-  box-sizing: border-box; /* Inclut le padding dans la largeur */
-}
-
-/* Bouton d'envoi */
-.contact-button {
-  background-color: #901c1c; /* Couleur principale */
-  color: white; /* Texte en blanc */
-  padding: 3%; /* Espacement intérieur */
-  border: none; /* Aucun contour */
-  border-radius: 0.3rem; /* Coins arrondis */
-  cursor: pointer; /* Curseur pointer pour indiquer l'action */
-  max-width: 150px;
-  max-height: 70px;
-  transition: background-color 0.3s ease; /* Animation de couleur */
-}
-
-/* -------------------------------------------------------------------------- */
-/*                CLASSE POUR DÉSACTIVER LE DÉFILEMENT GLOBAL                 */
-/* -------------------------------------------------------------------------- */
-/* Utilisé quand une modal est ouverte */
-body.no-scroll {
-  overflow: hidden; /* Empêche le défilement de la page */
-}
-
-/* =============================================================================
     Projet      :   Fisheye
     Fichier     :   photographer-bandeau.scss
     Auteur      :   Trackozor
@@ -1056,7 +933,9 @@ body.no-scroll {
 }
 @media (min-width: 1024px) {
   .photographer-profile {
-    width: 100%; /* Largeur plus grande pour les écrans plus grands */
+    width: 60%;
+    text-align: left;
+    margin: 0; /* Largeur plus grande pour les écrans plus grands */
   }
 }
 
@@ -1071,6 +950,28 @@ body.no-scroll {
 }
 @media (min-width: 1024px) {
   .photographer-info .photographer-card-portrait {
+    display: flex;
+    position: relative;
+    margin-right: 5%; /* Réduit l'espace à droite pour les écrans plus grands */
+    top: 2%;
+    width: 12%;
+    height: 12%;
+    padding: 0;
+    margin-top: 3%;
+  }
+}
+
+.photographer-info1 .photographer-card-portrait {
+  margin-top: 45%; /* Espacement supérieur important pour les petits écrans */
+}
+@media (min-width: 767px) {
+  .photographer-info1 .photographer-card-portrait {
+    margin-top: 2%; /* Réduit l'espacement pour les écrans tablettes */
+    margin-right: 10%; /* Ajoute un espace à droite pour mieux structurer */
+  }
+}
+@media (min-width: 1024px) {
+  .photographer-info1 .photographer-card-portrait {
     display: flex;
     position: relative;
     margin-right: 5%; /* Réduit l'espace à droite pour les écrans plus grands */
@@ -1298,6 +1199,161 @@ button:hover, button:focus {
 }
 .lightbox[aria-hidden=false] .lightbox-media-container {
   animation: fadeIn var(--transition-default);
+}
+
+/* =============================================================================
+   Projet      : Fisheye
+   Fichier     : _modal.scss
+   Auteur      : Trackozor
+   Date        : 08/01/2025
+   Version     : 1.3.0
+   Description : Styles pour la modale (mobile-first), avec des ajustements
+                 pour différents écrans et un design accessible.
+============================================================================= */
+/* -------------------------------------------------------------------------- */
+/*                               OVERLAY                                      */
+/* -------------------------------------------------------------------------- */
+#modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Fond sombre avec opacité */
+  z-index: 9998; /* Sous la modale */
+}
+
+/* -------------------------------------------------------------------------- */
+/*                            MODAL GÉNÉRIQUE                                 */
+/* -------------------------------------------------------------------------- */
+.modal {
+  display: none; /* Masquée par défaut */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%; /* Largeur par défaut sur mobile */
+  max-width: 400px; /* Largeur max pour les grands écrans */
+  background-color: #ffffff; /* Fond blanc */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre légère */
+  border-radius: 10px; /* Coins arrondis */
+  z-index: 9999; /* Priorité d'affichage élevée */
+  opacity: 0; /* Masquée par défaut */
+  transform: translate(-50%, -50%) scale(0.9); /* Animation initiale réduite */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.modal.modal-active {
+  display: flex;
+  flex-direction: column; /* Organisation verticale */
+  justify-content: center;
+  align-items: center;
+  opacity: 1; /* Visible */
+  transform: translate(-50%, -50%) scale(1); /* Taille normale */
+}
+
+/* -------------------------------------------------------------------------- */
+/*                          BOUTON DE FERMETURE                               */
+/* -------------------------------------------------------------------------- */
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #333; /* Couleur neutre */
+  cursor: pointer;
+}
+.modal-close:hover {
+  color: #901c1c; /* Couleur de survol */
+}
+
+/* -------------------------------------------------------------------------- */
+/*                               CONTENU                                       */
+/* -------------------------------------------------------------------------- */
+.content {
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                          FORMULAIRE DE LA MODALE                           */
+/* -------------------------------------------------------------------------- */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Espacement entre les champs */
+  width: 100%;
+}
+
+/* Groupes de champs */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: left; /* Alignement à gauche pour les labels */
+}
+
+/* Labels */
+.form-group label {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  color: #333; /* Texte sombre */
+}
+
+/* Champs de saisie */
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc; /* Bordure grise */
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #901c1c; /* Couleur active */
+  box-shadow: 0 0 4px rgba(144, 28, 28, 0.5); /* Ombre légère */
+}
+
+/* Bouton d'envoi */
+.contact-submit-button {
+  background-color: #901c1c;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.contact-submit-button:hover {
+  background-color: #b42a2a;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                            RESPONSIVE DESIGN                               */
+/* -------------------------------------------------------------------------- */
+/* Tablettes et écrans moyens */
+@media (min-width: 768px) {
+  .modal {
+    width: 70%; /* Augmente la largeur sur tablettes */
+    max-width: 500px;
+  }
+  .content {
+    padding: 30px;
+  }
+}
+/* Écrans larges */
+@media (min-width: 1024px) {
+  .modal {
+    width: 50%; /* Largeur adaptée aux écrans larges */
+    max-width: 600px;
+  }
 }
 
 /*# sourceMappingURL=photographer.css.map */

@@ -205,7 +205,6 @@ async function initPhotographerPage() {
     // Initialisation des gestionnaires d'événements
     initstatscalculator();
     initEventListeners();
-
     logEvent("success", "Page photographe initialisée avec succès.");
   } catch (error) {
     logEvent(
