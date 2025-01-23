@@ -171,24 +171,52 @@ export function setupLightboxEventHandlers(triggerSelector, mediaArray) {
   logEvent("info", "Ajout des gestionnaires d'événements pour la lightbox.");
 
   try {
+    // === Validation des paramètres ===
+    if (typeof triggerSelector !== "string" || !Array.isArray(mediaArray)) {
+      throw new Error(
+        "Paramètres invalides : le sélecteur doit être une chaîne et mediaArray un tableau.",
+      );
+    }
+
+    // === Recherche des éléments déclencheurs ===
     const triggers = document.querySelectorAll(triggerSelector);
 
     if (!triggers.length) {
       throw new Error("Aucun élément déclencheur trouvé pour la lightbox.");
     }
 
+    logEvent(
+      "info",
+      `Nombre d'éléments déclencheurs trouvés : ${triggers.length}.`,
+      {
+        selector: triggerSelector,
+      },
+    );
+
+    // === Ajout des gestionnaires d'événements ===
     triggers.forEach((trigger, index) => {
       trigger.addEventListener("click", () => {
-        logEvent("info", `Élément déclencheur cliqué, index : ${index}`);
-        initLightbox(mediaArray); // Ouvre la lightbox avec l'index du média correspondant
+        logEvent("info", `Élément déclencheur cliqué, index : ${index}.`, {
+          media: mediaArray[index],
+        });
+
+        // Ouvre la lightbox à l'index correspondant
+        initLightbox(index, mediaArray); // Passez l'index et le tableau des médias
       });
     });
 
-    logEvent("success", "Gestionnaires d'événements ajoutés pour la lightbox.");
+    logEvent(
+      "success",
+      "Gestionnaires d'événements ajoutés avec succès pour la lightbox.",
+    );
   } catch (error) {
     logEvent(
       "error",
       `Erreur lors de l'ajout des gestionnaires : ${error.message}`,
+      {
+        triggerSelector,
+        mediaArray,
+      },
     );
   }
 }

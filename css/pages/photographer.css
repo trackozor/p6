@@ -1202,13 +1202,13 @@ button:hover, button:focus {
 }
 
 /* =============================================================================
-   Projet      : Fisheye
-   Fichier     : _modal.scss
-   Auteur      : Trackozor
-   Date        : 08/01/2025
-   Version     : 1.3.0
-   Description : Styles pour la modale (mobile-first), avec des ajustements
-                 pour différents écrans et un design accessible.
+  Projet      : Fisheye
+  Fichier     : _modal.scss
+  Auteur      : Trackozor
+  Date        : 08/01/2025
+  Version     : 1.3.0
+  Description : Styles pour la modale (mobile-first), avec des ajustements
+                pour différents écrans et un design accessible.
 ============================================================================= */
 /* -------------------------------------------------------------------------- */
 /*                               OVERLAY                                      */
@@ -1328,12 +1328,6 @@ form {
   border-radius: 5px;
   box-sizing: border-box;
 }
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #901c1c; /* Couleur active */
-  box-shadow: 0 0 4px rgba(144, 28, 28, 0.5); /* Ombre légère */
-}
 
 /* Bouton d'envoi */
 .contact-submit-button {
@@ -1351,6 +1345,27 @@ form {
 }
 .contact-submit-button:hover {
   background-color: #b42a2a;
+}
+
+/* Classe pour les bordures rouges des champs avec des erreurs */
+input.error-input, textarea.error-input {
+  border: 2px solid red; /* Bordure rouge pour indiquer une erreur */
+  box-shadow: 0 0 1rem red; /* Ombre rouge pour mettre en évidence l'erreur */
+}
+
+/*----------------------------------------------------------------*/
+/* Classe pour le message d'erreur */
+.error-modal {
+  display: block; /* Rend l'erreur visible */
+  font-size: 1rem; /* Taille de police légèrement réduite */
+  background-color: #232323; /* Fond noir pour contraster avec le texte */
+  color: #fe142f; /* Texte rouge pour indiquer une erreur */
+  padding: 2%; /* Ajoute un espacement interne pour rendre le texte plus lisible */
+  width: 95%; /* Largeur ajustée pour s'insérer correctement sous le champ */
+  text-align: left; /* Texte aligné à gauche */
+  margin-top: 2%; /* Espace au-dessus pour ne pas chevaucher le champ */
+  position: relative; /* Position relative pour s'adapter dynamiquement à son parent */
+  border-radius: 4px; /* Coins arrondis pour un design moderne */
 }
 
 /* Loader global */
