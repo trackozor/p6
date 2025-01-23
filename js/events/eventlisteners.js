@@ -16,6 +16,7 @@ import {
   handleLightboxPrev,
   handleLightboxNext,
   handleSortChange,
+  setupLightboxEventHandlers,
 } from "./eventHandler.js";
 import { logEvent } from "../utils/utils.js";
 
@@ -159,12 +160,16 @@ export function initModalEvents() {
 /**
  * Initialise les événements pour la lightbox.
  */
+/**
+ * Initialise les événements pour la lightbox.
+ */
 function initLightboxEvents() {
   logEvent("test_start", "Initialisation des événements pour la lightbox...");
 
   const { lightboxCloseButton, lightboxPrevButton, lightboxNextButton } =
     domSelectors.lightbox;
 
+  // Vérification des éléments DOM nécessaires
   if (!lightboxCloseButton || !lightboxPrevButton || !lightboxNextButton) {
     logEvent(
       "error",
@@ -175,6 +180,7 @@ function initLightboxEvents() {
     return;
   }
 
+  // Gestion des boutons de la lightbox
   attachEvent(
     lightboxCloseButton,
     "click",
@@ -195,6 +201,9 @@ function initLightboxEvents() {
     handleLightboxNext,
     "Passage à l'image suivante dans la lightbox",
   );
+
+  // Ajout des gestionnaires d'événements pour la galerie via `setupLightboxEventHandlers`
+  setupLightboxEventHandlers(".gallery-item"); // Classe des médias dans la galerie
 
   logEvent("test_end", "Événements pour la lightbox initialisés avec succès.");
 }

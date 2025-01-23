@@ -1,6 +1,3 @@
-/**
- * Initialise le loader avec messages dynamiques et barre de progression.
- */
 export function showLoader() {
   const loader = document.getElementById("loader");
   const loaderText = document.getElementById("loader-text");
@@ -20,7 +17,8 @@ export function showLoader() {
   let progress = 0; // Initial progress value
   let messageIndex = 0;
 
-  loader.classList.add("loader-active"); // Afficher le loader
+  // Afficher le loader
+  loader.classList.add("loader-active");
 
   const interval = setInterval(() => {
     // Mise à jour des messages
@@ -37,22 +35,33 @@ export function showLoader() {
     // Fin du loader
     if (progress >= 100) {
       clearInterval(interval);
+
       setTimeout(() => {
-        hideLoader();
+        hideLoader(); // Masquer le loader
+        resetLoader(); // Réinitialiser son état
       }, 500); // Attente avant de masquer le loader
     }
   }, 1000); // Intervalle entre chaque étape
 }
 
 /**
- * Cache le loader après la complétion.
+ * Cache le loader.
  */
-function hideLoader() {
+export function hideLoader() {
   const loader = document.getElementById("loader");
   loader.classList.remove("loader-active");
 }
-// Exemple d'appel du loader
-document.querySelector("form").addEventListener("submit", (e) => {
-  e.preventDefault(); // Empêche l'envoi du formulaire pour test
-  showLoader();
-});
+
+/**
+ * Réinitialise le loader pour être prêt pour la prochaine utilisation.
+ */
+export function resetLoader() {
+  const loaderText = document.getElementById("loader-text");
+  const progressBar = document.getElementById("progress-bar");
+  const progressPercentage = document.getElementById("progress-percentage");
+
+  // Réinitialisation des valeurs par défaut
+  loaderText.textContent = "Nous commençons la vérification...";
+  progressBar.style.width = "0%";
+  progressPercentage.textContent = "0%";
+}

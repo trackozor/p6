@@ -13,57 +13,77 @@ import { handleMediaSort } from "../components/sort/sortlogic.js";
 import domSelectors from "../config/domSelectors.js";
 import { fetchMedia } from "../data/dataFetcher.js";
 import { showLoader } from "../components/loader/loader.js";
+import { trapFocus } from "../utils/accessibility.js";
+import {
+  initLightbox,
+  closeLightbox,
+} from "../components/lightbox/lightbox.js";
+import { initvalidform } from "../utils/contactForm.js";
+
 /*==============================================*/
 /*         Gestion de la modale                 */
 /*==============================================*/
 
 /**
- * Ouvre la modale.
- */
-/**
- * Ouvre la modale avec les données du photographe.
- */
-/**
- * Ouvre la modale avec les données du photographe.
+ * Fonction pour ouvrir une modale avec les données d'un photographe.
+ * Cette fonction effectue plusieurs étapes :
+ * 1. Affiche un indicateur de chargement pour informer l'utilisateur.
+ * 2. Récupère les données des photographes à partir d'une source distante.
+ * 3. Extrait l'ID du photographe depuis l'URL.
+ * 4. Valide et recherche les données du photographe correspondant.
+ * 5. Ouvre la modale avec les données récupérées.
+ * 6. Logue chaque étape, y compris les erreurs.
  */
 export async function handleModalOpen() {
+  // Log initial indiquant que la procédure d'ouverture de la modale commence
   logEvent("info", "Appel à l'ouverture de la modale.");
 
-  document.body.classList.add("loading"); // Indicateur de chargement
+  // Ajoute un indicateur de chargement pour signaler l'activité en cours
+  document.body.classList.add("loading");
 
   try {
+    // Étape 1 : Récupération des données depuis une API ou une source distante
     const mediaData = await fetchMedia();
 
+    // Vérifie si les données récupérées sont valides
     if (!mediaData || !mediaData.photographers) {
       throw new Error("Données des photographes introuvables ou invalides.");
     }
 
+    // Étape 2 : Extrait l'ID du photographe depuis l'URL
     const params = new URLSearchParams(window.location.search);
     const photographerId = parseInt(params.get("id"), 10);
 
+    // Vérifie que l'ID est valide et correctement extrait
     if (!photographerId || isNaN(photographerId)) {
       throw new Error("ID de photographe invalide ou manquant dans l'URL.");
     }
 
+    // Étape 3 : Recherche des données correspondant à l'ID du photographe
     const photographerData = mediaData.photographers.find(
       (photographer) => photographer.id === photographerId,
     );
 
+    // Vérifie si un photographe correspondant a été trouvé
     if (!photographerData) {
       throw new Error(`Photographe avec l'ID ${photographerId} introuvable.`);
     }
 
+    // Vérifie si les données du photographe sont complètes
     if (!photographerData.name || !photographerData.id) {
       throw new Error("Les données du photographe sont incomplètes.");
     }
 
+    // Étape 4 : Logue les données récupérées pour vérification
     logEvent("info", "Données du photographe récupérées avec succès.", {
       photographerData,
     });
 
+    // Étape 5 : Ouvre la modale avec les données du photographe
     launchModal(photographerData);
     logEvent("success", "Modale ouverte avec succès.");
   } catch (error) {
+    // Gestion des erreurs : logue l'erreur et affiche une alerte utilisateur
     logEvent("error", `Erreur dans handleModalOpen : ${error.message}`, {
       error,
     });
@@ -71,36 +91,61 @@ export async function handleModalOpen() {
       "Une erreur est survenue lors du chargement de la modale. Veuillez réessayer.",
     );
   } finally {
-    document.body.classList.remove("loading"); // Cache l'indicateur de chargement
+    // Étape 6 : Supprime l'indicateur de chargement (quelle que soit l'issue)
+    document.body.classList.remove("loading");
   }
 }
 
+/*==============================================*/
 /**
- * Ferme la modale.
+ * Fonction pour fermer la modale.
+ * Cette fonction effectue les actions suivantes :
+ * 1. Logue l'intention de fermer la modale.
+ * 2. Appelle une fonction centralisée pour gérer la fermeture de la modale.
+ * 3. Logue le succès de l'opération si tout se passe bien.
+ * 4. Capture et logue toute erreur survenue pendant le processus.
  */
 export function handleModalClose() {
+  // Log initial : intention de fermer la modale
   logEvent("info", "Appel à la fermeture de la modale.");
+
   try {
-    closeModal(); // Ferme la modale
+    // Étape 1 : Ferme la modale en utilisant une fonction dédiée
+    closeModal();
+
+    // Étape 2 : Logue le succès de l'opération
     logEvent("success", "Modale fermée avec succès.");
   } catch (error) {
-    logEvent("error", `Erreur dans handleModalClose : ${error.message}`);
+    // Étape 3 : Gestion des erreurs
+    // Logue l'erreur avec un message explicite et l'affiche dans la console
+    logEvent("error", `Erreur dans handleModalClose : ${error.message}`, {
+      stack: error.stack,
+    });
+    console.error("Erreur lors de la fermeture de la modale :", error);
   }
 }
 
+/*==============================================*/
 /**
- * Soumet le formulaire de contact.
+ * Fonction pour soumettre le formulaire de contact.
+ * Cette fonction effectue les actions suivantes :
+ * 1. Empêche le rechargement automatique de la page lors de la soumission.
+ * 2. Logue l'intention de soumettre le formulaire.
+ * 3. Récupère les données du formulaire de manière structurée.
+ * 4. Affiche un indicateur de chargement pendant le traitement.
+ * 5. Logue les données collectées avec succès.
+ * 6. Capture et logue toute erreur éventuelle.
+ *
+ * @param {Event} event - Événement de soumission déclenché par le formulaire.
  */
 export function handleFormSubmit(event) {
-  event.preventDefault(); // Empêche le rechargement de la page
-  logEvent("info", "Formulaire de contact soumis.");
-  showLoader();
-  const formData = new FormData(event.target);
-  const data = Object.fromEntries(formData.entries());
+  // Étape 1 : Empêche le comportement par défaut du formulaire (rechargement de la page)
+  event.preventDefault();
+  logEvent("info", "Soumission du formulaire de contact détectée.");
 
-  logEvent("success", "Les données du formulaire ont été collectées.", {
-    formData: data,
-  });
+  // Étape 2 : Affiche un indicateur de chargement
+  showLoader(); // Peut être une animation ou un spinner pour l'utilisateur
+  initvalidform();
 }
 
 /**
@@ -116,6 +161,37 @@ export function handleModalBackgroundClick(event) {
 /*==============================================*/
 /*         Gestion de la lightbox               */
 /*==============================================*/
+/**
+ * Ajoute un gestionnaire d'événements pour ouvrir la lightbox
+ * lorsque l'utilisateur clique sur un élément déclencheur.
+ *
+ * @param {string} triggerSelector - Sélecteur CSS des éléments déclencheurs.
+ */
+export function setupLightboxEventHandlers(triggerSelector, mediaArray) {
+  logEvent("info", "Ajout des gestionnaires d'événements pour la lightbox.");
+
+  try {
+    const triggers = document.querySelectorAll(triggerSelector);
+
+    if (!triggers.length) {
+      throw new Error("Aucun élément déclencheur trouvé pour la lightbox.");
+    }
+
+    triggers.forEach((trigger, index) => {
+      trigger.addEventListener("click", () => {
+        logEvent("info", `Élément déclencheur cliqué, index : ${index}`);
+        initLightbox(mediaArray); // Ouvre la lightbox avec l'index du média correspondant
+      });
+    });
+
+    logEvent("success", "Gestionnaires d'événements ajoutés pour la lightbox.");
+  } catch (error) {
+    logEvent(
+      "error",
+      `Erreur lors de l'ajout des gestionnaires : ${error.message}`,
+    );
+  }
+}
 
 /**
  * Ferme la lightbox.
@@ -185,3 +261,30 @@ export async function handleSortChange(event) {
     });
   }
 }
+
+/*================================================================*/
+/*             Gestion des interactions clavier                  */
+/*================================================================*/
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Tab") {
+    // Gestion des modales ouvertes
+    const activeModal = document.querySelector(".modal.modal-active");
+    if (activeModal) {
+      trapFocus(activeModal);
+    }
+  } else if (e.key === "Escape") {
+    // Fermer la modale ou la lightbox
+    const activeModal = document.querySelector(".modal.modal-active");
+    if (activeModal) {
+      closeModal(); // Fonction pour fermer la modale
+    }
+
+    const activeLightbox = document.querySelector(
+      ".lightbox[aria-hidden='false']",
+    );
+    if (activeLightbox) {
+      closeLightbox(); // Fonction pour fermer la lightbox
+    }
+  }
+});

@@ -204,3 +204,60 @@ export function disableAnimationsForKeyboardUsers() {
 
   logEvent("info", "Gestion des animations clavier activée.");
 }
+/* =============================================================================
+ * SECTION : TRAP FOCUS
+ * =============================================================================
+ */
+
+/**
+ * Restreint le focus clavier à un conteneur donné.
+ * @param {HTMLElement} container - Conteneur dans lequel le focus doit être piégé.
+ * @returns {Function} Une fonction pour nettoyer les événements associés.
+ */
+export function trapFocus(container) {
+  if (!(container instanceof HTMLElement)) {
+    logEvent("error", "trapFocus: Conteneur invalide.", { container });
+    return;
+  }
+
+  const focusableElements = Array.from(
+    container.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    ),
+  );
+
+  if (focusableElements.length === 0) {
+    logEvent("warn", "trapFocus: Aucun élément focusable trouvé.", {
+      container,
+    });
+    return;
+  }
+
+  const firstElement = focusableElements[0];
+  const lastElement = focusableElements[focusableElements.length - 1];
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Tab") {
+      if (e.shiftKey && document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      } else if (!e.shiftKey && document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+      }
+    }
+
+    if (e.key === "Escape") {
+      logEvent("info", "Escape key pressed, closing the container.");
+      container.dispatchEvent(new Event("close"));
+    }
+  };
+
+  container.addEventListener("keydown", handleKeyDown);
+
+  // Mettre le focus sur le premier élément
+  firstElement.focus();
+
+  // Retourne une fonction pour nettoyer les événements
+  return () => container.removeEventListener("keydown", handleKeyDown);
+}

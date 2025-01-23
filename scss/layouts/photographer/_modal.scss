@@ -152,4 +152,26 @@ form {
   }
 }
 
+/* Classe pour les bordures rouges des champs avec des erreurs */
+form-group .error-input {
+  border: 2px solid red; /* Bordure rouge pour indiquer une erreur */
+  box-shadow: 0 0 1rem red; /* Ombre rouge pour mettre en évidence l'erreur */
+}
+
+/*----------------------------------------------------------------*/
+/* Classe pour le message d'erreur */
+.error-modal {
+  display: block; /* Rend l'erreur visible */
+  font-size: 0.8rem; /* Taille de police légèrement réduite */
+  background-color:#232323; /* Fond noir pour contraster avec le texte */
+  color: #fe142f; /* Texte rouge pour indiquer une erreur */
+  padding:  2%; /* Ajoute un espacement interne pour rendre le texte plus lisible */
+  width: 90%; /* Largeur ajustée pour s'insérer correctement sous le champ */
+  text-align: left; /* Texte aligné à gauche */
+  margin-top: 2%; /* Espace au-dessus pour ne pas chevaucher le champ */
+  position: relative; /* Position relative pour s'adapter dynamiquement à son parent */
+  border-radius: 4px; /* Coins arrondis pour un design moderne */
+}
+
+
 

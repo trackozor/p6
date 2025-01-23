@@ -10,8 +10,8 @@
 /*==============================================*/
 /*              Imports et Config              */
 /*==============================================*/
-import { logEvent } from "../utils/utils.js";
-import domSelectors from "../config/domSelectors.js";
+import { logEvent } from "../../utils/utils.js";
+import domSelectors from "../../config/domSelectors.js";
 
 /*==============================================*/
 /*              Variables Globales             */
@@ -38,8 +38,6 @@ export function initLightbox(mediaArray) {
     logEvent("error", "Le conteneur de la lightbox est introuvable.");
     return;
   }
-
-  attachLightboxEvents();
   logEvent("success", "Lightbox initialisée avec succès.");
   logEvent("test_end_lightbox", "Fin de l'initialisation de la lightbox.");
 }
@@ -98,7 +96,7 @@ function displayMedia(index) {
 /**
  * Affiche le média précédent dans la lightbox.
  */
-function showPreviousMedia() {
+export function showPreviousMedia() {
   logEvent("info", "Navigation vers le média précédent.");
   const newIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
   displayMedia(newIndex);
@@ -107,7 +105,7 @@ function showPreviousMedia() {
 /**
  * Affiche le média suivant dans la lightbox.
  */
-function showNextMedia() {
+export function showNextMedia() {
   logEvent("info", "Navigation vers le média suivant.");
   const newIndex = (currentIndex + 1) % mediaList.length;
   displayMedia(newIndex);
@@ -142,7 +140,7 @@ export function openLightbox(index) {
 /**
  * Ferme la lightbox.
  */
-function closeLightbox() {
+export function closeLightbox() {
   logEvent("test_start_lightbox", "Fermeture de la lightbox...");
   const { lightboxContainer } = domSelectors.lightbox;
 
@@ -152,51 +150,3 @@ function closeLightbox() {
   logEvent("success", "Lightbox fermée.");
   logEvent("test_end_lightbox", "Fin de la fermeture de la lightbox.");
 }
-
-/**
- * Attache les événements liés à la lightbox.
- */
-function attachLightboxEvents() {
-  const {
-    lightboxCloseButton,
-    lightboxPrevButton,
-    lightboxNextButton,
-    lightboxContainer,
-  } = domSelectors.lightbox;
-
-  lightboxCloseButton.addEventListener("click", closeLightbox);
-  lightboxPrevButton.addEventListener("click", showPreviousMedia);
-  lightboxNextButton.addEventListener("click", showNextMedia);
-
-  // Fermeture de la lightbox avec la touche Escape
-  document.addEventListener("keydown", (event) => {
-    if (
-      event.key === "Escape" &&
-      !lightboxContainer.classList.contains("hidden")
-    ) {
-      closeLightbox();
-    }
-  });
-
-  // Navigation avec les touches gauche/droite
-  document.addEventListener("keydown", (event) => {
-    if (!lightboxContainer.classList.contains("hidden")) {
-      if (event.key === "ArrowLeft") {
-        showPreviousMedia();
-      }
-      if (event.key === "ArrowRight") {
-        showNextMedia();
-      }
-    }
-  });
-
-  logEvent("info", "Événements pour la lightbox attachés.");
-}
-
-/*==============================================*/
-/*              Export des Fonctions           */
-/*==============================================*/
-export default {
-  initLightbox,
-  openLightbox,
-};
