@@ -117,12 +117,13 @@ export function initModalEvents() {
     closeButton,
     form: { formElement },
   } = domSelectors.modal;
+  const overlayContainer = document.querySelector("#modal-overlay");
 
-  if (!closeButton || !formElement) {
+  if (!closeButton || !formElement || !overlayContainer) {
     logEvent(
       "error",
       "Certains éléments DOM pour la modale sont introuvables.",
-      { closeButton, formElement },
+      { closeButton, formElement, overlayContainer },
     );
     logEvent(
       "test_end",
@@ -138,6 +139,12 @@ export function initModalEvents() {
     handleModalClose,
     "Fermeture de la modale via le bouton close",
   );
+
+  // Gestionnaire pour fermer la modale via l'overlay
+  overlayContainer.addEventListener("click", () => {
+    logEvent("info", "Clic détecté sur l'overlay pour fermer la modale.");
+    handleModalClose();
+  });
 
   attachEvent(
     formElement,

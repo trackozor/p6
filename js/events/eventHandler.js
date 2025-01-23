@@ -12,6 +12,7 @@ import { launchModal, closeModal } from "../components/modal/modalManager.js";
 import { handleMediaSort } from "../components/sort/sortlogic.js";
 import domSelectors from "../config/domSelectors.js";
 import { fetchMedia } from "../data/dataFetcher.js";
+import { showLoader } from "../components/loader/loader.js";
 /*==============================================*/
 /*         Gestion de la modale                 */
 /*==============================================*/
@@ -93,15 +94,13 @@ export function handleModalClose() {
 export function handleFormSubmit(event) {
   event.preventDefault(); // Empêche le rechargement de la page
   logEvent("info", "Formulaire de contact soumis.");
-
+  showLoader();
   const formData = new FormData(event.target);
   const data = Object.fromEntries(formData.entries());
 
   logEvent("success", "Les données du formulaire ont été collectées.", {
     formData: data,
   });
-
-  handleModalClose(); // Ferme la modale après soumission
 }
 
 /**
