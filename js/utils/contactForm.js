@@ -28,11 +28,16 @@ export function validateTextField(field, fieldId) {
   const fieldName = FIELD_NAMES[fieldId] || "Champ"; // Récupère le nom lisible ou utilise "Champ" par défaut
   let errorMessage = "";
 
+  // Limite de caractères (exemple : 50 caractères max)
+  const MAX_LENGTH = 50;
+
   // === Validation des critères ===
   if (value === "") {
     errorMessage = `Le ${fieldName} est requis.`; // Champ obligatoire
   } else if (value.length < 2) {
     errorMessage = `Le ${fieldName} doit contenir au moins 2 caractères.`; // Longueur minimale
+  } else if (value.length > MAX_LENGTH) {
+    errorMessage = `Le ${fieldName} ne doit pas dépasser ${MAX_LENGTH} caractères.`;
   } else if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ]+(?:[-' ][a-zA-ZÀ-ÖØ-öø-ÿ]+)*$/.test(value)) {
     errorMessage = `Le ${fieldName} contient des caractères invalides.`; // Caractères non autorisés
   }
@@ -58,27 +63,75 @@ export function validateTextField(field, fieldId) {
  * @param {HTMLElement} field - L'élément HTML du champ email.
  * @returns {boolean} - Retourne `true` si la validation est réussie, sinon `false`.
  */
+/**
+ * Valide le champ "E-mail".
+ *
+ * @param {HTMLElement} field - L'élément HTML du champ email.
+ * @returns {boolean} - Retourne `true` si la validation est réussie, sinon `false`.
+ */
 export function validateEmail(field) {
   const value = field.value.trim();
+  const MAX_LENGTH = 254; // Longueur maximale d'un e-mail standard (RFC 5321)
   let errorMessage = "";
 
+  // === Validation des critères ===
   if (value === "") {
     errorMessage = "L'e-mail est requis.";
+  } else if (value.length > MAX_LENGTH) {
+    errorMessage = `L'adresse e-mail ne doit pas dépasser ${MAX_LENGTH} caractères.`;
   } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
     errorMessage = "Veuillez entrer une adresse e-mail valide.";
   }
 
+  // === Gestion des erreurs ===
   if (errorMessage) {
-    showError(errorMessage, field);
+    showError(errorMessage, field); // Affiche l'erreur sous le champ
     logEvent("warn", "Validation échouée pour l'e-mail.", {
       errorMessage,
       value,
     });
-    return false;
+    return false; // Validation échouée
   } else {
-    removeError(field);
+    removeError(field); // Supprime les erreurs précédentes
     logEvent("success", "Validation réussie pour l'e-mail.", { value });
-    return true;
+    return true; // Validation réussie
+  }
+}
+
+/**
+ * Valide le champ "message" dans une demande de contact.
+ *
+ * @param {HTMLElement} field - L'élément HTML du champ message.
+ * @returns {boolean} - Retourne `true` si la validation est réussie, sinon `false`.
+ */
+export function validateMessageField(field) {
+  const value = field.value.trim(); // Supprime les espaces en début/fin
+  const MAX_LENGTH = 500; // Longueur maximale pour un message de contact
+  const MIN_LENGTH = 10; // Longueur minimale pour un message utile
+  const fieldName = "Message";
+  let errorMessage = "";
+
+  // === Validation des critères ===
+  if (value === "") {
+    errorMessage = `Le ${fieldName} est requis.`;
+  } else if (value.length < MIN_LENGTH) {
+    errorMessage = `Le ${fieldName} doit contenir au moins ${MIN_LENGTH} caractères.`;
+  } else if (value.length > MAX_LENGTH) {
+    errorMessage = `Le ${fieldName} ne doit pas dépasser ${MAX_LENGTH} caractères.`;
+  }
+
+  // === Gestion des erreurs ===
+  if (errorMessage) {
+    showError(errorMessage, field); // Affiche l'erreur sous le champ
+    logEvent("warn", `Validation échouée pour le ${fieldName}.`, {
+      errorMessage,
+      value,
+    });
+    return false; // Validation échouée
+  } else {
+    removeError(field); // Supprime les erreurs précédentes
+    logEvent("success", `Validation réussie pour le ${fieldName}.`, { value });
+    return true; // Validation réussie
   }
 }
 
@@ -95,19 +148,17 @@ export function validateForm() {
   let isValid = true;
 
   REQUIRED_FIELDS.forEach((fieldId) => {
-    const fieldElement = document.getElementById(fieldId);
+    const field = document.getElementById(fieldId);
 
-    if (fieldElement) {
-      // Validation spécifique pour les emails
-      if (fieldId === "email") {
-        isValid = validateEmail(fieldElement) && isValid;
-      } else {
-        // Validation des champs texte
-        isValid = validateTextField(fieldElement, fieldId) && isValid;
-      }
+    if (fieldId === "message") {
+      // Validation spécifique au message
+      isValid = validateMessageField(field) && isValid;
+    } else if (fieldId === "email") {
+      // Validation spécifique à l'e-mail
+      isValid = validateEmail(field) && isValid;
     } else {
-      logEvent("error", `Champ "${fieldId}" introuvable dans le DOM.`);
-      isValid = false;
+      // Validation générale pour les autres champs
+      isValid = validateTextField(field, fieldId) && isValid;
     }
   });
 

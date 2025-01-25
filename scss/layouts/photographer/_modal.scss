@@ -46,6 +46,10 @@
   transform: translate(-50%, -50%) scale(0.9); /* Animation initiale réduite */
   transition: opacity 0.3s ease, transform 0.3s ease;
 
+  @include tablet {
+    height:auto;
+  }
+
   &.modal-active {
     display: flex;
     flex-direction: column; /* Organisation verticale */
@@ -97,7 +101,7 @@
 form {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Espacement entre les champs */
+  gap: 1rem; /* Espacement entre les champs */
   width: 100%;
 }
 
@@ -166,6 +170,18 @@ input.error-input, textarea.error-input {
   position: relative; /* Position relative pour s'adapter dynamiquement à son parent */
   border-radius: 4px; /* Coins arrondis pour un design moderne */
 }
+/* -------------------------------------------------------------------------- */
+/*                          Modale de confirmation                         */
+/* -------------------------------------------------------------------------- */
 
+#confirmation-modal {
+  height:90%;
+  justify-content: center;
+  margin:0 auto;
+}
 
+.confirmation-title {
+  font-size: 1.5rem;
+  margin:2% auto;
 
+}

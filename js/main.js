@@ -37,9 +37,9 @@ import { init } from "./pages/index.js"; // Initialisation de la page d'accueil
  */
 const initializeComponents = async () => {
   try {
-    logEvent("info", "Initialisation des composants principaux...");
-
+    logEvent("test-start", "Initialisation des composants principaux...");
     // Initialisation de la page d'accueil
+    logEvent("info", " lancement de l'application");
     await init();
 
     logEvent("success", "Composants principaux initialisés avec succès.");
@@ -83,4 +83,7 @@ function main() {
  * ========================================================================
  * Exécute la fonction principale après le chargement complet du DOM.
  */
-document.addEventListener("DOMContentLoaded", main);
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("[TEST] DOM chargé, appel de main()...");
+  main();
+});

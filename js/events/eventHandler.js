@@ -1,23 +1,57 @@
-// ========================================================
-// Nom du fichier : eventHandler.js
-// Description    : Gestion centralisée des événements pour la modale,
-//                  la lightbox et le tri des médias.
-// Auteur         : Trackozor
-// Date           : 08/01/2025
-// Version        : 2.4.1 (Adaptée avec domSelectors)
-// ========================================================
+/* ========================================================*/
+/* Nom du fichier : eventHandler.js                         */
+/* Description    : Gestion centralisée des événements pour la modale,
+/*                  la lightbox et le tri des médias.
+/* Auteur         : Trackozor
+/* Date           : 08/01/2025
+/* Version        : 2.4.1 
+/* ========================================================*/
 
+/*==============================================*/
+/*               Imports                        */
+/*==============================================*/
+// Ce fichier regroupe les dépendances nécessaires pour gérer les fonctionnalités
+// principales de l'application Fisheye, notamment les modales, le tri des médias,
+// l'accessibilité, et la gestion des données.
+
+/*------------------ Utilitaires ----------------*/
+// Gestion des logs pour suivre les événements et faciliter le débogage
 import { logEvent } from "../utils/utils.js";
-import { launchModal, closeModal } from "../components/modal/modalManager.js";
-import { handleMediaSort } from "../components/sort/sortlogic.js";
+
+// Sélecteurs DOM préconfigurés pour simplifier l'accès aux éléments HTML
 import domSelectors from "../config/domSelectors.js";
-import { fetchMedia } from "../data/dataFetcher.js";
-import { showLoader } from "../components/loader/loader.js";
-import { trapFocus } from "../utils/accessibility.js";
+
+/*------------------ Gestion des Modales ----------------*/
+// Gestion de l'ouverture et de la fermeture des différentes modales
 import {
-  initLightbox,
-  closeLightbox,
+  launchModal, // Ouvre la modale principale (contact ou autre)
+  closeModal, // Ferme la modale principale
+  closeConfirmationModal, // Ferme une modale de confirmation (ex : suppression)
+} from "../components/modal/modalManager.js";
+
+/*------------------ Fonctionnalités Médias ----------------*/
+// Logique pour appliquer le tri des médias (par popularité, date, etc.)
+import { handleMediaSort } from "../components/sort/sortlogic.js";
+
+// Gestion de la lightbox : navigation et fermeture
+import {
+  initLightbox, // Initialise la lightbox pour les médias
+  closeLightbox, // Ferme la lightbox active
 } from "../components/lightbox/lightbox.js";
+
+/*------------------ Gestion des Données ----------------*/
+// Fonction pour récupérer les médias depuis une API ou un fichier JSON
+import { fetchMedia } from "../data/dataFetcher.js";
+
+/*------------------ Accessoires Visuels ----------------*/
+// Affichage et masquage du loader (icône de chargement pendant les requêtes)
+import { showLoader } from "../components/loader/loader.js";
+
+// Accessibilité : gère la mise au point dans les modales et la lightbox
+import { trapFocus } from "../utils/accessibility.js";
+
+/*------------------ Validation de Formulaire ----------------*/
+// Validation des champs dans le formulaire de contact et retour utilisateur
 import { initvalidform } from "../utils/contactForm.js";
 
 /*==============================================*/
@@ -124,6 +158,20 @@ export function handleModalClose() {
     console.error("Erreur lors de la fermeture de la modale :", error);
   }
 }
+/**
+ * Met à jour le compteur de caractères pour un champ textarea donné.
+ *
+ * @param {Event} event - L'événement "input" déclenché par le champ textarea.
+ */
+export function updateCharCount(event) {
+  const field = event.target; // Champ textarea déclencheur
+  const charCount = document.getElementById("char-count"); // Élément pour afficher le compteur
+  const maxLength = field.getAttribute("maxlength"); // Longueur max autorisée
+  const currentLength = field.value.length; // Longueur actuelle
+
+  // Mettre à jour le texte du compteur
+  charCount.textContent = `${currentLength}/${maxLength}`;
+}
 
 /*==============================================*/
 /**
@@ -155,6 +203,25 @@ export function handleModalBackgroundClick(event) {
   if (event.target === domSelectors.modalBackground) {
     logEvent("info", "Clic détecté sur l'arrière-plan de la modale.");
     handleModalClose();
+  }
+}
+/**
+ * Gère le clic sur le bouton de confirmation dans la modale de confirmation.
+ * - Ferme toutes les modales actives.
+ * - Réinitialise le formulaire de contact.
+ */
+export function handleModalConfirm() {
+  logEvent("info", "Confirmation acceptée via le bouton 'OK'.");
+
+  try {
+    closeConfirmationModal(); // Ferme la modale de confirmation
+    logEvent("success", "Modale de confirmation fermée avec succès.");
+  } catch (error) {
+    logEvent(
+      "error",
+      `Erreur lors de la fermeture de la modale de confirmation : ${error.message}`,
+      { error },
+    );
   }
 }
 

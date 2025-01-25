@@ -1,89 +1,65 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Explorez les œuvres d'un photographe talentueux, découvrez sa galerie et contactez-le facilement."
-    />
-    <meta
-      name="keywords"
-      content="photographe, Fisheye, galerie, contact, photographie, professionnel, artistique"
-    />
-    <meta property="og:title" content="Fisheye - Photographe professionnel" />
-    <meta
-      property="og:description"
-      content="Explorez les photographies uniques d'un talent exceptionnel."
-    />
-    <meta property="og:image" content="/assets/images/og-image.jpg" />
-    <meta property="og:url" content="https://www.fisheye-photographe.com" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" href="../../assets/icons/favicon.png" type="image/png" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explorez les œuvres d'un photographe talentueux, découvrez sa galerie et contactez-le facilement.">
+    <meta name="keywords" content="photographe, Fisheye, galerie, contact, photographie, professionnel, artistique">
+    <meta property="og:title" content="Fisheye - Photographe professionnel">
+    <meta property="og:description" content="Explorez les photographies uniques d'un talent exceptionnel.">
+    <meta property="og:image" content="/assets/images/og-image.jpg">
+    <meta property="og:url" content="https://www.fisheye-photographe.com">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="../../assets/icons/favicon.png" type="image/png">
     <title>Fisheye - Photographe professionnel</title>
 
     <!-- Polices et styles -->
-    <link href="../css/pages/photographer.css" rel="stylesheet" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
+    <link href="../css/pages/photographer.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   </head>
   <body>
     <!-- Lien d'accès rapide -->
     <a href="#main" class="sr-only">Passer au contenu principal</a>
-
-    <!-- En-tête -->
+    <h1 id="photograph-title" class="sr-only">Nom du photographe</h1>
+    <!-- En-tête principale -->
     <header class="photographer-header">
       <a href="../index.html" aria-label="Retour à la page d'accueil">
         <img
           src="../../assets/images/logo.png"
           alt="Logo de Fisheye - Retour à l'accueil"
           class="logo"
-        />
+        >
       </a>
     </header>
 
     <!-- Contenu principal -->
     <main id="main" tabindex="-1">
       <!-- Section Informations du photographe -->
-      <section
-        id="photograph-info"
-        class="photographer-info"
-        aria-labelledby="photograph-title"
-      >
+      <section id="photograph-info" class="photographer-info" aria-labelledby="photograph-title">
+        <h2 class="sr-only">Informations du photographe</h2>
         <article class="photographer-profile">
-          <h1 id="photograph-title">Titre par défaut</h1>
+          
+          <h3 class="photographer-visual-title">Titre par défaut</h3>
           <p class="photographer-card-location">Ville, Pays par défaut</p>
           <p class="photographer-card-tagline">Slogan par défaut</p>
         </article>
-        <button
-          id="contact-button"
-          type="button"
-          class="contact-button"
-        >
-          Contactez-moi
-        </button>
+        <button id="contact-button" type="button" class="contact-button">Contactez-moi</button>
         <div class="photographer-card-portrait-wrapper">
           <img
             src="../../assets/photographers/account.png"
             alt="Portrait par défaut du photographe"
             class="photographer-card-portrait"
             loading="lazy"
-          />
+          >
         </div>
-        
-        <template id="photographer-stats">
-          <div class="photographer-stats">
-            <span id="total-likes" class="totalLikes">
-              <!-- Nombre de likes inséré dynamiquement -->
-            </span>
-            <i class="fas fa-heart like-icon" aria-hidden="true"></i>
-            <span id="daily-rate" class="dailyRate">
-              <!-- Tarif journalier inséré dynamiquement -->
-            </span>
-          </div>
-        </template>
+
+        <!-- Section Statistiques du photographe -->
+        <div class="photographer-stats">
+          <h2 class="sr-only">Statistiques du photographe</h2>
+          <span id="total-likes" class="totalLikes"></span>
+          <i class="fas fa-heart like-icon" aria-hidden="true"></i>
+          <span id="daily-rate" class="dailyRate"></span>
+        </div>
       </section>
 
       <!-- Section de tri -->
@@ -98,185 +74,83 @@
       </section>
 
       <!-- Section Galerie -->
-      <section
-        class="photograph-gallery"
-        aria-labelledby="gallery-title"
-        role="region"
-      >
+      <section class="photograph-gallery" aria-labelledby="gallery-title" >
         <h2 id="gallery-title" class="sr-only">Galerie de photos et vidéos</h2>
-        <template id="media-template">
-          <article class="media-item">
-            <img src="" alt="Image par défaut" class="media" />
-            <div class="media-caption">
-              <h3>Titre du média</h3>
-              <p>
-                <span class="media-likes">0</span>
-                <i class="fas fa-heart " aria-hidden="true"></i>
-              </p>
-            </div>
-          </article>
-        </template>
-        
-        <div
-          id="gallery"
-          class="gallery"
-          role="group"
-          aria-labelledby="gallery-title"
-        >
+        <div id="gallery" class="gallery" role="group" aria-labelledby="gallery-title">
           <!-- Médias injectés dynamiquement -->
         </div>
       </section>
     </main>
-    <!-- Overlay pour la modale -->
-    <div id="modal-overlay" class="overlay" aria-hidden="true"></div>
 
-    <!-- Conteneur principal de la modale -->
-    <div
-      id="contact-modal"
-      class="modal"
-      role="dialog"
-      aria-hidden="true"
-      aria-labelledby="modal-title"
-    >
-      <!-- Bouton de fermeture de la fenêtre modale -->
-      <button type="button" class="modal-close" aria-label="Fermer la fenêtre">
-        <span aria-hidden="true">&times;</span>
-      </button>
-
-      <!-- Contenu principal de la modale -->
+    <!-- Modale de contact -->
+    <div id="contact-modal" class="modal" role="dialog" aria-hidden="true" aria-labelledby="modal-title">
+      <h2 class="sr-only">Contact</h2>
       <div class="content">
         <header class="modal-header">
-            <h2 id="modal-title">Contactez-moi </h2> 
-            <span id="photographer-name" class="modal-photographer-name">
-              <!-- Nom du photographe inséré ici -->
-            </span>
-          </header>
+          <h2 id="modal-title">Contactez-moi</h2>
+          <span id="photographer-name" class="modal-photographer-name">Nom du photographe</span>
         </header>
-
-        <!-- Formulaire de contact -->
-        <form
-          action="#"
-          method="POST"
-          aria-label="Formulaire de contact"
-          novalidate
-        >
+        <form action="#" method="POST" aria-label="Formulaire de contact" novalidate>
           <fieldset>
             <legend class="sr-only">Informations de contact</legend>
-            <!-- Groupe Prénom -->
             <div class="form-group">
               <label for="first-name">Prénom</label>
-              <input
-                type="text"
-                id="first-name"
-                name="first-name"
-                required
-                placeholder="Votre prénom"
-              />
+              <input type="text" id="first-name" name="first-name" required placeholder="Votre prénom" maxlength="50">
             </div>
-            <!-- Groupe Nom -->
             <div class="form-group">
               <label for="last-name">Nom</label>
-              <input
-                type="text"
-                id="last-name"
-                name="last-name"
-                required
-                placeholder="Votre nom"
-              />
+              <input type="text" id="last-name" name="last-name" required placeholder="Votre nom" maxlength="50">
             </div>
-            <!-- Groupe Email -->
             <div class="form-group">
               <label for="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                placeholder="Votre email"
-              />
+              <input type="email" id="email" name="email" required placeholder="Votre email" maxlength="50">
             </div>
-            <!-- Groupe Message -->
             <div class="form-group">
               <label for="message">Votre message</label>
-              <textarea
-                id="message"
-                name="message"
-                rows="10"
-                required
-                placeholder="Votre message"
-              ></textarea>
+              <textarea id="message" name="message" rows="10" required placeholder="Votre message" maxlength="500"></textarea>
+              <span id="char-count">0/500</span>
             </div>
           </fieldset>
-          <!-- Bouton Soumettre -->
           <button type="submit" class="contact-submit-button">Envoyer</button>
         </form>
       </div>
     </div>
-    
+
     <!-- Lightbox -->
     <div id="lightbox" class="lightbox" role="dialog" aria-hidden="true">
+      <h2 class="sr-only">lightbox</h2>
       <div class="lightbox-content">
-        <button
-          type="button"
-          class="lightbox-close"
-          aria-label="Fermer la lightbox"
-          data-action="close-lightbox"
-        >
-          &times;
-        </button>
-        <button
-          type="button"
-          class="lightbox-prev"
-          aria-label="Image précédente"
-          data-action="prev-lightbox"
-        >
-          &lsaquo;
-        </button>
+        <button type="button" class="lightbox-close" aria-label="Fermer la lightbox">&times;</button>
+        <button type="button" class="lightbox-prev" aria-label="Image précédente">&lsaquo;</button>
         <div class="lightbox-media" aria-labelledby="lightbox-caption">
           <!-- Média (image ou vidéo) inséré dynamiquement -->
         </div>
         <div id="lightbox-caption" class="lightbox-caption">
           <!-- Légende insérée dynamiquement -->
         </div>
-        <button
-          type="button"
-          class="lightbox-next"
-          aria-label="Image suivante"
-          data-action="next-lightbox"
-        >
-          &rsaquo;
-        </button>
+        <button type="button" class="lightbox-next" aria-label="Image suivante">&rsaquo;</button>
       </div>
     </div>
+
     <!-- Modale de confirmation -->
-    <div
-      id="confirmation-modal"
-      class="modal"
-      role="dialog"
-      aria-hidden="true"
-      aria-labelledby="confirmation-title"
-    >
+    <div id="confirmation-modal" class="modal" role="dialog" aria-hidden="true">
+      <h2 class="sr-only">Confirmation</h2>
       <div class="content">
-        <h2 id="confirmation-title">Message envoyé !</h2>
+        <h3 id="confirmation-title" class="confirmation-title">Message envoyé !</h3>
         <p>Merci pour votre message. Nous vous répondrons dans les plus brefs délais.</p>
-        <button type="button" class="modal-close" aria-label="Fermer la confirmation">
-          OK
-        </button>
+        <button type="button" class="confirm-btn" aria-label="Fermer la confirmation">OK</button>
       </div>
     </div>
 
     <!-- Loader -->
     <div id="loader" class="loader" aria-live="polite" aria-hidden="true">
+      <h2 class="sr-only">écran de chargement</h2>
       <div class="loader-container">
         <h2 id="loader-title" class="loader-title">Traitement en cours...</h2>
         <div class="spinner"></div>
-
-        <!-- Messages dynamiques -->
         <p id="loader-text" class="loader-text">Nous commençons la vérification...</p>
-
-        <!-- Barre de progression -->
         <div class="progress-container">
-          <div id="progress-bar" class="progress-bar" "></div>
+          <div id="progress-bar" class="progress-bar"></div>
         </div>
         <p id="progress-percentage" class="progress-percentage">0%</p>
       </div>
@@ -288,11 +162,6 @@
     </footer>
 
     <!-- Scripts -->
-    <script
-      type="module"
-      src="../js/pages/photographer-page.js"
-      defer
-    ></script>
+    <script type="module" src="../js/pages/photographer-page.js" ></script>
   </body>
 </html>
- 

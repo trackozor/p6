@@ -189,21 +189,41 @@ export function removeClass(element, className) {
 /* =============================================================================
  * SECTION : FONCTIONS DOM
  * =============================================================================
- */
+ *
 /**
- * Détecte la page actuelle à partir de l'URL.
+ * Détecte la page actuelle en combinant plusieurs méthodes :
+ * - Attribut HTML `data-page` (préféré si disponible).
+ * - Analyse de l'URL (path ou query string).
+ * - Valeur par défaut si aucun cas ne correspond.
+ *
  * @returns {string} Nom de la page actuelle ("index", "photographer", ou "unknown").
  */
+
 export const getCurrentPage = () => {
+  const bodyPage = document.body.getAttribute("data-page");
+  if (bodyPage) {
+    logEvent("info", "Page détectée via data-page", { page: bodyPage });
+    return bodyPage;
+  }
+
   const path = window.location.pathname;
-  if (path.includes("index.html") || path === "/") {
+  logEvent("info", "Path détecté", { path });
+
+  if (path === "/" || path.endsWith("/") || path.includes("index.html")) {
+    logEvent("info", "Page détectée via pathname", { page: "index" });
     return "index";
   }
   if (path.includes("photographer.html")) {
+    logEvent("info", "Page détectée via pathname", { page: "photographer" });
     return "photographer";
   }
+
+  logEvent("warn", "Page inconnue, aucun sélecteur spécifique chargé.", {
+    path,
+  });
   return "unknown";
 };
+
 /*================================================================================================================================================*/
 /*===============================================================================================*/
 /*                                 ======= Messages erreurs =======                              */

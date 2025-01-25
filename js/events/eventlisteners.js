@@ -7,19 +7,37 @@
 // Version        : 2.6.0 (Ajout de logs détaillés pour chaque action)
 // ========================================================
 
+/*==============================================*/
+/*                   Imports                    */
+/*=============================================*/
+
+// Import des sélecteurs DOM préconfigurés pour simplifier l'accès aux éléments HTML
 import domSelectors from "../config/domSelectors.js";
+
+/*==============================================*/
+/*               Gestionnaires d'événements    */
+/*=============================================*/
+// Import des fonctions pour gérer les interactions de l'utilisateur
 import {
-  handleModalOpen,
-  handleModalClose,
-  handleFormSubmit,
-  handleLightboxClose,
-  handleLightboxPrev,
-  handleLightboxNext,
-  handleSortChange,
-  setupLightboxEventHandlers,
+  handleModalOpen, // Ouvre la modale lorsqu'un utilisateur déclenche cet événement
+  handleModalClose, // Ferme la modale
+  handleFormSubmit, // Gère la soumission des formulaires (ex : contact)
+  handleLightboxClose, // Ferme la lightbox
+  handleLightboxPrev, // Navigue vers l'image précédente dans la lightbox
+  handleLightboxNext, // Navigue vers l'image suivante dans la lightbox
+  handleSortChange, // Applique les changements de tri (ex : par popularité ou date)
+  setupLightboxEventHandlers, // Configure tous les gestionnaires nécessaires pour la lightbox
+  handleModalConfirm, // Gère la confirmation dans une modale spécifique
+  updateCharCount, // Gère le compteur de caractères pour le message
 } from "./eventHandler.js";
+
+/*==============================================*/
+/*                  Utilitaires                 */
+/*=============================================*/
+// Import de la fonction de journalisation pour suivre les événements et déboguer
 import { logEvent } from "../utils/utils.js";
 
+/*--------------------------------------------------------------------------*/
 // ========================================================
 // UTILITAIRE : ATTACHER DES ÉVÉNEMENTS
 // ========================================================
@@ -86,10 +104,14 @@ function attachEvent(selectors, eventType, callback) {
   return attachedCount > 0;
 }
 
+/*--------------------------------------------------------------------------------------------------------*/
 // ========================================================
 // INITIALISATION DES ÉVÉNEMENTS
 // ========================================================
 
+// ========================================================
+//     Modale
+// ========================================================
 /**
  * Initialise les événements pour la modale.
  */
@@ -157,14 +179,62 @@ export function initModalEvents() {
   logEvent("test_end", "Événements pour la modale initialisés avec succès.");
 }
 
+export function initModalConfirm() {
+  logEvent(
+    "test_start",
+    "Initialisation de l'événement pour la confirmation...",
+  );
+
+  const confirmButton = document.querySelector(".confirm-btn");
+  if (!confirmButton) {
+    logEvent("error", "Bouton de confirmation introuvable.", { confirmButton });
+    logEvent("test_end", "Échec de l'initialisation de la confirmation.");
+    return;
+  }
+
+  attachEvent(
+    confirmButton,
+    "click",
+    handleModalConfirm,
+    "Confirmation via le bouton dans la modale",
+  );
+
+  logEvent(
+    "test_end",
+    "Événement pour le bouton de confirmation initialisé avec succès.",
+  );
+}
+/**
+ * Initialise les gestionnaires d'événements pour le formulaire de contact.
+ */
+export function setupContactFormEvents() {
+  const messageField = document.getElementById("message");
+
+  if (messageField) {
+    // Ajout de l'event listener pour le champ "message"
+    messageField.addEventListener("input", updateCharCount);
+  }
+}
+
+// ========================================================
+//     lightbox
+// ========================================================
 /**
  * Initialise les événements pour la lightbox.
  */
-/**
- * Initialise les événements pour la lightbox.
- */
-function initLightboxEvents() {
+function initLightboxEvents(mediaArray) {
   logEvent("test_start", "Initialisation des événements pour la lightbox...");
+
+  // Vérification des paramètres requis
+  if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
+    logEvent(
+      "error",
+      "Le tableau des médias (mediaArray) est invalide ou vide.",
+      { mediaArray },
+    );
+    logEvent("test_end", "Échec de l'initialisation pour la lightbox.");
+    return;
+  }
 
   const { lightboxCloseButton, lightboxPrevButton, lightboxNextButton } =
     domSelectors.lightbox;
@@ -202,12 +272,41 @@ function initLightboxEvents() {
     "Passage à l'image suivante dans la lightbox",
   );
 
-  // Ajout des gestionnaires d'événements pour la galerie via `setupLightboxEventHandlers`
-  setupLightboxEventHandlers(".gallery-item"); // Classe des médias dans la galerie
+  // ========================================================
+  //     gallery
+  // ========================================================
+  // Vérification et ajout des gestionnaires pour les éléments de la galerie
+  const galleryItems = document.querySelectorAll(".gallery-item");
+  if (galleryItems.length === 0) {
+    logEvent(
+      "warn",
+      "Aucun élément de galerie trouvé avec le sélecteur '.gallery-item'.",
+    );
+    logEvent(
+      "test_end",
+      "Événements de la lightbox partiellement initialisés.",
+    );
+    return;
+  }
 
-  logEvent("test_end", "Événements pour la lightbox initialisés avec succès.");
+  // Ajout des gestionnaires d'événements pour chaque élément de la galerie
+  galleryItems.forEach((item, index) => {
+    item.addEventListener("click", () => {
+      logEvent("info", `Élément de galerie cliqué. Index : ${index}`, { item });
+      setupLightboxEventHandlers(mediaArray, index); // Transmet `mediaArray` et l'index au gestionnaire
+    });
+  });
+
+  logEvent("success", "Événements pour la lightbox initialisés avec succès.");
+  logEvent(
+    "test_end",
+    "Fin de l'initialisation des événements pour la lightbox.",
+  );
 }
 
+// ========================================================
+//     Trie
+// ========================================================
 /**
  * Initialise les événements pour le tri des médias.
  */
@@ -241,6 +340,9 @@ function initSortingEvents() {
   );
 }
 
+// ========================================================
+//     Initialisation des événements
+// ========================================================
 /**
  * Initialise tous les événements nécessaires à l'application.
  */
@@ -251,6 +353,8 @@ export function initEventListeners() {
     initModalEvents();
     initLightboxEvents();
     initSortingEvents();
+    initModalConfirm();
+    setupContactFormEvents();
     logEvent("success", "Tous les événements ont été initialisés avec succès.");
   } catch (error) {
     logEvent(

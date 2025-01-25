@@ -118,6 +118,7 @@ const domSelectors = (() => {
         email: safeQuerySelector("#email"),
         message: safeQuerySelector("#message"),
         submitButton: safeQuerySelector(".contact-submit-button"),
+        confirmButton: safeQuerySelector(".confirm-btn"),
       },
     },
     sorting: {

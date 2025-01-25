@@ -4,7 +4,7 @@
 //                  (images ou vidéos) en plein écran.
 // Auteur         : Trackozor
 // Date           : 15/01/2025
-// Version        : 1.0.0
+// Version        : 1.1.0 (Ajout de logs détaillés)
 // ========================================================
 
 /*==============================================*/
@@ -30,16 +30,32 @@ let mediaList = []; // Liste des médias à afficher dans la lightbox
  */
 export function initLightbox(mediaArray) {
   logEvent("test_start_lightbox", "Initialisation de la lightbox...");
-  mediaList = mediaArray;
+  try {
+    // Vérifie si le tableau de médias est valide
+    if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
+      throw new Error("Le tableau des médias est vide ou invalide.");
+    }
 
-  // Vérification des éléments DOM requis
-  const { lightboxContainer } = domSelectors.lightbox;
-  if (!lightboxContainer) {
-    logEvent("error", "Le conteneur de la lightbox est introuvable.");
-    return;
+    mediaList = mediaArray;
+    logEvent("info", `Lightbox initialisée avec ${mediaArray.length} médias.`, {
+      mediaArray,
+    });
+
+    // Vérifie si le conteneur de la lightbox existe
+    const { lightboxContainer } = domSelectors.lightbox;
+    if (!lightboxContainer) {
+      throw new Error("Le conteneur de la lightbox est introuvable.");
+    }
+
+    logEvent("success", "Lightbox initialisée avec succès.");
+  } catch (error) {
+    logEvent("error", "Erreur lors de l'initialisation de la lightbox.", {
+      message: error.message,
+      stack: error.stack,
+    });
+  } finally {
+    logEvent("test_end_lightbox", "Fin de l'initialisation de la lightbox.");
   }
-  logEvent("success", "Lightbox initialisée avec succès.");
-  logEvent("test_end_lightbox", "Fin de l'initialisation de la lightbox.");
 }
 
 /*==============================================*/
@@ -54,39 +70,54 @@ export function initLightbox(mediaArray) {
 function displayMedia(index) {
   logEvent("info", `Affichage du média à l'index ${index}.`);
 
-  const { lightboxMediaContainer, lightboxCaption } = domSelectors.lightbox;
+  try {
+    const { lightboxMediaContainer, lightboxCaption } = domSelectors.lightbox;
 
-  if (index < 0 || index >= mediaList.length) {
-    logEvent("warn", "Index de média hors limites.", { index });
-    return;
+    // Vérifie si le conteneur du média existe
+    if (!lightboxMediaContainer || !lightboxCaption) {
+      throw new Error(
+        "Les éléments DOM nécessaires pour la lightbox sont introuvables.",
+      );
+    }
+
+    // Vérifie si l'index est valide
+    if (index < 0 || index >= mediaList.length) {
+      throw new Error("Index de média hors limites.");
+    }
+
+    currentIndex = index;
+    const media = mediaList[index];
+    logEvent("info", `Média à afficher :`, { media });
+
+    // Nettoyage du conteneur avant d'ajouter le nouveau média
+    lightboxMediaContainer.innerHTML = "";
+
+    // Création de l'élément média (image ou vidéo)
+    let mediaElement;
+    if (media.image) {
+      mediaElement = document.createElement("img");
+      mediaElement.src = media.image;
+      mediaElement.alt = media.title || "Image sans titre";
+    } else if (media.video) {
+      mediaElement = document.createElement("video");
+      mediaElement.src = media.video;
+      mediaElement.controls = true;
+    } else {
+      throw new Error("Type de média inconnu.");
+    }
+
+    lightboxMediaContainer.appendChild(mediaElement);
+    logEvent("info", "Média ajouté au conteneur de la lightbox.");
+
+    // Mise à jour de la légende
+    lightboxCaption.textContent = media.title || "Sans titre";
+    logEvent("success", `Légende mise à jour : ${media.title || "Sans titre"}`);
+  } catch (error) {
+    logEvent("error", "Erreur lors de l'affichage du média.", {
+      message: error.message,
+      stack: error.stack,
+    });
   }
-
-  currentIndex = index;
-  const media = mediaList[index];
-
-  // Nettoyage du conteneur
-  lightboxMediaContainer.innerHTML = "";
-
-  // Création de l'élément média (image ou vidéo)
-  let mediaElement;
-  if (media.image) {
-    mediaElement = document.createElement("img");
-    mediaElement.src = media.image;
-    mediaElement.alt = media.title || "Image sans titre";
-  } else if (media.video) {
-    mediaElement = document.createElement("video");
-    mediaElement.src = media.video;
-    mediaElement.controls = true;
-  }
-
-  lightboxMediaContainer.appendChild(mediaElement);
-
-  // Mise à jour de la légende
-  lightboxCaption.textContent = media.title || "Sans titre";
-
-  logEvent("success", `Média affiché : ${media.title || "Inconnu"}`, {
-    media,
-  });
 }
 
 /*==============================================*/
@@ -98,8 +129,18 @@ function displayMedia(index) {
  */
 export function showPreviousMedia() {
   logEvent("info", "Navigation vers le média précédent.");
-  const newIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
-  displayMedia(newIndex);
+  try {
+    if (mediaList.length === 0) {
+      throw new Error("Aucun média disponible dans la lightbox.");
+    }
+    const newIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
+    displayMedia(newIndex);
+  } catch (error) {
+    logEvent("error", "Erreur lors de la navigation vers le média précédent.", {
+      message: error.message,
+      stack: error.stack,
+    });
+  }
 }
 
 /**
@@ -107,8 +148,18 @@ export function showPreviousMedia() {
  */
 export function showNextMedia() {
   logEvent("info", "Navigation vers le média suivant.");
-  const newIndex = (currentIndex + 1) % mediaList.length;
-  displayMedia(newIndex);
+  try {
+    if (mediaList.length === 0) {
+      throw new Error("Aucun média disponible dans la lightbox.");
+    }
+    const newIndex = (currentIndex + 1) % mediaList.length;
+    displayMedia(newIndex);
+  } catch (error) {
+    logEvent("error", "Erreur lors de la navigation vers le média suivant.", {
+      message: error.message,
+      stack: error.stack,
+    });
+  }
 }
 
 /*==============================================*/
@@ -122,19 +173,26 @@ export function showNextMedia() {
  */
 export function openLightbox(index) {
   logEvent("test_start_lightbox", "Ouverture de la lightbox...");
-  const { lightboxContainer } = domSelectors.lightbox;
+  try {
+    const { lightboxContainer } = domSelectors.lightbox;
 
-  if (!lightboxContainer) {
-    logEvent("error", "Le conteneur de la lightbox est introuvable.");
-    return;
+    if (!lightboxContainer) {
+      throw new Error("Le conteneur de la lightbox est introuvable.");
+    }
+
+    lightboxContainer.classList.remove("hidden");
+    lightboxContainer.setAttribute("aria-hidden", "false");
+
+    displayMedia(index);
+    logEvent("success", "Lightbox ouverte avec succès.");
+  } catch (error) {
+    logEvent("error", "Erreur lors de l'ouverture de la lightbox.", {
+      message: error.message,
+      stack: error.stack,
+    });
+  } finally {
+    logEvent("test_end_lightbox", "Fin de l'ouverture de la lightbox.");
   }
-
-  lightboxContainer.classList.remove("hidden");
-  lightboxContainer.setAttribute("aria-hidden", "false");
-
-  displayMedia(index);
-  logEvent("success", "Lightbox ouverte.");
-  logEvent("test_end_lightbox", "Fin de l'ouverture de la lightbox.");
 }
 
 /**
@@ -142,11 +200,23 @@ export function openLightbox(index) {
  */
 export function closeLightbox() {
   logEvent("test_start_lightbox", "Fermeture de la lightbox...");
-  const { lightboxContainer } = domSelectors.lightbox;
+  try {
+    const { lightboxContainer } = domSelectors.lightbox;
 
-  lightboxContainer.classList.add("hidden");
-  lightboxContainer.setAttribute("aria-hidden", "true");
+    if (!lightboxContainer) {
+      throw new Error("Le conteneur de la lightbox est introuvable.");
+    }
 
-  logEvent("success", "Lightbox fermée.");
-  logEvent("test_end_lightbox", "Fin de la fermeture de la lightbox.");
+    lightboxContainer.classList.add("hidden");
+    lightboxContainer.setAttribute("aria-hidden", "true");
+
+    logEvent("success", "Lightbox fermée avec succès.");
+  } catch (error) {
+    logEvent("error", "Erreur lors de la fermeture de la lightbox.", {
+      message: error.message,
+      stack: error.stack,
+    });
+  } finally {
+    logEvent("test_end_lightbox", "Fin de la fermeture de la lightbox.");
+  }
 }
