@@ -24,9 +24,9 @@ import {
   handleFormSubmit, // Gère la soumission des formulaires (ex : contact)
   handleLightboxClose, // Ferme la lightbox
   handleLightboxPrev, // Navigue vers l'image précédente dans la lightbox
+  handleLightboxOpen,
   handleLightboxNext, // Navigue vers l'image suivante dans la lightbox
   handleSortChange, // Applique les changements de tri (ex : par popularité ou date)
-  setupLightboxEventHandlers, // Configure tous les gestionnaires nécessaires pour la lightbox
   handleModalConfirm, // Gère la confirmation dans une modale spécifique
   updateCharCount, // Gère le compteur de caractères pour le message
 } from "./eventHandler.js";
@@ -222,86 +222,67 @@ export function setupContactFormEvents() {
 /**
  * Initialise les événements pour la lightbox.
  */
-function initLightboxEvents(mediaArray) {
-  logEvent("test_start", "Initialisation des événements pour la lightbox...");
+/**
+ * Initialise les événements pour la lightbox.
+ * @param {Array} mediaArray - Tableau des médias à afficher.
+ */
+export function initLightboxEvents(mediaArray, folderName) {
+  logEvent("test_start", "Initialisation des événements pour la lightbox.");
 
-  // Vérification des paramètres requis
-  if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
+  try {
+    // Validation des paramètres
+    if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
+      throw new Error("Le tableau des médias est invalide ou vide.");
+    }
+
+    if (!folderName || typeof folderName !== "string") {
+      throw new Error("Le nom du dossier (folderName) est invalide ou manquant.");
+    }
+
+    // Ajout des événements aux items de la galerie
+    const galleryItems = document.querySelectorAll(".gallery-item");
+    galleryItems.forEach((item) => {
+      item.addEventListener("click", (event) =>
+        handleLightboxOpen(event, mediaArray, folderName)
+      );
+    });
+
+    // Ajout des événements aux boutons de navigation et de fermeture
+    const { lightboxCloseButton, lightboxPrevButton, lightboxNextButton } =
+      domSelectors.lightbox;
+
+    if (!lightboxCloseButton || !lightboxPrevButton || !lightboxNextButton) {
+      throw new Error(
+        "Les boutons de la lightbox (fermeture, précédent, suivant) sont introuvables."
+      );
+    }
+
+    lightboxCloseButton.addEventListener("click", handleLightboxClose);
+
+    lightboxPrevButton.addEventListener("click", () =>
+      handleLightboxPrev(mediaArray, folderName)
+    );
+
+    lightboxNextButton.addEventListener("click", () =>
+      handleLightboxNext(mediaArray, folderName)
+    );
+
+    logEvent("success", "Événements de la lightbox initialisés avec succès.");
+  } catch (error) {
     logEvent(
       "error",
-      "Le tableau des médias (mediaArray) est invalide ou vide.",
-      { mediaArray },
+      "Erreur lors de l'initialisation des événements pour la lightbox.",
+      {
+        message: error.message,
+        stack: error.stack,
+      }
     );
-    logEvent("test_end", "Échec de l'initialisation pour la lightbox.");
-    return;
-  }
-
-  const { lightboxCloseButton, lightboxPrevButton, lightboxNextButton } =
-    domSelectors.lightbox;
-
-  // Vérification des éléments DOM nécessaires
-  if (!lightboxCloseButton || !lightboxPrevButton || !lightboxNextButton) {
-    logEvent(
-      "error",
-      "Certains éléments DOM pour la lightbox sont introuvables.",
-      { lightboxCloseButton, lightboxPrevButton, lightboxNextButton },
-    );
-    logEvent("test_end", "Échec de l'initialisation pour la lightbox.");
-    return;
-  }
-
-  // Gestion des boutons de la lightbox
-  attachEvent(
-    lightboxCloseButton,
-    "click",
-    handleLightboxClose,
-    "Fermeture de la lightbox",
-  );
-
-  attachEvent(
-    lightboxPrevButton,
-    "click",
-    handleLightboxPrev,
-    "Passage à l'image précédente dans la lightbox",
-  );
-
-  attachEvent(
-    lightboxNextButton,
-    "click",
-    handleLightboxNext,
-    "Passage à l'image suivante dans la lightbox",
-  );
-
-  // ========================================================
-  //     gallery
-  // ========================================================
-  // Vérification et ajout des gestionnaires pour les éléments de la galerie
-  const galleryItems = document.querySelectorAll(".gallery-item");
-  if (galleryItems.length === 0) {
-    logEvent(
-      "warn",
-      "Aucun élément de galerie trouvé avec le sélecteur '.gallery-item'.",
-    );
+  } finally {
     logEvent(
       "test_end",
-      "Événements de la lightbox partiellement initialisés.",
+      "Fin de l'initialisation des événements pour la lightbox."
     );
-    return;
   }
-
-  // Ajout des gestionnaires d'événements pour chaque élément de la galerie
-  galleryItems.forEach((item, index) => {
-    item.addEventListener("click", () => {
-      logEvent("info", `Élément de galerie cliqué. Index : ${index}`, { item });
-      setupLightboxEventHandlers(mediaArray, index); // Transmet `mediaArray` et l'index au gestionnaire
-    });
-  });
-
-  logEvent("success", "Événements pour la lightbox initialisés avec succès.");
-  logEvent(
-    "test_end",
-    "Fin de l'initialisation des événements pour la lightbox.",
-  );
 }
 
 // ========================================================
@@ -346,12 +327,12 @@ function initSortingEvents() {
 /**
  * Initialise tous les événements nécessaires à l'application.
  */
-export function initEventListeners() {
+export function initEventListeners(mediaArray) {
   logEvent("test_start", "Initialisation globale des événements...");
 
   try {
     initModalEvents();
-    initLightboxEvents();
+    initLightboxEvents(mediaArray);
     initSortingEvents();
     initModalConfirm();
     setupContactFormEvents();

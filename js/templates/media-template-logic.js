@@ -172,15 +172,6 @@ export function createMediaItem(media, folderName, position) {
  * @param {HTMLElement} galleryContainer - Conteneur HTML où afficher la galerie.
  * @returns {void}
  */
-/**
- * Récupère une liste de médias et les affiche dans un conteneur HTML spécifié.
- *
- * @function renderMediaGallery
- * @param {Array} mediaList - Liste des médias à afficher.
- * @param {string} folderName - Nom du dossier contenant les fichiers.
- * @param {HTMLElement} galleryContainer - Conteneur HTML où afficher la galerie.
- * @returns {void}
- */
 export function renderMediaGallery(mediaList, folderName, galleryContainer) {
   logEvent("info", "Début de l'affichage de la galerie média.", {
     mediaList,
@@ -191,33 +182,36 @@ export function renderMediaGallery(mediaList, folderName, galleryContainer) {
     logEvent("error", "Conteneur de galerie invalide ou manquant.", {
       galleryContainer,
     });
-    return;
+    return null; // Retourner null en cas d'erreur
   }
 
   if (!Array.isArray(mediaList)) {
     logEvent("error", "Liste de médias invalide ou manquante.", { mediaList });
-    return;
+    return null;
   }
 
   if (!folderName || typeof folderName !== "string") {
     logEvent("error", "Nom du dossier invalide ou manquant.", { folderName });
-    return;
+    return null;
   }
 
   try {
-    galleryContainer.innerHTML = "";
+    galleryContainer.innerHTML = ""; // Vide le conteneur
     mediaList.forEach((media, index) => {
-      // Passer la position (index) au moment de la création du média
       const mediaItem = createMediaItem(media, folderName, index);
       if (mediaItem) {
+        mediaItem.setAttribute("data-index", index); // Ajoute un index unique
+        mediaItem.classList.add("gallery-item"); // Ajoute une classe spécifique
         galleryContainer.appendChild(mediaItem);
       }
     });
 
     logEvent("success", "Galerie média affichée avec succès.");
+    return folderName; // Retourner le folderName
   } catch (error) {
     logEvent("error", "Erreur lors de l'affichage de la galerie média.", {
       error,
     });
+    return null; // Retourner null en cas d'erreur
   }
 }

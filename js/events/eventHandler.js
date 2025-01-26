@@ -35,7 +35,9 @@ import { handleMediaSort } from "../components/sort/sortlogic.js";
 
 // Gestion de la lightbox : navigation et fermeture
 import {
-  initLightbox, // Initialise la lightbox pour les médias
+  openLightbox,
+  showPreviousMedia,
+  showNextMedia, // Initialise la lightbox pour les médias
   closeLightbox, // Ferme la lightbox active
 } from "../components/lightbox/lightbox.js";
 
@@ -229,108 +231,56 @@ export function handleModalConfirm() {
 /*         Gestion de la lightbox               */
 /*==============================================*/
 /**
- * Ajoute un gestionnaire d'événements pour ouvrir la lightbox
- * lorsque l'utilisateur clique sur un élément déclencheur.
- *
- * @param {string} triggerSelector - Sélecteur CSS des éléments déclencheurs.
+ * Gestionnaire pour ouvrir la lightbox.
+ * @param {Event} event - Événement déclenché par l'utilisateur.
  */
-export function setupLightboxEventHandlers(triggerSelector, mediaArray) {
-  logEvent("info", "Ajout des gestionnaires d'événements pour la lightbox.");
-
+export function handleLightboxOpen(event, folderName) {
   try {
-    // === Validation des paramètres ===
-    if (typeof triggerSelector !== "string" || !Array.isArray(mediaArray)) {
+    // Récupérer l'élément de galerie le plus proche et son index
+    const galleryItem = event.target.closest(".gallery-item");
+
+    if (!galleryItem) {
+      throw new Error("Élément de galerie introuvable ou clic hors galerie.");
+    }
+
+    const mediaIndex = parseInt(galleryItem.dataset.index, 10);
+
+    if (isNaN(mediaIndex)) {
       throw new Error(
-        "Paramètres invalides : le sélecteur doit être une chaîne et mediaArray un tableau.",
+        "Index de média invalide ou manquant dans les attributs data-index.",
       );
     }
 
-    // === Recherche des éléments déclencheurs ===
-    const triggers = document.querySelectorAll(triggerSelector);
-
-    if (!triggers.length) {
-      throw new Error("Aucun élément déclencheur trouvé pour la lightbox.");
-    }
-
-    logEvent(
-      "info",
-      `Nombre d'éléments déclencheurs trouvés : ${triggers.length}.`,
-      {
-        selector: triggerSelector,
-      },
-    );
-
-    // === Ajout des gestionnaires d'événements ===
-    triggers.forEach((trigger, index) => {
-      trigger.addEventListener("click", () => {
-        logEvent("info", `Élément déclencheur cliqué, index : ${index}.`, {
-          media: mediaArray[index],
-        });
-
-        // Ouvre la lightbox à l'index correspondant
-        initLightbox(index, mediaArray); // Passez l'index et le tableau des médias
-      });
-    });
-
-    logEvent(
-      "success",
-      "Gestionnaires d'événements ajoutés avec succès pour la lightbox.",
-    );
+    // Passer l'index et le tableau global mediaArray à openLightbox
+    openLightbox(mediaIndex, window.mediaArray, folderName); // Assurez-vous que `mediaArray` est bien stocké globalement
   } catch (error) {
-    logEvent(
-      "error",
-      `Erreur lors de l'ajout des gestionnaires : ${error.message}`,
-      {
-        triggerSelector,
-        mediaArray,
-      },
-    );
+    logEvent("error", "Erreur lors de l'ouverture de la lightbox.", {
+      message: error.message,
+      stack: error.stack,
+    });
   }
 }
 
 /**
- * Ferme la lightbox.
+ * Gestionnaire pour fermer la lightbox.
  */
 export function handleLightboxClose() {
-  logEvent("info", "Tentative de fermeture de la lightbox.");
-  try {
-    const { lightbox } = domSelectors;
-    if (!lightbox) {
-      throw new Error("Élément lightbox introuvable.");
-    }
-    lightbox.classList.add("hidden");
-    logEvent("success", "Lightbox fermée.");
-  } catch (error) {
-    logEvent("error", `Erreur dans handleLightboxClose : ${error.message}`);
-  }
+  closeLightbox();
 }
 
 /**
- * Affiche l'image précédente dans la lightbox.
+ * Gestionnaire pour afficher le média précédent dans la lightbox.
  */
 export function handleLightboxPrev() {
-  logEvent("info", "Navigation vers l'image précédente.");
-  try {
-    // Ajoutez ici la logique pour afficher l'image précédente
-    logEvent("success", "Image précédente affichée.");
-  } catch (error) {
-    logEvent("error", `Erreur dans handleLightboxPrev : ${error.message}`);
-  }
+  showPreviousMedia();
 }
 
 /**
- * Affiche l'image suivante dans la lightbox.
+ * Gestionnaire pour afficher le média suivant dans la lightbox.
  */
 export function handleLightboxNext() {
-  logEvent("info", "Navigation vers l'image suivante.");
-  try {
-    // Ajoutez ici la logique pour afficher l'image suivante
-    logEvent("success", "Image suivante affichée.");
-  } catch (error) {
-    logEvent("error", `Erreur dans handleLightboxNext : ${error.message}`);
-  }
+  showNextMedia();
 }
-
 /*==============================================*/
 /*         Gestion du tri                       */
 /*==============================================*/
@@ -362,24 +312,29 @@ export async function handleSortChange(event) {
 /*================================================================*/
 
 document.addEventListener("keydown", (e) => {
+  const activeModal = document.querySelector(".modal.modal-active");
+  const activeLightbox = document.querySelector(
+    ".lightbox[aria-hidden='false']",
+  );
+
   if (e.key === "Tab") {
-    // Gestion des modales ouvertes
-    const activeModal = document.querySelector(".modal.modal-active");
+    // Gestion des modales ouvertes (focus trap)
     if (activeModal) {
-      trapFocus(activeModal);
+      trapFocus(activeModal); // Assurez-vous que trapFocus est correctement implémenté
     }
   } else if (e.key === "Escape") {
     // Fermer la modale ou la lightbox
-    const activeModal = document.querySelector(".modal.modal-active");
     if (activeModal) {
       closeModal(); // Fonction pour fermer la modale
     }
-
-    const activeLightbox = document.querySelector(
-      ".lightbox[aria-hidden='false']",
-    );
     if (activeLightbox) {
       closeLightbox(); // Fonction pour fermer la lightbox
     }
+  } else if (e.key === "ArrowLeft" && activeLightbox) {
+    // Flèche gauche pour la lightbox
+    handleLightboxPrev();
+  } else if (e.key === "ArrowRight" && activeLightbox) {
+    // Flèche droite pour la lightbox
+    handleLightboxNext();
   }
 });

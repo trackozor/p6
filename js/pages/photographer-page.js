@@ -134,7 +134,7 @@ async function displayMediaGallery() {
       "error",
       "Impossible de continuer : ID du photographe non valide.",
     );
-    return;
+    return [];
   }
 
   try {
@@ -143,7 +143,9 @@ async function displayMediaGallery() {
       throw new Error("Conteneur de galerie introuvable.");
     }
 
-    // Charger les données JSON
+    // Afficher un indicateur de chargement
+    galleryContainer.innerHTML = "<p>Chargement des médias...</p>";
+
     const response = await fetch(mediaDataUrl);
     const data = await response.json();
 
@@ -151,7 +153,8 @@ async function displayMediaGallery() {
       throw new Error("Les données JSON des photographes sont invalides.");
     }
 
-    // Récupération du `folderName`
+    logEvent("info", "Données JSON récupérées avec succès.", { data });
+
     const photographerData = data.photographers.find(
       (photographer) => photographer.id === photographerId,
     );
@@ -163,27 +166,35 @@ async function displayMediaGallery() {
     }
 
     const { folderName } = photographerData;
-
-    // Charger et afficher les médias
     const mediaList = await loadPhotographerMedia(photographerId, mediaDataUrl);
 
-    if (mediaList && mediaList.length > 0) {
-      renderMediaGallery(mediaList, folderName, galleryContainer);
-      logEvent("success", "Galerie de médias affichée avec succès.");
-    } else {
+    if (!Array.isArray(mediaList) || mediaList.length === 0) {
       galleryContainer.innerHTML =
         "<p>Aucun média disponible pour ce photographe.</p>";
       logEvent(
         "warn",
         `Aucun média trouvé pour le photographe ID ${photographerId}.`,
       );
+      return [];
     }
+
+    // Rendu des médias
+    renderMediaGallery(mediaList, folderName, galleryContainer);
+    logEvent("success", "Galerie de médias affichée avec succès.", {
+      mediaList,
+    });
+
+    // Stockage global des médias pour une utilisation ultérieure
+    window.mediaArray = mediaList;
+
+    return mediaList;
   } catch (error) {
     logEvent(
       "error",
       `Erreur lors de l'affichage de la galerie : ${error.message}`,
       { error },
     );
+    return [];
   }
 }
 
@@ -195,22 +206,26 @@ async function initPhotographerPage() {
   logEvent("info", "Début de l'initialisation de la page photographe...");
 
   try {
-    await displayPhotographerBanner(); // Affichage de la bannière
-    await displayMediaGallery(); // Affichage de la galerie
-    // Vérification et initialisation des gestionnaires d'événements
-    if (!domSelectors.photographerPage.contactButton) {
-      logEvent("error", "Le bouton 'Contactez-moi' est manquant.");
-      return;
+    await displayPhotographerBanner(); // Affiche la bannière
+    const mediaArray = await displayMediaGallery(); // Récupère les médias
+
+    if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
+      throw new Error(
+        "Aucun média disponible pour l'initialisation des événements.",
+      );
     }
-    // Initialisation des gestionnaires d'événements
-    initstatscalculator();
-    initEventListeners();
+
+    initstatscalculator(); // Initialise les statistiques
+    initEventListeners(mediaArray); // Passe les médias à la gestion des événements
+
     logEvent("success", "Page photographe initialisée avec succès.");
   } catch (error) {
     logEvent(
       "error",
       "Erreur lors de l'initialisation de la page photographe.",
-      { error },
+      {
+        error,
+      },
     );
   }
 }

@@ -38,6 +38,7 @@
     padding: 0; /* Réduit le padding pour un design compact */
     width:90%;
     margin: 0 auto; 
+    align-items: center;
   }
 
   @include large-desktop {
@@ -57,7 +58,7 @@
     text-align: left; /* Texte aligné à gauche pour une meilleure lecture */
   }
   @include desktop {
-    width: 100%; 
+    width: 80%; 
     text-align: left ;
     margin:0;/* Largeur plus grande pour les écrans plus grands */
   }
@@ -75,7 +76,6 @@
     margin-right: 5%; /* Réduit l'espace à droite pour les écrans plus grands */
     top:5%;
     width: 12%;
-    height:12%;
     padding:0;
     margin-top:7%;
   }

@@ -910,6 +910,7 @@ footer p {
     padding: 0; /* Réduit le padding pour un design compact */
     width: 90%;
     margin: 0 auto;
+    align-items: center;
   }
 }
 @media (min-width: 1440px) {
@@ -933,7 +934,7 @@ footer p {
 }
 @media (min-width: 1024px) {
   .photographer-profile, .photographer-info1.photographer-profile {
-    width: 100%;
+    width: 80%;
     text-align: left;
     margin: 0; /* Largeur plus grande pour les écrans plus grands */
   }
@@ -955,7 +956,6 @@ footer p {
     margin-right: 5%; /* Réduit l'espace à droite pour les écrans plus grands */
     top: 5%;
     width: 12%;
-    height: 12%;
     padding: 0;
     margin-top: 7%;
   }
@@ -1066,9 +1066,9 @@ footer p {
 @media (min-width: 1024px) {
   #gallery {
     display: grid;
-    grid-template-columns: repeat(3, 30%);
+    grid-template-columns: repeat(3, 38%);
     margin: 0 auto;
-    width: 90%;
+    width: 85%;
   }
 }
 
@@ -1078,7 +1078,7 @@ footer p {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--primary-color);
+  background-color: rgba(243, 233, 233, 0.7); /* Fond sombre avec opacité */
   opacity: 0;
   visibility: hidden;
   z-index: 1000;
@@ -1090,29 +1090,17 @@ footer p {
 }
 
 .lightbox-content {
-  position: relative;
-  max-width: 90%;
-  max-height: 90%;
+  width: 80vw;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: var(--neutral-color);
-  border-radius: var(--border-radius-medium);
-  box-shadow: var(--box-shadow-large);
   overflow: hidden;
   outline: none;
 }
-@media (max-width: 768px) {
-  .lightbox-content {
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 0;
-  }
-}
 
 button {
-  all: unset;
   position: absolute;
   background: transparent;
   cursor: pointer;
@@ -1137,12 +1125,11 @@ button:hover, button:focus {
 
 .lightbox-prev,
 .lightbox-next {
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: var(--primary-color-light);
-  color: var(--neutral-color);
+  color: var(--primary-color-light);
+  background-color: transparent;
   border-radius: var(--border-radius-small);
   padding: var(--spacing-xsmall);
+  font-size: 2.5rem;
 }
 .lightbox-prev:hover,
 .lightbox-next:hover {
@@ -1160,15 +1147,15 @@ button:hover, button:focus {
 .lightbox-media-container {
   width: 100%;
   height: auto;
-  max-height: 80vh;
+  height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.lightbox-media-container img,
-.lightbox-media-container video {
-  max-width: 100%;
-  max-height: 100%;
+
+.lightbox-media-container img, video {
+  width: 80vw;
+  height: 80vh;
   object-fit: contain;
 }
 

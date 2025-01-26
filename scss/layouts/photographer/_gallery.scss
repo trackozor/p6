@@ -33,9 +33,9 @@
     }
     @include desktop {
         display: grid;
-        grid-template-columns: repeat(3, 30%);
+        grid-template-columns: repeat(3, 38%);
         margin: 0 auto ;
-        width:90%
+        width:85%
     }
 }
 
