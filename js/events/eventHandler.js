@@ -364,56 +364,90 @@ document.addEventListener("keydown", (e) => {
     const activeLightbox = document.querySelector(
       ".lightbox[aria-hidden='false']",
     );
+    const focusedElement = document.activeElement;
+
+    // Vérifie les éléments actifs
+    logEvent("debug", "Vérification des éléments actifs.", {
+      activeModal: !!activeModal,
+      activeLightbox: !!activeLightbox,
+      focusedElement: focusedElement?.tagName || null,
+    });
 
     // Gestion du focus trap pour la modale
-    if (e.key === "Tab") {
-      if (activeModal) {
-        trapFocus(activeModal);
-        logEvent("info", "Focus trap activé pour la modale.");
-      }
+    if (e.key === "Tab" && activeModal) {
+      trapFocus(activeModal);
+      logEvent("info", "Focus trap activé pour la modale.");
+      return;
     }
 
     // Fermer les modales ou la lightbox avec Escape
-    else if (e.key === "Escape") {
+    if (e.key === "Escape") {
       if (activeModal) {
-        closeModal();
-        logEvent("info", "Modale fermée via la touche Escape.");
+        if (typeof closeModal === "function") {
+          closeModal();
+          logEvent("info", "Modale fermée via la touche Escape.");
+        } else {
+          logEvent("warn", "closeModal n'est pas défini.");
+        }
       }
       if (activeLightbox) {
-        closeLightbox();
-        logEvent("info", "Lightbox fermée via la touche Escape.");
+        if (typeof closeLightbox === "function") {
+          closeLightbox();
+          logEvent("info", "Lightbox fermée via la touche Escape.");
+        } else {
+          logEvent("warn", "closeLightbox n'est pas défini.");
+        }
       }
+      return;
     }
 
     // Navigation dans la lightbox
-    else if (e.key === "ArrowLeft" && activeLightbox) {
+    if (e.key === "ArrowLeft" && activeLightbox) {
       logEvent(
         "info",
         "Flèche gauche détectée. Navigation vers le média précédent.",
       );
-      handleLightboxPrev();
-    } else if (e.key === "ArrowRight" && activeLightbox) {
+      if (typeof handleLightboxPrev === "function") {
+        handleLightboxPrev();
+      } else {
+        logEvent("warn", "handleLightboxPrev n'est pas défini.");
+      }
+      return;
+    }
+
+    if (e.key === "ArrowRight" && activeLightbox) {
       logEvent(
         "info",
         "Flèche droite détectée. Navigation vers le média suivant.",
       );
-      handleLightboxNext();
+      if (typeof handleLightboxNext === "function") {
+        handleLightboxNext();
+      } else {
+        logEvent("warn", "handleLightboxNext n'est pas défini.");
+      }
+      return;
     }
 
     // Navigation générale (exemple : sur des boutons ou liens)
-    else if (e.key === "Enter" || e.key === " ") {
-      const focusedElement = document.activeElement;
-
-      if (focusedElement && focusedElement.tagName === "BUTTON") {
-        focusedElement.click();
-        logEvent(
-          "info",
-          "Activation d’un bouton via la touche Enter ou Espace.",
-        );
-      } else if (focusedElement && focusedElement.tagName === "A") {
-        focusedElement.click();
-        logEvent("info", "Activation d’un lien via la touche Enter ou Espace.");
+    if (e.key === "Enter" || e.key === " ") {
+      if (focusedElement) {
+        if (focusedElement.tagName === "BUTTON") {
+          focusedElement.click();
+          logEvent(
+            "info",
+            "Activation d’un bouton via la touche Enter ou Espace.",
+          );
+        } else if (focusedElement.tagName === "A") {
+          focusedElement.click();
+          logEvent(
+            "info",
+            "Activation d’un lien via la touche Enter ou Espace.",
+          );
+        }
+      } else {
+        logEvent("warn", "Aucun élément focalisé pour l'activation.");
       }
+      return;
     }
   } catch (error) {
     logEvent(

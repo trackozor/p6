@@ -63,18 +63,8 @@ button {
   color: var(--text-color-primary); // Couleur de texte principale
   font-size: var(--font-size-large); // Taille adaptative
   padding: var(--spacing-xsmall);
-  transition: opacity var(--transition-fast);
-
-  svg {
-    fill: currentColor;
-    width: var(--size-medium); // Taille des icônes
-    height: var(--size-medium);
-  }
-
-  &:hover,
-  &:focus {
-    opacity: 0.8; // Interaction visuelle
-  }
+  font-weight: 700;
+  
 }
 
 // Bouton de fermeture
@@ -86,12 +76,11 @@ button {
 // Boutons de navigation
 .lightbox-prev,
 .lightbox-next {
-  color: var(--primary-color-light); // Fond clair par défaut
-  background-color:transparent;
+  background-color:none;
   border-radius: var(--border-radius-small);
   padding: var(--spacing-xsmall);
   font-size: 2.5rem;
-
+  
   &:hover {
     background-color: var(--secondary-color); // Couleur secondaire au survol
   }
