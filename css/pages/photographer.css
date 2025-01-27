@@ -360,7 +360,7 @@ a {
 }
 @media (min-width: 767px) and (min-width: 1024px) {
   .contact_button {
-    padding: 2% 1%;
+    padding: 2.5% 1%;
     margin-bottom: 0;
   }
 }
@@ -1137,18 +1137,21 @@ button {
   right: var(--spacing-medium);
 }
 
+#lightbox {
+  background-color: white;
+}
+
 .lightbox-media-container {
   width: 100%;
   height: auto;
   height: 80vh;
-  display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .lightbox-media-container img, video {
-  width: 80vw;
-  height: 80vh;
+  width: 80%;
+  height: 75%;
   object-fit: contain;
 }
 

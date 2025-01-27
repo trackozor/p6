@@ -99,18 +99,21 @@ button {
 // Description : Zone où les images et vidéos sont affichées. 
 // Les médias s'adaptent à l'espace disponible.
 // --------------------------------------------------------------------------
+#lightbox {
+  background-color: white;
+}
 
 .lightbox-media-container {
   width: 100%;
   height: auto;
   height: 80vh;
-  display: flex;
+
   justify-content: center;
   align-items: center;
 }
 .lightbox-media-container img, video {
-  width:80vw ;
-  height: 80vh;
+  width:80%;
+  height: 75%;
   object-fit: contain; // Préserve les proportions des médias
 }
 // --------------------------------------------------------------------------

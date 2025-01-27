@@ -1,0 +1,198 @@
+// ========================================================
+// Nom du fichier : animation.scss
+// Description    : Centralisation des animations pour l'application Fisheye
+// Auteur         : Trackozor
+// Date           : 08/01/2025
+// Version        : 1.1.0 (Améliorations et documentation enrichie)
+// ========================================================
+
+/*===================================================================
+=            Animations de la Lightbox                             =
+===================================================================*/
+
+/**
+ * Animation d'entrée de la Lightbox
+ * Description : La lightbox entre par le haut avec un effet de "rebond".
+ * Utilisation : Appliquée lors de l'ouverture de la lightbox.
+ */
+@keyframes slideInFromTop {
+    0% {
+        transform: translateY(-100%) scale(0.9); /* Glisse depuis le haut */
+        opacity: 0; /* Invisible */
+    }
+    80% {
+        transform: translateY(10%) scale(1.02); /* Petit rebond */
+        opacity: 1; /* Devient visible */
+    }
+    100% {
+        transform: translateY(0) scale(1); /* Position finale */
+    }
+}
+
+/**
+ * Animation de navigation vers le média suivant
+ * Description : Le média sort vers la gauche, avec un effet de réduction et d'atténuation.
+ * Utilisation : Appliquée lorsqu'on navigue vers le média suivant.
+ */
+@keyframes slideToNextMedia {
+    0% {
+        transform: translateX(0) scale(1); /* Position actuelle */
+        opacity: 1; /* Visible */
+    }
+    50% {
+        transform: translateX(-50%) scale(0.95); /* Réduction et déplacement */
+        opacity: 0.7; /* Semi-transparent */
+    }
+    100% {
+        transform: translateX(-100%) scale(1); /* Hors écran */
+        opacity: 0; /* Invisible */
+    }
+}
+
+/**
+ * Animation de navigation depuis le média suivant
+ * Description : Le nouveau média entre depuis la droite avec un zoom progressif.
+ * Utilisation : Appliquée lorsqu'un nouveau média apparaît depuis la droite.
+ */
+@keyframes slideFromNextMedia {
+    0% {
+        transform: translateX(100%) scale(0.95); /* Hors écran à droite */
+        opacity: 0; /* Invisible */
+    }
+    50% {
+        transform: translateX(50%) scale(1.02); /* Zoom progressif */
+        opacity: 0.7; /* Semi-transparent */
+    }
+    100% {
+        transform: translateX(0) scale(1); /* Position finale */
+        opacity: 1; /* Visible */
+    }
+}
+
+/**
+ * Animation de fermeture de la Lightbox
+ * Description : La lightbox disparaît en glissant vers le bas, avec une légère réduction.
+ * Utilisation : Appliquée lors de la fermeture de la lightbox.
+ */
+@keyframes slideOutToBottom {
+    0% {
+        transform: translateY(0) scale(1); /* Position actuelle */
+        opacity: 1; /* Visible */
+    }
+    100% {
+        transform: translateY(100%) scale(0.8); /* Glisse vers le bas */
+        opacity: 0; /* Invisible */
+    }
+}
+
+/*===================================================================
+=            Animations de la Modale                                =
+===================================================================*/
+
+/**
+ * Animation d'apparition de la Modale
+ * Description : La modale apparaît avec un zoom et une légère rotation.
+ * Utilisation : Appliquée lors de l'ouverture de la modale.
+ */
+@keyframes modalFadeIn {
+    0% {
+        transform: scale(0.8) rotate(-10deg); /* Réduction avec rotation */
+        opacity: 0; /* Invisible */
+    }
+    80% {
+        transform: scale(1.05) rotate(2deg); /* Zoom avec sursaut */
+        opacity: 1; /* Visible */
+    }
+    100% {
+        transform: scale(1) rotate(0deg); /* Position finale */
+    }
+}
+
+/**
+ * Animation de fermeture de la Modale
+ * Description : La modale se rétracte et tourne légèrement en disparaissant.
+ * Utilisation : Appliquée lors de la fermeture de la modale.
+ */
+@keyframes modalFadeOut {
+    0% {
+        transform: scale(1) rotate(0deg); /* Position actuelle */
+        opacity: 1; /* Visible */
+    }
+    100% {
+        transform: scale(0.8) rotate(10deg); /* Réduction avec rotation */
+        opacity: 0; /* Invisible */
+    }
+}
+
+/**
+ * Animation de mise en évidence (Focus Trap)
+ * Description : Une lueur pulsante est appliquée aux éléments focalisés.
+ * Utilisation : Indique l'élément actuellement focalisé dans la modale.
+ */
+@keyframes focusGlow {
+    0% {
+        box-shadow: 0 0 0px rgba(255, 255, 255, 0.2); /* Faible lueur */
+    }
+    100% {
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.6); /* Lueur intense */
+    }
+}
+
+/*===================================================================
+=            Animations du Loader                                  =
+===================================================================*/
+
+/**
+ * Loader - Animation des balles rebondissantes
+ * Description : Des balles rebondissent de façon synchronisée pour indiquer un chargement.
+ * Utilisation : Appliquée sur les éléments du loader.
+ */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0); /* Position initiale et finale */
+    }
+    50% {
+        transform: translateY(-15px); /* Rebond */
+    }
+}
+
+/**
+ * Loader - Animation de rotation
+ * Description : Une rotation fluide est appliquée à l'ensemble du loader.
+ * Utilisation : Ajoute une rotation continue pour un effet de dynamisme.
+ */
+@keyframes rotateLoader {
+    0% {
+        transform: rotate(0deg); /* Début */
+    }
+    100% {
+        transform: rotate(360deg); /* Fin (tour complet) */
+    }
+}
+
+/*===================================================================
+=            Animation de fond (optionnelle)                       =
+===================================================================*/
+
+/**
+ * Animation du fond assombri (Backdrop)
+ * Description : Le fond devient progressivement plus sombre pour diriger l'attention sur la Lightbox ou la Modale.
+ * Utilisation : Appliquée au backdrop lors de l'ouverture.
+ */
+@keyframes backdropFadeIn {
+    0% {
+        background-color: rgba(0, 0, 0, 0); /* Transparent */
+    }
+    100% {
+        background-color: rgba(0, 0, 0, 0.8); /* Opacité maximale */
+    }
+    }
+
+    @keyframes backdropFadeOut {
+    0% {
+        background-color: rgba(0, 0, 0, 0.8); /* Opacité maximale */
+    }
+    100% {
+        background-color: rgba(0, 0, 0, 0); /* Transparent */
+    }
+}
