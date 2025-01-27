@@ -234,9 +234,8 @@ export function handleModalConfirm() {
  * Gestionnaire pour ouvrir la lightbox.
  * @param {Event} event - Événement déclenché par l'utilisateur.
  */
-export function handleLightboxOpen(event, folderName) {
+export function handleLightboxOpen(event, mediaArray, folderName) {
   try {
-    // Récupérer l'élément de galerie le plus proche et son index
     const galleryItem = event.target.closest(".gallery-item");
 
     if (!galleryItem) {
@@ -251,8 +250,8 @@ export function handleLightboxOpen(event, folderName) {
       );
     }
 
-    // Passer l'index et le tableau global mediaArray à openLightbox
-    openLightbox(mediaIndex, window.mediaArray, folderName); // Assurez-vous que `mediaArray` est bien stocké globalement
+    // Ouvre la lightbox en passant les données nécessaires
+    openLightbox(mediaIndex, mediaArray, folderName);
   } catch (error) {
     logEvent("error", "Erreur lors de l'ouverture de la lightbox.", {
       message: error.message,
@@ -264,23 +263,71 @@ export function handleLightboxOpen(event, folderName) {
 /**
  * Gestionnaire pour fermer la lightbox.
  */
+/**
+ * Gestionnaire pour fermer la lightbox.
+ * S'assure que toutes les ressources liées à la lightbox sont correctement nettoyées.
+ */
 export function handleLightboxClose() {
-  closeLightbox();
+  try {
+    logEvent("info", "Tentative de fermeture de la lightbox.");
+    closeLightbox();
+    logEvent("success", "Lightbox fermée avec succès.");
+  } catch (error) {
+    logEvent("error", "Erreur lors de la fermeture de la lightbox.", {
+      message: error.message,
+      stack: error.stack,
+    });
+  }
 }
 
 /**
  * Gestionnaire pour afficher le média précédent dans la lightbox.
+ * Vérifie les conditions avant de naviguer au média précédent.
  */
-export function handleLightboxPrev() {
-  showPreviousMedia();
+export function handleLightboxPrev(mediaArray, folderName) {
+  try {
+    if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
+      throw new Error("Tableau de médias invalide ou vide.");
+    }
+    if (!folderName || typeof folderName !== "string") {
+      throw new Error("Nom du dossier (folderName) invalide ou manquant.");
+    }
+
+    logEvent("info", "Navigation vers le média précédent.");
+    showPreviousMedia(mediaArray, folderName);
+    logEvent("success", "Navigation vers le média précédent réussie.");
+  } catch (error) {
+    logEvent("error", "Erreur lors de la navigation vers le média précédent.", {
+      message: error.message,
+      stack: error.stack,
+    });
+  }
 }
 
 /**
  * Gestionnaire pour afficher le média suivant dans la lightbox.
+ * Vérifie les conditions avant de naviguer au média suivant.
  */
-export function handleLightboxNext() {
-  showNextMedia();
+export function handleLightboxNext(mediaArray, folderName) {
+  try {
+    if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
+      throw new Error("Tableau de médias invalide ou vide.");
+    }
+    if (!folderName || typeof folderName !== "string") {
+      throw new Error("Nom du dossier (folderName) invalide ou manquant.");
+    }
+
+    logEvent("info", "Navigation vers le média suivant.");
+    showNextMedia(mediaArray, folderName);
+    logEvent("success", "Navigation vers le média suivant réussie.");
+  } catch (error) {
+    logEvent("error", "Erreur lors de la navigation vers le média suivant.", {
+      message: error.message,
+      stack: error.stack,
+    });
+  }
 }
+
 /*==============================================*/
 /*         Gestion du tri                       */
 /*==============================================*/
@@ -312,29 +359,70 @@ export async function handleSortChange(event) {
 /*================================================================*/
 
 document.addEventListener("keydown", (e) => {
-  const activeModal = document.querySelector(".modal.modal-active");
-  const activeLightbox = document.querySelector(
-    ".lightbox[aria-hidden='false']",
-  );
+  try {
+    const activeModal = document.querySelector(".modal.modal-active");
+    const activeLightbox = document.querySelector(
+      ".lightbox[aria-hidden='false']",
+    );
 
-  if (e.key === "Tab") {
-    // Gestion des modales ouvertes (focus trap)
-    if (activeModal) {
-      trapFocus(activeModal); // Assurez-vous que trapFocus est correctement implémenté
+    // Gestion du focus trap pour la modale
+    if (e.key === "Tab") {
+      if (activeModal) {
+        trapFocus(activeModal);
+        logEvent("info", "Focus trap activé pour la modale.");
+      }
     }
-  } else if (e.key === "Escape") {
-    // Fermer la modale ou la lightbox
-    if (activeModal) {
-      closeModal(); // Fonction pour fermer la modale
+
+    // Fermer les modales ou la lightbox avec Escape
+    else if (e.key === "Escape") {
+      if (activeModal) {
+        closeModal();
+        logEvent("info", "Modale fermée via la touche Escape.");
+      }
+      if (activeLightbox) {
+        closeLightbox();
+        logEvent("info", "Lightbox fermée via la touche Escape.");
+      }
     }
-    if (activeLightbox) {
-      closeLightbox(); // Fonction pour fermer la lightbox
+
+    // Navigation dans la lightbox
+    else if (e.key === "ArrowLeft" && activeLightbox) {
+      logEvent(
+        "info",
+        "Flèche gauche détectée. Navigation vers le média précédent.",
+      );
+      handleLightboxPrev();
+    } else if (e.key === "ArrowRight" && activeLightbox) {
+      logEvent(
+        "info",
+        "Flèche droite détectée. Navigation vers le média suivant.",
+      );
+      handleLightboxNext();
     }
-  } else if (e.key === "ArrowLeft" && activeLightbox) {
-    // Flèche gauche pour la lightbox
-    handleLightboxPrev();
-  } else if (e.key === "ArrowRight" && activeLightbox) {
-    // Flèche droite pour la lightbox
-    handleLightboxNext();
+
+    // Navigation générale (exemple : sur des boutons ou liens)
+    else if (e.key === "Enter" || e.key === " ") {
+      const focusedElement = document.activeElement;
+
+      if (focusedElement && focusedElement.tagName === "BUTTON") {
+        focusedElement.click();
+        logEvent(
+          "info",
+          "Activation d’un bouton via la touche Enter ou Espace.",
+        );
+      } else if (focusedElement && focusedElement.tagName === "A") {
+        focusedElement.click();
+        logEvent("info", "Activation d’un lien via la touche Enter ou Espace.");
+      }
+    }
+  } catch (error) {
+    logEvent(
+      "error",
+      "Erreur lors de l'interprétation des événements clavier.",
+      {
+        message: error.message,
+        stack: error.stack,
+      },
+    );
   }
 });

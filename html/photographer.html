@@ -138,6 +138,9 @@
       aria-hidden="true"
       aria-labelledby="modal-title"
     >
+      <!-- Focus trap : éléments invisibles pour bloquer le focus -->
+    <div tabindex="0" aria-hidden="true" class="focus-trap-start"></div>
+
       <!-- Bouton de fermeture de la fenêtre modale -->
       <button type="button" class="modal-close" aria-label="Fermer la fenêtre">
         <span aria-hidden="true">&times;</span>

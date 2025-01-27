@@ -51,24 +51,42 @@ export async function loadPhotographerMedia(photographerId, mediaDataUrl) {
       throw new Error("Les données JSON sont mal structurées ou absentes.");
     }
 
+    logEvent(
+      "info",
+      `Chargement des médias depuis JSON. Total : ${data.media.length}`,
+      {
+        photographerId,
+      },
+    );
+
+    const isValidMedia = (media) => {
+      return (
+        typeof media.id === "number" &&
+        typeof media.photographerId === "number" &&
+        (typeof media.image === "string" || typeof media.video === "string") &&
+        typeof media.title === "string"
+      );
+    };
+
     const photographerMedia = data.media.filter(
-      (media) => media.photographerId === photographerId,
+      (media) => media.photographerId === photographerId && isValidMedia(media),
     );
 
     if (photographerMedia.length === 0) {
       logEvent("warn", "Aucun média trouvé pour ce photographe.", {
         photographerId,
       });
-    } else {
-      logEvent("info", `${photographerMedia.length} médias trouvés.`, {
-        photographerMedia,
-      });
+      return [];
     }
+
+    logEvent("info", `${photographerMedia.length} médias valides trouvés.`, {
+      photographerMedia,
+    });
 
     return photographerMedia;
   } catch (error) {
     logEvent("error", "Erreur lors du chargement des médias.", { error });
-    throw new Error(`Échec du chargement des médias : ${error.message}`);
+    return []; // Fallback : retour d'un tableau vide en cas d'erreur
   }
 }
 

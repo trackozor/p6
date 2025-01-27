@@ -236,14 +236,17 @@ export function initLightboxEvents(mediaArray, folderName) {
     }
 
     if (!folderName || typeof folderName !== "string") {
-      throw new Error("Le nom du dossier (folderName) est invalide ou manquant.");
+      throw new Error(
+        "Le nom du dossier (folderName) est invalide ou manquant.",
+      );
     }
 
     // Ajout des événements aux items de la galerie
     const galleryItems = document.querySelectorAll(".gallery-item");
     galleryItems.forEach((item) => {
-      item.addEventListener("click", (event) =>
-        handleLightboxOpen(event, mediaArray, folderName)
+      item.addEventListener(
+        "click",
+        (event) => handleLightboxOpen(event, mediaArray, folderName), // Passe `mediaArray` et `folderName`
       );
     });
 
@@ -252,19 +255,20 @@ export function initLightboxEvents(mediaArray, folderName) {
       domSelectors.lightbox;
 
     if (!lightboxCloseButton || !lightboxPrevButton || !lightboxNextButton) {
-      throw new Error(
-        "Les boutons de la lightbox (fermeture, précédent, suivant) sont introuvables."
-      );
+      throw new Error("Les boutons de la lightbox sont introuvables.");
     }
 
+    // Bouton pour fermer la lightbox
     lightboxCloseButton.addEventListener("click", handleLightboxClose);
 
+    // Bouton pour aller au média précédent
     lightboxPrevButton.addEventListener("click", () =>
-      handleLightboxPrev(mediaArray, folderName)
+      handleLightboxPrev(mediaArray, folderName),
     );
 
+    // Bouton pour aller au média suivant
     lightboxNextButton.addEventListener("click", () =>
-      handleLightboxNext(mediaArray, folderName)
+      handleLightboxNext(mediaArray, folderName),
     );
 
     logEvent("success", "Événements de la lightbox initialisés avec succès.");
@@ -275,12 +279,12 @@ export function initLightboxEvents(mediaArray, folderName) {
       {
         message: error.message,
         stack: error.stack,
-      }
+      },
     );
   } finally {
     logEvent(
       "test_end",
-      "Fin de l'initialisation des événements pour la lightbox."
+      "Fin de l'initialisation des événements pour la lightbox.",
     );
   }
 }
@@ -327,12 +331,12 @@ function initSortingEvents() {
 /**
  * Initialise tous les événements nécessaires à l'application.
  */
-export function initEventListeners(mediaArray) {
+export function initEventListeners(mediaArray, folderName) {
   logEvent("test_start", "Initialisation globale des événements...");
 
   try {
     initModalEvents();
-    initLightboxEvents(mediaArray);
+    initLightboxEvents(mediaArray, folderName);
     initSortingEvents();
     initModalConfirm();
     setupContactFormEvents();

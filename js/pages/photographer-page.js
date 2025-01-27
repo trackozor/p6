@@ -134,7 +134,7 @@ async function displayMediaGallery() {
       "error",
       "Impossible de continuer : ID du photographe non valide.",
     );
-    return [];
+    return { mediaArray: [], folderName: "" };
   }
 
   try {
@@ -149,11 +149,9 @@ async function displayMediaGallery() {
     const response = await fetch(mediaDataUrl);
     const data = await response.json();
 
-    if (!data || !data.photographers) {
-      throw new Error("Les données JSON des photographes sont invalides.");
+    if (!data || !data.photographers || !Array.isArray(data.media)) {
+      throw new Error("Les données JSON sont mal structurées ou absentes.");
     }
-
-    logEvent("info", "Données JSON récupérées avec succès.", { data });
 
     const photographerData = data.photographers.find(
       (photographer) => photographer.id === photographerId,
@@ -166,35 +164,34 @@ async function displayMediaGallery() {
     }
 
     const { folderName } = photographerData;
-    const mediaList = await loadPhotographerMedia(photographerId, mediaDataUrl);
+    const mediaArray = await loadPhotographerMedia(
+      photographerId,
+      mediaDataUrl,
+    );
 
-    if (!Array.isArray(mediaList) || mediaList.length === 0) {
+    if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
       galleryContainer.innerHTML =
         "<p>Aucun média disponible pour ce photographe.</p>";
       logEvent(
         "warn",
         `Aucun média trouvé pour le photographe ID ${photographerId}.`,
       );
-      return [];
+      return { mediaArray: [], folderName };
     }
 
-    // Rendu des médias
-    renderMediaGallery(mediaList, folderName, galleryContainer);
+    renderMediaGallery(mediaArray, folderName, galleryContainer);
     logEvent("success", "Galerie de médias affichée avec succès.", {
-      mediaList,
+      mediaArray,
     });
 
-    // Stockage global des médias pour une utilisation ultérieure
-    window.mediaArray = mediaList;
-
-    return mediaList;
+    return { mediaArray, folderName };
   } catch (error) {
     logEvent(
       "error",
       `Erreur lors de l'affichage de la galerie : ${error.message}`,
       { error },
     );
-    return [];
+    return { mediaArray: [], folderName: "" };
   }
 }
 
@@ -207,7 +204,9 @@ async function initPhotographerPage() {
 
   try {
     await displayPhotographerBanner(); // Affiche la bannière
-    const mediaArray = await displayMediaGallery(); // Récupère les médias
+
+    // Récupère les médias et le folderName
+    const { mediaArray, folderName } = await displayMediaGallery();
 
     if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
       throw new Error(
@@ -216,7 +215,7 @@ async function initPhotographerPage() {
     }
 
     initstatscalculator(); // Initialise les statistiques
-    initEventListeners(mediaArray); // Passe les médias à la gestion des événements
+    initEventListeners(mediaArray, folderName); // Passe les médias et le folderName à la gestion des événements
 
     logEvent("success", "Page photographe initialisée avec succès.");
   } catch (error) {
