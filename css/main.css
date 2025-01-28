@@ -335,6 +335,11 @@ video {
   border: 2px solid var(--primary-color); /* Ajoute une bordure pour la mise en évidence */
 }
 
+/* Classe pour masquer le scroll du corps de la page */
+.no-scroll {
+  overflow: hidden;
+}
+
 /* =========================================================================== */
 /*                     Classes pour les styles par défaut                      */
 /* =========================================================================== */
@@ -1458,6 +1463,11 @@ video {
   border: 2px solid var(--primary-color); /* Ajoute une bordure pour la mise en évidence */
 }
 
+/* Classe pour masquer le scroll du corps de la page */
+.no-scroll {
+  overflow: hidden;
+}
+
 /* =========================================================================== */
 /*                     Classes pour les styles par défaut                      */
 /* =========================================================================== */
@@ -2515,23 +2525,23 @@ input.error-input, textarea.error-input {
   border-radius: 4px; /* Coins arrondis pour un design moderne */
 }
 
-/*.honeypot-field {
+.honeypot-field {
   display: block !important;
   visibility: visible;
   opacity: 1;
-  color: red;  
+  color: red;
   border: 1px solid red;
-}*/
-.honeypot-field {
+}
+
+/*.honeypot-field {
   position: absolute;
-  left: -9999px;
+  left: -9999px; 
   visibility: hidden;
   opacity: 0;
   height: 0;
   width: 0;
   overflow: hidden;
-}
-
+}*/
 .modal.spam-modal {
   display: none; /* Masquée par défaut */
   position: fixed;

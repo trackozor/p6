@@ -172,14 +172,14 @@ input.error-input, textarea.error-input {
 }
 
 
-/*.honeypot-field {
+.honeypot-field {
   display: block !important;
   visibility: visible;
   opacity: 1;
   color: red;  
   border: 1px solid red;
-}*/
-.honeypot-field {
+}
+/*.honeypot-field {
   position: absolute;
   left: -9999px; 
   visibility: hidden;
@@ -187,7 +187,7 @@ input.error-input, textarea.error-input {
   height: 0;
   width: 0;
   overflow: hidden;
-}
+}*/
 
 
 

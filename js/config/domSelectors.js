@@ -126,6 +126,13 @@ const domSelectors = (() => {
         message: safeQuerySelector("#confirmation-message", true), // Message de confirmation
         confirmButton: safeQuerySelector(".confirm-btn"), // Bouton de confirmation
       },
+      spamModal: {
+        container: safeQuerySelector("#spam-error-modal"), // Conteneur principal de la modale anti-spam
+        title: safeQuerySelector("#spam-error-title"), // Titre de la modale anti-spam
+        body: safeQuerySelector(".modal-body"), // Corps de la modale anti-spam
+        footer: safeQuerySelector(".modal-footer"), // Pied de la modale
+        closeButton: safeQuerySelector(".btn-close-error"), // Bouton pour fermer la modale anti-spam
+      },
     },
     sorting: {
       sortOptions: safeQuerySelector("#sort-options"),

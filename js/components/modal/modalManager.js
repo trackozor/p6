@@ -16,7 +16,7 @@ import domSelectors from "../../config/domSelectors.js";
 /*              Variables                       */
 /*=============================================*/
 let modalOpen = false; // Variable globale pour suivre l'état de la modale
-
+let modalConfirm = false; // Suivi global de l'état de la modale de confirmation
 /*==============================================*/
 /*              Ouverture modale                */
 /*=============================================*/
@@ -142,13 +142,10 @@ export async function closeModal() {
 /*              Modale de confirmation          */
 /*=============================================*/
 /**
-
-/**
  * Ouvre la modale de confirmation.
  *
  * @returns {void}
  */
-let modalConfirm = false; // Suivi global de l'état de la modale de confirmation
 
 export function openConfirmationModal() {
   logEvent("test_start", "Début de l'ouverture de la modale de confirmation.");
@@ -204,12 +201,7 @@ export function openConfirmationModal() {
   logEvent("test_end", "Fin de l'ouverture de la modale de confirmation.");
 }
 
-/**
- * Ferme la modale de confirmation.
- *
- * @returns {void}
- */
-/**
+/*
  * Ferme la modale de confirmation.
  *
  * @returns {void}
@@ -256,19 +248,35 @@ export function closeConfirmationModal() {
 /**
  * Affiche la modale d'erreur pour spam détecté.
  */
+
 export function showSpamModal() {
-  const spamModal = document.getElementById("spam-error-modal");
-  spamModal.style.display = "block"; // Affiche la modale
+  const { spamModal } = domSelectors.modal; // Récupération via domSelectors
+  if (!spamModal) {
+    logEvent("error", "Impossible de trouver la modale anti-spam.");
+    return;
+  }
+
+  spamModal.classList.add("modal-active"); // Ajoute une classe CSS pour afficher la modale
   spamModal.setAttribute("aria-hidden", "false");
   document.body.classList.add("no-scroll"); // Bloque le défilement en arrière-plan
+
+  logEvent("info", "Modale anti-spam affichée.");
 }
 
 /**
  * Ferme la modale d'erreur pour spam détecté.
  */
 export function closeSpamModal() {
-  const spamModal = document.getElementById("spam-error-modal");
-  spamModal.style.display = "none"; // Masque la modale
+  const { spamModal } = domSelectors.modal; // Récupération via domSelectors
+  if (!spamModal) {
+    logEvent("error", "Impossible de trouver la modale anti-spam.");
+    return;
+  }
+
+  spamModal.classList.remove("modal-active"); // Retire la classe CSS pour masquer la modale
   spamModal.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("no-scroll");
+  document.body.classList.remove("no-scroll"); // Réactive le défilement
+
+  logEvent("info", "Modale anti-spam masquée.");
 }
+

@@ -38,6 +38,11 @@
   border: 2px solid var(--primary-color); /* Ajoute une bordure pour la mise en évidence */
 }
 
+/* Classe pour masquer le scroll du corps de la page */
+.no-scroll {
+  overflow: hidden;
+}
+
 /* =========================================================================== */
 /*                     Classes pour les styles par défaut                      */
 /* =========================================================================== */
