@@ -2525,24 +2525,24 @@ input.error-input, textarea.error-input {
   border-radius: 4px; /* Coins arrondis pour un design moderne */
 }
 
-.honeypot-field {
+/*.honeypot-field {
   display: block !important;
   visibility: visible;
   opacity: 1;
-  color: red;
+  color: red;  
   border: 1px solid red;
-}
-
-/*.honeypot-field {
+}*/
+.honeypot-field {
   position: absolute;
-  left: -9999px; 
+  left: -9999px;
   visibility: hidden;
   opacity: 0;
   height: 0;
   width: 0;
   overflow: hidden;
-}*/
-.modal.spam-modal {
+}
+
+* .modal.spam-modal {
   display: none; /* Masquée par défaut */
   position: fixed;
   z-index: 1000;

@@ -212,6 +212,7 @@ export function closeConfirmationModal() {
   try {
     const { container: confirmationModal } =
       domSelectors.modal.confirmationModal;
+    const { formElement } = domSelectors.modal.form; // Récupération du formulaire
 
     if (!confirmationModal || !modalConfirm) {
       logEvent(
@@ -224,6 +225,14 @@ export function closeConfirmationModal() {
     // Supprime la classe pour masquer la modale
     confirmationModal.classList.remove("modal-active");
     confirmationModal.setAttribute("aria-hidden", "true");
+
+    // Réinitialise le formulaire si présent
+    if (formElement) {
+      formElement.reset();
+      logEvent("info", "Formulaire réinitialisé avec succès.");
+    } else {
+      logEvent("warn", "Aucun formulaire à réinitialiser.");
+    }
 
     // Met à jour l'état global
     modalConfirm = false;
@@ -251,32 +260,40 @@ export function closeConfirmationModal() {
 
 export function showSpamModal() {
   const { spamModal } = domSelectors.modal; // Récupération via domSelectors
-  if (!spamModal) {
+  const { MODAL_ACTIVE, BODY_NO_SCROLL } = domSelectors.CSS_CLASSES; // Récupère les classes CSS
+
+  if (!spamModal.container) {
     logEvent("error", "Impossible de trouver la modale anti-spam.");
     return;
   }
 
-  spamModal.classList.add("modal-active"); // Ajoute une classe CSS pour afficher la modale
-  spamModal.setAttribute("aria-hidden", "false");
-  document.body.classList.add("no-scroll"); // Bloque le défilement en arrière-plan
+  spamModal.container.classList.add(MODAL_ACTIVE); // Ajoute une classe CSS pour afficher la modale
+  spamModal.container.setAttribute("aria-hidden", "false");
+  document.body.classList.add(BODY_NO_SCROLL); // Bloque le défilement en arrière-plan
 
   logEvent("info", "Modale anti-spam affichée.");
 }
 
-/**
- * Ferme la modale d'erreur pour spam détecté.
- */
 export function closeSpamModal() {
-  const { spamModal } = domSelectors.modal; // Récupération via domSelectors
-  if (!spamModal) {
-    logEvent("error", "Impossible de trouver la modale anti-spam.");
+  const { container, closeButton } = domSelectors.modal.spamModal; // Récupération via domSelectors
+
+  if (!container) {
+    logEvent(
+      "error",
+      "Impossible de trouver le conteneur de la modale anti-spam.",
+    );
     return;
   }
 
-  spamModal.classList.remove("modal-active"); // Retire la classe CSS pour masquer la modale
-  spamModal.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("no-scroll"); // Réactive le défilement
+  // Suppression des classes et réinitialisation des attributs
+  container.classList.remove(domSelectors.CSS_CLASSES.MODAL_ACTIVE);
+  container.setAttribute("aria-hidden", "true");
+  document.body.classList.remove(domSelectors.CSS_CLASSES.BODY_NO_SCROLL);
 
-  logEvent("info", "Modale anti-spam masquée.");
+  logEvent("info", "Modale anti-spam masquée.", { container });
+
+  // Retirer l'event listener sur le bouton de fermeture
+  if (closeButton) {
+    closeButton.removeEventListener("click", closeSpamModal);
+  }
 }
-

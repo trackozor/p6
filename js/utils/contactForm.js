@@ -190,12 +190,6 @@ export function validateMessageField(field) {
  *
  * @returns {boolean} - Retourne `true` si tous les champs sont valides, sinon `false`.
  */
-
-/**
- * Valide tous les champs du formulaire et retourne le résultat global.
- *
- * @returns {boolean} - Retourne `true` si tous les champs sont valides, sinon `false`.
- */
 export function validateForm() {
   let isValid = true;
 
@@ -237,11 +231,7 @@ export function validateForm() {
  *
  * @param {Event} event - Événement de soumission déclenché par le formulaire.
  */
-/**
- * Fonction pour valider et gérer la soumission d'un formulaire.
- *
- * @param {Event} event - Événement de soumission déclenché par le formulaire.
- */
+
 export function initvalidform() {
   logEvent("info", "Soumission du formulaire détectée.");
 

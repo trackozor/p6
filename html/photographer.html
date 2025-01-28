@@ -277,14 +277,7 @@
         </button>
       </div>
     </div>
-    <!-- Modale d'erreur pour Spam détecté -->
-    <div
-      id="spam-error-modal"
-      class="modal spam-modal"
-      role="dialog"
-      aria-hidden="true"
-      aria-labelledby="spam-error-title"
-    >
+    <div id="spam-error-modal" class="modal error-modal" aria-hidden="true">
       <div class="modal-content">
         <header class="modal-header">
           <h2 id="spam-error-title" class="modal-title">
@@ -292,22 +285,7 @@
           </h2>
         </header>
         <div class="modal-body">
-          <p>
-            Une activité suspecte a été détectée sur ce formulaire. Pour des raisons
-            de sécurité, nous avons bloqué votre soumission.
-          </p>
-          <p>
-            <strong>Mesures recommandées :</strong>
-          </p>
-          <ul>
-            <li>Déconnectez immédiatement votre poste du réseau.</li>
-            <li>Ne redémarrez pas et ne fermez pas votre poste.</li>
-            <li>Contactez immédiatement votre service informatique (SI).</li>
-            <li>Fournissez les informations nécessaires pour analyse.</li>
-          </ul>
-          <p>
-            Cette alerte pourrait indiquer la présence d'une activité malveillante. En cas de doute, restez vigilant et suivez les instructions.
-          </p>
+          <!-- Contenu ici -->
         </div>
         <footer class="modal-footer">
           <button
@@ -320,7 +298,7 @@
         </footer>
       </div>
     </div>
-
+    
     <!-- Loader -->
     <div id="loader" class="loader" aria-live="polite" aria-hidden="true">
       <div class="loader-container">
