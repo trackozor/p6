@@ -198,6 +198,13 @@
                 placeholder="Votre email"
               />
             </div>
+
+            <!-- Champ Honeypot (Invisible pour les utilisateurs, mais détectable par les bots) -->
+            <div class="honeypot-field">
+              <label for="hidden-field" class="sr-only">Ne pas remplir ce champ</label>
+              <input type="text" name="hidden-field" id="hidden-field" autocomplete="off">
+            </div>
+
             <!-- Groupe Message -->
             <div class="form-group">
               <label for="message">Votre message</label>
@@ -208,6 +215,9 @@
                 required
                 placeholder="Votre message"
               ></textarea>
+              <span id="message-counter" class="char-counter">
+                0 / 500 caractères
+              </span>
             </div>
           </fieldset>
           <!-- Bouton Soumettre -->
@@ -265,6 +275,49 @@
         <button type="button" class="confirm-btn" aria-label="Fermer la confirmation">
           OK
         </button>
+      </div>
+    </div>
+    <!-- Modale d'erreur pour Spam détecté -->
+    <div
+      id="spam-error-modal"
+      class="modal spam-modal"
+      role="dialog"
+      aria-hidden="true"
+      aria-labelledby="spam-error-title"
+    >
+      <div class="modal-content">
+        <header class="modal-header">
+          <h2 id="spam-error-title" class="modal-title">
+            ⚠️ Attention : Comportement suspect détecté
+          </h2>
+        </header>
+        <div class="modal-body">
+          <p>
+            Une activité suspecte a été détectée sur ce formulaire. Pour des raisons
+            de sécurité, nous avons bloqué votre soumission.
+          </p>
+          <p>
+            <strong>Mesures recommandées :</strong>
+          </p>
+          <ul>
+            <li>Déconnectez immédiatement votre poste du réseau.</li>
+            <li>Ne redémarrez pas et ne fermez pas votre poste.</li>
+            <li>Contactez immédiatement votre service informatique (SI).</li>
+            <li>Fournissez les informations nécessaires pour analyse.</li>
+          </ul>
+          <p>
+            Cette alerte pourrait indiquer la présence d'une activité malveillante. En cas de doute, restez vigilant et suivez les instructions.
+          </p>
+        </div>
+        <footer class="modal-footer">
+          <button
+            type="button"
+            class="btn-close-error modal"
+            aria-label="Fermer la modale"
+          >
+            OK
+          </button>
+        </footer>
       </div>
     </div>
 

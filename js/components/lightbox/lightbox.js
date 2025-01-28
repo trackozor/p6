@@ -225,32 +225,38 @@ export function closeLightbox() {
 /**
  * Affiche le média précédent.
  */
-export function showPreviousMedia() {
-  if (!Array.isArray(mediaList) || mediaList.length === 0) {
+export function showPreviousMedia(
+  mediaArray = mediaList,
+  folderName = globalFolderName,
+) {
+  if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
     logEvent("error", "Aucun média disponible pour afficher le précédent.");
     return;
   }
 
-  currentIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
+  currentIndex = (currentIndex - 1 + mediaArray.length) % mediaArray.length;
   logEvent(
     "info",
     `Navigation vers le média précédent : Index ${currentIndex}`,
+    { currentIndex },
   );
-  displayMedia(currentIndex, globalFolderName);
+  displayMedia(currentIndex, folderName);
 }
 
-/**
- * Affiche le média suivant.
- */
-export function showNextMedia() {
-  if (!Array.isArray(mediaList) || mediaList.length === 0) {
+export function showNextMedia(
+  mediaArray = mediaList,
+  folderName = globalFolderName,
+) {
+  if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
     logEvent("error", "Aucun média disponible pour afficher le suivant.");
     return;
   }
 
-  currentIndex = (currentIndex + 1) % mediaList.length;
-  logEvent("info", `Navigation vers le média suivant : Index ${currentIndex}`);
-  displayMedia(currentIndex, globalFolderName);
+  currentIndex = (currentIndex + 1) % mediaArray.length;
+  logEvent("info", `Navigation vers le média suivant : Index ${currentIndex}`, {
+    currentIndex,
+  });
+  displayMedia(currentIndex, folderName);
 }
 
 /**

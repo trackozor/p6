@@ -170,6 +170,77 @@ input.error-input, textarea.error-input {
   position: relative; /* Position relative pour s'adapter dynamiquement à son parent */
   border-radius: 4px; /* Coins arrondis pour un design moderne */
 }
+
+
+/*.honeypot-field {
+  display: block !important;
+  visibility: visible;
+  opacity: 1;
+  color: red;  
+  border: 1px solid red;
+}*/
+.honeypot-field {
+  position: absolute;
+  left: -9999px; 
+  visibility: hidden;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+
+
+
+.modal.spam-modal {
+  display: none; /* Masquée par défaut */
+  position: fixed;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background-color: #fff;
+  border: 2px solid red;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal.spam-modal .modal-header {
+  background-color: #ff4d4d; /* Rouge pour indiquer l'alerte */
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px 8px 0 0;
+  text-align: center;
+}
+
+.modal.spam-modal .modal-body {
+  padding: 20px;
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.modal.spam-modal .modal-footer {
+  text-align: center;
+  padding: 10px 20px;
+}
+
+.modal.spam-modal .btn-close-errormodal {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.modal.spam-modal .btn-close-errormodal:hover {
+  background-color: #cc0000;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                          Modale de confirmation                         */
 /* -------------------------------------------------------------------------- */

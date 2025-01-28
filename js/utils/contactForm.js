@@ -1,5 +1,8 @@
 import { logEvent, showError, removeError } from "./utils.js";
-import { openConfirmationModal } from "../components/modal/modalManager.js";
+import {
+  openConfirmationModal,
+  showSpamModal,
+} from "../components/modal/modalManager.js";
 
 // === Définition des champs obligatoires ===
 const REQUIRED_FIELDS = ["first-name", "last-name", "email", "message"];
@@ -25,44 +28,36 @@ const FIELD_NAMES = {
  */
 export function validateTextField(field, fieldId) {
   const value = field.value.trim();
-  const fieldName = FIELD_NAMES[fieldId] || "Champ"; // Récupère le nom lisible ou utilise "Champ" par défaut
+  const fieldName = FIELD_NAMES[fieldId] || "Champ";
   let errorMessage = "";
 
-  // Limite de caractères (exemple : 50 caractères max)
-  const MAX_LENGTH = 50;
+  // ✅ Autorisation stricte : Seulement lettres, espaces, apostrophes, tirets
+  const VALID_NAME_REGEX = /^[a-zA-ZÀ-ÖØ-öø-ÿ'-\s]+$/;
 
-  // === Validation des critères ===
   if (value === "") {
-    errorMessage = `Le ${fieldName} est requis.`; // Champ obligatoire
+    errorMessage = `⚠️ Le ${fieldName} est requis.`;
   } else if (value.length < 2) {
-    errorMessage = `Le ${fieldName} doit contenir au moins 2 caractères.`; // Longueur minimale
-  } else if (value.length > MAX_LENGTH) {
-    errorMessage = `Le ${fieldName} ne doit pas dépasser ${MAX_LENGTH} caractères.`;
-  } else if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ]+(?:[-' ][a-zA-ZÀ-ÖØ-öø-ÿ]+)*$/.test(value)) {
-    errorMessage = `Le ${fieldName} contient des caractères invalides.`; // Caractères non autorisés
+    errorMessage = `⚠️ Le ${fieldName} doit contenir au moins 2 caractères.`;
+  } else if (value.length > 50) {
+    errorMessage = `⚠️ Le ${fieldName} ne doit pas dépasser 50 caractères.`;
+  } else if (!VALID_NAME_REGEX.test(value)) {
+    errorMessage = `❌ Le ${fieldName} contient des caractères invalides.`;
   }
 
-  // === Gestion des erreurs ===
   if (errorMessage) {
-    showError(errorMessage, field); // Affiche un message d'erreur
-    logEvent("warn", `Validation échouée pour le ${fieldName}.`, {
+    showError(errorMessage, field);
+    logEvent("warn", `⚠️ Validation échouée pour ${fieldName}.`, {
       errorMessage,
       value,
     });
-    return false; // Validation échouée
+    return false;
   } else {
-    removeError(field); // Supprime les messages d'erreur existants
-    logEvent("success", `Validation réussie pour le ${fieldName}.`, { value });
-    return true; // Validation réussie
+    removeError(field);
+    logEvent("success", `✅ Validation réussie pour ${fieldName}.`, { value });
+    return true;
   }
 }
 
-/**
- * Valide le champ "E-mail".
- *
- * @param {HTMLElement} field - L'élément HTML du champ email.
- * @returns {boolean} - Retourne `true` si la validation est réussie, sinon `false`.
- */
 /**
  * Valide le champ "E-mail".
  *
@@ -71,70 +66,121 @@ export function validateTextField(field, fieldId) {
  */
 export function validateEmail(field) {
   const value = field.value.trim();
-  const MAX_LENGTH = 254; // Longueur maximale d'un e-mail standard (RFC 5321)
   let errorMessage = "";
 
-  // === Validation des critères ===
+  const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const FORBIDDEN_PATTERNS = [
+    /javascript:/gi,
+    /http:/gi,
+    /https:/gi,
+    /<.*?>/gi,
+  ];
+
   if (value === "") {
-    errorMessage = "L'e-mail est requis.";
-  } else if (value.length > MAX_LENGTH) {
-    errorMessage = `L'adresse e-mail ne doit pas dépasser ${MAX_LENGTH} caractères.`;
-  } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
-    errorMessage = "Veuillez entrer une adresse e-mail valide.";
+    errorMessage = "⚠️ L'e-mail est requis.";
+  } else if (!EMAIL_REGEX.test(value)) {
+    errorMessage = "❌ Adresse e-mail invalide.";
+  } else if (FORBIDDEN_PATTERNS.some((pattern) => pattern.test(value))) {
+    errorMessage = "❌ Adresse e-mail suspecte détectée.";
   }
 
-  // === Gestion des erreurs ===
   if (errorMessage) {
-    showError(errorMessage, field); // Affiche l'erreur sous le champ
-    logEvent("warn", "Validation échouée pour l'e-mail.", {
+    showError(errorMessage, field);
+    logEvent("warn", "⚠️ Validation échouée pour l'e-mail.", {
       errorMessage,
       value,
     });
-    return false; // Validation échouée
+    return false;
   } else {
-    removeError(field); // Supprime les erreurs précédentes
-    logEvent("success", "Validation réussie pour l'e-mail.", { value });
-    return true; // Validation réussie
+    removeError(field);
+    logEvent("success", "✅ Validation réussie pour l'e-mail.", { value });
+    return true;
   }
 }
 
+export function checkHoneypot() {
+  const honeypot = document.getElementById("hidden-field").value;
+  if (honeypot !== "") {
+    logEvent("error", "🚨 Spam détecté via Honeypot !");
+    return false;
+  }
+  return true;
+}
+
 /**
- * Valide le champ "message" dans une demande de contact.
+ * Vérifie si un message contient des scripts ou des injections malveillantes.
+ *
+ * @param {string} message - Le message utilisateur.
+ * @returns {boolean} - Retourne `true` si le message est sécurisé, sinon `false`.
+ */
+export function isMessageSafe(message) {
+  const sanitizedMessage = message.trim();
+
+  // Liste des motifs interdits (XSS, SQLi, JS Injection, Fetch, DOM Manipulation)
+  const forbiddenPatterns = [
+    /<.*?>/gi, // Interdit toute balise HTML
+    /<\/?[^>]+(>|$)/gi, // Interdit les balises non autorisées
+    /on\w+=["'].*?["']/gi, // Interdit les événements JS (onerror, onclick)
+    /javascript:/gi, // Interdit les URLs JS
+    /eval\s*\(.*?\)/gi, // Interdit eval()
+    /document\./gi, // Interdit document.*
+    /window\./gi, // Interdit window.*
+    /fetch\(/gi, // Interdit fetch() (attaque CSRF)
+    /XMLHttpRequest/gi, // Interdit les requêtes AJAX
+    /SELECT\s.*?\sFROM/gi, // Interdit les requêtes SQL
+    /INSERT\s+INTO/gi, // Interdit les injections SQL
+    /DROP\s+TABLE/gi, // Interdit les suppressions SQL
+    /script/gi, // Interdit "script"
+    /cookie/gi, // Interdit l'accès aux cookies
+    /sessionStorage/gi, // Interdit l'accès au stockage session
+    /localStorage/gi, // Interdit l'accès au stockage local
+  ];
+
+  // ✅ Vérification des motifs interdits
+  for (let pattern of forbiddenPatterns) {
+    if (pattern.test(sanitizedMessage)) {
+      logEvent("error", "❌ Message contient du code suspect.", { message });
+      return false;
+    }
+  }
+
+  logEvent("success", "✅ Message validé et sécurisé.");
+  return true;
+}
+
+/**
+ * Valide et sécurise le champ "message" avant soumission.
  *
  * @param {HTMLElement} field - L'élément HTML du champ message.
  * @returns {boolean} - Retourne `true` si la validation est réussie, sinon `false`.
  */
 export function validateMessageField(field) {
-  const value = field.value.trim(); // Supprime les espaces en début/fin
-  const MAX_LENGTH = 500; // Longueur maximale pour un message de contact
-  const MIN_LENGTH = 10; // Longueur minimale pour un message utile
-  const fieldName = "Message";
+  const value = field.value.trim();
+  const MAX_LENGTH = 500;
+  const MIN_LENGTH = 10;
   let errorMessage = "";
 
-  // === Validation des critères ===
-  if (value === "") {
-    errorMessage = `Le ${fieldName} est requis.`;
+  if (!isMessageSafe(value)) {
+    errorMessage = "Le message contient du code suspect.";
   } else if (value.length < MIN_LENGTH) {
-    errorMessage = `Le ${fieldName} doit contenir au moins ${MIN_LENGTH} caractères.`;
+    errorMessage = `Le message doit contenir au moins ${MIN_LENGTH} caractères.`;
   } else if (value.length > MAX_LENGTH) {
-    errorMessage = `Le ${fieldName} ne doit pas dépasser ${MAX_LENGTH} caractères.`;
+    errorMessage = `Le message ne doit pas dépasser ${MAX_LENGTH} caractères.`;
   }
 
-  // === Gestion des erreurs ===
   if (errorMessage) {
-    showError(errorMessage, field); // Affiche l'erreur sous le champ
-    logEvent("warn", `Validation échouée pour le ${fieldName}.`, {
+    showError(errorMessage, field);
+    logEvent("warn", "Validation échouée pour le message.", {
       errorMessage,
       value,
     });
-    return false; // Validation échouée
+    return false;
   } else {
-    removeError(field); // Supprime les erreurs précédentes
-    logEvent("success", `Validation réussie pour le ${fieldName}.`, { value });
-    return true; // Validation réussie
+    removeError(field);
+    logEvent("success", "Validation réussie pour le message.", { value });
+    return true;
   }
 }
-
 /*===============================================================================================*/
 /*                             ======= Validation Globale =======                                */
 /*===============================================================================================*/
@@ -144,9 +190,23 @@ export function validateMessageField(field) {
  *
  * @returns {boolean} - Retourne `true` si tous les champs sont valides, sinon `false`.
  */
+
+/**
+ * Valide tous les champs du formulaire et retourne le résultat global.
+ *
+ * @returns {boolean} - Retourne `true` si tous les champs sont valides, sinon `false`.
+ */
 export function validateForm() {
   let isValid = true;
 
+  // Vérification du Honeypot
+  if (!checkHoneypot()) {
+    logEvent("error", "Validation échouée : spam détecté via Honeypot.");
+    showSpamModal(); // Affiche la modale anti-spam
+    return false; // Stoppe immédiatement la validation si le honeypot est rempli
+  }
+
+  // Validation des champs obligatoires
   REQUIRED_FIELDS.forEach((fieldId) => {
     const field = document.getElementById(fieldId);
 
@@ -177,6 +237,11 @@ export function validateForm() {
  *
  * @param {Event} event - Événement de soumission déclenché par le formulaire.
  */
+/**
+ * Fonction pour valider et gérer la soumission d'un formulaire.
+ *
+ * @param {Event} event - Événement de soumission déclenché par le formulaire.
+ */
 export function initvalidform() {
   logEvent("info", "Soumission du formulaire détectée.");
 
@@ -190,5 +255,7 @@ export function initvalidform() {
       "error",
       "Validation échouée : le formulaire contient des erreurs.",
     );
+    // Si un spam est détecté, la modale anti-spam sera déjà affichée
+    // par validateForm() via showSpamModal()
   }
 }

@@ -33,39 +33,88 @@
  * Animation de navigation vers le média suivant
  * Description : Le média sort vers la gauche, avec un effet de réduction et d'atténuation.
  * Utilisation : Appliquée lorsqu'on navigue vers le média suivant.
+ *
+/**
+ * Animation de navigation vers le média suivant
+ * Description : Le média actuel sort par la gauche avec une légère rotation,
+ *               tandis que le nouveau média entre avec une fluidité continue.
+ * Utilisation : Appliquée lorsque l'utilisateur passe au média suivant.
  */
-@keyframes slideToNextMedia {
+ @keyframes slideToNextMedia {
     0% {
-        transform: translateX(0) scale(1); /* Position actuelle */
-        opacity: 1; /* Visible */
+        transform: translateX(0) rotate(0deg) scale(1); /* Position actuelle */
+        opacity: 1; /* Complètement visible */
     }
     50% {
-        transform: translateX(-50%) scale(0.95); /* Réduction et déplacement */
-        opacity: 0.7; /* Semi-transparent */
+        transform: translateX(-50%) rotate(-10deg) scale(0.95); /* Réduction et rotation */
+        opacity: 0.5; /* Semi-transparent */
     }
     100% {
-        transform: translateX(-100%) scale(1); /* Hors écran */
+        transform: translateX(-100%) rotate(-20deg) scale(0.9); /* Hors écran avec rotation finale */
         opacity: 0; /* Invisible */
     }
 }
 
 /**
  * Animation de navigation depuis le média suivant
- * Description : Le nouveau média entre depuis la droite avec un zoom progressif.
- * Utilisation : Appliquée lorsqu'un nouveau média apparaît depuis la droite.
+ * Description : Le nouveau média entre depuis la droite avec un effet de zoom
+ *               et une rotation inversée pour donner un effet de fluidité.
+ * Utilisation : Appliquée au média entrant depuis la droite.
  */
 @keyframes slideFromNextMedia {
     0% {
-        transform: translateX(100%) scale(0.95); /* Hors écran à droite */
+        transform: translateX(100%) rotate(20deg) scale(0.9); /* Hors écran à droite */
         opacity: 0; /* Invisible */
     }
     50% {
-        transform: translateX(50%) scale(1.02); /* Zoom progressif */
-        opacity: 0.7; /* Semi-transparent */
+        transform: translateX(50%) rotate(10deg) scale(1.02); /* Rotation et zoom progressifs */
+        opacity: 0.5; /* Semi-transparent */
     }
     100% {
-        transform: translateX(0) scale(1); /* Position finale */
-        opacity: 1; /* Visible */
+        transform: translateX(0) rotate(0deg) scale(1); /* Position finale */
+        opacity: 1; /* Complètement visible */
+    }
+}
+
+/**
+ * Animation de navigation vers le média précédent
+ * Description : Le média actuel sort par la droite avec une rotation,
+ *               tandis que le précédent média entre avec une fluidité continue.
+ * Utilisation : Appliquée lorsque l'utilisateur revient au média précédent.
+ */
+@keyframes slideToPrevMedia {
+    0% {
+        transform: translateX(0) rotate(0deg) scale(1); /* Position actuelle */
+        opacity: 1; /* Complètement visible */
+    }
+    50% {
+        transform: translateX(50%) rotate(10deg) scale(0.95); /* Réduction et rotation */
+        opacity: 0.5; /* Semi-transparent */
+    }
+    100% {
+        transform: translateX(100%) rotate(20deg) scale(0.9); /* Hors écran avec rotation finale */
+        opacity: 0; /* Invisible */
+    }
+}
+
+/**
+ * Animation de navigation depuis le média précédent
+ * Description : Le nouveau média entre depuis la gauche avec un effet de zoom
+ *               et une rotation inversée pour donner un effet de fluidité.
+ * Utilisation : Appliquée au média entrant depuis la gauche.
+ */
+@keyframes slideFromPrevMedia {
+    0% {
+        transform: translateX(-100%) rotate(-20deg) scale(0.9); /* Hors écran à gauche */
+        opacity: 0; /* Invisible */
+    }
+    50% {
+        transform: translateX(-50%) rotate(-10deg) scale(1.02); /* Rotation et zoom progressifs */
+        opacity: 0.5; /* Semi-transparent */
+    }
+    100% {
+        transform: translateX(0) rotate(0deg) scale(1); /* Position finale */
+        opacity: 1; /* Complètement visible */
     }
 }
 

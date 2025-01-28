@@ -1,4 +1,4 @@
-// ========================================================
+/*==================
 // Nom du fichier : modal.manager.js
 // Description    : Gestion de la modale dans l'application Fisheye
 // Auteur         : Trackozor
@@ -142,31 +142,50 @@ export async function closeModal() {
 /*              Modale de confirmation          */
 /*=============================================*/
 /**
+
+/**
  * Ouvre la modale de confirmation.
  *
  * @returns {void}
  */
+let modalConfirm = false; // Suivi global de l'état de la modale de confirmation
+
 export function openConfirmationModal() {
   logEvent("test_start", "Début de l'ouverture de la modale de confirmation.");
 
   try {
-    const confirmationModal = domSelectors.modal;
+    const { container: confirmationModal } =
+      domSelectors.modal.confirmationModal;
 
     if (!confirmationModal) {
       logEvent(
         "error",
         "Élément DOM de la modale de confirmation introuvable.",
       );
-      throw new Error("Élément DOM introuvable.");
+      throw new Error("L'élément 'confirmation-modal' est introuvable.");
     }
 
-    if (confirmationModal.classList.contains("modal-active")) {
-      logEvent("warn", "La modale de confirmation est déjà ouverte.");
+    if (modalConfirm) {
+      logEvent(
+        "warn",
+        "La modale de confirmation est déjà ouverte (via modalConfirm).",
+      );
       return;
     }
 
+    // Vérifie également dans le DOM pour plus de robustesse
+    if (confirmationModal.classList.contains("modal-active")) {
+      logEvent("warn", "La modale de confirmation est déjà ouverte (via DOM).");
+      modalConfirm = true; // Met à jour l'état
+      return;
+    }
+
+    // Ajoute la classe pour afficher la modale
     confirmationModal.classList.add("modal-active");
     confirmationModal.setAttribute("aria-hidden", "false");
+
+    // Met à jour l'état global
+    modalConfirm = true;
 
     logEvent("success", "Modale de confirmation affichée avec succès.", {
       modalClasses: confirmationModal.classList.value,
@@ -190,16 +209,19 @@ export function openConfirmationModal() {
  *
  * @returns {void}
  */
+/**
+ * Ferme la modale de confirmation.
+ *
+ * @returns {void}
+ */
 export function closeConfirmationModal() {
   logEvent("test_start", "Début de la fermeture de la modale de confirmation.");
 
   try {
-    const confirmationModal = document.getElementById("confirmation-modal"); // Correction ici pour éviter un sélecteur incorrect
+    const { container: confirmationModal } =
+      domSelectors.modal.confirmationModal;
 
-    if (
-      !confirmationModal ||
-      !confirmationModal.classList.contains("modal-active")
-    ) {
+    if (!confirmationModal || !modalConfirm) {
       logEvent(
         "warn",
         "La modale de confirmation est déjà fermée ou introuvable.",
@@ -207,8 +229,12 @@ export function closeConfirmationModal() {
       return;
     }
 
+    // Supprime la classe pour masquer la modale
     confirmationModal.classList.remove("modal-active");
     confirmationModal.setAttribute("aria-hidden", "true");
+
+    // Met à jour l'état global
+    modalConfirm = false;
 
     logEvent("success", "Modale de confirmation masquée avec succès.", {
       modalClasses: confirmationModal.classList.value,
@@ -225,4 +251,24 @@ export function closeConfirmationModal() {
   }
 
   logEvent("test_end", "Fin de la fermeture de la modale de confirmation.");
+}
+
+/**
+ * Affiche la modale d'erreur pour spam détecté.
+ */
+export function showSpamModal() {
+  const spamModal = document.getElementById("spam-error-modal");
+  spamModal.style.display = "block"; // Affiche la modale
+  spamModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("no-scroll"); // Bloque le défilement en arrière-plan
+}
+
+/**
+ * Ferme la modale d'erreur pour spam détecté.
+ */
+export function closeSpamModal() {
+  const spamModal = document.getElementById("spam-error-modal");
+  spamModal.style.display = "none"; // Masque la modale
+  spamModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("no-scroll");
 }

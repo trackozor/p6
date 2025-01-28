@@ -106,6 +106,229 @@
 /* Ce fichier contient des mixins pour gérer l'orientation portrait et paysage sur les appareils mobiles */
 /* Mixin pour gérer les écrans mobile en mode paysage */
 /* Mixin pour gérer les écrans desktop*/
+/*===================================================================
+=            Animations de la Lightbox                             =
+===================================================================*/
+/**
+ * Animation d'entrée de la Lightbox
+ * Description : La lightbox entre par le haut avec un effet de "rebond".
+ * Utilisation : Appliquée lors de l'ouverture de la lightbox.
+ */
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-100%) scale(0.9); /* Glisse depuis le haut */
+    opacity: 0; /* Invisible */
+  }
+  80% {
+    transform: translateY(10%) scale(1.02); /* Petit rebond */
+    opacity: 1; /* Devient visible */
+  }
+  100% {
+    transform: translateY(0) scale(1); /* Position finale */
+  }
+}
+/**
+ * Animation de navigation vers le média suivant
+ * Description : Le média sort vers la gauche, avec un effet de réduction et d'atténuation.
+ * Utilisation : Appliquée lorsqu'on navigue vers le média suivant.
+ *
+/**
+ * Animation de navigation vers le média suivant
+ * Description : Le média actuel sort par la gauche avec une légère rotation,
+ *               tandis que le nouveau média entre avec une fluidité continue.
+ * Utilisation : Appliquée lorsque l'utilisateur passe au média suivant.
+ */
+@keyframes slideToNextMedia {
+  0% {
+    transform: translateX(0) rotate(0deg) scale(1); /* Position actuelle */
+    opacity: 1; /* Complètement visible */
+  }
+  50% {
+    transform: translateX(-50%) rotate(-10deg) scale(0.95); /* Réduction et rotation */
+    opacity: 0.5; /* Semi-transparent */
+  }
+  100% {
+    transform: translateX(-100%) rotate(-20deg) scale(0.9); /* Hors écran avec rotation finale */
+    opacity: 0; /* Invisible */
+  }
+}
+/**
+ * Animation de navigation depuis le média suivant
+ * Description : Le nouveau média entre depuis la droite avec un effet de zoom
+ *               et une rotation inversée pour donner un effet de fluidité.
+ * Utilisation : Appliquée au média entrant depuis la droite.
+ */
+@keyframes slideFromNextMedia {
+  0% {
+    transform: translateX(100%) rotate(20deg) scale(0.9); /* Hors écran à droite */
+    opacity: 0; /* Invisible */
+  }
+  50% {
+    transform: translateX(50%) rotate(10deg) scale(1.02); /* Rotation et zoom progressifs */
+    opacity: 0.5; /* Semi-transparent */
+  }
+  100% {
+    transform: translateX(0) rotate(0deg) scale(1); /* Position finale */
+    opacity: 1; /* Complètement visible */
+  }
+}
+/**
+ * Animation de navigation vers le média précédent
+ * Description : Le média actuel sort par la droite avec une rotation,
+ *               tandis que le précédent média entre avec une fluidité continue.
+ * Utilisation : Appliquée lorsque l'utilisateur revient au média précédent.
+ */
+@keyframes slideToPrevMedia {
+  0% {
+    transform: translateX(0) rotate(0deg) scale(1); /* Position actuelle */
+    opacity: 1; /* Complètement visible */
+  }
+  50% {
+    transform: translateX(50%) rotate(10deg) scale(0.95); /* Réduction et rotation */
+    opacity: 0.5; /* Semi-transparent */
+  }
+  100% {
+    transform: translateX(100%) rotate(20deg) scale(0.9); /* Hors écran avec rotation finale */
+    opacity: 0; /* Invisible */
+  }
+}
+/**
+ * Animation de navigation depuis le média précédent
+ * Description : Le nouveau média entre depuis la gauche avec un effet de zoom
+ *               et une rotation inversée pour donner un effet de fluidité.
+ * Utilisation : Appliquée au média entrant depuis la gauche.
+ */
+@keyframes slideFromPrevMedia {
+  0% {
+    transform: translateX(-100%) rotate(-20deg) scale(0.9); /* Hors écran à gauche */
+    opacity: 0; /* Invisible */
+  }
+  50% {
+    transform: translateX(-50%) rotate(-10deg) scale(1.02); /* Rotation et zoom progressifs */
+    opacity: 0.5; /* Semi-transparent */
+  }
+  100% {
+    transform: translateX(0) rotate(0deg) scale(1); /* Position finale */
+    opacity: 1; /* Complètement visible */
+  }
+}
+/**
+ * Animation de fermeture de la Lightbox
+ * Description : La lightbox disparaît en glissant vers le bas, avec une légère réduction.
+ * Utilisation : Appliquée lors de la fermeture de la lightbox.
+ */
+@keyframes slideOutToBottom {
+  0% {
+    transform: translateY(0) scale(1); /* Position actuelle */
+    opacity: 1; /* Visible */
+  }
+  100% {
+    transform: translateY(100%) scale(0.8); /* Glisse vers le bas */
+    opacity: 0; /* Invisible */
+  }
+}
+/*===================================================================
+=            Animations de la Modale                                =
+===================================================================*/
+/**
+ * Animation d'apparition de la Modale
+ * Description : La modale apparaît avec un zoom et une légère rotation.
+ * Utilisation : Appliquée lors de l'ouverture de la modale.
+ */
+@keyframes modalFadeIn {
+  0% {
+    transform: scale(0.8) rotate(-10deg); /* Réduction avec rotation */
+    opacity: 0; /* Invisible */
+  }
+  80% {
+    transform: scale(1.05) rotate(2deg); /* Zoom avec sursaut */
+    opacity: 1; /* Visible */
+  }
+  100% {
+    transform: scale(1) rotate(0deg); /* Position finale */
+  }
+}
+/**
+ * Animation de fermeture de la Modale
+ * Description : La modale se rétracte et tourne légèrement en disparaissant.
+ * Utilisation : Appliquée lors de la fermeture de la modale.
+ */
+@keyframes modalFadeOut {
+  0% {
+    transform: scale(1) rotate(0deg); /* Position actuelle */
+    opacity: 1; /* Visible */
+  }
+  100% {
+    transform: scale(0.8) rotate(10deg); /* Réduction avec rotation */
+    opacity: 0; /* Invisible */
+  }
+}
+/**
+ * Animation de mise en évidence (Focus Trap)
+ * Description : Une lueur pulsante est appliquée aux éléments focalisés.
+ * Utilisation : Indique l'élément actuellement focalisé dans la modale.
+ */
+@keyframes focusGlow {
+  0% {
+    box-shadow: 0 0 0px rgba(255, 255, 255, 0.2); /* Faible lueur */
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6); /* Lueur intense */
+  }
+}
+/*===================================================================
+=            Animations du Loader                                  =
+===================================================================*/
+/**
+ * Loader - Animation des balles rebondissantes
+ * Description : Des balles rebondissent de façon synchronisée pour indiquer un chargement.
+ * Utilisation : Appliquée sur les éléments du loader.
+ */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0); /* Position initiale et finale */
+  }
+  50% {
+    transform: translateY(-15px); /* Rebond */
+  }
+}
+/**
+ * Loader - Animation de rotation
+ * Description : Une rotation fluide est appliquée à l'ensemble du loader.
+ * Utilisation : Ajoute une rotation continue pour un effet de dynamisme.
+ */
+@keyframes rotateLoader {
+  0% {
+    transform: rotate(0deg); /* Début */
+  }
+  100% {
+    transform: rotate(360deg); /* Fin (tour complet) */
+  }
+}
+/*===================================================================
+=            Animation de fond (optionnelle)                       =
+===================================================================*/
+/**
+ * Animation du fond assombri (Backdrop)
+ * Description : Le fond devient progressivement plus sombre pour diriger l'attention sur la Lightbox ou la Modale.
+ * Utilisation : Appliquée au backdrop lors de l'ouverture.
+ */
+@keyframes backdropFadeIn {
+  0% {
+    background-color: rgba(0, 0, 0, 0); /* Transparent */
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.8); /* Opacité maximale */
+  }
+}
+@keyframes backdropFadeOut {
+  0% {
+    background-color: rgba(0, 0, 0, 0.8); /* Opacité maximale */
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0); /* Transparent */
+  }
+}
 /* =============================================================================
     Projet      : Fisheye
     Fichier     : _reset.scss
@@ -490,14 +713,6 @@ a {
     width: 90%; /* Maintient une largeur adaptée */
   }
 }
-@media (min-width: 1440px) {
-  .photographer-card {
-    width: 50%; /* Diminue la largeur pour mieux occuper l'espace */
-    border-radius: 1rem; /* Ajoute des coins légèrement arrondis */
-    margin-bottom: 1%; /* Réduit l'espacement vertical */
-    padding: 0; /* Supprime les espacements internes */
-  }
-}
 
 /* -------------------------------------------------------------------------- */
 /* Effet hover sur la carte                                                   */
@@ -537,13 +752,6 @@ a {
     width: 10vw; /* Ajuste la taille de l'image */
     height: 10vw; /* Hauteur proportionnelle */
     margin: 5% 0 8% 0; /* Ajuste les espacements verticaux */
-  }
-}
-@media (min-width: 1440px) {
-  .photographer-card-portrait {
-    width: 8vw; /* Réduit la taille de l'image */
-    height: 8vw; /* Hauteur proportionnelle */
-    margin: 8% 0; /* Augmente l'espacement autour de l'image */
   }
 }
 
@@ -887,7 +1095,7 @@ footer p {
 /* Description : Structure et styles pour afficher les informations           */
 /* principales du photographe dans un bandeau.                                */
 /* -------------------------------------------------------------------------- */
-.photographer-info, .photographer-info1 {
+.photographer-info {
   display: flex; /* Active le modèle Flexbox pour l'agencement des éléments */
   flex-direction: column; /* Par défaut, les éléments sont empilés verticalement */
   align-items: center; /* Centre les éléments horizontalement */
@@ -897,7 +1105,7 @@ footer p {
   padding: 2% 0; /* Espace intérieur pour un design respirant */
 }
 @media (min-width: 767px) {
-  .photographer-info, .photographer-info1 {
+  .photographer-info {
     display: flex; /* Flexbox reste actif pour les écrans tablettes */
     flex-direction: row; /* Les éléments sont alignés horizontalement */
     width: 100%; /* La largeur s'étend à 100% */
@@ -908,34 +1116,27 @@ footer p {
   }
 }
 @media (min-width: 1024px) {
-  .photographer-info, .photographer-info1 {
+  .photographer-info {
     padding: 0; /* Réduit le padding pour un design compact */
     width: 90%;
     margin: 0 auto;
     align-items: center;
   }
 }
-@media (min-width: 1440px) {
-  .photographer-info, .photographer-info1 {
-    padding: 0; /* Réduit le padding pour un design compact */
-    width: 90%;
-    margin: 0 auto; /* Centre horizontalement le contenu */
-  }
-}
 
-.photographer-profile, .photographer-info1.photographer-profile {
+.photographer-profile.photographer-profile {
   width: 100%; /* La largeur occupe tout l'espace disponible */
   margin: 0 auto; /* Centre horizontalement le contenu */
   text-align: center; /* Texte centré pour les petits écrans */
 }
 @media (min-width: 767px) {
-  .photographer-profile, .photographer-info1.photographer-profile {
+  .photographer-profile.photographer-profile {
     width: 60%; /* Réduit la largeur pour mieux s'adapter */
     text-align: left; /* Texte aligné à gauche pour une meilleure lecture */
   }
 }
 @media (min-width: 1024px) {
-  .photographer-profile, .photographer-info1.photographer-profile {
+  .photographer-profile.photographer-profile {
     width: 80%;
     text-align: left;
     margin: 0; /* Largeur plus grande pour les écrans plus grands */
@@ -960,28 +1161,6 @@ footer p {
     width: 12%;
     padding: 0;
     margin-top: 7%;
-  }
-}
-
-.photographer-info1 .photographer-card-portrait {
-  margin-top: 55%; /* Espacement supérieur important pour les petits écrans */
-}
-@media (min-width: 767px) {
-  .photographer-info1 .photographer-card-portrait {
-    margin-top: 2%; /* Réduit l'espacement pour les écrans tablettes */
-    margin-right: 10%; /* Ajoute un espace à droite pour mieux structurer */
-  }
-}
-@media (min-width: 1024px) {
-  .photographer-info1 .photographer-card-portrait {
-    display: flex;
-    position: relative;
-    margin-right: 5%; /* Réduit l'espace à droite pour les écrans plus grands */
-    top: 2%;
-    width: 12%;
-    height: 12%;
-    padding: 0;
-    margin-top: 3%;
   }
 }
 
@@ -1080,15 +1259,18 @@ footer p {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(243, 233, 233, 0.7); /* Fond sombre avec opacité */
+  background-color: rgba(243, 233, 233, 0.7);
   opacity: 0;
   visibility: hidden;
   z-index: 1000;
-  transition: opacity var(--transition-default), visibility var(--transition-default);
 }
 .lightbox[aria-hidden=false] {
   opacity: 1;
   visibility: visible;
+  animation: slideInFromTop 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.lightbox[aria-hidden=true] {
+  animation: slideOutToBottom 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .lightbox-content {
@@ -1101,89 +1283,151 @@ footer p {
   overflow: hidden;
   outline: none;
 }
+.lightbox-content[data-direction=next] {
+  animation: slideFromNextMedia 0.6s ease-in-out;
+}
+.lightbox-content[data-direction=prev] {
+  animation: slideToNextMedia 0.6s ease-in-out reverse;
+}
 
 button {
   position: absolute;
   background: transparent;
   cursor: pointer;
-  color: var(--text-color-primary);
-  font-size: var(--font-size-large);
-  padding: var(--spacing-xsmall);
-  font-weight: 700;
+  color: #901c1c;
+  font-size: 2rem;
+  padding: 0.5rem;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+button:hover {
+  transform: scale(1.1);
 }
 
 .lightbox-close {
-  top: var(--spacing-small);
-  right: var(--spacing-small);
+  top: 1rem;
+  right: 1rem;
 }
 
 .lightbox-prev,
 .lightbox-next {
-  background-color: none;
-  border-radius: var(--border-radius-small);
-  padding: var(--spacing-xsmall);
+  border-radius: 50%;
+  padding: 0.5rem;
   font-size: 2.5rem;
 }
 .lightbox-prev:hover,
 .lightbox-next:hover {
-  background-color: var(--secondary-color);
+  background-color: #901c1c;
+  color: #fff;
 }
 
 .lightbox-prev {
-  left: var(--spacing-medium);
+  left: 1rem;
 }
 
 .lightbox-next {
-  right: var(--spacing-medium);
-}
-
-#lightbox {
-  background-color: white;
+  right: 1rem;
 }
 
 .lightbox-media-container {
   width: 100%;
   height: auto;
   height: 80vh;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
-
-.lightbox-media-container img, video {
+.lightbox-media-container img,
+.lightbox-media-container video {
   width: 80%;
   height: 75%;
   object-fit: contain;
+  animation: fadeIn 0.6s ease;
 }
 
 .lightbox-caption {
-  margin-top: var(--spacing-small);
-  font-size: var(--font-size-small);
-  color: var(--text-color-secondary);
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: rgba(171, 101, 101, 0.7);
   text-align: center;
   max-width: 90%;
-  line-height: var(--line-height-normal);
+  line-height: 1.5;
 }
 
+/**
+ * Animation d'Ouverture : Glisse depuis le haut
+ */
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-100%) scale(0.9);
+    opacity: 0;
+  }
+  80% {
+    transform: translateY(10%) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+/**
+ * Animation de Fermeture : Glisse vers le bas
+ */
+@keyframes slideOutToBottom {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%) scale(0.8);
+    opacity: 0;
+  }
+}
+/**
+ * Animation de Navigation vers le Suivant
+ */
+@keyframes slideFromNextMedia {
+  0% {
+    transform: translateX(100%) rotate(20deg) scale(0.9);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(50%) rotate(10deg) scale(1.02);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+/**
+ * Animation de Navigation vers le Précédent
+ */
+@keyframes slideToNextMedia {
+  0% {
+    transform: translateX(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-50%) rotate(-10deg) scale(0.95);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(-100%) rotate(-20deg) scale(0.9);
+    opacity: 0;
+  }
+}
+/**
+ * Animation d'Apparition : Fade In
+ */
 @keyframes fadeIn {
-  from {
+  0% {
     opacity: 0;
   }
-  to {
+  100% {
     opacity: 1;
   }
 }
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-.lightbox[aria-hidden=false] .lightbox-media-container {
-  animation: fadeIn var(--transition-default);
-}
-
 /* =============================================================================
   Projet      : Fisheye
   Fichier     : _modal.scss
@@ -1354,6 +1598,72 @@ input.error-input, textarea.error-input {
   margin-top: 2%; /* Espace au-dessus pour ne pas chevaucher le champ */
   position: relative; /* Position relative pour s'adapter dynamiquement à son parent */
   border-radius: 4px; /* Coins arrondis pour un design moderne */
+}
+
+/*.honeypot-field {
+  display: block !important;
+  visibility: visible;
+  opacity: 1;
+  color: red;  
+  border: 1px solid red;
+}*/
+.honeypot-field {
+  position: absolute;
+  left: -9999px;
+  visibility: hidden;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.modal.spam-modal {
+  display: none; /* Masquée par défaut */
+  position: fixed;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background-color: #fff;
+  border: 2px solid red;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal.spam-modal .modal-header {
+  background-color: #ff4d4d; /* Rouge pour indiquer l'alerte */
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px 8px 0 0;
+  text-align: center;
+}
+
+.modal.spam-modal .modal-body {
+  padding: 20px;
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.modal.spam-modal .modal-footer {
+  text-align: center;
+  padding: 10px 20px;
+}
+
+.modal.spam-modal .btn-close-errormodal {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.modal.spam-modal .btn-close-errormodal:hover {
+  background-color: #cc0000;
 }
 
 /* -------------------------------------------------------------------------- */

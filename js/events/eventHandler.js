@@ -165,14 +165,31 @@ export function handleModalClose() {
  *
  * @param {Event} event - L'événement "input" déclenché par le champ textarea.
  */
+/**
+ * Met à jour le compteur de caractères pour un champ textarea donné.
+ *
+ * @param {Event} event - L'événement "input" déclenché par le champ textarea.
+ */
 export function updateCharCount(event) {
   const field = event.target; // Champ textarea déclencheur
-  const charCount = document.getElementById("char-count"); // Élément pour afficher le compteur
-  const maxLength = field.getAttribute("maxlength"); // Longueur max autorisée
+  const charCount = document.getElementById("message-counter"); // Élément du compteur
+
+  if (!charCount) {
+    logEvent("error", "Élément 'message-counter' introuvable dans le DOM.");
+    return; // Arrêter la fonction pour éviter l'erreur
+  }
+
+  const maxLength = field.getAttribute("maxlength") || 500; // Longueur max (ou défaut à 500)
   const currentLength = field.value.length; // Longueur actuelle
 
-  // Mettre à jour le texte du compteur
-  charCount.textContent = `${currentLength}/${maxLength}`;
+  // Mise à jour du compteur
+  charCount.textContent = `${currentLength} / ${maxLength} caractères`;
+
+  // Ajout d'un log pour vérifier si la mise à jour fonctionne
+  logEvent("info", "Mise à jour du compteur de caractères.", {
+    currentLength,
+    maxLength,
+  });
 }
 
 /*==============================================*/
@@ -294,7 +311,7 @@ export function handleLightboxPrev(mediaArray, folderName) {
     }
 
     logEvent("info", "Navigation vers le média précédent.");
-    showPreviousMedia(mediaArray, folderName);
+    showPreviousMedia(mediaArray, folderName); // Appelle la fonction principale
     logEvent("success", "Navigation vers le média précédent réussie.");
   } catch (error) {
     logEvent("error", "Erreur lors de la navigation vers le média précédent.", {
@@ -304,10 +321,6 @@ export function handleLightboxPrev(mediaArray, folderName) {
   }
 }
 
-/**
- * Gestionnaire pour afficher le média suivant dans la lightbox.
- * Vérifie les conditions avant de naviguer au média suivant.
- */
 export function handleLightboxNext(mediaArray, folderName) {
   try {
     if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
@@ -318,7 +331,7 @@ export function handleLightboxNext(mediaArray, folderName) {
     }
 
     logEvent("info", "Navigation vers le média suivant.");
-    showNextMedia(mediaArray, folderName);
+    showNextMedia(mediaArray, folderName); // Appelle la fonction principale
     logEvent("success", "Navigation vers le média suivant réussie.");
   } catch (error) {
     logEvent("error", "Erreur lors de la navigation vers le média suivant.", {

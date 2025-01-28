@@ -3,13 +3,19 @@
 // Description    : Styles pour la lightbox de l'application Fisheye
 // Auteur         : Trackozor
 // Date           : 08/01/2025
-// Version        : 1.0.0
+// Version        : 1.4.0 (Intégration des animations avancées)
 // ========================================================
 
 // --------------------------------------------------------------------------
-// Lightbox principale
-// Description : Définit les styles généraux de la lightbox, incluant son 
-// positionnement, ses transitions, et sa gestion d'état (visible/masquée).
+// Variables Globales (Facultatif, Peut Être Centralisé dans une autre feuille)
+// --------------------------------------------------------------------------
+$primary-color: #901c1c;
+$secondary-color: rgba(243, 233, 233, 0.7);
+$lightbox-z-index: 1000;
+$transition-duration: 0.6s;
+
+// --------------------------------------------------------------------------
+// Lightbox Principale
 // --------------------------------------------------------------------------
 
 .lightbox {
@@ -18,24 +24,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(243, 233, 233, 0.7); /* Fond sombre avec opacité */
+  background-color: $secondary-color; // Fond semi-transparent
   opacity: 0;
   visibility: hidden;
-  z-index: 1000; // Niveau d'empilement pour être au-dessus des autres éléments
-  transition:
-    opacity var(--transition-default),
-    visibility var(--transition-default);
+  z-index: $lightbox-z-index; // Niveau d'empilement élevé
 
+  // Affiche la lightbox (état ouvert)
   &[aria-hidden="false"] {
-    opacity: 1; // Affiche la lightbox
+    opacity: 1;
     visibility: visible;
+    animation: slideInFromTop $transition-duration cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  // Masque la lightbox (état fermé)
+  &[aria-hidden="true"] {
+    animation: slideOutToBottom $transition-duration cubic-bezier(0.25, 1, 0.5, 1);
   }
 }
 
 // --------------------------------------------------------------------------
-// Contenu de la lightbox
-// Description : Conteneur principal des médias et des boutons d'interaction.
-// Inclut une gestion responsive pour mobile.
+// Contenu de la Lightbox
 // --------------------------------------------------------------------------
 
 .lightbox-content {
@@ -48,111 +56,174 @@
   overflow: hidden;
   outline: none;
 
+  // Navigation vers le média suivant
+  &[data-direction="next"] {
+    animation: slideFromNextMedia $transition-duration ease-in-out;
+  }
+
+  // Navigation vers le média précédent
+  &[data-direction="prev"] {
+    animation: slideToNextMedia $transition-duration ease-in-out reverse;
+  }
 }
 
 // --------------------------------------------------------------------------
-// Boutons d'action
-// Description : Styles pour les boutons génériques (fermeture, navigation).
-// Inclut des transitions et des états interactifs.
+// Boutons de la Lightbox
 // --------------------------------------------------------------------------
 
 button {
   position: absolute;
   background: transparent;
   cursor: pointer;
-  color: var(--text-color-primary); // Couleur de texte principale
-  font-size: var(--font-size-large); // Taille adaptative
-  padding: var(--spacing-xsmall);
-  font-weight: 700;
-  
+  color: $primary-color; // Couleur principale
+  font-size: 2rem; // Taille de police des icônes
+  padding: 0.5rem;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1); // Effet de zoom au survol
+  }
 }
 
-// Bouton de fermeture
 .lightbox-close {
-  top: var(--spacing-small);
-  right: var(--spacing-small);
+  top: 1rem;
+  right: 1rem;
 }
 
-// Boutons de navigation
 .lightbox-prev,
 .lightbox-next {
-  background-color:none;
-  border-radius: var(--border-radius-small);
-  padding: var(--spacing-xsmall);
+  border-radius: 50%;
+  padding: 0.5rem;
   font-size: 2.5rem;
-  
+
   &:hover {
-    background-color: var(--secondary-color); // Couleur secondaire au survol
+    background-color: $primary-color; // Couleur au survol
+    color: #fff; // Texte en blanc
   }
 }
 
 .lightbox-prev {
-  left: var(--spacing-medium);
+  left: 1rem;
 }
 
 .lightbox-next {
-  right: var(--spacing-medium);
+  right: 1rem;
 }
 
 // --------------------------------------------------------------------------
-// Conteneur des médias
-// Description : Zone où les images et vidéos sont affichées. 
-// Les médias s'adaptent à l'espace disponible.
+// Conteneur des Médias
 // --------------------------------------------------------------------------
-#lightbox {
-  background-color: white;
-}
 
 .lightbox-media-container {
   width: 100%;
   height: auto;
   height: 80vh;
-
+  display: flex;
   justify-content: center;
   align-items: center;
+
+  img,
+  video {
+    width: 80%;
+    height: 75%;
+    object-fit: contain; // Préserve les proportions
+    animation: fadeIn $transition-duration ease; // Animation d'apparition
+  }
 }
-.lightbox-media-container img, video {
-  width:80%;
-  height: 75%;
-  object-fit: contain; // Préserve les proportions des médias
-}
+
 // --------------------------------------------------------------------------
-// Légende
-// Description : Styles pour afficher les légendes sous les médias.
+// Légende des Médias
 // --------------------------------------------------------------------------
 
 .lightbox-caption {
-  margin-top: var(--spacing-small);
-  font-size: var(--font-size-small);
-  color: var(--text-color-secondary); // Couleur secondaire pour le texte
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: darken($secondary-color, 40%); // Couleur plus foncée
   text-align: center;
   max-width: 90%;
-  line-height: var(--line-height-normal);
+  line-height: 1.5;
 }
 
 // --------------------------------------------------------------------------
 // Animations
-// Description : Animation d'apparition/disparition pour la lightbox.
 // --------------------------------------------------------------------------
 
+/**
+ * Animation d'Ouverture : Glisse depuis le haut
+ */
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-100%) scale(0.9);
+    opacity: 0;
+  }
+  80% {
+    transform: translateY(10%) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/**
+ * Animation de Fermeture : Glisse vers le bas
+ */
+@keyframes slideOutToBottom {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%) scale(0.8);
+    opacity: 0;
+  }
+}
+
+/**
+ * Animation de Navigation vers le Suivant
+ */
+@keyframes slideFromNextMedia {
+  0% {
+    transform: translateX(100%) rotate(20deg) scale(0.9);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(50%) rotate(10deg) scale(1.02);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+/**
+ * Animation de Navigation vers le Précédent
+ */
+@keyframes slideToNextMedia {
+  0% {
+    transform: translateX(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-50%) rotate(-10deg) scale(0.95);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(-100%) rotate(-20deg) scale(0.9);
+    opacity: 0;
+  }
+}
+
+/**
+ * Animation d'Apparition : Fade In
+ */
 @keyframes fadeIn {
-  from {
+  0% {
     opacity: 0;
   }
-  to {
+  100% {
     opacity: 1;
   }
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-.lightbox[aria-hidden="false"] .lightbox-media-container {
-  animation: fadeIn var(--transition-default);
 }

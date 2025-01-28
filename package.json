@@ -1,11 +1,16 @@
 {
   "name": "p6",
   "version": "1.0.0",
-  "description": "## Démarrer le projet",
+  "description": "Projet Fisheye - Frontend avec SASS, Jest, et ESLint",
   "main": "main.js",
   "scripts": {
-  "lint:folder": "eslint ./js/**/*.js --fix",
+    "start": "npm-run-all --parallel build:sass test:watch",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "lint:folder": "eslint ./js/**/*.js --fix",
     "test": "jest",
+    "test:watch": "jest --watchAll",
+    "build:sass": "sass scss:css --style compressed",
     "sass": "sass --watch scss:./css scss/pages-scss/photographer-main.scss:./css/pages/photographer.css"
   },
   "keywords": [],
@@ -23,7 +28,12 @@
     "globals": "^15.14.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "sass": "^1.83.0"
+    "npm-run-all": "^4.1.5",
+    "sass": "^1.83.0",
+    "stylelint": "^15.7.0",
+    "stylelint-config-standard": "^29.0.0",
+    "stylelint-scss": "^5.0.0",
+    "husky": "^8.0.0"
   },
   "type": "module"
 }

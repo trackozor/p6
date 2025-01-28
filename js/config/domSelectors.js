@@ -120,6 +120,12 @@ const domSelectors = (() => {
         submitButton: safeQuerySelector(".contact-submit-button"),
         confirmButton: safeQuerySelector(".confirm-btn"),
       },
+      confirmationModal: {
+        container: safeQuerySelector("#confirmation-modal"), // La modale elle-même
+        title: safeQuerySelector("#confirmation-title", true), // Titre de la modale
+        message: safeQuerySelector("#confirmation-message", true), // Message de confirmation
+        confirmButton: safeQuerySelector(".confirm-btn"), // Bouton de confirmation
+      },
     },
     sorting: {
       sortOptions: safeQuerySelector("#sort-options"),
