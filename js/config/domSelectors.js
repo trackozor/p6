@@ -123,7 +123,6 @@ const domSelectors = (() => {
       confirmationModal: {
         container: safeQuerySelector("#confirmation-modal"), // La modale elle-même
         title: safeQuerySelector("#confirmation-title", true), // Titre de la modale
-        message: safeQuerySelector("#confirmation-message", true), // Message de confirmation
         confirmButton: safeQuerySelector(".confirm-btn"), // Bouton de confirmation
       },
       spamModal: {

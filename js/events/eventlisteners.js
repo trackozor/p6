@@ -117,11 +117,17 @@ export function initModalConfirm() {
     "🛠️ Initialisation de l'événement de confirmation...",
   );
 
-  attachEvent(
-    document.querySelector(".confirm-btn"),
-    "click",
-    handleModalConfirm,
-  );
+  const confirmButton = document.querySelector(".confirm-btn");
+
+  if (!confirmButton) {
+    logEvent(
+      "error",
+      "❌ Échec d'attachement : Élément confirm-btn introuvable.",
+    );
+    return;
+  }
+
+  attachEvent(confirmButton, "click", handleModalConfirm);
 
   logEvent(
     "test_end_modal",
@@ -144,76 +150,117 @@ export function setupContactFormEvents() {
 
 /**
  * Initialise les événements pour la lightbox.
- * 🛠️ Gère l'ouverture, la navigation et la fermeture de la lightbox.
+ *  Gère l'ouverture, la navigation et la fermeture de la lightbox.
  */
-
 export function initLightboxEvents(mediaArray, folderName) {
   logEvent(
     "test_start_lightbox",
-    "Initialisation des événements pour la lightbox.",
+    "Initialisation des événements pour la lightbox...",
   );
 
   try {
     if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
-      throw new Error("Le tableau des médias est invalide ou vide.");
+      throw new Error("⚠️ Le tableau des médias est invalide ou vide.");
     }
 
     if (!folderName || typeof folderName !== "string") {
       throw new Error(
-        "Le nom du dossier (folderName) est invalide ou manquant.",
+        "⚠️ Le nom du dossier (folderName) est invalide ou manquant.",
       );
     }
 
-    // 🎯 Attachement des événements sur les images et vidéos de la galerie
-    document.querySelectorAll(".gallery-item").forEach((item) => {
+    //  Vérification des éléments de la galerie
+    const galleryItems = document.querySelectorAll(".gallery-item");
+    if (galleryItems.length === 0) {
+      throw new Error(
+        "⚠️ Aucun élément '.gallery-item' trouvé dans la galerie.",
+      );
+    }
+
+    //  Attachement des événements sur les images et vidéos via le parent `.gallery-item`
+    galleryItems.forEach((item) => {
       item.addEventListener("click", (event) => {
         const clickedElement = event.target;
+        const mediaElement = item.querySelector("img, video");
 
-        // Vérifier si c'est une image ou une vidéo
-        if (clickedElement.tagName === "IMG") {
-          logEvent("info", `Ouverture de la lightbox pour une IMAGE.`, {
-            mediaType: "IMAGE",
-            mediaSrc: clickedElement.src,
+        // Vérifie que l'élément média existe
+        if (!mediaElement) {
+          logEvent("error", "❌ Aucun média trouvé dans cet élément.");
+          return;
+        }
+
+        if (mediaElement.tagName === "IMG") {
+          logEvent("info", "📸 Image cliquée, ouverture de la lightbox.", {
+            mediaSrc: mediaElement.src,
+          });
+          handleLightboxOpen(event, mediaArray, folderName);
+        } else if (mediaElement.tagName === "VIDEO") {
+          event.preventDefault();
+          event.stopPropagation();
+          event.stopImmediatePropagation(); // Empêche tout conflit
+
+          mediaElement.pause(); // Stopper la lecture
+          mediaElement.controls = false; // Désactiver temporairement les contrôles
+
+          logEvent("info", "🎥 Vidéo cliquée, ouverture de la lightbox.", {
+            mediaSrc: mediaElement.src,
           });
 
           handleLightboxOpen(event, mediaArray, folderName);
-        } else if (clickedElement.tagName === "VIDEO") {
-          logEvent("info", `Ouverture de la lightbox pour une VIDÉO.`, {
-            mediaType: "VIDEO",
-            mediaSrc: clickedElement.src,
-          });
 
-          event.preventDefault(); // Bloque le play/pause natif
-          handleLightboxOpen(event, mediaArray, folderName);
+          setTimeout(() => {
+            mediaElement.controls = true; // Réactiver après ouverture
+          }, 500);
         } else {
-          logEvent("warn", "Clic sur un élément non valide pour la lightbox.", {
-            clickedElement,
-          });
+          logEvent(
+            "warn",
+            "⚠️ Clic sur un élément non valide pour la lightbox.",
+            { clickedElement },
+          );
         }
       });
     });
 
-    // 🎯 Attachement des événements sur les boutons de navigation
-    attachEvent(
-      domSelectors.lightbox.lightboxCloseButton,
-      "click",
-      handleLightboxClose,
-    );
-    attachEvent(domSelectors.lightbox.lightboxPrevButton, "click", () =>
-      handleLightboxPrev(mediaArray, folderName),
-    );
-    attachEvent(domSelectors.lightbox.lightboxNextButton, "click", () =>
-      handleLightboxNext(mediaArray, folderName),
-    );
+    // 📌 Vérification et attachement des événements pour la lightbox
+    const closeButton = domSelectors.lightbox.lightboxCloseButton;
+    const prevButton = domSelectors.lightbox.lightboxPrevButton;
+    const nextButton = domSelectors.lightbox.lightboxNextButton;
 
-    logEvent("success", "Événements de la lightbox initialisés avec succès.");
+    if (closeButton) {
+      attachEvent(closeButton, "click", handleLightboxClose);
+    } else {
+      logEvent("error", "❌ Bouton de fermeture de la lightbox introuvable.");
+    }
+
+    if (prevButton) {
+      attachEvent(prevButton, "click", () =>
+        handleLightboxPrev(mediaArray, folderName),
+      );
+    } else {
+      logEvent("error", "❌ Bouton précédent de la lightbox introuvable.");
+    }
+
+    if (nextButton) {
+      attachEvent(nextButton, "click", () =>
+        handleLightboxNext(mediaArray, folderName),
+      );
+    } else {
+      logEvent("error", "❌ Bouton suivant de la lightbox introuvable.");
+    }
+
+    logEvent(
+      "success",
+      "✅ Événements de la lightbox initialisés avec succès.",
+    );
   } catch (error) {
-    logEvent("error", "Erreur d'initialisation de la lightbox.", { error });
+    logEvent("error", "❌ Erreur lors de l'initialisation de la lightbox.", {
+      error,
+    });
   }
 
   logEvent(
     "test_end_lightbox",
-    "Fin de l'initialisation des événements pour la lightbox.",
+    "✅ Fin de l'initialisation des événements pour la lightbox.",
   );
 }
 
