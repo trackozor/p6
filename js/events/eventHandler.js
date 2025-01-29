@@ -56,6 +56,12 @@ import { trapFocus } from "../utils/accessibility.js";
 // Validation des champs dans le formulaire de contact et retour utilisateur
 import { initvalidform } from "../utils/contactForm.js";
 
+import { KEY_CODES } from "../config/constants.js"; // Clés clavier centralisées
+import {
+  handleEscapeKey,
+  handleLightboxNavigation,
+} from "./keyboardHandler.js";
+
 /*==============================================*/
 /*         Gestion de la modale                 */
 /*==============================================*/
@@ -371,7 +377,10 @@ export async function handleSortChange(event) {
 /*             Gestion des interactions clavier                  */
 /*================================================================*/
 
-document.addEventListener("keydown", (e) => {
+/**
+ * Gestionnaire principal pour les interactions clavier.
+ */
+export function handleKeyboardEvent(event) {
   try {
     const activeModal = document.querySelector(".modal.modal-active");
     const activeLightbox = document.querySelector(
@@ -379,88 +388,20 @@ document.addEventListener("keydown", (e) => {
     );
     const focusedElement = document.activeElement;
 
-    // Vérifie les éléments actifs
     logEvent("debug", "Vérification des éléments actifs.", {
       activeModal: !!activeModal,
       activeLightbox: !!activeLightbox,
       focusedElement: focusedElement?.tagName || null,
     });
 
-    // Gestion du focus trap pour la modale
-    if (e.key === "Tab" && activeModal) {
-      trapFocus(activeModal);
-      logEvent("info", "Focus trap activé pour la modale.");
-      return;
-    }
-
-    // Fermer les modales ou la lightbox avec Escape
-    if (e.key === "Escape") {
-      if (activeModal) {
-        if (typeof closeModal === "function") {
-          closeModal();
-          logEvent("info", "Modale fermée via la touche Escape.");
-        } else {
-          logEvent("warn", "closeModal n'est pas défini.");
-        }
-      }
-      if (activeLightbox) {
-        if (typeof closeLightbox === "function") {
-          closeLightbox();
-          logEvent("info", "Lightbox fermée via la touche Escape.");
-        } else {
-          logEvent("warn", "closeLightbox n'est pas défini.");
-        }
-      }
-      return;
-    }
-
-    // Navigation dans la lightbox
-    if (e.key === "ArrowLeft" && activeLightbox) {
-      logEvent(
-        "info",
-        "Flèche gauche détectée. Navigation vers le média précédent.",
-      );
-      if (typeof handleLightboxPrev === "function") {
-        handleLightboxPrev();
-      } else {
-        logEvent("warn", "handleLightboxPrev n'est pas défini.");
-      }
-      return;
-    }
-
-    if (e.key === "ArrowRight" && activeLightbox) {
-      logEvent(
-        "info",
-        "Flèche droite détectée. Navigation vers le média suivant.",
-      );
-      if (typeof handleLightboxNext === "function") {
-        handleLightboxNext();
-      } else {
-        logEvent("warn", "handleLightboxNext n'est pas défini.");
-      }
-      return;
-    }
-
-    // Navigation générale (exemple : sur des boutons ou liens)
-    if (e.key === "Enter" || e.key === " ") {
-      if (focusedElement) {
-        if (focusedElement.tagName === "BUTTON") {
-          focusedElement.click();
-          logEvent(
-            "info",
-            "Activation d’un bouton via la touche Enter ou Espace.",
-          );
-        } else if (focusedElement.tagName === "A") {
-          focusedElement.click();
-          logEvent(
-            "info",
-            "Activation d’un lien via la touche Enter ou Espace.",
-          );
-        }
-      } else {
-        logEvent("warn", "Aucun élément focalisé pour l'activation.");
-      }
-      return;
+    if (isFocusTrapKey(event, activeModal)) {
+      handleFocusTrap(activeModal, event);
+    } else if (isEscapeKey(event)) {
+      handleEscapeKey(activeModal, activeLightbox);
+    } else if (isLightboxNavigationKey(event, activeLightbox)) {
+      handleLightboxNavigation(activeLightbox, event);
+    } else if (isActivationKey(event)) {
+      isActivationKey(focusedElement);
     }
   } catch (error) {
     logEvent(
@@ -472,4 +413,55 @@ document.addEventListener("keydown", (e) => {
       },
     );
   }
-});
+}
+
+/* ======================================================== */
+/*                  Sous-fonctions Responsables             */
+/* ======================================================== */
+
+/**
+ * Vérifie si la touche appuyée correspond à "Tab" et qu'une modale est active.
+ */
+function isFocusTrapKey(event, activeModal) {
+  return event.key === KEY_CODES.TAB && activeModal;
+}
+
+/**
+ * Gère le focus trap dans une modale.
+ */
+function handleFocusTrap(activeModal, event) {
+  trapFocus(activeModal);
+  logEvent("info", "Focus trap activé pour la modale.");
+  event.preventDefault();
+}
+
+/**
+ * Vérifie si la touche appuyée est "Escape".
+ */
+function isEscapeKey(event) {
+  return event.key === KEY_CODES.ESCAPE;
+}
+
+/**
+ * Vérifie si la touche appuyée est pour la navigation dans la lightbox.
+ */
+function isLightboxNavigationKey(event, activeLightbox) {
+  return (
+    activeLightbox &&
+    [KEY_CODES.ARROW_LEFT, KEY_CODES.ARROW_RIGHT].includes(event.key)
+  );
+}
+
+/**
+ * Vérifie si la touche appuyée est "Enter" ou "Space".
+ */
+function isActivationKey(event) {
+  return [KEY_CODES.ENTER, KEY_CODES.SPACE].includes(event.key);
+}
+
+/* ======================================================== */
+/*                  Enregistrement d'Événement              */
+/* ======================================================== */
+
+// Enregistrement de l'écouteur principal pour les événements clavier
+document.addEventListener("keydown", handleKeyboardEvent);

@@ -1685,6 +1685,14 @@ input.error-input, textarea.error-input {
   margin: 2% auto;
 }
 
+.confirma-btn {
+  display: flex;
+  justify-content: center;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                          Modale de sécurité spam                        */
+/* -------------------------------------------------------------------------- */
 /* Loader global */
 .loader {
   position: fixed;

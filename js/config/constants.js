@@ -180,3 +180,11 @@ export const CONFIGLOG = {
     test_end: "🏁", // Icône pour la fin des tests.
   },
 };
+export const KEY_CODES = Object.freeze({
+  ESCAPE: "Escape",
+  TAB: "Tab",
+  ARROW_LEFT: "ArrowLeft",
+  ARROW_RIGHT: "ArrowRight",
+  ENTER: "Enter",
+  SPACE: " ",
+});
