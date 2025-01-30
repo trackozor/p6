@@ -1,20 +1,20 @@
 // ========================================================
-// 📂 Fichier : eventListeners.js
-// 📝 Description : Gestion centralisée des événements pour la modale,
+// Fichier : eventListeners.js
+// Description : Gestion centralisée des événements pour la modale,
 //                 la lightbox et le tri des médias dans l'application.
-// 🏗 Auteur : Trackozor
-// 📅 Date : 08/01/2025
-// 🔄 Version : 3.0 (Optimisation, tests et refactorisation complète)
+// Auteur : Trackozor
+// Date : 08/01/2025
+// Version : 3.0 (Optimisation, tests et refactorisation complète)
 // ========================================================
 
 /*==============================================*/
-/*                   📌 IMPORTS                 */
+/*                   IMPORTS                 */
 /*==============================================*/
 
-// 🎯 Sélecteurs DOM
+// Sélecteurs DOM
 import domSelectors from "../config/domSelectors.js";
 
-// 🎯 Gestionnaires d'événements
+// Gestionnaires d'événements
 import {
   handleModalOpen,
   handleModalClose,
@@ -28,21 +28,21 @@ import {
   updateCharCount,
 } from "./eventHandler.js";
 
-// 🎯 Gestion des interactions clavier
+// Gestion des interactions clavier
 import { handleKeyboardEvent } from "./keyboardHandler.js";
 
-// 🎯 Utilitaire de logs
+// Utilitaire de logs
 import { logEvent } from "../utils/utils.js";
 
 /*--------------------------------------------------------------------------*/
 // ========================================================
-// 🛠️ UTILITAIRE : ATTACHER DES ÉVÉNEMENTS
+// UTILITAIRE : ATTACHER DES ÉVÉNEMENTS
 // ========================================================
 
 /**
  * Attache un gestionnaire d'événement à un ou plusieurs éléments DOM.
- * ✅ Évite les doublons en supprimant les anciens événements.
- * ✅ Vérifie si l'élément existe avant d'attacher l'événement.
+ * Évite les doublons en supprimant les anciens événements.
+ * Vérifie si l'élément existe avant d'attacher l'événement.
  *
  * @param {HTMLElement | NodeListOf<HTMLElement>} selectors - Élément(s) DOM cible(s).
  * @param {string} eventType - Type d'événement (ex: "click").
@@ -53,7 +53,7 @@ function attachEvent(selectors, eventType, callback) {
   if (!selectors) {
     logEvent(
       "error",
-      `❌ Échec d'attachement : Élément introuvable pour "${eventType}".`,
+      `Échec d'attachement : Élément introuvable pour "${eventType}".`,
     );
     return false;
   }
@@ -67,7 +67,7 @@ function attachEvent(selectors, eventType, callback) {
       element.addEventListener(eventType, callback);
       logEvent(
         "success",
-        `✅ Événement "${eventType}" attaché à ${element.className || element.id}.`,
+        `Événement "${eventType}" attaché à ${element.className || element.id}.`,
       );
     }
   });
@@ -75,23 +75,23 @@ function attachEvent(selectors, eventType, callback) {
   return elements.length > 0;
 }
 
-/*--------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------*/
 // ========================================================
-// 🎯 INITIALISATION DES ÉVÉNEMENTS
+// INITIALISATION DES ÉVÉNEMENTS
 // ========================================================
 
 // ========================================================
-// 🔹 MODALE (Formulaire de contact)
+// MODALE (Formulaire de contact)
 // ========================================================
 
 /**
  * Initialise les événements pour la gestion des modales.
- * 🛠️ Attache les événements aux boutons et au formulaire de contact.
+ * Attache les événements aux boutons et au formulaire de contact.
  */
 export function initModalEvents() {
   logEvent(
     "test_start_modal",
-    "🛠️ Initialisation des événements pour la modale...",
+    "Initialisation des événements pour la modale...",
   );
 
   const contactButton = document.querySelector(".contact_button");
@@ -103,27 +103,24 @@ export function initModalEvents() {
 
   logEvent(
     "test_end_modal",
-    "✅ Événements pour la modale initialisés avec succès.",
+    "Événements pour la modale initialisés avec succès.",
   );
 }
 
 /**
  * Initialise l'événement pour la confirmation de la modale.
- * 🛠️ Attache l'événement au bouton de confirmation.
+ * Attache l'événement au bouton de confirmation.
  */
 export function initModalConfirm() {
   logEvent(
     "test_start_modal",
-    "🛠️ Initialisation de l'événement de confirmation...",
+    "Initialisation de l'événement de confirmation...",
   );
 
   const confirmButton = document.querySelector(".confirm-btn");
 
   if (!confirmButton) {
-    logEvent(
-      "error",
-      "❌ Échec d'attachement : Élément confirm-btn introuvable.",
-    );
+    logEvent("error", "Échec d'attachement : Élément confirm-btn introuvable.");
     return;
   }
 
@@ -131,13 +128,13 @@ export function initModalConfirm() {
 
   logEvent(
     "test_end_modal",
-    "✅ Événement de confirmation initialisé avec succès.",
+    "Événement de confirmation initialisé avec succès.",
   );
 }
 
 /**
  * Gère les événements du formulaire de contact.
- * 🛠️ Mise à jour dynamique du compteur de caractères.
+ * Mise à jour dynamique du compteur de caractères.
  */
 export function setupContactFormEvents() {
   const messageField = document.getElementById("message");
@@ -145,7 +142,7 @@ export function setupContactFormEvents() {
 }
 
 // ========================================================
-// 🔹 LIGHTBOX (Affichage des médias en plein écran)
+// LIGHTBOX (Affichage des médias en plein écran)
 // ========================================================
 
 /**
@@ -160,21 +157,19 @@ export function initLightboxEvents(mediaArray, folderName) {
 
   try {
     if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
-      throw new Error("⚠️ Le tableau des médias est invalide ou vide.");
+      throw new Error(" Le tableau des médias est invalide ou vide.");
     }
 
     if (!folderName || typeof folderName !== "string") {
       throw new Error(
-        "⚠️ Le nom du dossier (folderName) est invalide ou manquant.",
+        "Le nom du dossier (folderName) est invalide ou manquant.",
       );
     }
 
     //  Vérification des éléments de la galerie
     const galleryItems = document.querySelectorAll(".gallery-item");
     if (galleryItems.length === 0) {
-      throw new Error(
-        "⚠️ Aucun élément '.gallery-item' trouvé dans la galerie.",
-      );
+      throw new Error("Aucun élément '.gallery-item' trouvé dans la galerie.");
     }
 
     //  Attachement des événements sur les images et vidéos via le parent `.gallery-item`
@@ -185,12 +180,12 @@ export function initLightboxEvents(mediaArray, folderName) {
 
         // Vérifie que l'élément média existe
         if (!mediaElement) {
-          logEvent("error", "❌ Aucun média trouvé dans cet élément.");
+          logEvent("error", " Aucun média trouvé dans cet élément.");
           return;
         }
 
         if (mediaElement.tagName === "IMG") {
-          logEvent("info", "📸 Image cliquée, ouverture de la lightbox.", {
+          logEvent("info", "Image cliquée, ouverture de la lightbox.", {
             mediaSrc: mediaElement.src,
           });
           handleLightboxOpen(event, mediaArray, folderName);
@@ -202,7 +197,7 @@ export function initLightboxEvents(mediaArray, folderName) {
           mediaElement.pause(); // Stopper la lecture
           mediaElement.controls = false; // Désactiver temporairement les contrôles
 
-          logEvent("info", "🎥 Vidéo cliquée, ouverture de la lightbox.", {
+          logEvent("info", "Vidéo cliquée, ouverture de la lightbox.", {
             mediaSrc: mediaElement.src,
           });
 
@@ -212,16 +207,14 @@ export function initLightboxEvents(mediaArray, folderName) {
             mediaElement.controls = true; // Réactiver après ouverture
           }, 500);
         } else {
-          logEvent(
-            "warn",
-            "⚠️ Clic sur un élément non valide pour la lightbox.",
-            { clickedElement },
-          );
+          logEvent("warn", "Clic sur un élément non valide pour la lightbox.", {
+            clickedElement,
+          });
         }
       });
     });
 
-    // 📌 Vérification et attachement des événements pour la lightbox
+    //  Vérification et attachement des événements pour la lightbox
     const closeButton = domSelectors.lightbox.lightboxCloseButton;
     const prevButton = domSelectors.lightbox.lightboxPrevButton;
     const nextButton = domSelectors.lightbox.lightboxNextButton;
@@ -229,7 +222,7 @@ export function initLightboxEvents(mediaArray, folderName) {
     if (closeButton) {
       attachEvent(closeButton, "click", handleLightboxClose);
     } else {
-      logEvent("error", "❌ Bouton de fermeture de la lightbox introuvable.");
+      logEvent("error", "Bouton de fermeture de la lightbox introuvable.");
     }
 
     if (prevButton) {
@@ -237,7 +230,7 @@ export function initLightboxEvents(mediaArray, folderName) {
         handleLightboxPrev(mediaArray, folderName),
       );
     } else {
-      logEvent("error", "❌ Bouton précédent de la lightbox introuvable.");
+      logEvent("error", "Bouton précédent de la lightbox introuvable.");
     }
 
     if (nextButton) {
@@ -245,63 +238,60 @@ export function initLightboxEvents(mediaArray, folderName) {
         handleLightboxNext(mediaArray, folderName),
       );
     } else {
-      logEvent("error", "❌ Bouton suivant de la lightbox introuvable.");
+      logEvent("error", "Bouton suivant de la lightbox introuvable.");
     }
 
-    logEvent(
-      "success",
-      "✅ Événements de la lightbox initialisés avec succès.",
-    );
+    logEvent("success", "Événements de la lightbox initialisés avec succès.");
   } catch (error) {
-    logEvent("error", "❌ Erreur lors de l'initialisation de la lightbox.", {
+    logEvent("error", "Erreur lors de l'initialisation de la lightbox.", {
       error,
     });
   }
 
   logEvent(
     "test_end_lightbox",
-    "✅ Fin de l'initialisation des événements pour la lightbox.",
+    "Fin de l'initialisation des événements pour la lightbox.",
   );
 }
 
 // ========================================================
-// 🔹 TRI DES MÉDIAS (Options de tri)
+// TRI DES MÉDIAS (Options de tri)
 // ========================================================
 
 /**
  * Initialise les événements pour le tri des médias.
- * 🛠️ Attache un gestionnaire d'événement sur le changement d'option.
+ * Attache un gestionnaire d'événement sur le changement d'option.
  */
 function initSortingEvents() {
   logEvent(
     "test_start_sort",
-    "🛠️ Initialisation des événements pour le tri des médias...",
+    "Initialisation des événements pour le tri des médias...",
   );
 
   attachEvent(domSelectors.sorting.sortOptions, "change", handleSortChange);
 
   logEvent(
     "test_end_sort",
-    "✅ Événements pour le tri des médias initialisés avec succès.",
+    "Événements pour le tri des médias initialisés avec succès.",
   );
 }
 
 // ========================================================
-// 🔹 CLAVIER (Accessibilité & Navigation)
+//  CLAVIER (Accessibilité & Navigation)
 // ========================================================
-// 🎯 Enregistrement global des événements clavier
+// Enregistrement global des événements clavier
 document.addEventListener("keydown", handleKeyboardEvent);
 
 // ========================================================
-// 🚀 INITIALISATION GLOBALE
+//  INITIALISATION GLOBALE
 // ========================================================
 
 /**
  * Initialise tous les événements nécessaires à l'application.
- * 🔥 Vérifie et attache tous les événements critiques.
+ *  Vérifie et attache tous les événements critiques.
  */
 export function initEventListeners(mediaArray, folderName) {
-  logEvent("test_start_events", "🚀 Initialisation globale des événements...");
+  logEvent("test_start_events", "Initialisation globale des événements...");
 
   try {
     initModalEvents();
@@ -309,20 +299,17 @@ export function initEventListeners(mediaArray, folderName) {
     initSortingEvents();
     initModalConfirm();
     setupContactFormEvents();
-    logEvent(
-      "success",
-      "🚀 Tous les événements ont été initialisés avec succès.",
-    );
+    logEvent("success", "Tous les événements ont été initialisés avec succès.");
   } catch (error) {
     logEvent(
       "error",
-      "❌ Erreur critique lors de l'initialisation des événements.",
+      "Erreur critique lors de l'initialisation des événements.",
       { error },
     );
   }
 
   logEvent(
     "test_end_events",
-    "✅ Fin de l'initialisation globale des événements.",
+    "Fin de l'initialisation globale des événements.",
   );
 }

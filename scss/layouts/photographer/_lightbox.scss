@@ -1,54 +1,54 @@
 // ========================================================
-// Nom du fichier : lightbox.scss
+// Nom du fichier : _lightbox.scss
 // Description    : Styles pour la lightbox de l'application Fisheye
 // Auteur         : Trackozor
 // Date           : 08/01/2025
-// Version        : 1.4.0 (Intégration des animations avancées)
+// Version        : 2.0 (Optimisation Mobile First & Animations Centralisées)
 // ========================================================
 
+
 // --------------------------------------------------------------------------
-// Variables Globales (Facultatif, Peut Être Centralisé dans une autre feuille)
+// Variables Locales (Utilisation des variables globales)
 // --------------------------------------------------------------------------
-$primary-color: #901c1c;
-$secondary-color: rgba(243, 233, 233, 0.7);
+
 $lightbox-z-index: 1000;
 $transition-duration: 0.6s;
 
 // --------------------------------------------------------------------------
-// Lightbox Principale
+// 🎯 Lightbox Principale (Mobile First)
 // --------------------------------------------------------------------------
 
 .lightbox {
   position: fixed;
-  inset: 0; // Top, right, bottom, left = 0
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $secondary-color; // Fond semi-transparent
+  background-color: var(--neutral-color);
   opacity: 0;
   visibility: hidden;
-  z-index: $lightbox-z-index; // Niveau d'empilement élevé
+  z-index: $lightbox-z-index;
 
-  // Affiche la lightbox (état ouvert)
+  // Affichage
   &[aria-hidden="false"] {
     opacity: 1;
     visibility: visible;
-    animation: slideInFromTop $transition-duration cubic-bezier(0.25, 1, 0.5, 1);
+    animation: fade-in-up $transition-duration ease-in-out;
   }
 
-  // Masque la lightbox (état fermé)
+  // Masquage
   &[aria-hidden="true"] {
-    animation: slideOutToBottom $transition-duration cubic-bezier(0.25, 1, 0.5, 1);
+    animation: fade-out-scale $transition-duration ease-in-out;
   }
 }
 
 // --------------------------------------------------------------------------
-// Contenu de la Lightbox
+// 🎯 Contenu de la Lightbox
 // --------------------------------------------------------------------------
 
 .lightbox-content {
-  width: 80vw;
-  height: 90vh;
+  width: 90vw;
+  height: 85vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -56,174 +56,145 @@ $transition-duration: 0.6s;
   overflow: hidden;
   outline: none;
 
-  // Navigation vers le média suivant
   &[data-direction="next"] {
-    animation: slideFromNextMedia $transition-duration ease-in-out;
+    animation: crossfade $transition-duration ease-in-out, slide-in-right $transition-duration ease-in-out;
   }
 
-  // Navigation vers le média précédent
   &[data-direction="prev"] {
-    animation: slideToNextMedia $transition-duration ease-in-out reverse;
+    animation: crossfade $transition-duration ease-in-out, slide-in-left $transition-duration ease-in-out;
+  }
+
+  @include tablet {
+    width: 80vw;
+    height: 90vh;
   }
 }
 
 // --------------------------------------------------------------------------
-// Boutons de la Lightbox
+// 🎯 Boutons de la Lightbox
 // --------------------------------------------------------------------------
 
 button {
   position: absolute;
   background: transparent;
   cursor: pointer;
-  color: $primary-color; // Couleur principale
-  font-size: 2rem; // Taille de police des icônes
-  padding: 0.5rem;
+  color: var(--primary-color);
+  font-size: 2rem;
+  padding: var(--spacing-xsmall);
   font-weight: bold;
-  transition: transform 0.3s ease;
+  transition: transform var(--transition-default);
 
   &:hover {
-    transform: scale(1.1); // Effet de zoom au survol
+    transform: scale(1.1);
   }
 }
 
 .lightbox-close {
-  top: 1rem;
-  right: 1rem;
+  top: var(--spacing-medium);
+  right: var(--spacing-medium);
+  font-size: 2.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  padding: var(--spacing-xsmall);
+  transition: background-color var(--transition-default);
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.8);
+  }
 }
 
 .lightbox-prev,
 .lightbox-next {
-  border-radius: 50%;
-  padding: 0.5rem;
+  border-radius: var(--border-radius-small);
+  padding: var(--spacing-xsmall);
   font-size: 2.5rem;
+  animation: pulse-scaling 2s infinite;
 
   &:hover {
-    background-color: $primary-color; // Couleur au survol
-    color: #fff; // Texte en blanc
+    animation: rotate 0.3s ease-in-out;
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+
+  @include tablet {
+    font-size: 3rem;
   }
 }
 
 .lightbox-prev {
-  left: 1rem;
+  left: var(--spacing-medium);
 }
 
 .lightbox-next {
-  right: 1rem;
+  right: var(--spacing-medium);
 }
 
 // --------------------------------------------------------------------------
-// Conteneur des Médias
+// 🎯 Conteneur des Médias
 // --------------------------------------------------------------------------
 
 .lightbox-media-container {
   width: 100%;
   height: auto;
-  height: 80vh;
+  height: 75vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 
   img,
   video {
-    width: 80%;
-    height: 75%;
-    object-fit: contain; // Préserve les proportions
-    animation: fadeIn $transition-duration ease; // Animation d'apparition
+    width: 85%;
+    height: 70%;
+    object-fit: contain;
+    animation: fade-in-scale $transition-duration ease-in-out;
+
+    @include tablet {
+      width: 80%;
+      height: 75%;
+    }
   }
 }
 
 // --------------------------------------------------------------------------
-// Légende des Médias
+// 🎯 Légende des Médias
 // --------------------------------------------------------------------------
 
 .lightbox-caption {
-  margin-top: 1rem;
-  font-size: 1rem;
-  color: darken($secondary-color, 40%); // Couleur plus foncée
+  margin-top: var(--spacing-small);
+  font-size: var(--font-size-base);
+  color: var(--text-color-primary);
   text-align: center;
   max-width: 90%;
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
+  animation: fade-in-scale $transition-duration ease-in-out;
 }
 
 // --------------------------------------------------------------------------
-// Animations
+// ✅ Optimisations Responsive
 // --------------------------------------------------------------------------
 
-/**
- * Animation d'Ouverture : Glisse depuis le haut
- */
-@keyframes slideInFromTop {
-  0% {
-    transform: translateY(-100%) scale(0.9);
-    opacity: 0;
+@include tablet {
+  .lightbox-content {
+    width: 80vw;
   }
-  80% {
-    transform: translateY(10%) scale(1.05);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(0) scale(1);
+
+  .lightbox-prev,
+  .lightbox-next {
+    font-size: 3rem;
   }
 }
 
-/**
- * Animation de Fermeture : Glisse vers le bas
- */
-@keyframes slideOutToBottom {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
+@include desktop {
+  .lightbox-content {
+    width: 75vw;
   }
-  100% {
-    transform: translateY(100%) scale(0.8);
-    opacity: 0;
-  }
-}
 
-/**
- * Animation de Navigation vers le Suivant
- */
-@keyframes slideFromNextMedia {
-  0% {
-    transform: translateX(100%) rotate(20deg) scale(0.9);
-    opacity: 0;
+  .lightbox-media-container {
+    height: 80vh;
   }
-  50% {
-    transform: translateX(50%) rotate(10deg) scale(1.02);
-    opacity: 0.5;
-  }
-  100% {
-    transform: translateX(0) rotate(0deg) scale(1);
-    opacity: 1;
-  }
-}
 
-/**
- * Animation de Navigation vers le Précédent
- */
-@keyframes slideToNextMedia {
-  0% {
-    transform: translateX(0) rotate(0deg) scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: translateX(-50%) rotate(-10deg) scale(0.95);
-    opacity: 0.7;
-  }
-  100% {
-    transform: translateX(-100%) rotate(-20deg) scale(0.9);
-    opacity: 0;
-  }
-}
-
-/**
- * Animation d'Apparition : Fade In
- */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
+  .lightbox-caption {
+    font-size: var(--font-size-medium);
   }
 }

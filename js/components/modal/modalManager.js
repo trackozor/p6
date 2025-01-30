@@ -83,7 +83,7 @@ export async function closeModal() {
     logEvent("info", "Vérification de l'état de la modale...");
     const contactOverlay = document.getElementById("modal-overlay");
     const contactModal = document.getElementById("contact-modal");
-    const confirmationModal = document.getElementById("confirmation-modal"); // Corrigé pour éviter le symbole '#'
+    const confirmationModal = document.getElementById("confirmation-modal");
 
     if (!modalOpen || !contactModal?.classList?.contains("modal-active")) {
       logEvent("warn", "Modale déjà fermée ou état incohérent.", {
