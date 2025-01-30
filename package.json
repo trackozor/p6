@@ -1,44 +1,29 @@
 {
   "name": "p6",
   "version": "1.0.0",
-  "description": "Projet Fisheye - Frontend avec SASS, Jest, et ESLint",
-  "main": "main.js",
-  "scripts": {
-    "start": "npm-run-all --parallel build:sass test:watch",
-    "dev": "npm run backend & npm run start",
-    "backend": "json-server --watch mock-backend/db.json --port 3000",
-    "lint": "eslint . --ext .js",
-    "lint:fix": "eslint . --ext .js --fix",
-    "lint:folder": "eslint ./js/**/*.js --fix",
-    "test": "jest",
-    "test:watch": "jest --watchAll",
-    "build:sass": "sass scss:css --style compressed",
-    "sass": "sass --watch scss:./css scss/pages-scss/photographer-main.scss:./css/pages/photographer.css"
-   
+  "description": "Photographers Directory permet de rechercher et contacter des photographes talentueux pour des projets professionnels et personnels.",
+  "main": "eslint.config.js",
+  "directories": {
+    "test": "test"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
+  "scripts": {
+    "start": "npm-run-all --parallel server sass",
+    "server": "json-server --watch db.json --port 3001",
+    "sass": "sass --watch scss/pages-scss/index-main.scss:css/main.css scss/pages-scss/photographer-main.scss:css/pages/photographer.css",
+    "test": "jest",
+    "lint": "eslint . --fix",
+    "format": "prettier --write ."
+  },
+  "keywords": ["photography", "directory", "photographers"],
+  "author": "Ton Nom",
+  "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.26.7",
-    "@babel/preset-env": "^7.26.7",
-    "@eslint/js": "^9.19.0",
-    "babel-jest": "^29.7.0",
     "eslint": "^9.19.0",
-    "eslint-config-prettier": "^10.0.1",
-    "eslint-plugin-jest": "^28.11.0",
-    "eslint-plugin-prettier": "^5.2.3",
-    "globals": "^15.14.0",
-    "husky": "^9.1.7",
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
+    "json-server": "^1.0.0-beta.3",
     "npm-run-all": "^4.1.5",
     "sass": "^1.83.4",
-    "stylelint": "^16.14.1",
-    "stylelint-scss": "^6.11.0"
-  },
-  "type": "module",
-  "jest": {
-      "transform": {}
-    }
+    "prettier": "^3.1.0"
+  }
 }
+
