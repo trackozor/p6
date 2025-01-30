@@ -47,7 +47,7 @@ $transition-duration: 0.6s;
 // --------------------------------------------------------------------------
 
 .lightbox-content {
-  width: 90vw;
+  width: 80vw;
   height: 85vh;
   display: flex;
   flex-direction: column;
@@ -93,15 +93,30 @@ button {
   top: var(--spacing-medium);
   right: var(--spacing-medium);
   font-size: 2.5rem;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
+  background:white;
+  border-radius: 0.2rem;
   padding: var(--spacing-xsmall);
   transition: background-color var(--transition-default);
 
-  &:hover {
-    background: rgba(0, 0, 0, 0.8);
+  @include tablet {
+    font-size: 3rem;
+    font-weight: 500;
   }
+
+  @include desktop {
+    right:5%;
+  }
+
+  @include large-desktop{
+    font-size: 4rem;
+  }
+
 }
+.lightbox-close:hover {
+    background-color: var(--secondary-color);
+    color: white;
+  }
+
 
 .lightbox-prev,
 .lightbox-next {
@@ -122,11 +137,11 @@ button {
 }
 
 .lightbox-prev {
-  left: var(--spacing-medium);
+  left: 1%;
 }
 
 .lightbox-next {
-  right: var(--spacing-medium);
+  right: 1%;
 }
 
 // --------------------------------------------------------------------------
@@ -151,7 +166,7 @@ button {
 
     @include tablet {
       width: 80%;
-      height: 75%;
+      height: 60vh;
     }
   }
 }
@@ -170,31 +185,4 @@ button {
   animation: fade-in-scale $transition-duration ease-in-out;
 }
 
-// --------------------------------------------------------------------------
-// ✅ Optimisations Responsive
-// --------------------------------------------------------------------------
 
-@include tablet {
-  .lightbox-content {
-    width: 80vw;
-  }
-
-  .lightbox-prev,
-  .lightbox-next {
-    font-size: 3rem;
-  }
-}
-
-@include desktop {
-  .lightbox-content {
-    width: 75vw;
-  }
-
-  .lightbox-media-container {
-    height: 80vh;
-  }
-
-  .lightbox-caption {
-    font-size: var(--font-size-medium);
-  }
-}

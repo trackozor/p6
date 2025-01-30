@@ -1278,7 +1278,7 @@ footer p {
 }
 
 .lightbox-content {
-  width: 90vw;
+  width: 80vw;
   height: 85vh;
   display: flex;
   flex-direction: column;
@@ -1318,13 +1318,31 @@ button:hover {
   top: var(--spacing-medium);
   right: var(--spacing-medium);
   font-size: 2.5rem;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
+  background: white;
+  border-radius: 0.2rem;
   padding: var(--spacing-xsmall);
   transition: background-color var(--transition-default);
 }
+@media (min-width: 767px) {
+  .lightbox-close {
+    font-size: 3rem;
+    font-weight: 500;
+  }
+}
+@media (min-width: 1024px) {
+  .lightbox-close {
+    right: 5%;
+  }
+}
+@media (min-width: 1440px) {
+  .lightbox-close {
+    font-size: 4rem;
+  }
+}
+
 .lightbox-close:hover {
-  background: rgba(0, 0, 0, 0.8);
+  background-color: var(--secondary-color);
+  color: white;
 }
 
 .lightbox-prev,
@@ -1348,11 +1366,11 @@ button:hover {
 }
 
 .lightbox-prev {
-  left: var(--spacing-medium);
+  left: 1%;
 }
 
 .lightbox-next {
-  right: var(--spacing-medium);
+  right: 1%;
 }
 
 .lightbox-media-container {
@@ -1375,7 +1393,7 @@ button:hover {
   .lightbox-media-container img,
   .lightbox-media-container video {
     width: 80%;
-    height: 75%;
+    height: 60vh;
   }
 }
 
@@ -1389,26 +1407,6 @@ button:hover {
   animation: fade-in-scale 0.6s ease-in-out;
 }
 
-@media (min-width: 767px) {
-  .lightbox-content {
-    width: 80vw;
-  }
-  .lightbox-prev,
-  .lightbox-next {
-    font-size: 3rem;
-  }
-}
-@media (min-width: 1024px) {
-  .lightbox-content {
-    width: 75vw;
-  }
-  .lightbox-media-container {
-    height: 80vh;
-  }
-  .lightbox-caption {
-    font-size: var(--font-size-medium);
-  }
-}
 /* =============================================================================
   Projet      : Fisheye
   Fichier     : _modal.scss
