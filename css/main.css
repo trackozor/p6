@@ -2207,12 +2207,6 @@ footer p {
   overflow: hidden;
   outline: none;
 }
-.lightbox-content[data-direction=next] {
-  animation: crossfade 0.6s ease-in-out, slide-in-right 0.6s ease-in-out;
-}
-.lightbox-content[data-direction=prev] {
-  animation: crossfade 0.6s ease-in-out, slide-in-left 0.6s ease-in-out;
-}
 @media (min-width: 767px) {
   .lightbox-content {
     width: 80vw;
@@ -2251,7 +2245,9 @@ button:hover {
 }
 @media (min-width: 1024px) {
   .lightbox-close {
-    right: 5%;
+    right: 3%;
+    font-size: 4.5rem;
+    font-weight: 100;
   }
 }
 @media (min-width: 1440px) {
@@ -2278,42 +2274,44 @@ button:hover {
   background-color: var(--primary-color);
   color: #fff;
 }
-@media (min-width: 767px) {
-  .lightbox-prev,
-  .lightbox-next {
-    font-size: 3rem;
-  }
-}
 
 .lightbox-prev {
   left: 1%;
+}
+@media (min-width: 767px) {
+  .lightbox-prev {
+    left: 4%;
+  }
 }
 
 .lightbox-next {
   right: 1%;
 }
+@media (min-width: 767px) {
+  .lightbox-next {
+    right: 4%;
+  }
+}
 
 .lightbox-media-container {
   width: 100%;
-  height: auto;
-  height: 75vh;
+  height: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
-.lightbox-media-container img,
-.lightbox-media-container video {
+
+.lightbox-media-container img, .lightbox-media-container video {
   width: 85%;
-  height: 70%;
+  height: 50%;
   object-fit: contain;
   animation: fade-in-scale 0.6s ease-in-out;
 }
 @media (min-width: 767px) {
-  .lightbox-media-container img,
-  .lightbox-media-container video {
+  .lightbox-media-container img, .lightbox-media-container video {
     width: 80%;
-    height: 60vh;
+    height: 50%;
   }
 }
 
@@ -2321,8 +2319,9 @@ button:hover {
   margin-top: var(--spacing-small);
   font-size: var(--font-size-base);
   color: var(--text-color-primary);
-  text-align: center;
-  max-width: 90%;
+  max-width: 100%;
+  display: flex;
+  justify-content: left;
   line-height: var(--line-height-normal);
   animation: fade-in-scale 0.6s ease-in-out;
 }
@@ -2418,10 +2417,24 @@ button:hover {
   gap: 0.5rem; /* Ajoute un espacement entre le titre et le nom */
   text-align: left;
   margin-bottom: 1rem; /* Ajoute un espacement en bas */
-  width: 80%;
-  margin: 5% 0;
+  width: 90%;
+  margin: 5%;
   font-size: 1.5rem;
   padding: 0;
+}
+
+.modal-header h2 {
+  font-size: 1.5rem;
+}
+@media (min-width: 767px) {
+  .modal-header h2 {
+    display: flex;
+    position: relative;
+    font-size: 2rem;
+    justify-content: left;
+    padding: 0;
+    margin: 0;
+  }
 }
 
 /* -------------------------------------------------------------------------- */

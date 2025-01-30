@@ -90,11 +90,28 @@
   gap: 0.5rem; /* Ajoute un espacement entre le titre et le nom */
   text-align: left;
   margin-bottom: 1rem; /* Ajoute un espacement en bas */
-  width:80%;
-  margin:5% 0;
+  width:90%;
+  margin:5% ;
   font-size: 1.5rem;
   padding:0;
 }
+.modal-header h2 {
+  font-size: 1.5rem;
+
+  @include tablet {
+    display:flex;
+    position : relative;
+    font-size: 2rem;
+    justify-content:left;
+    padding:0;
+    margin:0;
+    
+    
+  }
+}
+
+
+
 /* -------------------------------------------------------------------------- */
 /*                          FORMULAIRE DE LA MODALE                           */
 /* -------------------------------------------------------------------------- */
