@@ -73,7 +73,7 @@
     top: 5%;
     width: 15%;
     height:15%;
-    max-height:15%;
+    max-height:13vh;
     padding: 0;
     margin-top: 7%;
   }
@@ -96,16 +96,16 @@
   }
 }
 .photographer-profile p{
-
-  right:8%;
+  position: relative;
+  right:7.5%;
 }
 .photographer-profile .photographer-card-location {
   font-size:1.4rem;
   margin:2% 0;
 }
-.photographer-profile.photographer-card-tagline {
-  margin-top:4%;
-  font-weight: 200;
+.photographer-profile .photographer-card-tagline {
+  margin-top:3%;
+  font-weight: 100;
 }
 .photographer-stats {
   background-color: #d88876;
@@ -127,9 +127,9 @@
   @include desktop {
     position: fixed;
     z-index: 99999;
-    top: 95%;
+    top: 94%;
     right: 2%;
-    padding: 1% 2.5%;
+    padding: 1.5% 2.5%;
     width: 18%;
     font-weight:500;
   }

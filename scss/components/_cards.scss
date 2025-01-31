@@ -191,8 +191,9 @@
   object-position: center;
 
   @include tablet {
-    margin: 2% auto;
-    width: 70%;
+    margin: 5% auto;
+    width: 80%;
+    height:30vh;
   }
 }
 /* Animation au survol */
@@ -216,7 +217,7 @@
   object-position: center;
 
   @include tablet {
-    max-height: 35vh;
+    max-height: 27vh;
   }
 }
 

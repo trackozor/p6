@@ -671,14 +671,19 @@ a {
 
 #sort-options {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   justify-content: center;
   color: white;
   background-color: #901c1c;
   align-items: center;
   margin: 2%;
   border: none;
-  border-radius: 0.2rem;
+  border-radius: 0.1rem;
+  cursor: pointer;
+}
+
+#sort-options:focus {
+  transform-origin: top; /* Définit le point de pivot pour l'animation */
 }
 
 /* =============================================================================
@@ -866,8 +871,9 @@ a {
 }
 @media (min-width: 767px) {
   .media-item {
-    margin: 2% auto;
-    width: 70%;
+    margin: 5% auto;
+    width: 80%;
+    height: 30vh;
   }
 }
 
@@ -893,7 +899,7 @@ a {
 }
 @media (min-width: 767px) {
   .media {
-    max-height: 35vh;
+    max-height: 27vh;
   }
 }
 
@@ -1154,7 +1160,7 @@ footer p {
     top: 5%;
     width: 15%;
     height: 15%;
-    max-height: 15vh;
+    max-height: 13vh;
     padding: 0;
     margin-top: 7%;
   }
@@ -1182,12 +1188,17 @@ footer p {
 
 .photographer-profile p {
   position: relative;
-  right: 8%;
+  right: 7.5%;
 }
 
 .photographer-profile .photographer-card-location {
   font-size: 1.4rem;
   margin: 2% 0;
+}
+
+.photographer-profile .photographer-card-tagline {
+  margin-top: 3%;
+  font-weight: 100;
 }
 
 .photographer-stats {
@@ -1212,9 +1223,9 @@ footer p {
   .photographer-stats {
     position: fixed;
     z-index: 99999;
-    top: 95%;
+    top: 94%;
     right: 2%;
-    padding: 1% 2.5%;
+    padding: 1.5% 2.5%;
     width: 18%;
     font-weight: 500;
   }
@@ -1251,14 +1262,11 @@ footer p {
 /*               et grille pour les écrans moyens et grands.                  */
 /* -------------------------------------------------------------------------- */
 #gallery {
-  width: 90%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  object-fit: cover;
-  object-position: center;
-  margin: 0 auto;
+  width: 100%; /* Largeur adaptable */
+  display: flex; /* Active le centrage */
+  justify-content: center; /* Centre horizontalement */
+  align-items: center; /* Centre verticalement */
+  overflow: hidden; /* Cache les débordements */
 }
 @media (min-width: 767px) {
   #gallery {
@@ -1271,10 +1279,21 @@ footer p {
 @media (min-width: 1024px) {
   #gallery {
     display: grid;
-    grid-template-columns: repeat(3, 38%);
+    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr)); /* Grille responsive */
+    height: auto;
     margin: 0 auto;
-    width: 85%;
+    width: 87%;
   }
+}
+
+/* Images et vidéos */
+.media-item img,
+.media-item video {
+  max-width: 36vw; /* Prend toute la largeur du conteneur */
+  height: 35vh; /* Prend toute la hauteur du conteneur */
+  object-fit: cover; /* Remplit sans distorsion */
+  object-position: center; /* Centre le média */
+  display: block;
 }
 
 .lightbox {
@@ -1540,7 +1559,7 @@ button:hover {
   .modal-header h2 {
     display: flex;
     position: relative;
-    width: 100%;
+    width: 90%;
     font-size: 2rem;
     padding: 0;
     margin: 0;

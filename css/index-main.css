@@ -448,14 +448,19 @@ a {
 
 #sort-options {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   justify-content: center;
   color: white;
   background-color: #901c1c;
   align-items: center;
   margin: 2%;
   border: none;
-  border-radius: 0.2rem;
+  border-radius: 0.1rem;
+  cursor: pointer;
+}
+
+#sort-options:focus {
+  transform-origin: top; /* Définit le point de pivot pour l'animation */
 }
 
 /* =============================================================================
@@ -643,8 +648,9 @@ a {
 }
 @media (min-width: 767px) {
   .media-item {
-    margin: 2% auto;
-    width: 70%;
+    margin: 5% auto;
+    width: 80%;
+    height: 30vh;
   }
 }
 
@@ -670,7 +676,7 @@ a {
 }
 @media (min-width: 767px) {
   .media {
-    max-height: 35vh;
+    max-height: 27vh;
   }
 }
 
