@@ -1,52 +1,54 @@
 /* Loader global */
 .loader {
-    position: fixed;
-    top: 1%;
-    left: 2%;
-    width: 100%;
-    height: 100%;
-    background-color: var(--secondary-color); /* Overlay sombre */
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease; 
-    margin:0 auto;
+  position: fixed;
+  top: 1%;
+  left: 2%;
+  width: 100%;
+  height: 100%;
+  background-color: var(--secondary-color); /* Overlay sombre */
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+  margin: 0 auto;
 
-    @include tablet {
-      width:70%;
-      left:15%
-    }
+  @include tablet {
+    width: 70%;
+    left: 15%;
+  }
 
-    @include desktop {
-      width:60%;
-      left: 20%;
-    }
+  @include desktop {
+    width: 60%;
+    left: 20%;
+  }
 }
 
 .loader-active {
-    opacity: 1;
-    visibility: visible;
+  opacity: 1;
+  visibility: visible;
 }
 
-  /* Conteneur central */
+/* Conteneur central */
 .loader-container {
   text-align: center;
   width: 80%;
   max-width: 400px;
 }
 
-  /* Titre du loader */
+/* Titre du loader */
 .loader-title {
   font-size: 1.5rem;
   margin-bottom: 10px;
   color: #ffffff;
 }
 
-  /* Spinner central */
+/* Spinner central */
 .spinner {
   margin: 20px auto;
   width: 50px;
@@ -58,40 +60,40 @@
 }
 
 @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
-  
-  /* Texte dynamique */
+
+/* Texte dynamique */
 .loader-text {
-    font-size: 1rem;
-    margin-bottom: 15px;
+  font-size: 1rem;
+  margin-bottom: 15px;
 }
 
-  /* Conteneur de la barre de progression */
+/* Conteneur de la barre de progression */
 .progress-container {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
-    height: 10px;
-    overflow: hidden;
-    margin: 10px 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  height: 10px;
+  overflow: hidden;
+  margin: 10px 0;
 }
 
-  /* Barre de progression */
+/* Barre de progression */
 .progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #901c1c, #b42a2a);
-    width: 0%;
-    transition: width 0.4s ease;
+  height: 100%;
+  background: linear-gradient(90deg, #901c1c, #b42a2a);
+  width: 0%;
+  transition: width 0.4s ease;
 }
 
-  /* Pourcentage */
+/* Pourcentage */
 .progress-percentage {
-    font-size: 0.9rem;
-    margin-top: 5px;
+  font-size: 0.9rem;
+  margin-top: 5px;
 }

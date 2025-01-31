@@ -33,15 +33,13 @@
     align-items: center; /* Centre les éléments verticalement */
     margin-bottom: 1%;
   }
-  
+
   @include desktop {
     padding: 0; /* Réduit le padding pour un design compact */
-    width:90%;
-    margin: 0 auto; 
+    width: 90%;
+    margin: 0 auto;
     align-items: center;
   }
-
-
 }
 
 .photographer-profile.photographer-profile {
@@ -54,9 +52,9 @@
     text-align: left; /* Texte aligné à gauche pour une meilleure lecture */
   }
   @include desktop {
-    width: 80%; 
-    text-align: left ;
-    margin:0;/* Largeur plus grande pour les écrans plus grands */
+    width: 80%;
+    text-align: left;
+    margin: 0; /* Largeur plus grande pour les écrans plus grands */
   }
 }
 .photographer-info .photographer-card-portrait {
@@ -70,16 +68,15 @@
     display: flex;
     position: relative;
     margin-right: 5%; /* Réduit l'espace à droite pour les écrans plus grands */
-    top:5%;
+    top: 5%;
     width: 12%;
-    padding:0;
-    margin-top:7%;
+    padding: 0;
+    margin-top: 7%;
   }
 }
 
-
 .photographer-profile h2 {
-  color: #D3573C; /* Couleur de texte pour une meilleure mise en valeur */
+  color: #d3573c; /* Couleur de texte pour une meilleure mise en valeur */
   font-size: 1.8rem; /* Taille par défaut pour les petits écrans */
   margin-bottom: 1%; /* Espace sous le titre pour séparer des autres éléments */
 
@@ -88,9 +85,9 @@
   }
 }
 .photographer-stats {
-  background-color: #D88876;
-  padding:2%;
-  color:black;
+  background-color: #d88876;
+  padding: 2%;
+  color: black;
   margin-bottom: 2%;
   font-weight: 600;
 
@@ -98,22 +95,22 @@
     display: flex;
     flex-direction: row;
     gap: 2%;
-    padding:2% 3%;
-    position:absolute;
-    top:33%;
+    padding: 2% 3%;
+    position: absolute;
+    top: 33%;
     right: 4%;
   }
   @include desktop {
-    position:fixed;
-    top:85%;
-    right:5%;
-    padding:1%;
+    position: fixed;
+    top: 85%;
+    right: 5%;
+    padding: 1%;
   }
   @include large-desktop {
-    top:90%;
+    top: 90%;
   }
 }
 
-#photographer-stats  .like-icon  {
-  color:black;
+#photographer-stats .like-icon {
+  color: black;
 }

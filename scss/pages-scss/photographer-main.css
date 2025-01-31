@@ -736,8 +736,10 @@ a {
   width: 10vh; /* Largeur de l'image basée sur la hauteur de la fenêtre */
   height: 10vh; /* Hauteur de l'image */
   border-radius: 50%; /* Rend l'image circulaire */
-  object-fit: cover; /* Assure que l'image garde ses proportions */
-  object-position: center; /* Centre le contenu de l'image */
+  -o-object-fit: cover;
+     object-fit: cover; /* Assure que l'image garde ses proportions */
+  -o-object-position: center;
+     object-position: center; /* Centre le contenu de l'image */
   transform: scale(1.2); /* Agrandit légèrement l'image */
   margin: 5% 0; /* Ajoute un espacement autour de l'image */
   transition: transform 0.3s ease; /* Ajoute une animation fluide */
@@ -858,7 +860,8 @@ a {
   height: 100%;
   height: 40vh;
   transition: transform 0.3s, box-shadow 0.3s;
-  object-position: center;
+  -o-object-position: center;
+     object-position: center;
 }
 @media (min-width: 767px) {
   .media-item {
@@ -881,11 +884,13 @@ a {
   width: 100%; /* Prend toute la largeur */
   height: 100%; /* Conserve les proportions */
   max-height: 30vh;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   margin: 0 auto;
   overflow: hidden;
   display: flex; /* S'assure que c'est un bloc */
-  object-position: center;
+  -o-object-position: center;
+     object-position: center;
 }
 @media (min-width: 767px) {
   .media {
@@ -1169,7 +1174,7 @@ footer p {
 }
 
 .photographer-profile h2 {
-  color: #D3573C; /* Couleur de texte pour une meilleure mise en valeur */
+  color: #d3573c; /* Couleur de texte pour une meilleure mise en valeur */
   font-size: 1.8rem; /* Taille par défaut pour les petits écrans */
   margin-bottom: 1%; /* Espace sous le titre pour séparer des autres éléments */
 }
@@ -1180,7 +1185,7 @@ footer p {
 }
 
 .photographer-stats {
-  background-color: #D88876;
+  background-color: #d88876;
   padding: 2%;
   color: black;
   margin-bottom: 2%;
@@ -1236,8 +1241,10 @@ footer p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  object-fit: cover;
-  object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
   margin: 0 auto;
 }
 @media (min-width: 767px) {
@@ -1382,14 +1389,17 @@ button:hover {
   flex-direction: column;
 }
 
-.lightbox-media-container img, .lightbox-media-container video {
+.lightbox-media-container img,
+.lightbox-media-container video {
   width: 85%;
   height: 50%;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
   animation: fade-in-scale 0.6s ease-in-out;
 }
 @media (min-width: 767px) {
-  .lightbox-media-container img, .lightbox-media-container video {
+  .lightbox-media-container img,
+  .lightbox-media-container video {
     width: 80%;
     height: 50%;
   }
@@ -1572,7 +1582,8 @@ form {
 }
 
 /* Classe pour les bordures rouges des champs avec des erreurs */
-input.error-input, textarea.error-input {
+input.error-input,
+textarea.error-input {
   border: 2px solid red; /* Bordure rouge pour indiquer une erreur */
   box-shadow: 0 0 1rem red; /* Ombre rouge pour mettre en évidence l'erreur */
 }
@@ -1777,6 +1788,4 @@ input.error-input, textarea.error-input {
 .progress-percentage {
   font-size: 0.9rem;
   margin-top: 5px;
-}
-
-/*# sourceMappingURL=photographer.css.map */
+}/*# sourceMappingURL=photographer-main.css.map */

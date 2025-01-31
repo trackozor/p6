@@ -16,8 +16,10 @@
 
 #photographers-container {
   display: grid; /* Mise en page avec une grille CSS */
-  max-width: 90%; /* Limite la largeur maximale du conteneur */
-  gap: var(--spacing-base); /* Espacement entre les éléments (utilise une variable) */
+  max-width: 80%; /* Limite la largeur maximale du conteneur */
+  gap: var(
+    --spacing-base
+  ); /* Espacement entre les éléments (utilise une variable) */
   margin: 2% auto; /* Centre le conteneur verticalement et horizontalement */
   padding: 0 var(--spacing-base); /* Espacement horizontal pour l'alignement */
 
@@ -35,8 +37,6 @@
   /* ----------------------------------------------------------------------- */
   @include desktop {
     grid-template-columns: repeat(3, 1fr); /* 3 colonnes de tailles égales */
-    margin:0 auto;
+    margin: 0 auto;
   }
-
-  
 }

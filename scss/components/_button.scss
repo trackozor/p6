@@ -6,7 +6,7 @@
 
 .contact_button {
   font-size: 1rem; /* Taille de la police pour le texte du bouton */
-  z-index:50;
+  z-index: 50;
   font-weight: bold; /* Texte en gras pour plus de visibilité */
   color: white; /* Couleur du texte */
   padding: 3%; /* Espacement interne pour rendre le bouton plus grand */
@@ -20,19 +20,19 @@
 
   @include tablet {
     max-height: 20px; /* Réduit la hauteur maximale sur tablette */
-    padding:2% 1%; /* Diminue les espacements internes */ 
-    margin-left:7%;
+    padding: 2% 1%; /* Diminue les espacements internes */
+    margin-left: 7%;
     display: flex;
     margin-bottom: 0;
     align-items: center;
 
     @include desktop {
-      padding:2.5% 1%;
-      margin-bottom:0;
+      padding: 2.5% 1%;
+      margin-bottom: 0;
     }
 
-    @include large-desktop{
-      padding:1.5% 1%;
+    @include large-desktop {
+      padding: 1.5% 1%;
     }
   }
 }
@@ -77,13 +77,13 @@
   box-shadow: none; /* Supprime les ombres éventuelles */
   cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
   display: flex; /* Utilise Flexbox pour organiser le contenu */
- /* Centre les icônes verticalement */
+  /* Centre les icônes verticalement */
   justify-content: center; /* Centre les icônes horizontalement */
   width: auto; /* Ajuste automatiquement la largeur au contenu */
   height: auto; /* Ajuste automatiquement la hauteur au contenu */
 }
 .fa-heart::before {
-  color:#901c1c
+  color: #901c1c;
 }
 
 .sorting {
@@ -97,7 +97,7 @@
     flex-direction: row;
     justify-content: flex-start;
     margin-left: 10%;
-    margin:2% 0 3% 10%;
+    margin: 2% 0 3% 10%;
   }
 }
 
@@ -109,11 +109,10 @@
   display: flex;
   flex-direction: column-reverse;
   justify-content: center;
-  color:white;
+  color: white;
   background-color: #901c1c;
   align-items: center;
   margin: 2%;
-  border:none;
+  border: none;
   border-radius: 0.2rem;
 }
-

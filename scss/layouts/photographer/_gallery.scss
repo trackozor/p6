@@ -9,33 +9,31 @@
                 et écrans de bureau.
 ============================================================================= */
 
-
 /* -------------------------------------------------------------------------- */
 /* Conteneur principal de la galerie (#gallery)                               */
 /* Description : Mise en page par défaut avec Flexbox pour les petits écrans, */
 /*               et grille pour les écrans moyens et grands.                  */
 /* -------------------------------------------------------------------------- */
 #gallery {
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    object-fit: cover;
-    object-position: center;
-    margin:0 auto;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  object-fit: cover;
+  object-position: center;
+  margin: 0 auto;
 
-    @include tablet {
-        display: grid;
-        grid-template-columns: repeat(2, 45%);
-        margin: 0 auto;
-        width:100%
-    }
-    @include desktop {
-        display: grid;
-        grid-template-columns: repeat(3, 38%);
-        margin: 0 auto ;
-        width:85%
-    }
+  @include tablet {
+    display: grid;
+    grid-template-columns: repeat(2, 45%);
+    margin: 0 auto;
+    width: 100%;
+  }
+  @include desktop {
+    display: grid;
+    grid-template-columns: repeat(3, 38%);
+    margin: 0 auto;
+    width: 85%;
+  }
 }
-

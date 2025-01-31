@@ -6,17 +6,15 @@
 // Version        : 2.0 (Optimisation Mobile First & Animations Centralisées)
 // ========================================================
 
-
 // --------------------------------------------------------------------------
 // VARIABLES LOCALES (Utilisation des variables globales)
 // --------------------------------------------------------------------------
 
 // Définit la priorité d'affichage de la lightbox pour s'assurer qu'elle est au-dessus des autres éléments
-$lightbox-z-index: 1000;  
+$lightbox-z-index: 1000;
 
 // Durée des transitions pour les animations d'apparition et de disparition
 $transition-duration: 0.6s;
-
 
 // --------------------------------------------------------------------------
 // LIGHTBOX PRINCIPALE (MOBILE FIRST)
@@ -28,7 +26,9 @@ $transition-duration: 0.6s;
   display: flex; // Utilisation de flexbox pour centrer le contenu
   justify-content: center; // Alignement horizontal centré
   align-items: center; // Alignement vertical centré
-  background-color: var(--neutral-color); // Utilisation d'une couleur de fond issue des variables globales
+  background-color: var(
+    --neutral-color
+  ); // Utilisation d'une couleur de fond issue des variables globales
   opacity: 0; // La lightbox est initialement invisible
   visibility: hidden; // Cachée par défaut pour éviter qu'elle ne soit prise en compte par le navigateur
   z-index: $lightbox-z-index; // Définit un ordre d'affichage élevé pour la superposition
@@ -45,7 +45,6 @@ $transition-duration: 0.6s;
     animation: fade-out-scale $transition-duration ease-in-out; // Animation de disparition avec un effet de réduction
   }
 }
-
 
 // --------------------------------------------------------------------------
 // CONTENU DE LA LIGHTBOX
@@ -68,7 +67,6 @@ $transition-duration: 0.6s;
   }
 }
 
-
 // --------------------------------------------------------------------------
 // BOUTONS DE LA LIGHTBOX
 // --------------------------------------------------------------------------
@@ -78,9 +76,13 @@ button {
   position: absolute; // Position indépendante du flux normal
   background: transparent; // Fond transparent pour une meilleure intégration visuelle
   cursor: pointer; // Affiche un pointeur au survol pour indiquer une action possible
-  color: var(--primary-color); // Utilisation d'une couleur dynamique issue des variables globales
+  color: var(
+    --primary-color
+  ); // Utilisation d'une couleur dynamique issue des variables globales
   font-size: 2rem; // Taille du texte pour une bonne visibilité
-  padding: var(--spacing-xsmall); // Ajoute un espace interne pour améliorer l'ergonomie
+  padding: var(
+    --spacing-xsmall
+  ); // Ajoute un espace interne pour améliorer l'ergonomie
   font-weight: bold; // Mise en avant du texte en gras
   transition: transform var(--transition-default); // Applique une transition fluide lors des interactions
 
@@ -127,7 +129,9 @@ button {
 // Boutons de navigation (Précédent & Suivant)
 .lightbox-prev,
 .lightbox-next {
-  border-radius: var(--border-radius-small); // Arrondi des bords pour une meilleure ergonomie
+  border-radius: var(
+    --border-radius-small
+  ); // Arrondi des bords pour une meilleure ergonomie
   padding: var(--spacing-xsmall); // Espacement interne
   font-size: 2.5rem;
   animation: pulse-scaling 2s infinite; // Animation récurrente pour attirer l'attention
@@ -151,12 +155,11 @@ button {
 // Position du bouton suivant (à droite)
 .lightbox-next {
   right: 1%;
-  
+
   @include tablet {
     right: 4%;
   }
 }
-
 
 // --------------------------------------------------------------------------
 // CONTENEUR DES MÉDIAS (IMAGES & VIDÉOS)
@@ -170,23 +173,20 @@ button {
   align-items: center;
   flex-direction: column; // Organisation en colonne pour structurer le contenu
 }
-  // Styles appliqués aux images et vidéos contenues dans la lightbox
-  .lightbox-media-container  img, .lightbox-media-container video {
-    width: 85%; // Adapte la taille pour ne pas dépasser la zone d'affichage
+// Styles appliqués aux images et vidéos contenues dans la lightbox
+.lightbox-media-container img,
+.lightbox-media-container video {
+  width: 85%; // Adapte la taille pour ne pas dépasser la zone d'affichage
+  height: 50%;
+  object-fit: contain; // S'assure que le média est totalement visible sans déformation
+  animation: fade-in-scale $transition-duration ease-in-out; // Animation d'apparition fluide
+
+  // Adaptation pour les écrans de type tablette
+  @include tablet {
+    width: 80%;
     height: 50%;
-    object-fit: contain; // S'assure que le média est totalement visible sans déformation
-    animation: fade-in-scale $transition-duration ease-in-out; // Animation d'apparition fluide
-
-    // Adaptation pour les écrans de type tablette
-    @include tablet {
-      width: 80%;
-      height: 50%;
-    }
-
-
   }
-
-
+}
 
 // --------------------------------------------------------------------------
 // LÉGENDE DES MÉDIAS
@@ -195,10 +195,14 @@ button {
 .lightbox-caption {
   margin-top: var(--spacing-small); // Espacement entre le média et la légende
   font-size: var(--font-size-base); // Taille du texte adaptée
-  color: var(--text-color-primary); // Utilisation de la couleur de texte principale
+  color: var(
+    --text-color-primary
+  ); // Utilisation de la couleur de texte principale
   max-width: 100%; // Limite la largeur de la légende pour éviter les débordements
   display: flex;
   justify-content: left; // Alignement à gauche pour une lecture plus naturelle
-  line-height: var(--line-height-normal); // Hauteur de ligne ajustée pour la lisibilité
+  line-height: var(
+    --line-height-normal
+  ); // Hauteur de ligne ajustée pour la lisibilité
   animation: fade-in-scale $transition-duration ease-in-out; // Animation d'apparition fluide
 }

@@ -368,7 +368,6 @@ a {
   margin-bottom: 12%; /* Ajoute un espace vertical autour du bouton */
   cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
 }
-
 @media (min-width: 767px) {
   .contact_button {
     max-height: 20px; /* Réduit la hauteur maximale sur tablette */
@@ -390,6 +389,7 @@ a {
     padding: 1.5% 1%;
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* Icônes SVG                                                                 */
 /* Description : Style générique pour les icônes SVG avec des transitions     */
@@ -444,7 +444,6 @@ a {
   align-items: center;
   margin: 5%;
 }
-
 @media (min-width: 767px) {
   .sorting {
     flex-direction: row;
@@ -453,6 +452,7 @@ a {
     margin: 2% 0 3% 10%;
   }
 }
+
 .sorting label {
   font-size: 1rem;
   font-weight: bold;
@@ -498,7 +498,6 @@ a {
   text-decoration: none; /* Supprime les décorations de texte */
   /*----------------------- Responsive --------------------------------*/
 }
-
 @media (min-width: 767px) {
   .photographer-card {
     padding: 0; /* Supprime les espacements internes */
@@ -511,6 +510,7 @@ a {
     width: 90%; /* Maintient une largeur adaptée */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* Effet hover sur la carte                                                   */
 /* Description : Ajoute un effet visuel lorsque la carte est survolée          */
@@ -530,16 +530,15 @@ a {
   height: 10vh; /* Hauteur de l'image */
   border-radius: 50%; /* Rend l'image circulaire */
   -o-object-fit: cover;
-  object-fit: cover; /* Assure que l'image garde ses proportions */
+     object-fit: cover; /* Assure que l'image garde ses proportions */
   -o-object-position: center;
-  object-position: center; /* Centre le contenu de l'image */
+     object-position: center; /* Centre le contenu de l'image */
   transform: scale(1.2); /* Agrandit légèrement l'image */
   margin: 5% 0; /* Ajoute un espacement autour de l'image */
   transition: transform 0.3s ease; /* Ajoute une animation fluide */
   cursor: pointer; /* Change le curseur au survol */
   /* ------------------------- Responsive ------------------------*/
 }
-
 @media (min-width: 767px) {
   .photographer-card-portrait {
     width: 12vw; /* Ajuste la largeur de l'image en fonction de la fenêtre */
@@ -554,6 +553,7 @@ a {
     margin: 5% 0 8% 0; /* Ajuste les espacements verticaux */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* Nom du photographe                                                        */
 /* Description : Style pour le nom du photographe affiché en gras             */
@@ -565,7 +565,6 @@ a {
   margin-bottom: 2%; /* Ajoute un espace en dessous du nom */
   /*---------------------------Responsive --------------------------------*/
 }
-
 @media (min-width: 767px) {
   .photographer-card-name {
     font-size: var(--font-size-large); /* Réduit la taille du texte */
@@ -576,6 +575,7 @@ a {
     font-size: var(--font-size-large); /* Ajuste la taille du texte */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* Localisation du photographe                                               */
 /* Description : Affiche la ville et le pays du photographe                   */
@@ -597,7 +597,6 @@ a {
   margin-bottom: 2%; /* Ajoute un espace en dessous */
   /*--------------------------- Responsive -------------------------------*/
 }
-
 @media (min-width: 767px) {
   .photographer-card-tagline {
     font-size: var(--font-size-base); /* Unifie les tailles de texte */
@@ -613,6 +612,7 @@ a {
     font-size: var(--font-size-base); /* Unifie les tailles de texte */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* Prix par jour du photographe                                              */
 /* Description : Affiche le tarif journalier du photographe                   */
@@ -623,7 +623,6 @@ a {
   color: var(--text-color-tertiary); /* Couleur tertiaire pour moins de priorité */
   /*-------------------------- Responsive -------------------------------*/
 }
-
 @media (min-width: 767px) {
   .photographer-card-price {
     font-size: var(--font-size-base); /* Unifie les tailles de texte */
@@ -639,6 +638,7 @@ a {
     font-size: var(--font-size-base); /* Unifie les tailles de texte */
   }
 }
+
 /*============================================================================*/
 /* Carte des médias (Mobile First)                                            */
 /* Description : Style principal pour la carte des médias                     */
@@ -654,15 +654,15 @@ a {
   height: 40vh;
   transition: transform 0.3s, box-shadow 0.3s;
   -o-object-position: center;
-  object-position: center;
+     object-position: center;
 }
-
 @media (min-width: 767px) {
   .media-item {
     margin: 2% auto;
     width: 70%;
   }
 }
+
 /* Animation au survol */
 .media-item:hover {
   transform: scale(1.05); /* Légère augmentation */
@@ -678,19 +678,19 @@ a {
   height: 100%; /* Conserve les proportions */
   max-height: 30vh;
   -o-object-fit: cover;
-  object-fit: cover;
+     object-fit: cover;
   margin: 0 auto;
   overflow: hidden;
   display: flex; /* S'assure que c'est un bloc */
   -o-object-position: center;
-  object-position: center;
+     object-position: center;
 }
-
 @media (min-width: 767px) {
   .media {
     max-height: 35vh;
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* Légende sous le média (conteneur)                                          */
 /* Description : Définit les dimensions et le style du conteneur               */
@@ -764,7 +764,6 @@ header {
   margin: 0 auto; /* Centrage horizontal du header */
   /* Styles Responsives */
 }
-
 @media (min-width: 767px) {
   header {
     width: 80%; /* Ajustement pour tablettes */
@@ -781,6 +780,7 @@ header {
     width: 80%; /* Ajustement pour grands écrans */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* LOGO                                                                       */
 /* -------------------------------------------------------------------------- */
@@ -792,13 +792,13 @@ header {
   padding-left: 15%; /* Espacement à gauche */
   /* Styles Responsives */
 }
-
 @media (min-width: 767px) {
   .logo {
     max-width: 200px; /* Taille maximale augmentée */
     padding-left: 10%; /* Réduction de l'espacement gauche */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* TITRE                                                                      */
 /* -------------------------------------------------------------------------- */
@@ -812,12 +812,12 @@ h1 {
   margin: 0; /* Supprime les marges par défaut */
   /* Styles Responsives */
 }
-
 @media (min-width: 767px) {
   h1 {
     font-size: var(--font-size-large); /* Taille augmentée pour tablettes */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* HEADER PHOTOGRAPHER                                                        */
 /* -------------------------------------------------------------------------- */
@@ -829,7 +829,6 @@ h1 {
   justify-content: center; /* Centrage du contenu */
   /* Styles Responsives */
 }
-
 @media (min-width: 767px) {
   .photographer-header {
     width: 85%; /* Largeur réduite */
@@ -837,11 +836,11 @@ h1 {
     justify-content: left; /* Alignement à gauche */
   }
 }
+
 .photographer-header img {
   padding-left: 0; /* Suppression du padding gauche */
   /* Styles Responsives */
 }
-
 @media (min-width: 767px) {
   .photographer-header img {
     width: 70%; /* Taille adaptée aux tablettes */
@@ -854,6 +853,7 @@ h1 {
     padding-left: 10%; /* Espacement gauche ajusté */
   }
 }
+
 /* =============================================================================
     Projet      : Fisheye
     Fichier     : _footer.scss
@@ -911,7 +911,6 @@ footer p {
   /* Description : Adapte la grille pour afficher 3 colonnes sur ordinateur. */
   /* ----------------------------------------------------------------------- */
 }
-
 @media (min-width: 767px) {
   #photographers-container {
     grid-template-columns: repeat(2, 1fr); /* 2 colonnes de tailles égales */
@@ -923,6 +922,7 @@ footer p {
     margin: 0 auto;
   }
 }
+
 /* Styles pour la page d'accueil */
 /* =============================================================================
     Projet      :   Fisheye
@@ -1500,7 +1500,6 @@ a {
   margin-bottom: 12%; /* Ajoute un espace vertical autour du bouton */
   cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
 }
-
 @media (min-width: 767px) {
   .contact_button {
     max-height: 20px; /* Réduit la hauteur maximale sur tablette */
@@ -1522,6 +1521,7 @@ a {
     padding: 1.5% 1%;
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* Icônes SVG                                                                 */
 /* Description : Style générique pour les icônes SVG avec des transitions     */
@@ -1576,7 +1576,6 @@ a {
   align-items: center;
   margin: 5%;
 }
-
 @media (min-width: 767px) {
   .sorting {
     flex-direction: row;
@@ -1585,6 +1584,7 @@ a {
     margin: 2% 0 3% 10%;
   }
 }
+
 .sorting label {
   font-size: 1rem;
   font-weight: bold;
@@ -1630,7 +1630,6 @@ a {
   text-decoration: none; /* Supprime les décorations de texte */
   /*----------------------- Responsive --------------------------------*/
 }
-
 @media (min-width: 767px) {
   .photographer-card {
     padding: 0; /* Supprime les espacements internes */
@@ -1643,6 +1642,7 @@ a {
     width: 90%; /* Maintient une largeur adaptée */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* Effet hover sur la carte                                                   */
 /* Description : Ajoute un effet visuel lorsque la carte est survolée          */
@@ -1662,16 +1662,15 @@ a {
   height: 10vh; /* Hauteur de l'image */
   border-radius: 50%; /* Rend l'image circulaire */
   -o-object-fit: cover;
-  object-fit: cover; /* Assure que l'image garde ses proportions */
+     object-fit: cover; /* Assure que l'image garde ses proportions */
   -o-object-position: center;
-  object-position: center; /* Centre le contenu de l'image */
+     object-position: center; /* Centre le contenu de l'image */
   transform: scale(1.2); /* Agrandit légèrement l'image */
   margin: 5% 0; /* Ajoute un espacement autour de l'image */
   transition: transform 0.3s ease; /* Ajoute une animation fluide */
   cursor: pointer; /* Change le curseur au survol */
   /* ------------------------- Responsive ------------------------*/
 }
-
 @media (min-width: 767px) {
   .photographer-card-portrait {
     width: 12vw; /* Ajuste la largeur de l'image en fonction de la fenêtre */
@@ -1686,6 +1685,7 @@ a {
     margin: 5% 0 8% 0; /* Ajuste les espacements verticaux */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* Nom du photographe                                                        */
 /* Description : Style pour le nom du photographe affiché en gras             */
@@ -1697,7 +1697,6 @@ a {
   margin-bottom: 2%; /* Ajoute un espace en dessous du nom */
   /*---------------------------Responsive --------------------------------*/
 }
-
 @media (min-width: 767px) {
   .photographer-card-name {
     font-size: var(--font-size-large); /* Réduit la taille du texte */
@@ -1708,6 +1707,7 @@ a {
     font-size: var(--font-size-large); /* Ajuste la taille du texte */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* Localisation du photographe                                               */
 /* Description : Affiche la ville et le pays du photographe                   */
@@ -1729,7 +1729,6 @@ a {
   margin-bottom: 2%; /* Ajoute un espace en dessous */
   /*--------------------------- Responsive -------------------------------*/
 }
-
 @media (min-width: 767px) {
   .photographer-card-tagline {
     font-size: var(--font-size-base); /* Unifie les tailles de texte */
@@ -1745,6 +1744,7 @@ a {
     font-size: var(--font-size-base); /* Unifie les tailles de texte */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* Prix par jour du photographe                                              */
 /* Description : Affiche le tarif journalier du photographe                   */
@@ -1755,7 +1755,6 @@ a {
   color: var(--text-color-tertiary); /* Couleur tertiaire pour moins de priorité */
   /*-------------------------- Responsive -------------------------------*/
 }
-
 @media (min-width: 767px) {
   .photographer-card-price {
     font-size: var(--font-size-base); /* Unifie les tailles de texte */
@@ -1771,6 +1770,7 @@ a {
     font-size: var(--font-size-base); /* Unifie les tailles de texte */
   }
 }
+
 /*============================================================================*/
 /* Carte des médias (Mobile First)                                            */
 /* Description : Style principal pour la carte des médias                     */
@@ -1786,15 +1786,15 @@ a {
   height: 40vh;
   transition: transform 0.3s, box-shadow 0.3s;
   -o-object-position: center;
-  object-position: center;
+     object-position: center;
 }
-
 @media (min-width: 767px) {
   .media-item {
     margin: 2% auto;
     width: 70%;
   }
 }
+
 /* Animation au survol */
 .media-item:hover {
   transform: scale(1.05); /* Légère augmentation */
@@ -1810,19 +1810,19 @@ a {
   height: 100%; /* Conserve les proportions */
   max-height: 30vh;
   -o-object-fit: cover;
-  object-fit: cover;
+     object-fit: cover;
   margin: 0 auto;
   overflow: hidden;
   display: flex; /* S'assure que c'est un bloc */
   -o-object-position: center;
-  object-position: center;
+     object-position: center;
 }
-
 @media (min-width: 767px) {
   .media {
     max-height: 35vh;
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* Légende sous le média (conteneur)                                          */
 /* Description : Définit les dimensions et le style du conteneur               */
@@ -1896,7 +1896,6 @@ header {
   margin: 0 auto; /* Centrage horizontal du header */
   /* Styles Responsives */
 }
-
 @media (min-width: 767px) {
   header {
     width: 80%; /* Ajustement pour tablettes */
@@ -1913,6 +1912,7 @@ header {
     width: 80%; /* Ajustement pour grands écrans */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* LOGO                                                                       */
 /* -------------------------------------------------------------------------- */
@@ -1924,13 +1924,13 @@ header {
   padding-left: 15%; /* Espacement à gauche */
   /* Styles Responsives */
 }
-
 @media (min-width: 767px) {
   .logo {
     max-width: 200px; /* Taille maximale augmentée */
     padding-left: 10%; /* Réduction de l'espacement gauche */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* TITRE                                                                      */
 /* -------------------------------------------------------------------------- */
@@ -1944,12 +1944,12 @@ h1 {
   margin: 0; /* Supprime les marges par défaut */
   /* Styles Responsives */
 }
-
 @media (min-width: 767px) {
   h1 {
     font-size: var(--font-size-large); /* Taille augmentée pour tablettes */
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /* HEADER PHOTOGRAPHER                                                        */
 /* -------------------------------------------------------------------------- */
@@ -1961,7 +1961,6 @@ h1 {
   justify-content: center; /* Centrage du contenu */
   /* Styles Responsives */
 }
-
 @media (min-width: 767px) {
   .photographer-header {
     width: 85%; /* Largeur réduite */
@@ -1969,11 +1968,11 @@ h1 {
     justify-content: left; /* Alignement à gauche */
   }
 }
+
 .photographer-header img {
   padding-left: 0; /* Suppression du padding gauche */
   /* Styles Responsives */
 }
-
 @media (min-width: 767px) {
   .photographer-header img {
     width: 70%; /* Taille adaptée aux tablettes */
@@ -1986,6 +1985,7 @@ h1 {
     padding-left: 10%; /* Espacement gauche ajusté */
   }
 }
+
 /* =============================================================================
     Projet      : Fisheye
     Fichier     : _footer.scss
@@ -2038,7 +2038,6 @@ footer p {
   margin-bottom: 2%; /* Espace en bas pour séparer des autres sections */
   padding: 2% 0; /* Espace intérieur pour un design respirant */
 }
-
 @media (min-width: 767px) {
   .photographer-info {
     display: flex; /* Flexbox reste actif pour les écrans tablettes */
@@ -2058,12 +2057,12 @@ footer p {
     align-items: center;
   }
 }
+
 .photographer-profile.photographer-profile {
   width: 100%; /* La largeur occupe tout l'espace disponible */
   margin: 0 auto; /* Centre horizontalement le contenu */
   text-align: center; /* Texte centré pour les petits écrans */
 }
-
 @media (min-width: 767px) {
   .photographer-profile.photographer-profile {
     width: 60%; /* Réduit la largeur pour mieux s'adapter */
@@ -2077,10 +2076,10 @@ footer p {
     margin: 0; /* Largeur plus grande pour les écrans plus grands */
   }
 }
+
 .photographer-info .photographer-card-portrait {
   margin-top: 45%; /* Espacement supérieur important pour les petits écrans */
 }
-
 @media (min-width: 767px) {
   .photographer-info .photographer-card-portrait {
     margin-top: 2%; /* Réduit l'espacement pour les écrans tablettes */
@@ -2098,17 +2097,18 @@ footer p {
     margin-top: 7%;
   }
 }
+
 .photographer-profile h2 {
   color: #d3573c; /* Couleur de texte pour une meilleure mise en valeur */
   font-size: 1.8rem; /* Taille par défaut pour les petits écrans */
   margin-bottom: 1%; /* Espace sous le titre pour séparer des autres éléments */
 }
-
 @media (min-width: 767px) {
   .photographer-profile h2 {
     font-size: 2.4rem; /* Augmente la taille du texte pour les écrans plus grands */
   }
 }
+
 .photographer-stats {
   background-color: #d88876;
   padding: 2%;
@@ -2116,7 +2116,6 @@ footer p {
   margin-bottom: 2%;
   font-weight: 600;
 }
-
 @media (min-width: 767px) {
   .photographer-stats {
     display: flex;
@@ -2141,6 +2140,7 @@ footer p {
     top: 90%;
   }
 }
+
 #photographer-stats .like-icon {
   color: black;
 }
@@ -2167,12 +2167,11 @@ footer p {
   justify-content: center;
   align-items: center;
   -o-object-fit: cover;
-  object-fit: cover;
+     object-fit: cover;
   -o-object-position: center;
-  object-position: center;
+     object-position: center;
   margin: 0 auto;
 }
-
 @media (min-width: 767px) {
   #gallery {
     display: grid;
@@ -2189,6 +2188,7 @@ footer p {
     width: 85%;
   }
 }
+
 .lightbox {
   position: fixed;
   inset: 0;
@@ -2200,13 +2200,11 @@ footer p {
   visibility: hidden;
   z-index: 1000;
 }
-
 .lightbox[aria-hidden=false] {
   opacity: 1;
   visibility: visible;
   animation: fade-in-up 0.6s ease-in-out;
 }
-
 .lightbox[aria-hidden=true] {
   animation: fade-out-scale 0.6s ease-in-out;
 }
@@ -2221,13 +2219,13 @@ footer p {
   overflow: hidden;
   outline: none;
 }
-
 @media (min-width: 767px) {
   .lightbox-content {
     width: 80vw;
     height: 90vh;
   }
 }
+
 button {
   position: absolute;
   background: transparent;
@@ -2238,7 +2236,6 @@ button {
   font-weight: bold;
   transition: transform var(--transition-default);
 }
-
 button:hover {
   transform: scale(1.1);
 }
@@ -2252,7 +2249,6 @@ button:hover {
   padding: var(--spacing-xsmall);
   transition: background-color var(--transition-default);
 }
-
 @media (min-width: 767px) {
   .lightbox-close {
     font-size: 3rem;
@@ -2271,6 +2267,7 @@ button:hover {
     font-size: 4rem;
   }
 }
+
 .lightbox-close:hover {
   background-color: var(--secondary-color);
   color: white;
@@ -2283,7 +2280,6 @@ button:hover {
   font-size: 2.5rem;
   animation: pulse-scaling 2s infinite;
 }
-
 .lightbox-prev:hover,
 .lightbox-next:hover {
   animation: rotate 0.3s ease-in-out;
@@ -2294,21 +2290,21 @@ button:hover {
 .lightbox-prev {
   left: 1%;
 }
-
 @media (min-width: 767px) {
   .lightbox-prev {
     left: 4%;
   }
 }
+
 .lightbox-next {
   right: 1%;
 }
-
 @media (min-width: 767px) {
   .lightbox-next {
     right: 4%;
   }
 }
+
 .lightbox-media-container {
   width: 100%;
   height: 90%;
@@ -2323,10 +2319,9 @@ button:hover {
   width: 85%;
   height: 50%;
   -o-object-fit: contain;
-  object-fit: contain;
+     object-fit: contain;
   animation: fade-in-scale 0.6s ease-in-out;
 }
-
 @media (min-width: 767px) {
   .lightbox-media-container img,
   .lightbox-media-container video {
@@ -2334,6 +2329,7 @@ button:hover {
     height: 50%;
   }
 }
+
 .lightbox-caption {
   margin-top: var(--spacing-small);
   font-size: var(--font-size-base);
@@ -2392,7 +2388,6 @@ button:hover {
   transform: translate(-50%, -50%) scale(0.9); /* Animation initiale réduite */
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
-
 @media (min-width: 767px) {
   .modal {
     height: auto;
@@ -2446,7 +2441,6 @@ button:hover {
 .modal-header h2 {
   font-size: 1.5rem;
 }
-
 @media (min-width: 767px) {
   .modal-header h2 {
     display: flex;
@@ -2457,6 +2451,7 @@ button:hover {
     margin: 0;
   }
 }
+
 /* -------------------------------------------------------------------------- */
 /*                          FORMULAIRE DE LA MODALE                           */
 /* -------------------------------------------------------------------------- */
@@ -2507,7 +2502,6 @@ form {
   transition: background-color 0.3s ease;
   text-align: center;
 }
-
 .contact-submit-button:hover {
   background-color: #b42a2a;
 }
@@ -2640,7 +2634,6 @@ textarea.error-input {
   transition: opacity 0.3s ease, visibility 0.3s ease;
   margin: 0 auto;
 }
-
 @media (min-width: 767px) {
   .loader {
     width: 70%;
@@ -2653,6 +2646,7 @@ textarea.error-input {
     left: 20%;
   }
 }
+
 .loader-active {
   opacity: 1;
   visibility: visible;
@@ -2727,6 +2721,4 @@ textarea.error-input {
 /* ------------------------------------------------------------------------- */
 /* Description :                                                             
     - Ce fichier est le point d'entrée principal pour le compilateur SCSS.
-    - Chaque fichier importé est compilé en un CSS dans le dossier css correspondant à chaque page. */ 
-
-/*# sourceMappingURL=main.css.map */
+    - Chaque fichier importé est compilé en un CSS dans le dossier css correspondant à chaque page. *//*# sourceMappingURL=main.css.map */

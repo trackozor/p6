@@ -22,9 +22,9 @@
   z-index: 9998; /* Sous la modale */
 }
 
-#modal-overlay.modal-active{
+#modal-overlay.modal-active {
   display: flex;
-  opacity:1;
+  opacity: 1;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -44,10 +44,12 @@
   z-index: 9999; /* Priorité d'affichage élevée */
   opacity: 0; /* Masquée par défaut */
   transform: translate(-50%, -50%) scale(0.9); /* Animation initiale réduite */
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 
   @include tablet {
-    height:auto;
+    height: auto;
   }
 
   &.modal-active {
@@ -63,7 +65,7 @@
 /* -------------------------------------------------------------------------- */
 /*                          BOUTON DE FERMETURE                               */
 /* -------------------------------------------------------------------------- */
-.modal-close  {
+.modal-close {
   position: absolute;
   top: 2%;
   right: 5%;
@@ -71,11 +73,10 @@
   border: none;
   font-size: 2rem;
   cursor: pointer;
-
 }
 
 .modal-close span {
-  color:white;
+  color: white;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -90,27 +91,23 @@
   gap: 0.5rem; /* Ajoute un espacement entre le titre et le nom */
   text-align: left;
   margin-bottom: 1rem; /* Ajoute un espacement en bas */
-  width:90%;
-  margin:5% ;
+  width: 90%;
+  margin: 5%;
   font-size: 1.5rem;
-  padding:0;
+  padding: 0;
 }
 .modal-header h2 {
   font-size: 1.5rem;
 
   @include tablet {
-    display:flex;
-    position : relative;
+    display: flex;
+    position: relative;
     font-size: 2rem;
-    justify-content:left;
-    padding:0;
-    margin:0;
-    
-    
+    justify-content: left;
+    padding: 0;
+    margin: 0;
   }
 }
-
-
 
 /* -------------------------------------------------------------------------- */
 /*                          FORMULAIRE DE LA MODALE                           */
@@ -151,11 +148,11 @@ form {
 /* Bouton d'envoi */
 .contact-submit-button {
   background-color: #901c1c;
-  position:relative;
+  position: relative;
   color: #fff;
   border: none;
-  width:20%;
-  padding:5% 8%;
+  width: 20%;
+  padding: 5% 8%;
   font-size: 0.7rem;
   border-radius: 0.5rem;
   cursor: pointer;
@@ -168,7 +165,8 @@ form {
 }
 
 /* Classe pour les bordures rouges des champs avec des erreurs */
-input.error-input, textarea.error-input {
+input.error-input,
+textarea.error-input {
   border: 2px solid red; /* Bordure rouge pour indiquer une erreur */
   box-shadow: 0 0 1rem red; /* Ombre rouge pour mettre en évidence l'erreur */
 }
@@ -178,16 +176,15 @@ input.error-input, textarea.error-input {
 .error-modal {
   display: block; /* Rend l'erreur visible */
   font-size: 1rem; /* Taille de police légèrement réduite */
-  background-color:#232323; /* Fond noir pour contraster avec le texte */
+  background-color: #232323; /* Fond noir pour contraster avec le texte */
   color: #fe142f; /* Texte rouge pour indiquer une erreur */
-  padding:  2%; /* Ajoute un espacement interne pour rendre le texte plus lisible */
+  padding: 2%; /* Ajoute un espacement interne pour rendre le texte plus lisible */
   width: 95%; /* Largeur ajustée pour s'insérer correctement sous le champ */
   text-align: left; /* Texte aligné à gauche */
   margin-top: 2%; /* Espace au-dessus pour ne pas chevaucher le champ */
   position: relative; /* Position relative pour s'adapter dynamiquement à son parent */
   border-radius: 4px; /* Coins arrondis pour un design moderne */
 }
-
 
 /*.honeypot-field {
   display: block !important;
@@ -198,18 +195,14 @@ input.error-input, textarea.error-input {
 }*/
 .honeypot-field {
   position: absolute;
-  left: -9999px; 
+  left: -9999px;
   visibility: hidden;
   opacity: 0;
   height: 0;
   width: 0;
   overflow: hidden;
-}*
-
-
-
-
-.modal.spam-modal {
+}
+* .modal.spam-modal {
   display: none; /* Masquée par défaut */
   position: fixed;
   z-index: 1000;
@@ -263,18 +256,18 @@ input.error-input, textarea.error-input {
 /* -------------------------------------------------------------------------- */
 
 #confirmation-modal {
-  height:90%;
+  height: 90%;
   justify-content: center;
-  margin:0 auto;
+  margin: 0 auto;
 }
 
 .confirmation-title {
   font-size: 1.5rem;
-  margin:2% auto;
+  margin: 2% auto;
 }
 
-.confirma-btn{
-  display:flex;
+.confirma-btn {
+  display: flex;
   justify-content: center;
 }
 
