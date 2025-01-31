@@ -2,22 +2,19 @@
   "name": "p6",
   "version": "1.0.0",
   "description": "Photographers Directory permet de rechercher et contacter des photographes talentueux pour des projets professionnels et personnels.",
-  "main": "eslint.config.js",
-  "directories": {
-    "test": "test"
-  },
+  "main": "index.js",
   "scripts": {
     "start": "npm-run-all --parallel server sass",
     "server": "json-server --watch db.json --port 3001",
-    "sass": "sass --watch scss:css",
+    "sass": "sass --watch scss/pages-scss/index-main.scss:css/index-main.css scss/pages-scss/photographer-main.scss:css/photographer-main.css",
+
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:e2e": "jest --testMatch '**/e2e/**'",
     "lint": "eslint . --fix",
     "format": "prettier --write ."
   },
-  "keywords": [
-    "photography",
-    "directory",
-    "photographers"
-  ],
+  "keywords": ["photography", "directory", "photographers"],
   "author": "Ton Nom",
   "license": "ISC",
   "devDependencies": {
@@ -29,3 +26,4 @@
     "sass": "^1.83.4"
   }
 }
+

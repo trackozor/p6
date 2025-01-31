@@ -28,11 +28,11 @@ header {
   /* Styles Responsives */
   @include tablet {
     width: 80%; /* Ajustement pour tablettes */
-    padding: 3% 0 2% 0; /* Marges réduites */
   }
 
   @include desktop {
-    width: 85%; /* Ajustement pour écrans de bureau */
+    width: 80%; /* Ajustement pour écrans de bureau */
+    padding: 0; /* Marges réduites */
   }
 
   @include large-desktop {
@@ -50,11 +50,13 @@ header {
   max-width: 120px; /* Limite la taille maximale */
   height: auto; /* Conserve les proportions */
   padding-left: 15%; /* Espacement à gauche */
+  margin:4% 0;
 
   /* Styles Responsives */
   @include tablet {
     max-width: 200px; /* Taille maximale augmentée */
-    padding-left: 10%; /* Réduction de l'espacement gauche */
+    margin-right:20%; /* Réduction de l'espacement gauche */
+    padding-left:0;
   }
 }
 
@@ -96,17 +98,4 @@ h1 {
   }
 }
 
-.photographer-header img {
-  padding-left: 0; /* Suppression du padding gauche */
 
-  /* Styles Responsives */
-  @include tablet {
-    width: 70%; /* Taille adaptée aux tablettes */
-    padding-left: 5%; /* Espacement gauche ajusté */
-  }
-
-  @include large-desktop {
-    width: 80%; /* Taille augmentée pour grands écrans */
-    padding-left: 10%; /* Espacement gauche ajusté */
-  }
-}

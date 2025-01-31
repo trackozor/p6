@@ -27,8 +27,12 @@
     align-items: center;
 
     @include desktop {
-      padding: 2.5% 1%;
+      display:flex;
+      padding: 3% 1%;
       margin-bottom: 0;
+      font-size:0.9rem;
+      align-items: center; 
+      justify-content: center;
     }
 
     @include large-desktop {
