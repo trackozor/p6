@@ -134,7 +134,7 @@ button {
   ); // Arrondi des bords pour une meilleure ergonomie
   padding: var(--spacing-xsmall); // Espacement interne
   font-size: 2.5rem;
-  animation: pulse-scaling 2s infinite; // Animation récurrente pour attirer l'attention
+  @extend .pulse; // Ajout de l'effet de pulsation
 
   &:hover {
     animation: rotate 0.3s ease-in-out; // Légère rotation lors du survol
@@ -146,7 +146,7 @@ button {
 // Position du bouton précédent (à gauche)
 .lightbox-prev {
   left: 1%;
-
+  
   @include tablet {
     left: 4%;
   }
@@ -179,7 +179,7 @@ button {
   width: 85%; // Adapte la taille pour ne pas dépasser la zone d'affichage
   height: 50%;
   object-fit: contain; // S'assure que le média est totalement visible sans déformation
-  animation: fade-in-scale $transition-duration ease-in-out; // Animation d'apparition fluide
+  @extend .scale-up; // Animation d’apparition fluide
 
   // Adaptation pour les écrans de type tablette
   @include tablet {
@@ -187,22 +187,42 @@ button {
     height: 50%;
   }
 }
+// Effets de transition pour la navigation des médias
+.lightbox-media-container img,
+.lightbox-media-container video {
+  position: absolute;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 
+  // Sortie vers la gauche
+  &.exiting-left {
+    animation: slide-out-left 0.5s ease-in-out forwards;
+  }
+
+  // Sortie vers la droite
+  &.exiting-right {
+    animation: slide-out-right 0.5s ease-in-out forwards;
+  }
+
+  // Entrée depuis la gauche
+  &.entering-left {
+    animation: slide-in-left 0.5s ease-in-out forwards;
+  }
+
+  // Entrée depuis la droite
+  &.entering-right {
+    animation: slide-in-right 0.5s ease-in-out forwards;
+  }
+}
 // --------------------------------------------------------------------------
 // LÉGENDE DES MÉDIAS
 // --------------------------------------------------------------------------
 
 .lightbox-caption {
-  margin-top: var(--spacing-small); // Espacement entre le média et la légende
-  font-size: var(--font-size-base); // Taille du texte adaptée
-  color: var(
-    --text-color-primary
-  ); // Utilisation de la couleur de texte principale
-  max-width: 100%; // Limite la largeur de la légende pour éviter les débordements
+  margin-top: var(--spacing-small);
+  font-size: var(--font-size-base);
+  color: var(--text-color-primary);
+  max-width: 100%;
   display: flex;
-  justify-content: left; // Alignement à gauche pour une lecture plus naturelle
-  line-height: var(
-    --line-height-normal
-  ); // Hauteur de ligne ajustée pour la lisibilité
-  animation: fade-in-scale $transition-duration ease-in-out; // Animation d'apparition fluide
+  justify-content: left;
+  line-height: var(--line-height-normal);
 }

@@ -4,7 +4,8 @@
 /* Date de création  : 25/09/24                           */
 /* Dernière modif.   : 08/01/25                           */
 /* Description       : Fichier regroupant toutes les      */
-/*                     animations réutilisables.         */
+/*                     animations réutilisables avec     */
+/*                     des classes utilitaires.          */
 /* ====================================================== */
 
 /* ====================================================== */
@@ -29,26 +30,55 @@
   }
 }
 
-@keyframes fade-in-scale {
+/* ✅ Classe utilitaire */
+.fade-in {
+  animation: fade-in 0.5s ease-in-out forwards;
+}
+.fade-out {
+  animation: fade-out 0.5s ease-in-out forwards;
+}
+
+/* ====================================================== */
+/* 🎬 Effets de Zoom et Échelle */
+/* ====================================================== */
+
+@keyframes scale-up {
   from {
-    opacity: 0;
     transform: scale(0.8);
   }
   to {
-    opacity: 1;
     transform: scale(1);
   }
 }
 
-@keyframes fade-out-scale {
+@keyframes scale-down {
   from {
-    opacity: 1;
     transform: scale(1);
   }
   to {
-    opacity: 0;
     transform: scale(0.8);
   }
+}
+
+/* ✅ Classes utilitaires */
+.scale-up {
+  animation: scale-up 0.5s ease-in-out forwards;
+}
+.scale-down {
+  animation: scale-down 0.5s ease-in-out forwards;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.pulse {
+  animation: pulse 2s infinite ease-in-out;
 }
 
 /* ====================================================== */
@@ -58,28 +88,6 @@
 @keyframes slide-in-right {
   from {
     transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-out-right {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
-
-@keyframes slide-in-left {
-  from {
-    transform: translateX(-100%);
     opacity: 0;
   }
   to {
@@ -99,26 +107,40 @@
   }
 }
 
-@keyframes slide-in-top {
+@keyframes slide-in-left {
   from {
-    transform: translateY(-100%);
+    transform: translateX(-100%);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translateX(0);
     opacity: 1;
   }
 }
 
-@keyframes slide-in-bottom {
+@keyframes slide-out-right {
   from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
+    transform: translateX(0);
     opacity: 1;
   }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* ✅ Classes utilitaires */
+.slide-in-right {
+  animation: slide-in-right 0.5s ease-in-out forwards;
+}
+.slide-out-left {
+  animation: slide-out-left 0.5s ease-in-out forwards;
+}
+.slide-in-left {
+  animation: slide-in-left 0.5s ease-in-out forwards;
+}
+.slide-out-right {
+  animation: slide-out-right 0.5s ease-in-out forwards;
 }
 
 /* ====================================================== */
@@ -143,80 +165,118 @@
   }
 }
 
-@keyframes swing {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(10deg);
-  }
-  50% {
-    transform: rotate(-10deg);
-  }
-  75% {
-    transform: rotate(5deg);
-  }
+/* ✅ Classes utilitaires */
+.rotate {
+  animation: rotate 1s linear infinite;
 }
-
-/* ====================================================== */
-/* ⚡ Effets de Zoom (Scale In / Scale Out) */
-/* ====================================================== */
-
-@keyframes scale-up {
-  from {
-    transform: scale(0.8);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-
-@keyframes scale-down {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(0.8);
-  }
-}
-
-@keyframes pulse-scaling {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
+.rotate-reverse {
+  animation: rotate-anticlockwise 1s linear infinite;
 }
 
 /* ====================================================== */
 /* ✨ Effets pour la Lightbox */
 /* ====================================================== */
 
-@keyframes crossfade {
-  0%,
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-3px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fade-out-scale {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
   100% {
     opacity: 0;
+    transform: scale(0.9);
   }
-  50% {
+}
+
+/* ✅ Classes utilitaires */
+.fade-in-up {
+  animation: fade-in-up 0.5s ease-in-out forwards;
+}
+.fade-out-scale {
+  animation: fade-out-scale 0.5s ease-in-out forwards;
+}
+
+/* ====================================================== */
+/* 🚀 Animations de navigation Lightbox (Gauche/Droite) */
+/* ====================================================== */
+
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
     opacity: 1;
   }
 }
+
+@keyframes slide-out-left {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in-left {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-right {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+
 
 /* ====================================================== */
 /* ❤️ Animation Like (HeartBeat) */
 /* ====================================================== */
 
 @keyframes heartbeat {
-  0%,
-  100% {
+  0%, 100% {
     transform: scale(1);
   }
   50% {
     transform: scale(1.2);
   }
+}
+
+/* ✅ Classe utilitaire */
+.heartbeat {
+  animation: heartbeat 1.5s ease-in-out infinite;
 }
 
 /* ====================================================== */
@@ -232,19 +292,7 @@
   }
 }
 
-/* ====================================================== */
-/* 🚀 Classes Utilitaires pour les Animations */
-/* ====================================================== */
-
-.animation-fade-in {
-  animation: fade-in 0.5s ease-in-out;
-}
-.animation-slide-in-right {
-  animation: slide-in-right 0.5s ease-in-out;
-}
-.animation-rotate {
-  animation: rotate 1s linear infinite;
-}
-.animation-pulse {
-  animation: pulse-scaling 2s infinite;
+/* ✅ Classe utilitaire */
+.spin {
+  animation: spin 1s linear infinite;
 }

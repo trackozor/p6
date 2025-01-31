@@ -59,6 +59,7 @@
     align-items: center;
     opacity: 1; /* Visible */
     transform: translate(-50%, -50%) scale(1); /* Taille normale */
+    animation: fadeIn 1s ease forwards;
   }
 }
 
@@ -108,10 +109,11 @@
   @include tablet {
   display: flex;
   position: relative;
-  width:90%;
+  width:70%;
   font-size: 2rem;
   padding: 0;
-  margin: 0;
+  margin-right: 30%;
+
   }
 }
 .modal-header span {

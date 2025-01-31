@@ -51,29 +51,29 @@ import { logEvent } from "../utils/utils.js";
  */
 function attachEvent(selectors, eventType, callback) {
   if (!selectors) {
-    logEvent(
-      "error",
-      `Échec d'attachement : Élément introuvable pour "${eventType}".`,
-    );
+    logEvent("error", `Échec d'attachement : Élément introuvable pour "${eventType}".`);
     return false;
   }
 
-  const elements =
-    selectors instanceof NodeList ? Array.from(selectors) : [selectors];
+  const elements = selectors instanceof NodeList ? Array.from(selectors) : [selectors];
 
   elements.forEach((element) => {
     if (element instanceof HTMLElement) {
-      element.removeEventListener(eventType, callback); // Supprime les anciens événements
-      element.addEventListener(eventType, callback);
-      logEvent(
-        "success",
-        `Événement "${eventType}" attaché à ${element.className || element.id}.`,
-      );
+      element.removeEventListener(eventType, callback);
+      element.addEventListener(eventType, async (event) => {
+        try {
+          await callback(event); // Ajoute await si callback est async
+        } catch (error) {
+          console.error(`Erreur dans ${eventType} :`, error);
+        }
+      });
+      logEvent("success", `Événement "${eventType}" attaché à ${element.className || element.id}.`);
     }
   });
 
   return elements.length > 0;
 }
+
 
 /*----------------------------------------------------------------------------------------------------*/
 // ========================================================
@@ -101,25 +101,25 @@ export function initModalEvents() {
   if (contactButton) {
     attachEvent(contactButton, "click", handleModalOpen);
   } else {
-    console.error("Erreur : Bouton de contact introuvable !");
+    logEvent("error","Erreur : Bouton de contact introuvable !");
   }
 
   if (closeButton) {
     attachEvent(closeButton, "click", handleModalClose);
   } else {
-    console.error("Erreur : Bouton de fermeture de la modale introuvable !");
+    logEvent("error","Erreur : Bouton de fermeture de la modale introuvable !");
   }
 
   if (modalOverlay) {
     attachEvent(modalOverlay, "click", handleModalClose);
   } else {
-    console.error("Erreur : Overlay de la modale introuvable !");
+    logEvent("error","Erreur : Overlay de la modale introuvable !");
   }
 
   if (contactForm) {
     attachEvent(contactForm, "submit", handleFormSubmit);
   } else {
-    console.error("Erreur : Formulaire de la modale introuvable !");
+    logEvent("error","Erreur : Formulaire de la modale introuvable !");
   }
 
   logEvent("test_end_modal", "Événements pour la modale initialisés avec succès.");

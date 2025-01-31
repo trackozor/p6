@@ -32,7 +32,7 @@ export function validateTextField(field, fieldId) {
   let errorMessage = "";
 
   // ✅ Autorisation stricte : Seulement lettres, espaces, apostrophes, tirets
-  const VALID_NAME_REGEX = /^[a-zA-ZÀ-ÖØ-öø-ÿ'-\s]+$/;
+  const VALID_NAME_REGEX = /^(?!.*[\s'-]{2})[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[\s'-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;
 
   if (value === "") {
     errorMessage = `⚠️ Le ${fieldName} est requis.`;
