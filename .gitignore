@@ -5,3 +5,4 @@ jest.config.js
 eslint.config.js
 .babel.rc
 test
+RenameMediaFiles.ps1
