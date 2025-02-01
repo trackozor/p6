@@ -1326,6 +1326,7 @@ footer p {
 #gallery {
   width: 100%; /* Largeur adaptable */
   display: flex; /* Active le centrage */
+  flex-direction: column;
   justify-content: center; /* Centre horizontalement */
   align-items: center; /* Centre verticalement */
   overflow: hidden; /* Cache les débordements */
@@ -1345,6 +1346,15 @@ footer p {
     height: auto;
     margin: 0 auto;
     width: 87%;
+  }
+}
+@media (min-width: 1440px) {
+  #gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(525px, 1fr)); /* Grille responsive */
+    height: auto;
+    margin: 0 auto;
+    width: 90%;
   }
 }
 

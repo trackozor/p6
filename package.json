@@ -7,14 +7,17 @@
     "start": "npm-run-all --parallel server sass",
     "server": "json-server --watch db.json --port 3001",
     "sass": "sass --watch scss/pages-scss/index-main.scss:css/index-main.css scss/pages-scss/photographer-main.scss:css/photographer-main.css",
-
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:e2e": "jest --testMatch '**/e2e/**'",
     "lint": "eslint . --fix",
     "format": "prettier --write ."
   },
-  "keywords": ["photography", "directory", "photographers"],
+  "keywords": [
+    "photography",
+    "directory",
+    "photographers"
+  ],
   "author": "Ton Nom",
   "license": "ISC",
   "devDependencies": {
@@ -24,6 +27,9 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^3.4.2",
     "sass": "^1.83.4"
+  },
+  "dependencies": {
+    "glob": "^11.0.1",
+    "lru-cache": "^11.0.2"
   }
 }
-
