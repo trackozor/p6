@@ -20,13 +20,16 @@
 
   @include tablet {
     width: 70%;
+    height:80%;
     left: 15%;
+    top:-2%;
   }
 
   @include desktop {
-    width: 60%;
+    width: 30%;
     left: 20%;
   }
+
 }
 
 .loader-active {
