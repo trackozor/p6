@@ -278,17 +278,21 @@ textarea.error-input {
 #confirmation-modal {
   height: 90%;
   justify-content: center;
-  margin: 0 auto;
+  align-items: center;
+  text-align: center;
+  margin: 2% auto;
 }
 
 .confirmation-title {
   font-size: 1.5rem;
   margin: 2% auto;
+  font-weight:700;
 }
 
 .confirma-btn {
   display: flex;
   justify-content: center;
+  margin: 2% auto;
 }
 
 

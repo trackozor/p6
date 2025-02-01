@@ -612,6 +612,12 @@ a {
   color: inherit; /* Hérite de la couleur du texte parent */
 }
 
+.focus-orange {
+  outline: 2rem solid orange !important;
+  background-color: rgba(255, 165, 0, 0.2);
+  transition: background-color 0.2s ease-in-out;
+}
+
 /* -------------------------------------------------------------------------- */
 /* Bouton de contact                                                          */
 /* Description : Style pour le bouton de contact avec un design simple et     */
@@ -1805,17 +1811,21 @@ textarea.error-input {
 #confirmation-modal {
   height: 90%;
   justify-content: center;
-  margin: 0 auto;
+  align-items: center;
+  text-align: center;
+  margin: 2% auto;
 }
 
 .confirmation-title {
   font-size: 1.5rem;
   margin: 2% auto;
+  font-weight: 700;
 }
 
 .confirma-btn {
   display: flex;
   justify-content: center;
+  margin: 2% auto;
 }
 
 /* Loader global */

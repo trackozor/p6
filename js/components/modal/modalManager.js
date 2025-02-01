@@ -297,3 +297,17 @@ export function closeSpamModal() {
     closeButton.removeEventListener("click", closeSpamModal);
   }
 }
+
+function handleKeyPress(event) {
+  const contactModal = document.getElementById("contact-modal");
+
+  if (!modalOpen || !contactModal.classList.contains("modal-active")) {
+    return;
+  }
+
+  switch (event.key) {
+    case "Escape":
+      closeModal(); // ✅ Ferme la modale avec Esc
+      break;
+  }
+}

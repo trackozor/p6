@@ -101,7 +101,7 @@ export function validateEmail(field) {
 export function checkHoneypot() {
   const honeypot = document.getElementById("hidden-field").value;
   if (honeypot !== "") {
-    logEvent("error", "🚨 Spam détecté via Honeypot !");
+    logEvent("error", "🚨 Spam détecté via Honeypot !"); 
     return false;
   }
   return true;
@@ -136,15 +136,14 @@ export function isMessageSafe(message) {
     /localStorage/gi, // Interdit l'accès au stockage local
   ];
 
-  // ✅ Vérification des motifs interdits
+  // Vérification des motifs interdits
   for (let pattern of forbiddenPatterns) {
     if (pattern.test(sanitizedMessage)) {
-      logEvent("error", "❌ Message contient du code suspect.", { message });
+      logEvent("error", "Message contient du code suspect.", { message });
       return false;
     }
   }
-
-  logEvent("success", "✅ Message validé et sécurisé.");
+  logEvent("success", "Message validé et sécurisé.");
   return true;
 }
 
