@@ -50,13 +50,13 @@ header {
   max-width: 120px; /* Limite la taille maximale */
   height: auto; /* Conserve les proportions */
   padding-left: 15%; /* Espacement à gauche */
-  margin:4% 0;
+  margin: 4% 0;
 
   /* Styles Responsives */
   @include tablet {
     max-width: 200px; /* Taille maximale augmentée */
-    margin-right:20%; /* Réduction de l'espacement gauche */
-    padding-left:0;
+    margin-right: 20%; /* Réduction de l'espacement gauche */
+    padding-left: 0;
   }
 }
 
@@ -97,5 +97,3 @@ h1 {
     justify-content: left; /* Alignement à gauche */
   }
 }
-
-

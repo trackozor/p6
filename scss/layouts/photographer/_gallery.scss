@@ -22,7 +22,6 @@
   align-items: center; /* Centre verticalement */
   overflow: hidden; /* Cache les débordements */
 
-
   @include tablet {
     display: grid;
     grid-template-columns: repeat(2, 45%);
@@ -31,17 +30,23 @@
   }
   @include desktop {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr)); /* Grille responsive */
-    height:auto;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(235px, 1fr)
+    ); /* Grille responsive */
+    height: auto;
     margin: 0 auto;
-    width:87%;
+    width: 87%;
   }
   @include large-desktop {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(525px, 1fr)); /* Grille responsive */
-    height:auto;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(525px, 1fr)
+    ); /* Grille responsive */
+    height: auto;
     margin: 0 auto;
-    width:90%;
+    width: 90%;
   }
 }
 

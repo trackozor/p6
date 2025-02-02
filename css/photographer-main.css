@@ -163,7 +163,8 @@
   }
 }
 /* ✅ Classes utilitaires */
-.scale-up, .lightbox-media-container img,
+.scale-up,
+.lightbox-media-container img,
 .lightbox-media-container video {
   animation: scale-up 0.5s ease-in-out forwards;
 }
@@ -173,14 +174,16 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
     transform: scale(1.1);
   }
 }
-.pulse, .lightbox-prev,
+.pulse,
+.lightbox-prev,
 .lightbox-next {
   animation: pulse 2s infinite ease-in-out;
 }
@@ -356,7 +359,8 @@
 /* ❤️ Animation Like (HeartBeat) */
 /* ====================================================== */
 @keyframes heartbeat {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -591,7 +595,10 @@ video {
   position: static; /* Rétablit la position par défaut */
   width: auto; /* Rétablit la largeur */
   height: auto; /* Rétablit la hauteur */
-  padding: var(--padding-small, 0.5rem); /* Ajoute du padding pour plus de clarté */
+  padding: var(
+    --padding-small,
+    0.5rem
+  ); /* Ajoute du padding pour plus de clarté */
   margin: 0; /* Supprime les marges négatives */
   overflow: visible; /* Rend le contenu visible */
   clip: auto; /* Rétablit le contenu */
@@ -835,7 +842,9 @@ a {
 /* Description : Style pour le nom du photographe affiché en gras             */
 /* -------------------------------------------------------------------------- */
 .photographer-card-name {
-  font-size: var(--font-size-xlarge); /* Utilise une taille de texte importante */
+  font-size: var(
+    --font-size-xlarge
+  ); /* Utilise une taille de texte importante */
   color: var(--text-color-name); /* Utilise une couleur d'accentuation */
   font-weight: bold; /* Affiche le texte en gras */
   margin-bottom: 2%; /* Ajoute un espace en dessous du nom */
@@ -858,7 +867,9 @@ a {
 /* -------------------------------------------------------------------------- */
 .photographer-card-location {
   font-size: var(--font-size-base); /* Taille de texte standard */
-  color: var(--text-color-secondary); /* Couleur secondaire pour moins d'importance */
+  color: var(
+    --text-color-secondary
+  ); /* Couleur secondaire pour moins d'importance */
   margin-bottom: 2%; /* Ajoute un espace en dessous */
 }
 
@@ -896,7 +907,9 @@ a {
 .photographer-card-price {
   font-size: var(--font-size-small); /* Texte de taille discrète */
   font-weight: 500; /* Texte légèrement mis en avant */
-  color: var(--text-color-tertiary); /* Couleur tertiaire pour moins de priorité */
+  color: var(
+    --text-color-tertiary
+  ); /* Couleur tertiaire pour moins de priorité */
   /*-------------------------- Responsive -------------------------------*/
 }
 @media (min-width: 767px) {
@@ -928,7 +941,9 @@ a {
   margin: 1% auto;
   height: 100%;
   height: 40vh;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
   object-position: center;
 }
 @media (min-width: 767px) {
@@ -1342,7 +1357,10 @@ footer p {
 @media (min-width: 1024px) {
   #gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr)); /* Grille responsive */
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(235px, 1fr)
+    ); /* Grille responsive */
     height: auto;
     margin: 0 auto;
     width: 87%;
@@ -1351,7 +1369,10 @@ footer p {
 @media (min-width: 1440px) {
   #gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(525px, 1fr)); /* Grille responsive */
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(525px, 1fr)
+    ); /* Grille responsive */
     height: auto;
     margin: 0 auto;
     width: 90%;
@@ -1379,12 +1400,12 @@ footer p {
   visibility: hidden;
   z-index: 1000;
 }
-.lightbox[aria-hidden=false] {
+.lightbox[aria-hidden="false"] {
   opacity: 1;
   visibility: visible;
   animation: fade-in-up 0.6s ease-in-out;
 }
-.lightbox[aria-hidden=true] {
+.lightbox[aria-hidden="true"] {
   animation: fade-out-scale 0.6s ease-in-out;
 }
 
@@ -1509,7 +1530,9 @@ button:hover {
 .lightbox-media-container img,
 .lightbox-media-container video {
   position: absolute;
-  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  transition:
+    transform 0.5s ease-in-out,
+    opacity 0.5s ease-in-out;
 }
 .lightbox-media-container img.exiting-left,
 .lightbox-media-container video.exiting-left {
@@ -1583,7 +1606,9 @@ button:hover {
   z-index: 9999; /* Priorité d'affichage élevée */
   opacity: 0; /* Masquée par défaut */
   transform: translate(-50%, -50%) scale(0.9); /* Animation initiale réduite */
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 @media (min-width: 767px) {
   .modal {
@@ -1853,7 +1878,9 @@ textarea.error-input {
   z-index: 9999;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
   margin: 0 auto;
 }
 @media (min-width: 767px) {

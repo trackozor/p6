@@ -51,11 +51,15 @@ import { logEvent } from "../utils/utils.js";
  */
 function attachEvent(selectors, eventType, callback) {
   if (!selectors) {
-    logEvent("error", `Échec d'attachement : Élément introuvable pour "${eventType}".`);
+    logEvent(
+      "error",
+      `Échec d'attachement : Élément introuvable pour "${eventType}".`,
+    );
     return false;
   }
 
-  const elements = selectors instanceof NodeList ? Array.from(selectors) : [selectors];
+  const elements =
+    selectors instanceof NodeList ? Array.from(selectors) : [selectors];
 
   elements.forEach((element) => {
     if (element instanceof HTMLElement) {
@@ -67,13 +71,15 @@ function attachEvent(selectors, eventType, callback) {
           console.error(`Erreur dans ${eventType} :`, error);
         }
       });
-      logEvent("success", `Événement "${eventType}" attaché à ${element.className || element.id}.`);
+      logEvent(
+        "success",
+        `Événement "${eventType}" attaché à ${element.className || element.id}.`,
+      );
     }
   });
 
   return elements.length > 0;
 }
-
 
 /*----------------------------------------------------------------------------------------------------*/
 // ========================================================
@@ -89,7 +95,10 @@ function attachEvent(selectors, eventType, callback) {
  * Attache les événements aux boutons et au formulaire de contact.
  */
 export function initModalEvents() {
-  logEvent("test_start_modal", "Initialisation des événements pour la modale...");
+  logEvent(
+    "test_start_modal",
+    "Initialisation des événements pour la modale...",
+  );
 
   // Récupération des éléments avec vérification de leur existence
   const contactButton = document.querySelector(".contact_button");
@@ -101,30 +110,35 @@ export function initModalEvents() {
   if (contactButton) {
     attachEvent(contactButton, "click", handleModalOpen);
   } else {
-    logEvent("error","Erreur : Bouton de contact introuvable !");
+    logEvent("error", "Erreur : Bouton de contact introuvable !");
   }
 
   if (closeButton) {
     attachEvent(closeButton, "click", handleModalClose);
   } else {
-    logEvent("error","Erreur : Bouton de fermeture de la modale introuvable !");
+    logEvent(
+      "error",
+      "Erreur : Bouton de fermeture de la modale introuvable !",
+    );
   }
 
   if (modalOverlay) {
     attachEvent(modalOverlay, "click", handleModalClose);
   } else {
-    logEvent("error","Erreur : Overlay de la modale introuvable !");
+    logEvent("error", "Erreur : Overlay de la modale introuvable !");
   }
 
   if (contactForm) {
     attachEvent(contactForm, "submit", handleFormSubmit);
   } else {
-    logEvent("error","Erreur : Formulaire de la modale introuvable !");
+    logEvent("error", "Erreur : Formulaire de la modale introuvable !");
   }
 
-  logEvent("test_end_modal", "Événements pour la modale initialisés avec succès.");
+  logEvent(
+    "test_end_modal",
+    "Événements pour la modale initialisés avec succès.",
+  );
 }
-
 
 /**
  * Initialise l'événement pour la confirmation de la modale.

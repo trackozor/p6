@@ -312,7 +312,10 @@ video {
   position: static; /* Rétablit la position par défaut */
   width: auto; /* Rétablit la largeur */
   height: auto; /* Rétablit la hauteur */
-  padding: var(--padding-small, 0.5rem); /* Ajoute du padding pour plus de clarté */
+  padding: var(
+    --padding-small,
+    0.5rem
+  ); /* Ajoute du padding pour plus de clarté */
   margin: 0; /* Supprime les marges négatives */
   overflow: visible; /* Rend le contenu visible */
   clip: auto; /* Rétablit le contenu */
@@ -556,7 +559,9 @@ a {
 /* Description : Style pour le nom du photographe affiché en gras             */
 /* -------------------------------------------------------------------------- */
 .photographer-card-name {
-  font-size: var(--font-size-xlarge); /* Utilise une taille de texte importante */
+  font-size: var(
+    --font-size-xlarge
+  ); /* Utilise une taille de texte importante */
   color: var(--text-color-name); /* Utilise une couleur d'accentuation */
   font-weight: bold; /* Affiche le texte en gras */
   margin-bottom: 2%; /* Ajoute un espace en dessous du nom */
@@ -579,7 +584,9 @@ a {
 /* -------------------------------------------------------------------------- */
 .photographer-card-location {
   font-size: var(--font-size-base); /* Taille de texte standard */
-  color: var(--text-color-secondary); /* Couleur secondaire pour moins d'importance */
+  color: var(
+    --text-color-secondary
+  ); /* Couleur secondaire pour moins d'importance */
   margin-bottom: 2%; /* Ajoute un espace en dessous */
 }
 
@@ -617,7 +624,9 @@ a {
 .photographer-card-price {
   font-size: var(--font-size-small); /* Texte de taille discrète */
   font-weight: 500; /* Texte légèrement mis en avant */
-  color: var(--text-color-tertiary); /* Couleur tertiaire pour moins de priorité */
+  color: var(
+    --text-color-tertiary
+  ); /* Couleur tertiaire pour moins de priorité */
   /*-------------------------- Responsive -------------------------------*/
 }
 @media (min-width: 767px) {
@@ -649,7 +658,9 @@ a {
   margin: 1% auto;
   height: 100%;
   height: 40vh;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
   object-position: center;
 }
 @media (min-width: 767px) {
@@ -879,7 +890,9 @@ footer p {
 #photographers-container {
   display: grid; /* Mise en page avec une grille CSS */
   max-width: 80%; /* Limite la largeur maximale du conteneur */
-  gap: var(--spacing-base); /* Espacement entre les éléments (utilise une variable) */
+  gap: var(
+    --spacing-base
+  ); /* Espacement entre les éléments (utilise une variable) */
   margin: 2% auto; /* Centre le conteneur verticalement et horizontalement */
   padding: 0 var(--spacing-base); /* Espacement horizontal pour l'alignement */
   /* ----------------------------------------------------------------------- */

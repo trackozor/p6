@@ -27,11 +27,11 @@
     align-items: center;
 
     @include desktop {
-      display:flex;
+      display: flex;
       padding: 3% 1%;
       margin-bottom: 0;
-      font-size:0.9rem;
-      align-items: center; 
+      font-size: 0.9rem;
+      align-items: center;
       justify-content: center;
     }
 
@@ -108,9 +108,8 @@
 .sorting label {
   font-size: 1rem;
   font-weight: bold;
-  
 }
-#sort-options  {
+#sort-options {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -119,10 +118,9 @@
   align-items: center;
   margin: 2%;
   border: none;
-  border-radius: 0.1rem; 
+  border-radius: 0.1rem;
   cursor: pointer;
 }
-
 
 #sort-options:focus {
   transform-origin: top; /* Définit le point de pivot pour l'animation */

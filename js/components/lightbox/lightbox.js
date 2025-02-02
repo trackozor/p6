@@ -288,7 +288,7 @@ function displayMedia(index, folderName = globalFolderName) {
   if (currentMedia) {
     // Applique l’animation de sortie
     currentMedia.classList.add(`exiting-${direction}`);
-    
+
     // Supprime l'ancien média après l'animation
     setTimeout(() => {
       currentMedia.remove();

@@ -32,7 +32,8 @@ export function validateTextField(field, fieldId) {
   let errorMessage = "";
 
   // ✅ Autorisation stricte : Seulement lettres, espaces, apostrophes, tirets
-  const VALID_NAME_REGEX = /^(?!.*[\s'-]{2})[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[\s'-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;
+  const VALID_NAME_REGEX =
+    /^(?!.*[\s'-]{2})[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[\s'-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;
 
   if (value === "") {
     errorMessage = `⚠️ Le ${fieldName} est requis.`;
@@ -101,7 +102,7 @@ export function validateEmail(field) {
 export function checkHoneypot() {
   const honeypot = document.getElementById("hidden-field").value;
   if (honeypot !== "") {
-    logEvent("error", "🚨 Spam détecté via Honeypot !"); 
+    logEvent("error", "🚨 Spam détecté via Honeypot !");
     return false;
   }
   return true;

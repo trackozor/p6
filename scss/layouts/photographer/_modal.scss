@@ -77,7 +77,7 @@
   @include desktop {
     font-size: 4rem;
     font-weight: 50;
-    top:0;
+    top: 0;
   }
 }
 
@@ -93,7 +93,7 @@
   width: 90%;
 }
 .modal-header {
-  display:flex;
+  display: flex;
   flex-direction: column; /* Organise le titre et le nom verticalement */
   gap: 0.5rem; /* Ajoute un espacement entre le titre et le nom */
   text-align: left;
@@ -107,25 +107,24 @@
   font-size: 1.5rem;
 
   @include tablet {
-  display: flex;
-  position: relative;
-  width:70%;
-  font-size: 2rem;
-  padding: 0;
-  margin-right: 30%;
-
+    display: flex;
+    position: relative;
+    width: 70%;
+    font-size: 2rem;
+    padding: 0;
+    margin-right: 30%;
   }
 }
 .modal-header span {
   font-size: 1.5rem;
 
-  @include tablet{
-  position:relative;
-  width:100%;
-  font-size: 2rem;
-  display: flex;
-  padding-left:1%;
-  margin-bottom:5%;
+  @include tablet {
+    position: relative;
+    width: 100%;
+    font-size: 2rem;
+    display: flex;
+    padding-left: 1%;
+    margin-bottom: 5%;
   }
 }
 /* -------------------------------------------------------------------------- */
@@ -171,7 +170,7 @@ form {
   color: #fff;
   border: none;
   width: 30%;
-  margin:2% 0;
+  margin: 2% 0;
   padding: 5% 8%;
   font-size: 0.7rem;
   border-radius: 0.5rem;
@@ -286,7 +285,7 @@ textarea.error-input {
 .confirmation-title {
   font-size: 1.5rem;
   margin: 2% auto;
-  font-weight:700;
+  font-weight: 700;
 }
 
 .confirma-btn {
@@ -294,5 +293,3 @@ textarea.error-input {
   justify-content: center;
   margin: 2% auto;
 }
-
-
