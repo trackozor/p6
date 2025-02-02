@@ -1,467 +1,262 @@
-/* ========================================================*/
-/* Nom du fichier : eventHandler.js                         */
-/* Description    : Gestion centralisée des événements pour la modale,
-/*                  la lightbox et le tri des médias.
-/* Auteur         : Trackozor
-/* Date           : 08/01/2025
-/* Version        : 2.4.1 
-/* ========================================================*/
+// ========================================================
+// Fichier : eventHandler.js
+// Description : Gestion centralisée des événements pour la modale,
+//               la lightbox et le tri des médias.
+// Auteur : Trackozor
+// Date : 08/01/2025
+// Version : 3.0 (Optimisation, Robustesse, Sécurité)
+// ========================================================
 
 /*==============================================*/
-/*               Imports                        */
+/*               IMPORTS                        */
 /*==============================================*/
-// Ce fichier regroupe les dépendances nécessaires pour gérer les fonctionnalités
-// principales de l'application Fisheye, notamment les modales, le tri des médias,
-// l'accessibilité, et la gestion des données.
 
-/*------------------ Utilitaires ----------------*/
-// Gestion des logs pour suivre les événements et faciliter le débogage
 import { logEvent } from "../utils/utils.js";
-
-// Sélecteurs DOM préconfigurés pour simplifier l'accès aux éléments HTML
 import domSelectors from "../config/domSelectors.js";
 
-/*------------------ Gestion des Modales ----------------*/
-// Gestion de l'ouverture et de la fermeture des différentes modales
+/*------------------ Modales ------------------*/
 import {
-  launchModal, // Ouvre la modale principale (contact ou autre)
-  closeModal, // Ferme la modale principale
-  closeConfirmationModal, // Ferme une modale de confirmation (ex : suppression)
+  launchModal,
+  closeModal,
+  closeConfirmationModal,
 } from "../components/modal/modalManager.js";
 
-/*------------------ Fonctionnalités Médias ----------------*/
-// Logique pour appliquer le tri des médias (par popularité, date, etc.)
+/*------------------ Médias ------------------*/
 import { handleMediaSort } from "../components/sort/sortlogic.js";
-
-// Gestion de la lightbox : navigation et fermeture
 import {
   openLightbox,
   showPreviousMedia,
-  showNextMedia, // Initialise la lightbox pour les médias
-  closeLightbox, // Ferme la lightbox active
+  showNextMedia,
+  closeLightbox,
 } from "../components/lightbox/lightbox.js";
 
-/*------------------ Gestion des Données ----------------*/
-// Fonction pour récupérer les médias depuis une API ou un fichier JSON
+/*------------------ Données ------------------*/
 import { fetchMedia } from "../data/dataFetcher.js";
 
-/*------------------ Accessoires Visuels ----------------*/
-// Affichage et masquage du loader (icône de chargement pendant les requêtes)
+/*------------------ UI & Accessibilité ------------------*/
 import { showLoader } from "../components/loader/loader.js";
-
-// Accessibilité : gère la mise au point dans les modales et la lightbox
 import { trapFocus } from "../utils/accessibility.js";
-
-/*------------------ Validation de Formulaire ----------------*/
-// Validation des champs dans le formulaire de contact et retour utilisateur
 import { initvalidform } from "../utils/contactForm.js";
 
-import { KEY_CODES } from "../config/constants.js"; // Clés clavier centralisées
+/*------------------ Clavier ------------------*/
+import { KEY_CODES } from "../config/constants.js";
 import {
   handleEscapeKey,
   handleLightboxNavigation,
 } from "./keyboardHandler.js";
 
 /*==============================================*/
-/*         Gestion de la modale                 */
+/*         Gestion des Modales                  */
 /*==============================================*/
 
 /**
- * Fonction pour ouvrir une modale avec les données d'un photographe.
- * Cette fonction effectue plusieurs étapes :
- * 1. Affiche un indicateur de chargement pour informer l'utilisateur.
- * 2. Récupère les données des photographes à partir d'une source distante.
- * 3. Extrait l'ID du photographe depuis l'URL.
- * 4. Valide et recherche les données du photographe correspondant.
- * 5. Ouvre la modale avec les données récupérées.
- * 6. Logue chaque étape, y compris les erreurs.
+ * Ouvre la modale de contact avec les données du photographe.
  */
 export async function handleModalOpen() {
-  // Log initial indiquant que la procédure d'ouverture de la modale commence
-  logEvent("info", "Appel à l'ouverture de la modale.");
+  logEvent("info", "Ouverture de la modale...");
 
-  // Ajoute un indicateur de chargement pour signaler l'activité en cours
   document.body.classList.add("loading");
 
   try {
-    // Étape 1 : Récupération des données depuis une API ou une source distante
     const mediaData = await fetchMedia();
 
-    // Vérifie si les données récupérées sont valides
-    if (!mediaData || !mediaData.photographers) {
-      throw new Error("Données des photographes introuvables ou invalides.");
+    if (!mediaData?.photographers) {
+      throw new Error("Données photographes manquantes.");
     }
 
-    // Étape 2 : Extrait l'ID du photographe depuis l'URL
-    const params = new URLSearchParams(window.location.search);
-    const photographerId = parseInt(params.get("id"), 10);
-
-    // Vérifie que l'ID est valide et correctement extrait
-    if (!photographerId || isNaN(photographerId)) {
-      throw new Error("ID de photographe invalide ou manquant dans l'URL.");
+    const photographerId = new URLSearchParams(window.location.search).get("id");
+    if (!photographerId) {
+      throw new Error("ID photographe introuvable dans l'URL.");
     }
 
-    // Étape 3 : Recherche des données correspondant à l'ID du photographe
     const photographerData = mediaData.photographers.find(
-      (photographer) => photographer.id === photographerId,
+      (photographer) => photographer.id === parseInt(photographerId, 10),
     );
 
-    // Vérifie si un photographe correspondant a été trouvé
     if (!photographerData) {
-      throw new Error(`Photographe avec l'ID ${photographerId} introuvable.`);
+      throw new Error(`Photographe ID ${photographerId} introuvable.`);
     }
 
-    // Vérifie si les données du photographe sont complètes
-    if (!photographerData.name || !photographerData.id) {
-      throw new Error("Les données du photographe sont incomplètes.");
-    }
-
-    // Étape 4 : Logue les données récupérées pour vérification
-    logEvent("info", "Données du photographe récupérées avec succès.", {
-      photographerData,
-    });
-
-    // Étape 5 : Ouvre la modale avec les données du photographe
     launchModal(photographerData);
     logEvent("success", "Modale ouverte avec succès.");
   } catch (error) {
-    // Gestion des erreurs : logue l'erreur et affiche une alerte utilisateur
-    logEvent("error", `Erreur dans handleModalOpen : ${error.message}`, {
-      error,
-    });
-    alert(
-      "Une erreur est survenue lors du chargement de la modale. Veuillez réessayer.",
-    );
+    logEvent("error", `Erreur d'ouverture de la modale: ${error.message}`, { error });
+    alert("Erreur lors du chargement de la modale.");
   } finally {
-    // Étape 6 : Supprime l'indicateur de chargement (quelle que soit l'issue)
     document.body.classList.remove("loading");
   }
 }
 
-/*==============================================*/
 /**
- * Fonction pour fermer la modale.
- * Cette fonction effectue les actions suivantes :
- * 1. Logue l'intention de fermer la modale.
- * 2. Appelle une fonction centralisée pour gérer la fermeture de la modale.
- * 3. Logue le succès de l'opération si tout se passe bien.
- * 4. Capture et logue toute erreur survenue pendant le processus.
+ * Ferme la modale.
  */
 export function handleModalClose() {
-  // Log initial : intention de fermer la modale
-  logEvent("info", "Appel à la fermeture de la modale.");
-
+  logEvent("info", "Fermeture de la modale.");
   try {
-    // Étape 1 : Ferme la modale en utilisant une fonction dédiée
     closeModal();
-
-    // Étape 2 : Logue le succès de l'opération
-    logEvent("success", "Modale fermée avec succès.");
+    logEvent("success", "Modale fermée.");
   } catch (error) {
-    // Étape 3 : Gestion des erreurs
-    // Logue l'erreur avec un message explicite et l'affiche dans la console
-    logEvent("error", `Erreur dans handleModalClose : ${error.message}`, {
-      stack: error.stack,
-    });
-    console.error("Erreur lors de la fermeture de la modale :", error);
+    logEvent("error", "Erreur fermeture modale", { error });
   }
 }
-/**
- * Met à jour le compteur de caractères pour un champ textarea donné.
- *
- * @param {Event} event - L'événement "input" déclenché par le champ textarea.
- */
-/**
- * Met à jour le compteur de caractères pour un champ textarea donné.
- *
- * @param {Event} event - L'événement "input" déclenché par le champ textarea.
- */
-export function updateCharCount(event) {
-  const field = event.target; // Champ textarea déclencheur
-  const charCount = document.getElementById("message-counter"); // Élément du compteur
-
-  if (!charCount) {
-    logEvent("error", "Élément 'message-counter' introuvable dans le DOM.");
-    return; // Arrêter la fonction pour éviter l'erreur
-  }
-
-  const maxLength = field.getAttribute("maxlength") || 500; // Longueur max (ou défaut à 500)
-  const currentLength = field.value.length; // Longueur actuelle
-
-  // Mise à jour du compteur
-  charCount.textContent = `${currentLength} / ${maxLength} caractères`;
-
-  // Ajout d'un log pour vérifier si la mise à jour fonctionne
-  logEvent("info", "Mise à jour du compteur de caractères.", {
-    currentLength,
-    maxLength,
-  });
-}
-
-/*==============================================*/
-/**
- * Fonction pour soumettre le formulaire de contact.
- * Cette fonction effectue les actions suivantes :
- * 1. Empêche le rechargement automatique de la page lors de la soumission.
- * 2. Logue l'intention de soumettre le formulaire.
- * 3. Récupère les données du formulaire de manière structurée.
- * 4. Affiche un indicateur de chargement pendant le traitement.
- * 5. Logue les données collectées avec succès.
- * 6. Capture et logue toute erreur éventuelle.
- *
- * @param {Event} event - Événement de soumission déclenché par le formulaire.
- */
-export function handleFormSubmit(event) {
-  // Étape 1 : Empêche le comportement par défaut du formulaire (rechargement de la page)
-  event.preventDefault();
-  logEvent("info", "Soumission du formulaire de contact détectée.");
-
-  // Étape 2 : Affiche un indicateur de chargement
-  showLoader(); // Peut être une animation ou un spinner pour l'utilisateur
-  initvalidform();
-}
 
 /**
- * Ferme la modale si un clic est détecté sur l'arrière-plan.
+ * Ferme la modale si clic sur l'arrière-plan.
  */
 export function handleModalBackgroundClick(event) {
   if (event.target === domSelectors.modalBackground) {
-    logEvent("info", "Clic détecté sur l'arrière-plan de la modale.");
+    logEvent("info", "Clic sur l'arrière-plan de la modale.");
     handleModalClose();
   }
 }
+
 /**
- * Gère le clic sur le bouton de confirmation dans la modale de confirmation.
- * - Ferme toutes les modales actives.
- * - Réinitialise le formulaire de contact.
+ * Gère la confirmation d'une action dans une modale.
  */
 export function handleModalConfirm() {
-  logEvent("info", "Confirmation acceptée via le bouton 'OK'.");
-
+  logEvent("info", "Confirmation acceptée.");
   try {
-    closeConfirmationModal(); // Ferme la modale de confirmation
-    logEvent("success", "Modale de confirmation fermée avec succès.");
+    closeConfirmationModal();
+    logEvent("success", "Modale de confirmation fermée.");
   } catch (error) {
-    logEvent(
-      "error",
-      `Erreur lors de la fermeture de la modale de confirmation : ${error.message}`,
-      { error },
-    );
+    logEvent("error", "Erreur fermeture confirmation modale", { error });
   }
 }
 
-/*==============================================*/
-/*         Gestion de la lightbox               */
-/*==============================================*/
 /**
- * Gestionnaire pour ouvrir la lightbox.
- * @param {Event} event - Événement déclenché par l'utilisateur.
+ * Met à jour le compteur de caractères d'un champ textarea.
+ */
+export function updateCharCount(event) {
+  const field = event.target;
+  const charCount = document.getElementById("message-counter");
+
+  if (!charCount) {
+    return logEvent("error", "Compteur caractères introuvable.");
+  }
+
+  const maxLength = field.maxLength || 500;
+  charCount.textContent = `${field.value.length} / ${maxLength} caractères`;
+
+  logEvent("info", "Mise à jour compteur caractères.");
+}
+
+/**
+ * Soumet le formulaire de contact.
+ */
+export function handleFormSubmit(event) {
+  event.preventDefault();
+  logEvent("info", "Soumission du formulaire de contact.");
+  showLoader();
+  initvalidform();
+}
+
+/*==============================================*/
+/*         Gestion de la Lightbox               */
+/*==============================================*/
+
+/**
+ * Ouvre la lightbox avec un média spécifique.
  */
 export function handleLightboxOpen(event, mediaArray, folderName) {
   try {
     const galleryItem = event.target.closest(".gallery-item");
-
     if (!galleryItem) {
-      throw new Error("Élément de galerie introuvable ou clic hors galerie.");
+      throw new Error("Aucun média sélectionné.");
     }
 
     const mediaIndex = parseInt(galleryItem.dataset.index, 10);
-
     if (isNaN(mediaIndex)) {
-      throw new Error(
-        "Index de média invalide ou manquant dans les attributs data-index.",
-      );
+      throw new Error("Index média invalide.");
     }
 
-    // Ouvre la lightbox en passant les données nécessaires
     openLightbox(mediaIndex, mediaArray, folderName);
   } catch (error) {
-    logEvent("error", "Erreur lors de l'ouverture de la lightbox.", {
-      message: error.message,
-      stack: error.stack,
-    });
+    logEvent("error", "Erreur ouverture lightbox", { error });
   }
 }
 
 /**
- * Gestionnaire pour fermer la lightbox.
- */
-/**
- * Gestionnaire pour fermer la lightbox.
- * S'assure que toutes les ressources liées à la lightbox sont correctement nettoyées.
+ * Ferme la lightbox.
  */
 export function handleLightboxClose() {
   try {
-    logEvent("info", "Tentative de fermeture de la lightbox.");
+    logEvent("info", "Fermeture lightbox.");
     closeLightbox();
-    logEvent("success", "Lightbox fermée avec succès.");
   } catch (error) {
-    logEvent("error", "Erreur lors de la fermeture de la lightbox.", {
-      message: error.message,
-      stack: error.stack,
-    });
+    logEvent("error", "Erreur fermeture lightbox", { error });
   }
 }
 
 /**
- * Gestionnaire pour afficher le média précédent dans la lightbox.
- * Vérifie les conditions avant de naviguer au média précédent.
+ * Navigation vers le média précédent.
  */
 export function handleLightboxPrev(mediaArray, folderName) {
-  try {
-    if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
-      throw new Error("Tableau de médias invalide ou vide.");
-    }
-    if (!folderName || typeof folderName !== "string") {
-      throw new Error("Nom du dossier (folderName) invalide ou manquant.");
-    }
-
-    logEvent("info", "Navigation vers le média précédent.");
-    showPreviousMedia(mediaArray, folderName); // Appelle la fonction principale
-    logEvent("success", "Navigation vers le média précédent réussie.");
-  } catch (error) {
-    logEvent("error", "Erreur lors de la navigation vers le média précédent.", {
-      message: error.message,
-      stack: error.stack,
-    });
+  if (!mediaArray?.length) {
+    return logEvent("error", "Médias indisponibles.");
   }
+  logEvent("info", "Navigation vers média précédent.");
+  showPreviousMedia(mediaArray, folderName);
 }
 
+/**
+ * Navigation vers le média suivant.
+ */
 export function handleLightboxNext(mediaArray, folderName) {
-  try {
-    if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
-      throw new Error("Tableau de médias invalide ou vide.");
-    }
-    if (!folderName || typeof folderName !== "string") {
-      throw new Error("Nom du dossier (folderName) invalide ou manquant.");
-    }
-
-    logEvent("info", "Navigation vers le média suivant.");
-    showNextMedia(mediaArray, folderName); // Appelle la fonction principale
-    logEvent("success", "Navigation vers le média suivant réussie.");
-  } catch (error) {
-    logEvent("error", "Erreur lors de la navigation vers le média suivant.", {
-      message: error.message,
-      stack: error.stack,
-    });
+  if (!mediaArray?.length) {
+    return logEvent("error", "Médias indisponibles.");
   }
+  logEvent("info", "Navigation vers média suivant.");
+  showNextMedia(mediaArray, folderName);
 }
 
 /*==============================================*/
-/*         Gestion du tri                       */
+/*         Gestion du Tri des Médias            */
 /*==============================================*/
 
 /**
- * Change le tri des médias.
+ * Gère le changement de tri des médias.
  */
 export async function handleSortChange(event) {
-  logEvent("info", "Changement de tri détecté.", { eventTarget: event.target });
-
   try {
     const sortOption = event.target.value;
     if (!sortOption) {
-      throw new Error("Aucune option de tri sélectionnée.");
+      throw new Error("Option de tri non sélectionnée.");
     }
-    logEvent("info", `Option de tri sélectionnée : ${sortOption}`);
 
+    logEvent("info", `Tri sélectionné : ${sortOption}`);
     await handleMediaSort(sortOption);
-    logEvent("success", `Tri appliqué pour l'option : ${sortOption}`);
   } catch (error) {
-    logEvent("error", `Erreur dans handleSortChange : ${error.message}`, {
-      stack: error.stack,
-    });
+    logEvent("error", "Erreur tri médias", { error });
   }
 }
 
-/*================================================================*/
-/*             Gestion des interactions clavier                  */
-/*================================================================*/
+/*==============================================*/
+/*         Gestion des Interactions Clavier     */
+/*==============================================*/
 
 /**
- * Gestionnaire principal pour les interactions clavier.
+ * Gère les événements clavier pour modales et lightbox.
  */
 export function handleKeyboardEvent(event) {
   try {
     const activeModal = document.querySelector(".modal.modal-active");
-    const activeLightbox = document.querySelector(
-      ".lightbox[aria-hidden='false']",
-    );
+    const activeLightbox = document.querySelector(".lightbox[aria-hidden='false']");
     const focusedElement = document.activeElement;
 
-    logEvent("debug", "Vérification des éléments actifs.", {
-      activeModal: !!activeModal,
-      activeLightbox: !!activeLightbox,
-      focusedElement: focusedElement?.tagName || null,
-    });
+    logEvent("debug", "Événement clavier détecté.");
 
-    if (isFocusTrapKey(event, activeModal)) {
-      handleFocusTrap(activeModal, event);
-    } else if (isEscapeKey(event)) {
+    if (event.key === KEY_CODES.TAB && activeModal) {
+      trapFocus(activeModal);
+      event.preventDefault();
+    } else if (event.key === KEY_CODES.ESCAPE) {
       handleEscapeKey(activeModal, activeLightbox);
-    } else if (isLightboxNavigationKey(event, activeLightbox)) {
+    } else if ([KEY_CODES.ARROW_LEFT, KEY_CODES.ARROW_RIGHT].includes(event.key)) {
       handleLightboxNavigation(activeLightbox, event);
-    } else if (isActivationKey(event)) {
-      isActivationKey(focusedElement);
     }
   } catch (error) {
-    logEvent(
-      "error",
-      "Erreur lors de l'interprétation des événements clavier.",
-      {
-        message: error.message,
-        stack: error.stack,
-      },
-    );
+    logEvent("error", "Erreur gestion clavier", { error });
   }
 }
 
-/* ======================================================== */
-/*                  Sous-fonctions Responsables             */
-/* ======================================================== */
-
-/**
- * Vérifie si la touche appuyée correspond à "Tab" et qu'une modale est active.
- */
-function isFocusTrapKey(event, activeModal) {
-  return event.key === KEY_CODES.TAB && activeModal;
-}
-
-/**
- * Gère le focus trap dans une modale.
- */
-function handleFocusTrap(activeModal, event) {
-  trapFocus(activeModal);
-  logEvent("info", "Focus trap activé pour la modale.");
-  event.preventDefault();
-}
-
-/**
- * Vérifie si la touche appuyée est "Escape".
- */
-function isEscapeKey(event) {
-  return event.key === KEY_CODES.ESCAPE;
-}
-
-/**
- * Vérifie si la touche appuyée est pour la navigation dans la lightbox.
- */
-function isLightboxNavigationKey(event, activeLightbox) {
-  return (
-    activeLightbox &&
-    [KEY_CODES.ARROW_LEFT, KEY_CODES.ARROW_RIGHT].includes(event.key)
-  );
-}
-
-/**
- * Vérifie si la touche appuyée est "Enter" ou "Space".
- */
-function isActivationKey(event) {
-  return [KEY_CODES.ENTER, KEY_CODES.SPACE].includes(event.key);
-}
-
-/* ======================================================== */
-/*                  Enregistrement d'Événement              */
-/* ======================================================== */
-
-// Enregistrement de l'écouteur principal pour les événements clavier
+// Enregistrement de l'écouteur clavier global
 document.addEventListener("keydown", handleKeyboardEvent);
