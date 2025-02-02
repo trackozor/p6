@@ -1,61 +1,71 @@
 /* =============================================================================
-    Projet      : Fisheye
-    Fichier     : gallery.scss
-    Auteur      : Trackozor
-    Date        : 08/01/2025
-    Version     : 1.0.0
-    Description : Styles pour la galerie d'images, avec une mise en page 
-                responsive et une organisation en grille pour les tablettes 
-                et écrans de bureau.
+    Projet      :   Fisheye
+    Fichier     :   gallery.scss
+    Auteur      :   Trackozor
+    Date        :   08/01/2025
+    Version     :   1.0.0
+    Description :   Styles pour la galerie d'images et vidéos, avec une mise en 
+                    page responsive utilisant Flexbox et une grille CSS adaptée 
+                    aux écrans de différentes tailles.
 ============================================================================= */
 
 /* -------------------------------------------------------------------------- */
 /* Conteneur principal de la galerie (#gallery)                               */
-/* Description : Mise en page par défaut avec Flexbox pour les petits écrans, */
-/*               et grille pour les écrans moyens et grands.                  */
+/* Objectif : Afficher dynamiquement les images et vidéos avec un design     */
+/* flexible pour petits écrans et une grille plus structurée pour les grands */
+/* écrans.                                                                    */
 /* -------------------------------------------------------------------------- */
+
 #gallery {
-  width: 100%; /* Largeur adaptable */
-  display: flex; /* Active le centrage */
-  flex-direction: column;
-  justify-content: center; /* Centre horizontalement */
-  align-items: center; /* Centre verticalement */
-  overflow: hidden; /* Cache les débordements */
+  width: 100%; /* Le conteneur s'adapte à toute la largeur disponible */
+  display: flex; /* Flexbox par défaut pour les petits écrans */
+  flex-direction: column; /* Affichage en colonne pour une meilleure lisibilité */
+  justify-content: center; /* Centre les éléments horizontalement */
+  align-items: center; /* Centre les éléments verticalement */
+  overflow: hidden; /* Empêche le débordement des éléments hors du conteneur */
 
   @include tablet {
-    display: grid;
-    grid-template-columns: repeat(2, 45%);
+    display: grid; /* Passage en mode grille pour un meilleur agencement */
+    grid-template-columns: repeat(2, 45%); /* Deux colonnes équilibrées */
     margin: 0 auto;
     width: 100%;
   }
+
   @include desktop {
-    display: grid;
+    display: grid; /* Conservation du mode grille */
     grid-template-columns: repeat(
       auto-fit,
       minmax(235px, 1fr)
-    ); /* Grille responsive */
+    ); /* Grille adaptable selon le contenu */
     height: auto;
     margin: 0 auto;
-    width: 87%;
+    width: 87%; /* Légère réduction de la largeur pour éviter de coller aux bords */
   }
+
   @include large-desktop {
     display: grid;
     grid-template-columns: repeat(
       auto-fit,
       minmax(525px, 1fr)
-    ); /* Grille responsive */
+    ); /* Augmentation de la taille des colonnes pour les très grands écrans */
     height: auto;
     margin: 0 auto;
     width: 90%;
   }
 }
 
-/* Images et vidéos */
+/* -------------------------------------------------------------------------- */
+/* Styles des médias (images et vidéos)                                      */
+/* Objectif : Ajuster les images et vidéos pour qu'elles remplissent         */
+/* correctement leur conteneur sans distorsion, tout en maintenant un bon    */
+/* cadrage.                                                                  */
+/* -------------------------------------------------------------------------- */
+
 .media-item img,
 .media-item video {
-  max-width: 36vw; /* Prend toute la largeur du conteneur */
-  height: 35vh; /* Prend toute la hauteur du conteneur */
-  object-fit: cover; /* Remplit sans distorsion */
-  object-position: center; /* Centre le média */
-  display: block;
+  max-width: 36vw; /* Taille relative pour s’adapter à l’écran */
+  height: 35vh; /* Hauteur ajustée pour un rendu harmonieux */
+  object-fit: cover; /* Remplit l’espace sans déformer l’image/vidéo */
+  object-position: center; /* Centre le média horizontalement et verticalement */
+  display: block; /* Évite les marges indésirables sur certaines images */
 }

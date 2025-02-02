@@ -163,8 +163,7 @@
   }
 }
 /* ✅ Classes utilitaires */
-.scale-up,
-.lightbox-media-container img,
+.scale-up, .lightbox-media-container img,
 .lightbox-media-container video {
   animation: scale-up 0.5s ease-in-out forwards;
 }
@@ -174,16 +173,14 @@
 }
 
 @keyframes pulse {
-  0%,
-  100% {
+  0%, 100% {
     transform: scale(1);
   }
   50% {
     transform: scale(1.1);
   }
 }
-.pulse,
-.lightbox-prev,
+.pulse, .lightbox-prev,
 .lightbox-next {
   animation: pulse 2s infinite ease-in-out;
 }
@@ -359,8 +356,7 @@
 /* ❤️ Animation Like (HeartBeat) */
 /* ====================================================== */
 @keyframes heartbeat {
-  0%,
-  100% {
+  0%, 100% {
     transform: scale(1);
   }
   50% {
@@ -595,10 +591,7 @@ video {
   position: static; /* Rétablit la position par défaut */
   width: auto; /* Rétablit la largeur */
   height: auto; /* Rétablit la hauteur */
-  padding: var(
-    --padding-small,
-    0.5rem
-  ); /* Ajoute du padding pour plus de clarté */
+  padding: var(--padding-small, 0.5rem); /* Ajoute du padding pour plus de clarté */
   margin: 0; /* Supprime les marges négatives */
   overflow: visible; /* Rend le contenu visible */
   clip: auto; /* Rétablit le contenu */
@@ -842,9 +835,7 @@ a {
 /* Description : Style pour le nom du photographe affiché en gras             */
 /* -------------------------------------------------------------------------- */
 .photographer-card-name {
-  font-size: var(
-    --font-size-xlarge
-  ); /* Utilise une taille de texte importante */
+  font-size: var(--font-size-xlarge); /* Utilise une taille de texte importante */
   color: var(--text-color-name); /* Utilise une couleur d'accentuation */
   font-weight: bold; /* Affiche le texte en gras */
   margin-bottom: 2%; /* Ajoute un espace en dessous du nom */
@@ -867,9 +858,7 @@ a {
 /* -------------------------------------------------------------------------- */
 .photographer-card-location {
   font-size: var(--font-size-base); /* Taille de texte standard */
-  color: var(
-    --text-color-secondary
-  ); /* Couleur secondaire pour moins d'importance */
+  color: var(--text-color-secondary); /* Couleur secondaire pour moins d'importance */
   margin-bottom: 2%; /* Ajoute un espace en dessous */
 }
 
@@ -907,9 +896,7 @@ a {
 .photographer-card-price {
   font-size: var(--font-size-small); /* Texte de taille discrète */
   font-weight: 500; /* Texte légèrement mis en avant */
-  color: var(
-    --text-color-tertiary
-  ); /* Couleur tertiaire pour moins de priorité */
+  color: var(--text-color-tertiary); /* Couleur tertiaire pour moins de priorité */
   /*-------------------------- Responsive -------------------------------*/
 }
 @media (min-width: 767px) {
@@ -941,9 +928,7 @@ a {
   margin: 1% auto;
   height: 100%;
   height: 40vh;
-  transition:
-    transform 0.3s,
-    box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
   object-position: center;
 }
 @media (min-width: 767px) {
@@ -1163,144 +1148,171 @@ footer p {
     Date        :   08/01/2025
     Version     :   1.0.0
     Description :   Styles pour la bandeau d'information du photographe,
-                    incluant des ajustements responsives pour tablettes 
-                    et ordinateurs de bureau.
+                    avec des ajustements responsive pour tablettes et ordinateurs.
 ============================================================================= */
 /* -------------------------------------------------------------------------- */
-/* Section des informations du photographe                                    */
-/* Description : Structure et styles pour afficher les informations           */
-/* principales du photographe dans un bandeau.                                */
+/* Bandeau d'information du photographe                                      */
+/* Objectif : Fournir un affichage structuré et responsive pour les détails  */
+/* du photographe, incluant nom, localisation, portrait et statistiques.     */
 /* -------------------------------------------------------------------------- */
 .photographer-info {
-  display: flex; /* Active le modèle Flexbox pour l'agencement des éléments */
-  flex-direction: column; /* Par défaut, les éléments sont empilés verticalement */
+  display: flex; /* Utilisation de Flexbox pour gérer l'agencement des éléments */
+  flex-direction: column; /* Alignement vertical par défaut */
   align-items: center; /* Centre les éléments horizontalement */
-  background: #fafafa; /* Couleur de fond gris clair pour un contraste doux */
-  justify-content: space-around; /* Espace égal entre les éléments */
-  margin-bottom: 2%; /* Espace en bas pour séparer des autres sections */
-  padding: 2% 0; /* Espace intérieur pour un design respirant */
+  background: #fafafa; /* Fond gris clair pour un contraste visuel doux */
+  justify-content: space-around; /* Répartition équilibrée des éléments */
+  margin-bottom: 2%; /* Espacement inférieur pour séparer des autres sections */
+  padding: 2% 0; /* Ajout de marge intérieure pour éviter un aspect serré */
 }
 @media (min-width: 767px) {
   .photographer-info {
-    display: flex; /* Flexbox reste actif pour les écrans tablettes */
-    flex-direction: row; /* Les éléments sont alignés horizontalement */
-    width: 100%; /* La largeur s'étend à 100% */
-    padding: 0; /* Réduit le padding pour un design compact */
-    justify-content: space-around; /* Garde l'espacement entre les éléments */
-    align-items: center; /* Centre les éléments verticalement */
-    margin-bottom: 1%;
+    flex-direction: row; /* Alignement horizontal pour une meilleure lisibilité */
+    width: 100%; /* Utilisation complète de la largeur */
+    padding: 0; /* Suppression de l’espace intérieur pour un design plus compact */
+    justify-content: space-around; /* Maintien d’un espacement équilibré */
+    align-items: center; /* Alignement vertical centré */
+    margin-bottom: 1%; /* Réduction de l’espace inférieur */
   }
 }
 @media (min-width: 1024px) {
   .photographer-info {
-    padding: 0; /* Réduit le padding pour un design compact */
-    width: 85%;
-    margin: 0 auto;
+    width: 85%; /* Réduction de la largeur pour un alignement plus harmonieux */
+    margin: 0 auto; /* Centrage horizontal automatique */
     align-items: center;
     padding: 0;
   }
 }
 
-.photographer-profile.photographer-profile {
-  width: 100%; /* La largeur occupe tout l'espace disponible */
-  margin: 0 auto; /* Centre horizontalement le contenu */
-  text-align: center; /* Texte centré pour les petits écrans */
+/* -------------------------------------------------------------------------- */
+/* Profil du photographe                                                      */
+/* Objectif : Présenter les informations textuelles du photographe, y compris */
+/*            le nom, la localisation et la tagline.                          */
+/* -------------------------------------------------------------------------- */
+.photographer-profile {
+  width: 100%; /* Utilisation de toute la largeur disponible */
+  margin: 0 auto; /* Centrage horizontal */
+  text-align: center; /* Centrage du texte pour les petits écrans */
 }
 @media (min-width: 767px) {
-  .photographer-profile.photographer-profile {
-    width: 60%; /* Réduit la largeur pour mieux s'adapter */
-    text-align: left; /* Texte aligné à gauche pour une meilleure lecture */
+  .photographer-profile {
+    width: 60%; /* Réduction de la largeur pour un meilleur agencement */
+    text-align: left; /* Alignement du texte à gauche pour une lecture optimisée */
   }
 }
 @media (min-width: 1024px) {
-  .photographer-profile.photographer-profile {
-    width: 90%;
+  .photographer-profile {
+    width: 90%; /* Ajustement de la largeur pour les grands écrans */
     text-align: left;
-    margin: 0; /* Largeur plus grande pour les écrans plus grands */
+    margin: 0;
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/* Portrait du photographe                                                    */
+/* Objectif : Afficher la photo du photographe avec un positionnement adapté  */
+/* aux différentes tailles d’écrans.                                          */
+/* -------------------------------------------------------------------------- */
 .photographer-info .photographer-card-portrait {
-  margin-top: 45%; /* Espacement supérieur important pour les petits écrans */
+  margin-top: 45%; /* Grand espacement supérieur pour les petits écrans */
 }
 @media (min-width: 767px) {
   .photographer-info .photographer-card-portrait {
-    margin-top: 2%; /* Réduit l'espacement pour les écrans tablettes */
-    margin-right: 10%; /* Ajoute un espace à droite pour mieux structurer */
+    margin-top: 2%; /* Réduction de l’espacement pour un rendu plus équilibré */
+    margin-right: 10%; /* Ajout d’un espace à droite pour l’aération du design */
   }
 }
 @media (min-width: 1024px) {
   .photographer-info .photographer-card-portrait {
     display: flex;
     position: relative;
-    margin-right: 0; /* Réduit l'espace à droite pour les écrans plus grands */
-    top: 5%;
-    width: 15%;
-    height: 15%;
-    max-height: 13vh;
+    margin-right: 0; /* Réduction de l’espace à droite sur grands écrans */
+    top: 5%; /* Ajustement fin de la position verticale */
+    width: 15%; /* Définition de la largeur */
+    height: 15%; /* Hauteur ajustée */
+    max-height: 13vh; /* Hauteur maximale définie en fonction de la hauteur d’écran */
     padding: 0;
     margin-top: 7%;
   }
 }
+@media (min-width: 1440px) {
+  .photographer-info .photographer-card-portrait {
+    height: 25%;
+    max-height: 20vh;
+  }
+}
 
+/* -------------------------------------------------------------------------- */
+/* Titre du photographe                                                       */
+/* Objectif : Mettre en avant le nom du photographe avec une taille adaptée   */
+/* selon la taille de l'écran.                                                */
+/* -------------------------------------------------------------------------- */
 .photographer-profile h2 {
-  color: #d3573c; /* Couleur de texte pour une meilleure mise en valeur */
-  font-size: 1.8rem; /* Taille par défaut pour les petits écrans */
-  margin-bottom: 1%; /* Espace sous le titre pour séparer des autres éléments */
+  color: #d3573c; /* Couleur orange pour une meilleure mise en valeur */
+  font-size: 1.8rem; /* Taille adaptée aux petits écrans */
+  margin-bottom: 1%; /* Ajout d’un léger espace sous le titre */
 }
 @media (min-width: 767px) {
   .photographer-profile h2 {
-    font-size: 2.4rem; /* Augmente la taille du texte pour les écrans plus grands */
+    font-size: 2.4rem; /* Augmentation de la taille du texte pour tablettes */
   }
 }
 @media (min-width: 1024px) {
   .photographer-profile h2 {
     margin-right: 10%;
-    font-size: 2.6rem; /* Augmente la taille du texte pour les écrans plus grands */
+    font-size: 2.6rem; /* Taille agrandie pour une meilleure lisibilité */
     margin-bottom: 2%;
     position: relative;
     right: 8%;
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/* Texte complémentaire du profil                                             */
+/* Objectif : Ajustement du positionnement des informations supplémentaires.  */
+/* -------------------------------------------------------------------------- */
 .photographer-profile p {
   position: relative;
   right: 7.5%;
 }
 
 .photographer-profile .photographer-card-location {
-  font-size: 1.4rem;
-  margin: 2% 0;
+  font-size: 1.4rem; /* Taille de texte équilibrée */
+  margin: 2% 0; /* Espacement pour éviter un effet de bloc serré */
 }
 
 .photographer-profile .photographer-card-tagline {
   margin-top: 3%;
-  font-weight: 100;
+  font-weight: 100; /* Texte plus fin pour un rendu élégant */
 }
 
+/* -------------------------------------------------------------------------- */
+/* Statistiques du photographe                                                */
+/* Objectif : Afficher des données clés (nombre de likes, tarif journalier).  */
+/*            Les informations sont positionnées différemment selon l’écran.  */
+/* -------------------------------------------------------------------------- */
 .photographer-stats {
-  background-color: #d88876;
-  padding: 2%;
-  color: black;
-  margin-bottom: 2%;
-  font-weight: 600;
+  background-color: #d88876; /* Fond orange clair pour différencier la section */
+  padding: 2%; /* Ajout d’une marge intérieure pour un design aéré */
+  color: black; /* Texte en noir pour un contraste lisible */
+  margin-bottom: 2%; /* Espacement sous la section */
+  font-weight: 600; /* Texte en gras pour mettre en évidence */
 }
 @media (min-width: 767px) {
   .photographer-stats {
     display: flex;
-    flex-direction: row;
-    gap: 2%;
+    flex-direction: row; /* Organisation horizontale sur les tablettes */
+    gap: 2%; /* Ajout d’un espacement entre les éléments */
     padding: 2%;
     position: absolute;
-    top: 33%;
+    top: 33%; /* Ajustement de la position pour un alignement optimal */
     right: 4%;
   }
 }
 @media (min-width: 1024px) {
   .photographer-stats {
-    position: fixed;
-    z-index: 99999;
-    top: 94%;
+    position: fixed; /* Fixation de la section pour qu’elle reste visible */
+    z-index: 99999; /* Priorité d’affichage sur d’autres éléments */
+    top: 94%; /* Positionnement en bas de l’écran */
     right: 2%;
     padding: 1.5% 2.5%;
     width: 18%;
@@ -1309,84 +1321,93 @@ footer p {
 }
 @media (min-width: 1440px) {
   .photographer-stats {
-    top: 90%;
+    top: 90%; /* Ajustement pour les très grands écrans */
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/* Icônes des statistiques                                                    */
+/* Objectif : Améliorer la mise en forme des icônes intégrées aux stats.      */
+/* -------------------------------------------------------------------------- */
 .photographer-stats i:before {
-  color: black;
-  margin: 0 5%;
+  color: black; /* Icônes en noir pour la lisibilité */
+  margin: 0 5%; /* Espacement autour des icônes */
 }
 
+/* -------------------------------------------------------------------------- */
+/* Tarif journalier                                                           */
+/* Objectif : Affichage du tarif journalier du photographe avec un bon        */
+/*            alignement et une taille adaptée.                               */
+/* -------------------------------------------------------------------------- */
 #daily-rate {
-  font-size: 1rem;
-  margin-left: 30%;
+  font-size: 1rem; /* Taille de texte modérée */
+  margin-left: 30%; /* Décalage pour un meilleur alignement */
 }
 
 /* =============================================================================
-    Projet      : Fisheye
-    Fichier     : gallery.scss
-    Auteur      : Trackozor
-    Date        : 08/01/2025
-    Version     : 1.0.0
-    Description : Styles pour la galerie d'images, avec une mise en page 
-                responsive et une organisation en grille pour les tablettes 
-                et écrans de bureau.
+    Projet      :   Fisheye
+    Fichier     :   gallery.scss
+    Auteur      :   Trackozor
+    Date        :   08/01/2025
+    Version     :   1.0.0
+    Description :   Styles pour la galerie d'images et vidéos, avec une mise en 
+                    page responsive utilisant Flexbox et une grille CSS adaptée 
+                    aux écrans de différentes tailles.
 ============================================================================= */
 /* -------------------------------------------------------------------------- */
 /* Conteneur principal de la galerie (#gallery)                               */
-/* Description : Mise en page par défaut avec Flexbox pour les petits écrans, */
-/*               et grille pour les écrans moyens et grands.                  */
+/* Objectif : Afficher dynamiquement les images et vidéos avec un design     */
+/* flexible pour petits écrans et une grille plus structurée pour les grands */
+/* écrans.                                                                    */
 /* -------------------------------------------------------------------------- */
 #gallery {
-  width: 100%; /* Largeur adaptable */
-  display: flex; /* Active le centrage */
-  flex-direction: column;
-  justify-content: center; /* Centre horizontalement */
-  align-items: center; /* Centre verticalement */
-  overflow: hidden; /* Cache les débordements */
+  width: 100%; /* Le conteneur s'adapte à toute la largeur disponible */
+  display: flex; /* Flexbox par défaut pour les petits écrans */
+  flex-direction: column; /* Affichage en colonne pour une meilleure lisibilité */
+  justify-content: center; /* Centre les éléments horizontalement */
+  align-items: center; /* Centre les éléments verticalement */
+  overflow: hidden; /* Empêche le débordement des éléments hors du conteneur */
 }
 @media (min-width: 767px) {
   #gallery {
-    display: grid;
-    grid-template-columns: repeat(2, 45%);
+    display: grid; /* Passage en mode grille pour un meilleur agencement */
+    grid-template-columns: repeat(2, 45%); /* Deux colonnes équilibrées */
     margin: 0 auto;
     width: 100%;
   }
 }
 @media (min-width: 1024px) {
   #gallery {
-    display: grid;
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(235px, 1fr)
-    ); /* Grille responsive */
+    display: grid; /* Conservation du mode grille */
+    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr)); /* Grille adaptable selon le contenu */
     height: auto;
     margin: 0 auto;
-    width: 87%;
+    width: 87%; /* Légère réduction de la largeur pour éviter de coller aux bords */
   }
 }
 @media (min-width: 1440px) {
   #gallery {
     display: grid;
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(525px, 1fr)
-    ); /* Grille responsive */
+    grid-template-columns: repeat(auto-fit, minmax(525px, 1fr)); /* Augmentation de la taille des colonnes pour les très grands écrans */
     height: auto;
     margin: 0 auto;
     width: 90%;
   }
 }
 
-/* Images et vidéos */
+/* -------------------------------------------------------------------------- */
+/* Styles des médias (images et vidéos)                                      */
+/* Objectif : Ajuster les images et vidéos pour qu'elles remplissent         */
+/* correctement leur conteneur sans distorsion, tout en maintenant un bon    */
+/* cadrage.                                                                  */
+/* -------------------------------------------------------------------------- */
 .media-item img,
 .media-item video {
-  max-width: 36vw; /* Prend toute la largeur du conteneur */
-  height: 35vh; /* Prend toute la hauteur du conteneur */
-  object-fit: cover; /* Remplit sans distorsion */
-  object-position: center; /* Centre le média */
-  display: block;
+  max-width: 36vw; /* Taille relative pour s’adapter à l’écran */
+  height: 35vh; /* Hauteur ajustée pour un rendu harmonieux */
+  object-fit: cover; /* Remplit l’espace sans déformer l’image/vidéo */
+  object-position: center; /* Centre le média horizontalement et verticalement */
+  display: block; /* Évite les marges indésirables sur certaines images */
 }
 
 .lightbox {
@@ -1400,12 +1421,12 @@ footer p {
   visibility: hidden;
   z-index: 1000;
 }
-.lightbox[aria-hidden="false"] {
+.lightbox[aria-hidden=false] {
   opacity: 1;
   visibility: visible;
   animation: fade-in-up 0.6s ease-in-out;
 }
-.lightbox[aria-hidden="true"] {
+.lightbox[aria-hidden=true] {
   animation: fade-out-scale 0.6s ease-in-out;
 }
 
@@ -1423,6 +1444,12 @@ footer p {
   .lightbox-content {
     width: 80vw;
     height: 90vh;
+  }
+}
+@media (min-width: 1024px) {
+  .lightbox-content {
+    max-height: 75vh;
+    align-items: center;
   }
 }
 
@@ -1458,6 +1485,7 @@ button:hover {
 @media (min-width: 1024px) {
   .lightbox-close {
     right: 3%;
+    top: 8%;
     font-size: 4.5rem;
     font-weight: 100;
   }
@@ -1467,7 +1495,6 @@ button:hover {
     font-size: 4rem;
   }
 }
-
 .lightbox-close:hover {
   background-color: var(--secondary-color);
   color: white;
@@ -1512,6 +1539,12 @@ button:hover {
   align-items: center;
   flex-direction: column;
 }
+@media (min-width: 1024px) {
+  .lightbox-media-container {
+    height: 70vh;
+    max-height: 50px;
+  }
+}
 
 .lightbox-media-container img,
 .lightbox-media-container video {
@@ -1526,13 +1559,19 @@ button:hover {
     height: 50%;
   }
 }
+@media (min-width: 1024px) {
+  .lightbox-media-container img,
+  .lightbox-media-container video {
+    width: 70%;
+    height: 50%;
+    max-height: 60vh;
+  }
+}
 
 .lightbox-media-container img,
 .lightbox-media-container video {
-  position: absolute;
-  transition:
-    transform 0.5s ease-in-out,
-    opacity 0.5s ease-in-out;
+  position: relative;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 .lightbox-media-container img.exiting-left,
 .lightbox-media-container video.exiting-left {
@@ -1552,13 +1591,30 @@ button:hover {
 }
 
 .lightbox-caption {
-  margin-top: var(--spacing-small);
-  font-size: var(--font-size-base);
-  color: var(--text-color-primary);
-  max-width: 100%;
-  display: flex;
-  justify-content: left;
-  line-height: var(--line-height-normal);
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  text-align: left;
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: var(--primary-color);
+  padding: 2% 0;
+  transition: opacity 0.3s ease-in-out;
+}
+@media (min-width: 767px) {
+  .lightbox-caption {
+    font-size: 1.4rem;
+    width: 85%;
+  }
+}
+@media (min-width: 1024px) {
+  .lightbox-caption {
+    font-size: 1.2rem;
+    width: 80%;
+    bottom: 6%;
+  }
 }
 
 /* =============================================================================
@@ -1606,9 +1662,7 @@ button:hover {
   z-index: 9999; /* Priorité d'affichage élevée */
   opacity: 0; /* Masquée par défaut */
   transform: translate(-50%, -50%) scale(0.9); /* Animation initiale réduite */
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 @media (min-width: 767px) {
   .modal {
@@ -1878,9 +1932,7 @@ textarea.error-input {
   z-index: 9999;
   opacity: 0;
   visibility: hidden;
-  transition:
-    opacity 0.3s ease,
-    visibility 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   margin: 0 auto;
 }
 @media (min-width: 767px) {

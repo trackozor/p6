@@ -8,136 +8,133 @@
 
 // --------------------------------------------------------------------------
 // VARIABLES LOCALES (Utilisation des variables globales)
+// Objectif : Définir des variables spécifiques à la lightbox pour un contrôle
+// facilité des animations et du positionnement.
 // --------------------------------------------------------------------------
 
-// Définit la priorité d'affichage de la lightbox pour s'assurer qu'elle est au-dessus des autres éléments
-$lightbox-z-index: 1000;
-
-// Durée des transitions pour les animations d'apparition et de disparition
-$transition-duration: 0.6s;
+$lightbox-z-index: 1000; // Priorité d'affichage pour s'assurer que la lightbox est au premier plan
+$transition-duration: 0.6s; // Durée standard des transitions pour un effet fluide
 
 // --------------------------------------------------------------------------
 // LIGHTBOX PRINCIPALE (MOBILE FIRST)
+// Objectif : Créer une fenêtre modale qui couvre l'écran entier avec une animation
+// d'apparition et de disparition fluide.
 // --------------------------------------------------------------------------
 
 .lightbox {
-  position: fixed; // Positionne la lightbox de manière fixe sur l'écran, indépendamment du défilement
-  inset: 0; // Couvre l'ensemble de l'écran en utilisant top, right, bottom et left à 0
-  display: flex; // Utilisation de flexbox pour centrer le contenu
-  justify-content: center; // Alignement horizontal centré
-  align-items: center; // Alignement vertical centré
-  background-color: var(
-    --neutral-color
-  ); // Utilisation d'une couleur de fond issue des variables globales
-  opacity: 0; // La lightbox est initialement invisible
-  visibility: hidden; // Cachée par défaut pour éviter qu'elle ne soit prise en compte par le navigateur
-  z-index: $lightbox-z-index; // Définit un ordre d'affichage élevé pour la superposition
+  position: fixed; // La lightbox reste en place même lors du défilement
+  inset: 0; // Occupe tout l'écran (équivaut à top, right, bottom, left : 0)
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--neutral-color); // Couleur issue des variables globales
+  opacity: 0; // Initialement invisible
+  visibility: hidden; // Empêche l'interaction lorsqu'elle est masquée
+  z-index: $lightbox-z-index; // Niveau d'affichage élevé
 
-  // État visible de la lightbox lorsqu'elle est activée
+  // Lorsque la lightbox est active (visible)
   &[aria-hidden="false"] {
     opacity: 1;
     visibility: visible;
-    animation: fade-in-up $transition-duration ease-in-out; // Animation d'apparition en fondu avec un léger mouvement vers le haut
+    animation: fade-in-up $transition-duration ease-in-out; // Animation d’apparition fluide
   }
 
-  // État masqué de la lightbox lorsqu'elle est désactivée
+  // Lorsque la lightbox est désactivée (masquée)
   &[aria-hidden="true"] {
-    animation: fade-out-scale $transition-duration ease-in-out; // Animation de disparition avec un effet de réduction
+    animation: fade-out-scale $transition-duration ease-in-out; // Animation de fermeture avec réduction progressive
   }
 }
 
 // --------------------------------------------------------------------------
 // CONTENU DE LA LIGHTBOX
+// Objectif : Structurer l'affichage interne de la lightbox avec un espace bien défini.
 // --------------------------------------------------------------------------
 
 .lightbox-content {
-  width: 80vw; // Largeur proportionnelle à l'écran pour s'adapter aux différentes résolutions
-  height: 85vh; // Hauteur relative à l'écran pour une occupation optimisée de l'espace
+  width: 80vw; // Taille proportionnelle pour s’adapter aux écrans
+  height: 85vh;
   display: flex;
-  flex-direction: column; // Organisation du contenu en colonne
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: hidden; // Empêche le débordement des éléments hors du conteneur
-  outline: none; // Supprime les contours affichés lors des interactions clavier
+  overflow: hidden; // Empêche le débordement d'éléments
+  outline: none; // Supprime le contour bleu par défaut lors des interactions clavier
 
-  // Adaptation pour les écrans de type tablette
   @include tablet {
     width: 80vw;
-    height: 90vh; // Augmente la hauteur pour mieux occuper l'écran
+    height: 90vh;
+  }
+
+  @include desktop {
+    max-height: 75vh;
+    align-items: center;
+    
+
   }
 }
 
 // --------------------------------------------------------------------------
-// BOUTONS DE LA LIGHTBOX
+// BOUTONS DE NAVIGATION ET DE FERMETURE
+// Objectif : Gérer les interactions utilisateur pour naviguer ou fermer la lightbox.
 // --------------------------------------------------------------------------
 
-// Style général des boutons (fermeture et navigation)
 button {
-  position: absolute; // Position indépendante du flux normal
-  background: transparent; // Fond transparent pour une meilleure intégration visuelle
-  cursor: pointer; // Affiche un pointeur au survol pour indiquer une action possible
-  color: var(
-    --primary-color
-  ); // Utilisation d'une couleur dynamique issue des variables globales
-  font-size: 2rem; // Taille du texte pour une bonne visibilité
-  padding: var(
-    --spacing-xsmall
-  ); // Ajoute un espace interne pour améliorer l'ergonomie
-  font-weight: bold; // Mise en avant du texte en gras
-  transition: transform var(--transition-default); // Applique une transition fluide lors des interactions
+  position: absolute;
+  background: transparent;
+  cursor: pointer;
+  color: var(--primary-color);
+  font-size: 2rem;
+  padding: var(--spacing-xsmall);
+  font-weight: bold;
+  transition: transform var(--transition-default);
 
   &:hover {
-    transform: scale(1.1); // Légère mise en avant lors du survol
+    transform: scale(1.1); // Légère mise en avant au survol
   }
 }
 
 // Bouton de fermeture de la lightbox
 .lightbox-close {
-  top: var(--spacing-medium); // Espacement depuis le haut
-  right: var(--spacing-medium); // Espacement depuis la droite
-  font-size: 2.5rem; // Taille du texte
-  background: white; // Fond blanc pour améliorer la visibilité
-  border-radius: 0.2rem; // Légèrement arrondi pour une meilleure esthétique
+  top: var(--spacing-medium);
+  right: var(--spacing-medium);
+  font-size: 2.5rem;
+  background: white;
+  border-radius: 0.2rem;
   padding: var(--spacing-xsmall);
-  transition: background-color var(--transition-default); // Effet de transition lors des changements d'état
+  transition: background-color var(--transition-default);
 
-  // Adaptation pour les écrans de type tablette
   @include tablet {
     font-size: 3rem;
     font-weight: 500;
   }
 
-  // Adaptation pour les écrans de type desktop
   @include desktop {
     right: 3%;
+    top:8%;
     font-size: 4.5rem;
     font-weight: 100;
   }
 
-  // Adaptation pour les grands écrans
   @include large-desktop {
     font-size: 4rem;
   }
-}
 
-// Effet de survol du bouton de fermeture
-.lightbox-close:hover {
-  background-color: var(--secondary-color);
-  color: white;
+  &:hover {
+    background-color: var(--secondary-color);
+    color: white;
+  }
 }
 
 // Boutons de navigation (Précédent & Suivant)
 .lightbox-prev,
 .lightbox-next {
-  border-radius: var(
-    --border-radius-small
-  ); // Arrondi des bords pour une meilleure ergonomie
-  padding: var(--spacing-xsmall); // Espacement interne
+  border-radius: var(--border-radius-small);
+  padding: var(--spacing-xsmall);
   font-size: 2.5rem;
-  @extend .pulse; // Ajout de l'effet de pulsation
+  @extend .pulse; // Effet d'animation
 
   &:hover {
-    animation: rotate 0.3s ease-in-out; // Légère rotation lors du survol
+    animation: rotate 0.3s ease-in-out;
     background-color: var(--primary-color);
     color: #fff;
   }
@@ -163,34 +160,51 @@ button {
 
 // --------------------------------------------------------------------------
 // CONTENEUR DES MÉDIAS (IMAGES & VIDÉOS)
+// Objectif : Gérer l'affichage des médias tout en garantissant une navigation fluide.
 // --------------------------------------------------------------------------
 
 .lightbox-media-container {
-  width: 100%; // Prend toute la largeur disponible
-  height: 90%; // Hauteur relative à la fenêtre pour un affichage équilibré
+  width: 100%;
+  height: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column; // Organisation en colonne pour structurer le contenu
+  flex-direction: column;
+
+  @include desktop {
+    height:70vh;
+    max-height:50px;
+  }
 }
-// Styles appliqués aux images et vidéos contenues dans la lightbox
+
+// Styles appliqués aux images et vidéos dans la lightbox
 .lightbox-media-container img,
 .lightbox-media-container video {
-  width: 85%; // Adapte la taille pour ne pas dépasser la zone d'affichage
+  width: 85%;
   height: 50%;
-  object-fit: contain; // S'assure que le média est totalement visible sans déformation
-  @extend .scale-up; // Animation d’apparition fluide
+  object-fit: contain; // Empêche la déformation
+  @extend .scale-up; // Animation fluide
 
-  // Adaptation pour les écrans de type tablette
   @include tablet {
     width: 80%;
     height: 50%;
   }
+
+  @include desktop {
+    width: 70%;
+    height: 50%;
+    max-height: 60vh;
+  }
 }
-// Effets de transition pour la navigation des médias
+
+// --------------------------------------------------------------------------
+// EFFETS DE TRANSITION DES MÉDIAS
+// Objectif : Gérer l’animation lors du passage d’une image/vidéo à l’autre.
+// --------------------------------------------------------------------------
+
 .lightbox-media-container img,
 .lightbox-media-container video {
-  position: absolute;
+  position: relative;
   transition:
     transform 0.5s ease-in-out,
     opacity 0.5s ease-in-out;
@@ -215,16 +229,35 @@ button {
     animation: slide-in-right 0.5s ease-in-out forwards;
   }
 }
+
 // --------------------------------------------------------------------------
 // LÉGENDE DES MÉDIAS
+// Objectif : Afficher et personnaliser les descriptions sous les images et vidéos
 // --------------------------------------------------------------------------
 
 .lightbox-caption {
-  margin-top: var(--spacing-small);
-  font-size: var(--font-size-base);
-  color: var(--text-color-primary);
-  max-width: 100%;
-  display: flex;
-  justify-content: left;
-  line-height: var(--line-height-normal);
+  position: absolute; // Fixe la légende sous l'image
+  bottom: 5%; // Décalage depuis le bas pour ne pas coller au bord
+  left: 50%; // Centre horizontalement
+  transform: translateX(-50%); // Correction pour un centrage parfait
+  width: 85%; // Ajustement de la largeur pour éviter les débordements
+  text-align: left; // Alignement du texte au centre
+  font-size: 1.2rem; // Taille de texte lisible
+  font-weight: 300; // Police légèrement épaisse pour plus de visibilité
+  color:var(--primary-color); // Texte blanc pour le contraste
+  padding: 2% 0; // Ajoute un espace autour du texte
+  transition: opacity 0.3s ease-in-out; // Animation douce
+
+  @include tablet {
+    font-size: 1.4rem; // Augmentation de la taille du texte sur tablette
+    width: 85%;
+  }
+
+  @include desktop {
+    font-size: 1.2rem; // Encore plus grand pour les grands écrans
+    width: 80%;
+    bottom: 6%;
+
+  }
 }
+
