@@ -7,10 +7,12 @@
       name="description"
       content="Explorez les œuvres d'un photographe talentueux, découvrez sa galerie et contactez-le facilement."
     />
+    <meta name="author" content="Trackozor">
     <meta
       name="keywords"
       content="photographe, Fisheye, galerie, contact, photographie, professionnel, artistique"
     />
+    <link rel="canonical" href="https://www.fisheye-photographe.com">
     <meta property="og:title" content="Fisheye - Photographe professionnel" />
     <meta
       property="og:description"
@@ -227,8 +229,9 @@
     </div>
     
     <!-- Lightbox -->
-    <div id="lightbox" class="lightbox" role="dialog" aria-hidden="true">
+    <div id="lightbox" class="lightbox" role="dialog" aria-hidden="true" tabindex="-1">
       <div class="lightbox-content">
+        <!-- Bouton de fermeture -->
         <button
           type="button"
           class="lightbox-close"
@@ -237,6 +240,8 @@
         >
           &times;
         </button>
+
+        <!-- Bouton précédent -->
         <button
           type="button"
           class="lightbox-prev"
@@ -245,12 +250,18 @@
         >
           &lsaquo;
         </button>
-        <div class="lightbox-media" aria-labelledby="lightbox-caption">
-          <!-- Média (image ou vidéo) inséré dynamiquement -->
+
+        <!-- Conteneur du média -->
+        <div class="lightbox-media-container" aria-labelledby="lightbox-caption">
+          <!-- L'image ou la vidéo sera insérée ici dynamiquement -->
         </div>
+
+        <!-- Légende du média -->
         <div id="lightbox-caption" class="lightbox-caption">
           <!-- Légende insérée dynamiquement -->
         </div>
+
+        <!-- Bouton suivant -->
         <button
           type="button"
           class="lightbox-next"
@@ -261,6 +272,7 @@
         </button>
       </div>
     </div>
+
     <!-- Modale de confirmation -->
     <div
       id="confirmation-modal"

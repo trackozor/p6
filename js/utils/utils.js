@@ -1,39 +1,32 @@
-/* =============================================================================
- * Projet      : Fisheye
- * Fichier     : utils.js
- * Auteur      : Trackozor
- * Date        : 21/01/2025
- * Version     : 1.1.0
- * Description : Fonctions utilitaires pour le projet Fisheye.
- *               Ce fichier inclut :
- *               - Gestion et vérification des logs.
- *               - Manipulation sécurisée des classes CSS.
- *               - Sélecteurs DOM sécurisés.
- *               - Vérification des sélecteurs DOM.
- *               - Détection de la page actuelle.
- * =============================================================================
- */
+/* =============================================================================*/
+/* 🎯 PROJET      : Fisheye */
+/* 📄 FICHIER     : utils.js */
+/* 🖊️ AUTEUR      : Trackozor */
+/* 📆 DATE        : 21/01/2025 */
+/* 🔄 VERSION     : 1.2.0 */
+/* 📝 DESCRIPTION : Fonctions utilitaires globales du projet Fisheye :     */
+/*   - Gestion et vérification des logs.                                    */
+/*   - Manipulation sécurisée des classes CSS.                               */
+/*   - Détection de la page actuelle.                                        */
+/*   - Gestion des erreurs des formulaires.                                  */
+/* ============================================================================= */
 
-/* =============================================================================
- * SECTION : IMPORTATIONS
- * =============================================================================
- */
+
+/* =============================================================================*/
+/* 🛠️ SECTION : IMPORTATIONS (Imports des constantes globales) */
+/* =============================================================================*/
+
 import {
-  CONFIGLOG,
-  ENVIRONMENTS,
-  ACTIVE_ENVIRONMENT,
+  CONFIGLOG,        // Configuration des logs (niveaux de logs, couleurs, icônes...)
+  ENVIRONMENTS,     // Liste des environnements (Développement, Production...)
+  ACTIVE_ENVIRONMENT // Environnement actif du projet
 } from "../config/constants.js";
 
-/* =============================================================================
- * SECTION : FONCTIONS DE LOG
- * =============================================================================
- */
 
-/**
- * Vérifie si un type de log est activé en fonction de la configuration globale.
- * @param {string} level - Type de log (info, warn, error, etc.).
- * @returns {boolean} `true` si le log est activé, sinon `false`.
- */
+/* ============================================================================= */
+/* SECTION : FONCTIONS DE LOG                                                    */
+/* ============================================================================= */
+
 /**
  * Vérifie si un niveau de log est activé en fonction de la verbosité, du niveau de log configuré,
  * et de l'environnement actif.
@@ -103,10 +96,9 @@ export const logEvent = (type, message, data = {}) => {
   }
 };
 
-/* =============================================================================
- * SECTION : MANIPULATION DES CLASSES CSS
- * =============================================================================
- */
+/* ============================================================================= */
+/*  SECTION : MANIPULATION DES CLASSES CSS   */
+/* ============================================================================= */
 
 /**
  * Ajoute une classe CSS à un élément HTML.
@@ -146,6 +138,8 @@ export function addClass(element, className) {
   }
 }
 
+
+/* ============================================================================= */
 /**
  * Supprime une classe CSS d'un élément HTML.
  * @param {HTMLElement} element - Élément cible.
@@ -186,10 +180,9 @@ export function removeClass(element, className) {
   }
 }
 
-/* =============================================================================
- * SECTION : FONCTIONS DOM
- * =============================================================================
- *
+/* ============================================================================= */
+/* SECTION : FONCTIONS DOM */
+/* ============================================================================= */
 /**
  * Détecte la page actuelle en combinant plusieurs méthodes :
  * - Attribut HTML `data-page` (préféré si disponible).

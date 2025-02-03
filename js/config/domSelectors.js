@@ -102,7 +102,7 @@ const domSelectors = (() => {
       lightboxCloseButton: safeQuerySelector(".lightbox-close"),
       lightboxPrevButton: safeQuerySelector(".lightbox-prev"),
       lightboxNextButton: safeQuerySelector(".lightbox-next"),
-      lightboxMediaContainer: safeQuerySelector(".lightbox-media"),
+      lightboxMediaContainer: safeQuerySelector(".lightbox-content"),
       lightboxCaption: safeQuerySelector("#lightbox-caption"),
     },
     modal: {

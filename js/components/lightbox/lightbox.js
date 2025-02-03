@@ -123,13 +123,7 @@ export function openLightbox(
  * @param {Object} media - Données du média à afficher.
  * @param {string} folderName - Nom du dossier contenant les médias.
  */
-/**
- * Met à jour le contenu de la lightbox avec animation.
- * @param {Object} media - Données du média à afficher.
- * @param {string} folderName - Nom du dossier contenant les médias.
- * @param {string} direction - Direction du changement ("left" ou "right").
- */
-function updateLightboxContent(media, folderName, direction) {
+function updateLightboxContent(media, folderName) {
   const { lightboxMediaContainer, lightboxCaption } = domSelectors.lightbox;
 
   if (!lightboxMediaContainer || !lightboxCaption) {
@@ -186,14 +180,9 @@ function updateLightboxContent(media, folderName, direction) {
     }
 
     if (mediaElement) {
-      mediaElement.classList.add(`entering-${direction}`);
       lightboxMediaContainer.appendChild(mediaElement);
-
-      setTimeout(() => {
-        mediaElement.classList.remove(`entering-${direction}`);
-      }, 500); // Fin de l'animation
-
       lightboxCaption.textContent = media.title || "Sans titre";
+
       logEvent("success", "Contenu de la lightbox mis à jour avec succès.", {
         media,
         folderName,
@@ -280,21 +269,8 @@ function displayMedia(index, folderName = globalFolderName) {
     return;
   }
 
-  const { lightboxMediaContainer } = domSelectors.lightbox;
-  const currentMedia = lightboxMediaContainer.querySelector("img, video");
+  const media = mediaList[index];
+  logEvent("info", "Affichage du média en cours.", { media, folderName });
 
-  let direction = index > currentIndex ? "right" : "left"; // Déterminer la direction
-
-  if (currentMedia) {
-    // Applique l’animation de sortie
-    currentMedia.classList.add(`exiting-${direction}`);
-
-    // Supprime l'ancien média après l'animation
-    setTimeout(() => {
-      currentMedia.remove();
-      updateLightboxContent(mediaList[index], folderName, direction);
-    }, 500); // Attendre la fin de l'animation (0.5s)
-  } else {
-    updateLightboxContent(mediaList[index], folderName, direction);
-  }
+  updateLightboxContent(media, folderName);
 }

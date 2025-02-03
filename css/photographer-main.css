@@ -107,13 +107,13 @@
 /* Mixin pour gérer les écrans mobile en mode paysage */
 /* Mixin pour gérer les écrans desktop*/
 /* ====================================================== */
-/* Nom du fichier    : _animations.scss                   */
-/* Auteur            : Trackozor                           */
-/* Date de création  : 25/09/24                           */
-/* Dernière modif.   : 08/01/25                           */
-/* Description       : Fichier regroupant toutes les      */
-/*                     animations réutilisables avec     */
-/*                     des classes utilitaires.          */
+/* 🎨 Nom du fichier    : _animations.scss                */
+/* 🎬 Auteur            : Trackozor                        */
+/* 📅 Date de création  : 25/09/24                        */
+/* 🛠 Dernière modif.   : 08/01/25                        */
+/* 📌 Description       : Fichier regroupant toutes les   */
+/*                        animations réutilisables       */
+/*                        et les animations Lightbox.    */
 /* ====================================================== */
 /* ====================================================== */
 /* ⚡ Effets de Fondu (Fade In / Fade Out) */
@@ -163,8 +163,7 @@
   }
 }
 /* ✅ Classes utilitaires */
-.scale-up, .lightbox-media-container img,
-.lightbox-media-container video {
+.scale-up {
   animation: scale-up 0.5s ease-in-out forwards;
 }
 
@@ -180,15 +179,14 @@
     transform: scale(1.1);
   }
 }
-.pulse, .lightbox-prev,
-.lightbox-next {
+.pulse {
   animation: pulse 2s infinite ease-in-out;
 }
 
 /* ====================================================== */
 /* 📍 Effets de Glissement (Slide In / Slide Out) */
 /* ====================================================== */
-@keyframes slide-in-right {
+@keyframes slide-in {
   from {
     transform: translateX(100%);
     opacity: 0;
@@ -198,51 +196,23 @@
     opacity: 1;
   }
 }
-@keyframes slide-out-left {
+@keyframes slide-out {
   from {
     transform: translateX(0);
     opacity: 1;
   }
   to {
     transform: translateX(-100%);
-    opacity: 0;
-  }
-}
-@keyframes slide-in-left {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-@keyframes slide-out-right {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
     opacity: 0;
   }
 }
 /* ✅ Classes utilitaires */
-.slide-in-right {
-  animation: slide-in-right 0.5s ease-in-out forwards;
+.slide-in {
+  animation: slide-in 0.5s ease-in-out forwards;
 }
 
-.slide-out-left {
-  animation: slide-out-left 0.5s ease-in-out forwards;
-}
-
-.slide-in-left {
-  animation: slide-in-left 0.5s ease-in-out forwards;
-}
-
-.slide-out-right {
-  animation: slide-out-right 0.5s ease-in-out forwards;
+.slide-out {
+  animation: slide-out 0.5s ease-in-out forwards;
 }
 
 /* ====================================================== */
@@ -256,7 +226,7 @@
     transform: rotate(360deg);
   }
 }
-@keyframes rotate-anticlockwise {
+@keyframes rotate-reverse {
   from {
     transform: rotate(360deg);
   }
@@ -270,7 +240,7 @@
 }
 
 .rotate-reverse {
-  animation: rotate-anticlockwise 1s linear infinite;
+  animation: rotate-reverse 1s linear infinite;
 }
 
 /* ====================================================== */
@@ -313,45 +283,83 @@
 /* 🚀 Animations de navigation Lightbox (Gauche/Droite) */
 /* ====================================================== */
 @keyframes slide-in-right {
-  0% {
+  from {
     transform: translateX(100%);
     opacity: 0;
   }
-  100% {
+  to {
     transform: translateX(0);
     opacity: 1;
   }
 }
 @keyframes slide-out-left {
-  0% {
+  from {
     transform: translateX(0);
     opacity: 1;
   }
-  100% {
+  to {
     transform: translateX(-100%);
     opacity: 0;
   }
 }
 @keyframes slide-in-left {
-  0% {
+  from {
     transform: translateX(-100%);
     opacity: 0;
   }
-  100% {
+  to {
     transform: translateX(0);
     opacity: 1;
   }
 }
 @keyframes slide-out-right {
-  0% {
+  from {
     transform: translateX(0);
     opacity: 1;
   }
-  100% {
+  to {
     transform: translateX(100%);
     opacity: 0;
   }
 }
+/* ✅ Classes spécifiques pour la Lightbox */
+.lightbox-enter-right {
+  animation: slide-in-right 0.5s ease-in-out forwards;
+}
+
+.lightbox-exit-left {
+  animation: slide-out-left 0.5s ease-in-out forwards;
+}
+
+.lightbox-enter-left {
+  animation: slide-in-left 0.5s ease-in-out forwards;
+}
+
+.lightbox-exit-right {
+  animation: slide-out-right 0.5s ease-in-out forwards;
+}
+
+/* ====================================================== */
+/* 🌟 Effet de rebond (Bounce) pour les transitions */
+/* ====================================================== */
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+/* ✅ Classe utilitaire */
+.bounce-in {
+  animation: bounce-in 0.6s ease-out forwards;
+}
+
 /* ====================================================== */
 /* ❤️ Animation Like (HeartBeat) */
 /* ====================================================== */
@@ -1446,15 +1454,9 @@ footer p {
     height: 90vh;
   }
 }
-@media (min-width: 1024px) {
-  .lightbox-content {
-    max-height: 75vh;
-    align-items: center;
-  }
-}
 
 button {
-  position: absolute;
+  position: relative;
   background: transparent;
   cursor: pointer;
   color: var(--primary-color);
@@ -1485,7 +1487,6 @@ button:hover {
 @media (min-width: 1024px) {
   .lightbox-close {
     right: 3%;
-    top: 8%;
     font-size: 4.5rem;
     font-weight: 100;
   }
@@ -1495,9 +1496,10 @@ button:hover {
     font-size: 4rem;
   }
 }
+
 .lightbox-close:hover {
   background-color: var(--secondary-color);
-  color: white;
+  color: red;
 }
 
 .lightbox-prev,
@@ -1505,6 +1507,7 @@ button:hover {
   border-radius: var(--border-radius-small);
   padding: var(--spacing-xsmall);
   font-size: 2.5rem;
+  animation: pulse-scaling 2s infinite;
 }
 .lightbox-prev:hover,
 .lightbox-next:hover {
@@ -1539,18 +1542,13 @@ button:hover {
   align-items: center;
   flex-direction: column;
 }
-@media (min-width: 1024px) {
-  .lightbox-media-container {
-    height: 70vh;
-    max-height: 50px;
-  }
-}
 
 .lightbox-media-container img,
 .lightbox-media-container video {
   width: 85%;
   height: 50%;
   object-fit: contain;
+  animation: fade-in-scale 0.6s ease-in-out;
 }
 @media (min-width: 767px) {
   .lightbox-media-container img,
@@ -1558,63 +1556,17 @@ button:hover {
     width: 80%;
     height: 50%;
   }
-}
-@media (min-width: 1024px) {
-  .lightbox-media-container img,
-  .lightbox-media-container video {
-    width: 70%;
-    height: 50%;
-    max-height: 60vh;
-  }
-}
-
-.lightbox-media-container img,
-.lightbox-media-container video {
-  position: relative;
-  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-}
-.lightbox-media-container img.exiting-left,
-.lightbox-media-container video.exiting-left {
-  animation: slide-out-left 0.5s ease-in-out forwards;
-}
-.lightbox-media-container img.exiting-right,
-.lightbox-media-container video.exiting-right {
-  animation: slide-out-right 0.5s ease-in-out forwards;
-}
-.lightbox-media-container img.entering-left,
-.lightbox-media-container video.entering-left {
-  animation: slide-in-left 0.5s ease-in-out forwards;
-}
-.lightbox-media-container img.entering-right,
-.lightbox-media-container video.entering-right {
-  animation: slide-in-right 0.5s ease-in-out forwards;
 }
 
 .lightbox-caption {
-  position: absolute;
-  bottom: 5%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 85%;
-  text-align: left;
-  font-size: 1.2rem;
-  font-weight: 300;
-  color: var(--primary-color);
-  padding: 2% 0;
-  transition: opacity 0.3s ease-in-out;
-}
-@media (min-width: 767px) {
-  .lightbox-caption {
-    font-size: 1.4rem;
-    width: 85%;
-  }
-}
-@media (min-width: 1024px) {
-  .lightbox-caption {
-    font-size: 1.2rem;
-    width: 80%;
-    bottom: 6%;
-  }
+  margin-top: var(--spacing-small);
+  font-size: var(--font-size-base);
+  color: var(--text-color-primary);
+  max-width: 100%;
+  display: flex;
+  justify-content: left;
+  line-height: var(--line-height-normal);
+  animation: fade-in-scale 0.6s ease-in-out;
 }
 
 /* =============================================================================
