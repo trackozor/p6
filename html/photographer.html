@@ -113,11 +113,15 @@
               <h3>Titre du média</h3>
               <p>
                 <span class="media-likes">0</span>
-                <i class="fas fa-heart " aria-hidden="true"></i>
+                <!-- Bouton accessible pour les likes -->
+                <button type="button" id="like-button" data-action="like" aria-label="Ajouter un like">
+                  <i class="fas fa-heart" aria-hidden="true"></i>
+                </button>
               </p>
             </div>
           </article>
         </template>
+        
         
         <div
           id="gallery"

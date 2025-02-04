@@ -13,132 +13,290 @@ import { getPhotographerIdFromUrl } from "../../pages/photographer-page.js";
 /*              Fonctions de tri                */
 /*==============================================*/
 
+/**
+ * Vérifie si la liste des médias est valide.
+ * @param {Array} mediaList - Liste des médias à vérifier.
+ * @throws {TypeError} - Si `mediaList` n'est pas un tableau ou contient des objets invalides.
+ */
 const validateMediaList = (mediaList) => {
   if (!Array.isArray(mediaList)) {
+    logEvent("error", "La liste des médias doit être un tableau valide.");
     throw new TypeError("La liste des médias doit être un tableau.");
+  }
+
+  for (const media of mediaList) {
+    if (
+      typeof media !== "object" ||
+      !("likes" in media) ||
+      !("title" in media) ||
+      !("date" in media)
+    ) {
+      logEvent("error", "Un ou plusieurs médias sont invalides.", { media });
+      throw new TypeError("Chaque média doit être un objet contenant 'likes', 'title' et 'date'.");
+    }
   }
 };
 
+/**
+ * Trie la liste des médias par nombre de likes (du plus aimé au moins aimé).
+ * @param {Array} mediaList - Liste des médias à trier.
+ * @returns {Array} - Liste triée par nombre de likes décroissant.
+ */
 export const sortByLikes = (mediaList) => {
   validateMediaList(mediaList);
-  return [...mediaList].sort((a, b) => b.likes - a.likes);
+  logEvent("info", "Tri des médias par nombre de likes.");
+  return Object.freeze([...mediaList].sort((a, b) => b.likes - a.likes));
 };
 
+/**
+ * Trie la liste des médias par titre (ordre alphabétique).
+ * Utilise `Intl.Collator` pour un tri plus performant et précis.
+ * @param {Array} mediaList - Liste des médias à trier.
+ * @returns {Array} - Liste triée par ordre alphabétique des titres.
+ */
 export const sortByTitle = (mediaList) => {
   validateMediaList(mediaList);
-  return [...mediaList].sort((a, b) => a.title.localeCompare(b.title));
+  logEvent("info", "Tri des médias par titre alphabétique.");
+  const collator = new Intl.Collator("fr", { sensitivity: "base" });
+  return Object.freeze([...mediaList].sort((a, b) => collator.compare(a.title, b.title)));
 };
 
+/**
+ * Trie la liste des médias par date (du plus récent au plus ancien).
+ * @param {Array} mediaList - Liste des médias à trier.
+ * @returns {Array} - Liste triée par date décroissante.
+ */
 export const sortByDate = (mediaList) => {
   validateMediaList(mediaList);
-  return [...mediaList].sort((a, b) => new Date(b.date) - new Date(a.date));
+  logEvent("info", "Tri des médias par date décroissante.");
+  return Object.freeze([...mediaList].sort((a, b) => new Date(b.date) - new Date(a.date)));
 };
+
 
 /*==============================================*/
 /* Gestion des IDs et Positions des Médias      */
 /*==============================================*/
+/**
+ * Associe les IDs des médias avec les éléments correspondants dans le DOM.
+ * 
+ *  **Fonctionnement** :
+ *  - Vérifie si `mediaList` est un tableau non vide contenant des objets valides.
+ *  - Sélectionne la galerie et tous les médias (`.media-item`) dans le DOM.
+ *  - Associe chaque élément `.media-item` avec l'ID correspondant à son `data-title`.
+ *  - Journalise chaque étape et capture les erreurs en cas de problème.
+ * 
+ *  **Gestion des erreurs** :
+ *  - Vérifie que `mediaList` est bien un **tableau** contenant des **objets valides** (id et title).
+ *  - Vérifie que chaque élément `.media-item` **possède un attribut `data-title`**.
+ *  - Capture les erreurs si la galerie ou les médias ne sont pas trouvés dans le DOM.
+ *  - Log un avertissement si un média ne correspond à aucun titre dans `mediaList`.
+ *
+ * @param {Array} mediaList - Liste des médias contenant au moins un `title` et un `id`.
+ * @throws {TypeError} - Si `mediaList` n'est pas un tableau valide.
+ * @throws {Error} - Si aucun média n'est trouvé dans le DOM.
+ */
 
 export async function associateMediaIds(mediaList) {
+  logEvent("test_start", "Début de l'association des IDs aux médias du DOM.");
+
   try {
-    validateMediaList(mediaList);
-    const gallery = document.getElementById("gallery");
-    if (!gallery) {
-      throw new Error("Galerie introuvable dans le DOM.");
+    //  Vérification que `mediaList` est un tableau non vide
+    if (!Array.isArray(mediaList) || mediaList.length === 0) {
+      throw new TypeError("La liste des médias doit être un tableau non vide.");
     }
 
-    const mediaItems = gallery.querySelectorAll(".media-item");
-    if (!mediaItems.length) {
-      throw new Error("Aucun média trouvé dans le DOM.");
-    }
-
-    Array.from(mediaItems).forEach((mediaItem) => {
-      const title = mediaItem.getAttribute("data-title");
-      const matchingMedia = mediaList.find((media) => media.title === title);
-
-      if (matchingMedia) {
-        mediaItem.setAttribute("data-id", matchingMedia.id);
-      } else {
-        logEvent(
-          "warn",
-          `Aucun média correspondant trouvé pour : "${title}".`,
-          {
-            element: mediaItem,
-          },
-        );
+    //  Vérification que chaque média possède bien un `title` (string) et un `id` (number)
+    mediaList.forEach((media, index) => {
+      if (!media || typeof media.title !== "string" || typeof media.id !== "number") {
+        logEvent("error", `Média invalide détecté à l'index ${index}.`, { media });
+        throw new TypeError("Chaque média doit contenir un 'title' (string) et un 'id' (number).");
       }
     });
 
-    logEvent("success", "Association des IDs terminée.");
-  } catch (error) {
-    logEvent(
-      "error",
-      `Erreur lors de l'association des IDs : ${error.message}`,
-    );
-  }
-}
-
-export async function captureGalleryState() {
-  try {
+    // Sélection de la galerie contenant les médias
     const gallery = document.getElementById("gallery");
     if (!gallery) {
       throw new Error("Galerie introuvable dans le DOM.");
     }
 
+    // Sélection de tous les éléments `.media-item` présents dans la galerie
     const mediaItems = gallery.querySelectorAll(".media-item");
-    return Array.from(mediaItems)
+    if (!mediaItems.length) {
+      throw new Error("Aucun élément .media-item trouvé dans la galerie.");
+    }
+
+    let associationsCount = 0; // Compteur du nombre d'associations réussies
+
+    // Parcours de chaque élément `.media-item` pour l'associer à un média
+    mediaItems.forEach((mediaItem) => {
+      //  Récupère la valeur de l'attribut `data-title` de l'élément
+      const title = mediaItem.getAttribute("data-title");
+
+      //  Vérifie que `data-title` est bien défini sur l'élément
+      if (!title) {
+        logEvent("warn", "Un élément .media-item ne possède pas d'attribut 'data-title'.", { element: mediaItem });
+        return; // Passe à l'élément suivant
+      }
+
+      // Recherche un média correspondant dans `mediaList` en fonction du `title`
+      const matchingMedia = mediaList.find((media) => media.title === title);
+
+      // Vérifie si un média correspondant a été trouvé
+      if (matchingMedia) {
+        // Associe l'ID du média à l'élément `.media-item` via `data-id`
+        mediaItem.setAttribute("data-id", matchingMedia.id);
+        associationsCount++; // Incrémente le compteur des associations réussies
+      } else {
+        // Journalise un avertissement si aucun média correspondant n'a été trouvé
+        logEvent("warn", `Aucun média correspondant trouvé pour : "${title}".`, { element: mediaItem });
+      }
+    });
+
+    // Journalise le succès et affiche le nombre d'associations réussies
+    logEvent("success", `Association des IDs terminée. ${associationsCount} correspondances trouvées.`);
+  } catch (error) {
+    //  Capture et log toute erreur rencontrée
+    logEvent("error", `Erreur lors de l'association des IDs : ${error.message}`, { error });
+  }
+
+  logEvent("test_end", "Fin de l'association des IDs aux médias du DOM.");
+}
+
+
+/*==============================================*/
+/* Recuperation position medias*/
+/*==============================================*/
+/**
+ * Capture l'état actuel de la galerie en enregistrant l'ID et la position des médias affichés.
+ * 
+ *  **Fonctionnement** :
+ *  - Sélectionne la galerie contenant les médias (`#gallery`).
+ *  - Vérifie que la galerie existe dans le DOM.
+ *  - Récupère tous les éléments `.media-item` présents dans la galerie.
+ *  - Pour chaque média, extrait l'ID depuis l'attribut `data-id` et enregistre sa position.
+ *  - Filtre les éléments invalides pour ne garder que ceux avec un ID valide.
+ * 
+ *  **Gestion des erreurs** :
+ *  - Vérifie que l'élément `#gallery` est bien présent avant de continuer.
+ *  - Vérifie que chaque média possède un `data-id` valide.
+ *  - Journalise les erreurs et avertissements en cas de problème.
+ * 
+ * @async
+ * @function captureGalleryState
+ * @returns {Promise<Array<{ id: number, position: number, element: HTMLElement }>>} 
+ * - Un tableau d'objets contenant les **ID**, **positions**, et **références DOM** des médias.
+ * - Retourne un tableau vide si une erreur est détectée.
+ */
+
+export async function captureGalleryState() {
+  logEvent("test_start", "Début de la capture de l'état de la galerie.");
+
+  try {
+    //  Sélection de la galerie contenant les médias
+    const gallery = document.getElementById("gallery");
+
+    // Vérifie si la galerie existe dans le DOM
+    if (!gallery) {
+      throw new Error("Galerie introuvable dans le DOM.");
+    }
+
+    // Sélection de tous les éléments `.media-item` présents dans la galerie
+    const mediaItems = gallery.querySelectorAll(".media-item");
+
+    //  Conversion des NodeList en tableau et extraction des informations nécessaires
+    const galleryState = Array.from(mediaItems)
       .map((mediaItem, index) => {
+        //  Extraction de l'ID du média depuis l'attribut `data-id`
         const id = parseInt(mediaItem.getAttribute("data-id"), 10);
+
+        //  Vérifie si l'ID est valide
         if (isNaN(id)) {
-          logEvent("warn", `ID invalide détecté à la position ${index}`, {
-            element: mediaItem,
-          });
-          return null;
+          logEvent("warn", `ID invalide détecté à la position ${index}.`, { element: mediaItem });
+          return null; // Retourne `null` pour les éléments avec un ID invalide
         }
+
+        //  Retourne un objet contenant l'ID, la position et l'élément DOM
         return { id, position: index, element: mediaItem };
       })
-      .filter(Boolean); // Supprime les éléments invalides
+      .filter(Boolean); //  Supprime les éléments invalides (`null`)
+
+    // Journalise le succès et retourne l'état de la galerie
+    logEvent("success", "État de la galerie capturé avec succès.", { galleryState });
+    logEvent("test_end", "Fin de la capture de l'état de la galerie.");
+    return galleryState;
   } catch (error) {
-    logEvent(
-      "error",
-      `Erreur lors de la capture de la galerie : ${error.message}`,
-    );
+    // Capture et journalise toute erreur détectée
+    logEvent("error", `Erreur lors de la capture de la galerie : ${error.message}`, { error });
+
+    // Retourne un tableau vide en cas d'erreur
     return [];
   }
 }
+
 
 /*==============================================*/
 /* Fonction Principale : Gérer le Tri des Médias*/
 /*==============================================*/
 
+/**
+ * Trie les médias d'un photographe selon l'option sélectionnée.
+ * 
+ * **Fonctionnement** :
+ *  - Récupère l'ID du photographe à partir de l'URL.
+ *  - Charge les données JSON contenant les médias.
+ *  - Filtre les médias correspondant au photographe sélectionné.
+ *  - Applique le tri en fonction de l'option sélectionnée (`popularity`, `title`, `date`).
+ *  - Récupère l'état actuel de la galerie et replace les éléments dans l'ordre trié.
+ * 
+ * **Gestion des erreurs** :
+ *  - Vérifie que l'ID du photographe est bien récupéré.
+ *  - Vérifie que la requête HTTP pour récupérer les médias est valide.
+ *  - Vérifie qu'il existe bien des médias à trier pour le photographe.
+ *  - Vérifie que l'option de tri est valide.
+ *  - Capture et journalise toutes les erreurs.
+ * 
+ * @async
+ * @function handleMediaSort
+ * @param {string} sortOption - Option de tri sélectionnée (popularity, title, date).
+ * @returns {Promise<void>}
+ * @throws {Error} - Lève une erreur si l'un des éléments requis (ID, médias, option de tri) est invalide.
+ */
+
 export async function handleMediaSort(sortOption) {
-  logEvent("test_start", "Début du processus de tri des médias.", {
-    sortOption,
-  });
+  logEvent("test_start", "Début du processus de tri des médias.", { sortOption });
 
   try {
+    //  Récupération de l'ID du photographe à partir de l'URL
     const photographerId = getPhotographerIdFromUrl();
+
+    // Vérifie si l'ID du photographe est valide
     if (!photographerId) {
       throw new Error("ID du photographe introuvable.");
     }
 
+    // Récupération des données JSON contenant les médias
     const response = await fetch("../../assets/data/photographers.json");
+
+    //  Vérifie que la requête HTTP est valide
     if (!response.ok) {
       throw new Error(`Erreur HTTP : ${response.status}`);
     }
 
+    // Conversion des données en JSON
     const data = await response.json();
+
+    //  Filtrage des médias appartenant au photographe sélectionné
     const photographerMedia = data.media.filter(
-      (media) => media.photographerId === parseInt(photographerId, 10),
+      (media) => media.photographerId === parseInt(photographerId, 10)
     );
 
+    // Vérifie si le photographe a des médias à trier
     if (!photographerMedia.length) {
-      logEvent(
-        "warn",
-        `Aucun média trouvé pour le photographe ID ${photographerId}.`,
-      );
+      logEvent("warn", `Aucun média trouvé pour le photographe ID ${photographerId}.`);
       return;
     }
 
+    // Application du tri selon l'option sélectionnée
     let sortedMedia;
     switch (sortOption) {
       case "popularity":
@@ -154,33 +312,42 @@ export async function handleMediaSort(sortOption) {
         throw new Error(`Option de tri inconnue : ${sortOption}`);
     }
 
+    // Journalise le succès du tri
     logEvent("info", "Médias triés avec succès.", { sortedMedia });
 
+    // Capture l'état actuel de la galerie avant la réorganisation
     const currentPositions = await captureGalleryState();
+
+    // Sélection de la galerie DOM
     const gallery = document.getElementById("gallery");
+
+    // Vérifie si la galerie est bien présente dans le DOM
     if (!gallery) {
       throw new Error("Galerie introuvable dans le DOM.");
     }
 
+    // Réorganisation des médias dans la galerie selon le nouvel ordre trié
     sortedMedia.forEach((media, index) => {
-      const matchingMedia = currentPositions.find(
-        (item) => item.id === media.id,
-      );
+      const matchingMedia = currentPositions.find((item) => item.id === media.id);
+
       if (matchingMedia) {
+        // Déplace l'élément DOM du média à la nouvelle position
         gallery.insertBefore(matchingMedia.element, gallery.children[index]);
       } else {
-        logEvent("warn", `Aucun élément DOM pour l'ID : ${media.id}`, {
-          media,
-        });
+        logEvent("warn", `Aucun élément DOM pour l'ID : ${media.id}`, { media });
       }
     });
 
+    // Journalise la réussite du processus
     logEvent("success", "Tri des médias terminé avec succès.");
   } catch (error) {
+    // Capture et journalise toute erreur détectée
     logEvent("error", `Erreur lors du tri des médias : ${error.message}`, {
       stack: error.stack,
     });
   } finally {
+    // Fin du processus de tri
     logEvent("test_end", "Fin du processus de tri des médias.");
   }
 }
+

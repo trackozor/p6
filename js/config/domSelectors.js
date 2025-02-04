@@ -93,6 +93,13 @@ const domSelectors = (() => {
       sortingSelect: safeQuerySelector("#sort-options"),
       contactButton: safeQuerySelector(".contact-button"),
       photographerStatsTemplate: safeQuerySelector("#photographer-stats", true), // Nouveau sélecteur pour le template
+
+      // Sélecteurs pour le système de Like/Dislike
+      likeButtons: safeQuerySelector(".like-btn"), // Boutons "J'aime"
+      dislikeButtons: safeQuerySelector(".dislike-btn"), // Boutons "Je n'aime pas"
+      likeDislikeModal: safeQuerySelector("#like-dislike-modal"), // Modale de choix Like/Dislike
+      likeDislikeContent: safeQuerySelector(".like-dislike-content"), // Contenu interne de la modale
+
       totalLikes: null,
       dailyRate: null,
     },
@@ -105,8 +112,8 @@ const domSelectors = (() => {
       lightboxCaption: safeQuerySelector("#lightbox-caption"),
     },
     modal: {
-      contactOverlay: safeQuerySelector("#modal-overlay"),
-      container: safeQuerySelector("#contact-modal"),
+      modalOverlay: safeQuerySelector("#modal-overlay"),
+      contactForm: safeQuerySelector("#contact-modal form"),
       closeButton: safeQuerySelector(".modal-close"),
       form: {
         formElement: safeQuerySelector(
@@ -115,7 +122,7 @@ const domSelectors = (() => {
         firstName: safeQuerySelector("#first-name"),
         lastName: safeQuerySelector("#last-name"),
         email: safeQuerySelector("#email"),
-        message: safeQuerySelector("#message"),
+        messageField: safeQuerySelector("#message"),
         submitButton: safeQuerySelector(".contact-submit-button"),
         confirmButton: safeQuerySelector(".confirm-btn"),
       },
@@ -135,6 +142,12 @@ const domSelectors = (() => {
     sorting: {
       sortOptions: safeQuerySelector("#sort-options"),
     },
+    loader:{
+      loader:safeQuerySelector("#loader"),
+      loaderText:safeQuerySelector("#loader-text"),
+      progressBar:safeQuerySelector("#progress-bar"),
+      progressPercentage:safeQuerySelector ("#progress-percentage"),
+    }
   });
 
   /**
@@ -180,7 +193,7 @@ const domSelectors = (() => {
     if (missingSelectors.length > 0) {
       logEvent(
         "error",
-        `⚠️ Les sélecteurs suivants sont manquants : ${missingSelectors.join(", ")}.`,
+        `Les sélecteurs suivants sont manquants : ${missingSelectors.join(", ")}.`,
         {},
       );
       return false;
@@ -196,7 +209,7 @@ const domSelectors = (() => {
    */
   const loadSelectorsForCurrentPage = () => {
     const currentPage = getCurrentPage();
-    logEvent("info", `🔍 Page détectée : ${currentPage}`);
+    logEvent("info", `Page détectée : ${currentPage}`);
 
     if (currentPage === "index") {
       const selectors = getIndexSelectors();
@@ -210,7 +223,7 @@ const domSelectors = (() => {
       return selectors;
     }
 
-    logEvent("warn", "⚠️ Page inconnue, aucun sélecteur spécifique chargé.");
+    logEvent("warn", " Page inconnue, aucun sélecteur spécifique chargé.");
     return {}; // Objet vide si page inconnue
   };
 
