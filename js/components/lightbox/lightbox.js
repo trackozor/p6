@@ -1,10 +1,9 @@
 // ========================================================
 // Nom du fichier : lightbox.js
-// Description    : Gestion de la lightbox pour afficher les médias
-//                  (images ou vidéos) en plein écran.
+// Description    : Gestion de la lightbox pour afficher les médias (images ou vidéos) en plein écran.
 // Auteur         : Trackozor
 // Date           : 15/01/2025
-// Version        : 1.3.0 (Améliorations des logs et de la robustesse)
+// Version        : 1.4.1 (Optimisation de la gestion des animations et suppression des doublons)
 // ========================================================
 
 /*==============================================*/
@@ -23,253 +22,237 @@ let globalFolderName = ""; // Nom du dossier global pour les médias
  * @param {string} folderName - Nom du dossier contenant les médias.
  */
 export function initLightbox(mediaArray, folderName) {
-  logEvent("init", "Début de l'initialisation de la lightbox.", { mediaArray });
+    logEvent("init", "Début de l'initialisation de la lightbox.", { mediaArray });
 
-  if (!Array.isArray(mediaArray)) {
-    logEvent(
-      "error",
-      "Le paramètre passé à initLightbox n'est pas un tableau.",
-      { mediaArray },
-    );
-    throw new Error("Le paramètre mediaArray doit être un tableau.");
-  }
+    if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
+        logEvent("warn", "Le tableau de médias est vide.");
+        mediaList = [];
+        globalFolderName = folderName || "";
+        return;
+    }
 
-  if (!folderName || typeof folderName !== "string") {
-    logEvent("error", "Nom du dossier (folderName) invalide ou manquant.", {
-      folderName,
-    });
-    throw new Error("Le nom du dossier doit être une chaîne valide.");
-  }
+    if (typeof folderName !== "string") {
+        logEvent("error", "Nom du dossier (folderName) invalide ou manquant.", { folderName });
+        throw new Error("Le nom du dossier doit être une chaîne valide.");
+    }
 
-  if (mediaArray.length === 0) {
-    logEvent("warn", "Le tableau de médias est vide.");
-    mediaList = [];
-    globalFolderName = folderName; // Définit tout de même le dossier
-    return;
-  }
-
-  try {
-    mediaList = [...mediaArray];
-    globalFolderName = folderName; // Définit le dossier global
-    currentIndex = 0;
-    logEvent("success", "Lightbox initialisée avec succès.", { mediaList });
-  } catch (error) {
-    logEvent("error", "Erreur lors de l'initialisation de la lightbox.", {
-      error,
-    });
-    throw new Error(
-      "Erreur d'initialisation de la lightbox : " + error.message,
-    );
-  }
+    try {
+        mediaList = [...mediaArray];
+        globalFolderName = folderName;
+        currentIndex = 0;
+        logEvent("success", "Lightbox initialisée avec succès.", { mediaList });
+    } catch (error) {
+        logEvent("error", "Erreur lors de l'initialisation de la lightbox.", { error });
+        throw new Error("Erreur d'initialisation de la lightbox : " + error.message);
+    }
 }
 
 /**
  * Ouvre la lightbox pour afficher un média à l'index spécifié.
  * @param {number} index - Index du média à afficher.
- * @param {Array} mediaArray - Liste des médias (optionnel si déjà initialisée).
- * @param {string} folderName - Nom du dossier contenant les médias.
  */
-export function openLightbox(
-  index,
-  mediaArray = mediaList,
-  folderName = globalFolderName,
-) {
-  logEvent("action", `Ouverture de la lightbox pour l'index ${index}.`, {
-    index,
-    folderName,
-  });
 
-  try {
-    const { lightboxContainer, lightboxMediaContainer, lightboxCaption } =
-      domSelectors.lightbox;
+export function openLightbox(index, mediaArray, folderName) {
+    logEvent("action", `Ouverture de la lightbox pour l'index ${index}.`, { index });
 
-    if (!lightboxContainer || !lightboxMediaContainer || !lightboxCaption) {
-      throw new Error("Conteneurs requis pour la lightbox introuvables.");
+    try {
+        const { lightboxContainer } = domSelectors.lightbox;
+
+        if (!lightboxContainer) {
+            throw new Error("Conteneur principal de la lightbox introuvable.");
+        }
+
+        if (Array.isArray(mediaArray) && mediaArray.length > 0 && mediaArray !== mediaList) {
+            mediaList = [...mediaArray];
+            globalFolderName = folderName;
+        }
+
+        if (index < 0 || index >= mediaList.length) {
+            throw new Error(`Index ${index} hors limites.`);
+        }
+
+        currentIndex = index;
+        updateLightboxContent(mediaList[currentIndex], globalFolderName, "right");
+
+        lightboxContainer.classList.remove("hidden");
+        lightboxContainer.setAttribute("aria-hidden", "false");
+
+        logEvent("success", "Lightbox ouverte avec succès.");
+    } catch (error) {
+        logEvent("error", "Erreur lors de l'ouverture de la lightbox.", { error });
     }
-
-    if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
-      throw new Error("Tableau de médias invalide ou vide.");
-    }
-
-    if (!folderName || typeof folderName !== "string") {
-      throw new Error("Nom du dossier (folderName) invalide ou manquant.");
-    }
-
-    if (index < 0 || index >= mediaArray.length) {
-      throw new Error(`Index ${index} hors limites.`);
-    }
-
-    mediaList = [...mediaArray];
-    globalFolderName = folderName; // Met à jour le dossier global
-    currentIndex = index;
-
-    const media = mediaList[index];
-    updateLightboxContent(media, folderName);
-
-    lightboxContainer.classList.remove("hidden");
-    lightboxContainer.setAttribute("aria-hidden", "false");
-
-    logEvent("success", "Lightbox ouverte avec succès.");
-  } catch (error) {
-    logEvent("error", "Erreur lors de l'ouverture de la lightbox.", {
-      message: error.message,
-      stack: error.stack,
-    });
-  }
 }
-
-/**
- * Met à jour le contenu de la lightbox avec un média.
- * @param {Object} media - Données du média à afficher.
- * @param {string} folderName - Nom du dossier contenant les médias.
- */
-function updateLightboxContent(media, folderName) {
-  const { lightboxMediaContainer, lightboxCaption } = domSelectors.lightbox;
-
-  if (!lightboxMediaContainer || !lightboxCaption) {
-    logEvent("error", "Conteneurs de la lightbox introuvables.", {
-      lightboxMediaContainer,
-      lightboxCaption,
-    });
-    return;
-  }
-
-  if (!media) {
-    logEvent("error", "Média invalide ou introuvable.", { media });
-    lightboxMediaContainer.innerHTML = "<p>Média introuvable.</p>";
-    return;
-  }
-
-  if (!folderName || typeof folderName !== "string") {
-    logEvent("error", "Nom du dossier (folderName) invalide ou non défini.", {
-      folderName,
-    });
-    lightboxMediaContainer.innerHTML =
-      "<p>Erreur : Dossier média introuvable.</p>";
-    return;
-  }
-
-  try {
-    const folderPath = `../../../assets/photographers/${folderName}/`;
-    logEvent("info", "Chemin du dossier construit.", { folderPath });
-
-    // ✅ Supprime uniquement l'ancien média, pas les boutons
-    const mediaElement = lightboxMediaContainer.querySelector("img, video");
-    if (mediaElement) mediaElement.remove();
-
-    let newMedia;
-    if (media.image) {
-      newMedia = document.createElement("img");
-      newMedia.src = `${folderPath}${media.image}`;
-      newMedia.alt = media.title || "Image sans titre";
-      newMedia.loading = "lazy";
-
-      logEvent("info", "Image détectée pour mise à jour dans la lightbox.", {
-        newMedia,
-      });
-    } else if (media.video) {
-      newMedia = document.createElement("video");
-      newMedia.src = `${folderPath}${media.video}`;
-      newMedia.controls = true;
-
-      logEvent("info", "Vidéo détectée pour mise à jour dans la lightbox.", {
-        newMedia,
-      });
-    }
-
-    if (newMedia) {
-      lightboxMediaContainer.appendChild(newMedia);
-      lightboxCaption.textContent = media.title || "Sans titre";
-
-      logEvent("success", "Contenu de la lightbox mis à jour avec succès.", {
-        media,
-        folderName,
-      });
-    } else {
-      throw new Error("Type de média non pris en charge.");
-    }
-  } catch (error) {
-    logEvent(
-      "error",
-      "Erreur lors de la mise à jour du contenu de la lightbox.",
-      {
-        error,
-        media,
-        folderName,
-      },
-    );
-    lightboxMediaContainer.innerHTML =
-      "<p>Erreur lors du chargement du contenu.</p>";
-  }
-}
-
 
 /**
  * Ferme la lightbox.
  */
+/**
+ * Ferme la lightbox et réinitialise son état.
+ */
 export function closeLightbox() {
-  logEvent("action", "Fermeture de la lightbox.");
+    logEvent("action", "Fermeture de la lightbox et réinitialisation.");
 
-  const { lightboxContainer } = domSelectors.lightbox;
-  if (!lightboxContainer) {
-    logEvent("error", "Conteneur principal introuvable.");
-    return;
-  }
+    // Récupération des éléments de la lightbox
+    const { lightboxContainer, lightboxMediaContainer, lightboxCaption } = domSelectors.lightbox;
+    
+    // Vérification que le conteneur principal existe bien
+    if (!lightboxContainer) {
+        logEvent("error", "Conteneur principal introuvable.");
+        return;
+    }
 
-  lightboxContainer.classList.add("hidden");
-  lightboxContainer.setAttribute("aria-hidden", "true");
-  logEvent("success", "Lightbox fermée avec succès.");
+    // Suppression du média actuellement affiché dans la lightbox
+    const currentMedia = lightboxMediaContainer.querySelector(".active-media");
+    if (currentMedia) {
+        currentMedia.remove();
+    }
+
+    // Réinitialisation du texte du titre/caption
+    if (lightboxCaption) {
+        lightboxCaption.textContent = "";
+    }
+
+    // Réinitialisation des variables globales
+    currentIndex = 0;  // On remet l'index à 0
+    mediaList = [];     // On vide la liste des médias
+    globalFolderName = ""; // On remet le nom du dossier à une chaîne vide
+
+    // Masquer la lightbox avec des classes CSS et un attribut d'accessibilité
+    lightboxContainer.classList.add("hidden");
+    lightboxContainer.setAttribute("aria-hidden", "true");
+
+    logEvent("success", "Lightbox fermée et réinitialisée avec succès.");
+}
+
+
+function validateIndex(index) {
+    if (index < 0) {
+        return mediaList.length - 1; // 🔥 Si trop bas, revenir à la fin
+    }
+    if (index >= mediaList.length) {
+        return 0; // 🔥 Si trop haut, revenir au début
+    }
+    return index;
+}
+
+/*==============================================*/
+/*             Gestion des animations          */
+/*==============================================*/
+
+/**
+ * Anime la sortie du média vers la gauche.
+ */
+function animateMediaExitLeft(mediaElement, callback) {
+    mediaElement.classList.add("lightbox-exit-left");
+    mediaElement.addEventListener("animationend", () => {
+        callback();
+    }, { once: true });
 }
 
 /**
- * Affiche le média précédent.
+ * Anime la sortie du média vers la droite.
  */
-export function showPreviousMedia(
-  mediaArray = mediaList,
-  folderName = globalFolderName,
-) {
-  if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
-    logEvent("error", "Aucun média disponible pour afficher le précédent.");
-    return;
-  }
-
-  currentIndex = (currentIndex - 1 + mediaArray.length) % mediaArray.length;
-  logEvent(
-    "info",
-    `Navigation vers le média précédent : Index ${currentIndex}`,
-    { currentIndex },
-  );
-  displayMedia(currentIndex, folderName);
-}
-
-export function showNextMedia(
-  mediaArray = mediaList,
-  folderName = globalFolderName,
-) {
-  if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
-    logEvent("error", "Aucun média disponible pour afficher le suivant.");
-    return;
-  }
-
-  currentIndex = (currentIndex + 1) % mediaArray.length;
-  logEvent("info", `Navigation vers le média suivant : Index ${currentIndex}`, {
-    currentIndex,
-  });
-  displayMedia(currentIndex, folderName);
+function animateMediaExitRight(mediaElement, callback) {
+    mediaElement.classList.add("lightbox-exit-right");
+    mediaElement.addEventListener("animationend", () => {
+        callback();
+    }, { once: true });
 }
 
 /**
- * Affiche un média spécifique.
- * @param {number} index - Index du média à afficher.
+ * Insère un nouveau média avec une animation d'entrée.
  */
-function displayMedia(index, folderName = globalFolderName) {
-  if (!Array.isArray(mediaList) || index < 0 || index >= mediaList.length) {
-    logEvent("error", "Index ou média invalide.", { index, mediaList });
-    return;
-  }
+function insertNewMedia(media, folderPath, direction) {
+    const { lightboxMediaContainer, lightboxCaption } = domSelectors.lightbox;
+    const newMedia = document.createElement(media.image ? "img" : "video");
+    newMedia.classList.add("lightbox-media", "active-media");
 
-  const media = mediaList[index];
-  logEvent("info", "Affichage du média en cours.", { media, folderName });
 
-  updateLightboxContent(media, folderName);
+    if (media.image) {
+        newMedia.src = `${folderPath}${media.image}`;
+        newMedia.alt = media.title || "Image sans titre";
+        newMedia.loading = "lazy";
+    } else if (media.video) {
+        newMedia.src = `${folderPath}${media.video}`;
+        newMedia.controls = true;
+        newMedia.autoplay = true;
+        newMedia.muted = false;
+    }
+
+    lightboxMediaContainer.appendChild(newMedia);
+    lightboxCaption.textContent = media.title || "Sans titre";
+
+    logEvent("success", "Média mis à jour avec effet de glissement.");
+}
+
+/**
+ * Met à jour le contenu de la lightbox avec la bonne animation.
+ */
+function updateLightboxContent(media, folderName, direction) {
+    logEvent("debug", `🔄 Mise à jour de la lightbox : ${currentIndex} / ${mediaList.length}`, {
+        media, 
+        currentIndex, 
+        folderName, 
+        direction
+    });
+
+    const { lightboxMediaContainer } = domSelectors.lightbox;
+    const currentMedia = lightboxMediaContainer.querySelector(".active-media");
+
+    if (!media || typeof folderName !== "string") {
+        logEvent("error", "Média ou dossier invalide.", { media, folderName });
+        return;
+    }
+
+    try {
+        const folderPath = `../../../assets/photographers/${folderName}/`;
+
+        if (currentMedia) {
+            if (direction === "right") {
+                animateMediaExitLeft(currentMedia, () => {
+                    currentMedia.remove();
+                    insertNewMedia(media, folderPath, direction);
+                });
+            } else {
+                animateMediaExitRight(currentMedia, () => {
+                    currentMedia.remove();
+                    insertNewMedia(media, folderPath, direction);
+                });
+            }
+        } else {
+            insertNewMedia(media, folderPath, direction);
+        }
+    } catch (error) {
+        logEvent("error", "Erreur lors de la mise à jour du média.", { error });
+    }
+}
+
+
+/**
+ * Gère la navigation vers l'image précédente.
+ */
+let isTransitioning = false;
+
+export function showNextMedia() {
+    if (isTransitioning || mediaList.length === 0) {
+      return;
+    }
+    isTransitioning = true;
+
+    currentIndex = (currentIndex + 1) % mediaList.length;
+    updateLightboxContent(mediaList[currentIndex], globalFolderName, "right");
+
+    setTimeout(() => { isTransitioning = false; }, 500); // Attente de la fin de l’animation
+}
+
+export function showPreviousMedia() {
+    if (isTransitioning || mediaList.length === 0) {
+      return;
+    }
+    isTransitioning = true;
+
+    currentIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
+    updateLightboxContent(mediaList[currentIndex], globalFolderName, "left");
+
+    setTimeout(() => { isTransitioning = false; }, 500);
 }

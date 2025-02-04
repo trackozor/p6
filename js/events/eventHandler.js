@@ -159,21 +159,34 @@ export function handleFormSubmit(event) {
  */
 export function handleLightboxOpen(event, mediaArray, folderName) {
   try {
-    const galleryItem = event.target.closest(".gallery-item");
-    if (!galleryItem) {
-      throw new Error("Aucun média sélectionné.");
-    }
+      console.log("📢 Vérification de mediaArray avant ouverture :", mediaArray);
+      
+      if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
+          throw new Error("⚠️ mediaArray est vide ou invalide !");
+      }
 
-    const mediaIndex = parseInt(galleryItem.dataset.index, 10);
-    if (isNaN(mediaIndex)) {
-      throw new Error("Index média invalide.");
-    }
+      const galleryItem = event.target.closest(".gallery-item");
+      if (!galleryItem) {
+          throw new Error("Aucun média sélectionné.");
+      }
 
-    openLightbox(mediaIndex, mediaArray, folderName);
+      const mediaIndex = parseInt(galleryItem.dataset.index, 10);
+      if (isNaN(mediaIndex)) {
+          throw new Error("Index média invalide.");
+      }
+
+      // ✅ Assurer que `mediaList` est bien défini
+      window.mediaList = mediaArray;
+      window.globalFolderName = folderName;
+
+      openLightbox(mediaIndex, mediaArray, folderName);
   } catch (error) {
-    logEvent("error", "Erreur ouverture lightbox", { error });
+      logEvent("error", "Erreur ouverture lightbox", { error });
   }
 }
+
+
+
 
 /**
  * Ferme la lightbox.
@@ -190,24 +203,25 @@ export function handleLightboxClose() {
 /**
  * Navigation vers le média précédent.
  */
-export function handleLightboxPrev(mediaArray, folderName) {
-  if (!mediaArray?.length) {
+export function handleLightboxPrev() {
+  if (!window.mediaList?.length) {  // 🔥 Utilisation de mediaList globalement défini
     return logEvent("error", "Médias indisponibles.");
   }
   logEvent("info", "Navigation vers média précédent.");
-  showPreviousMedia(mediaArray, folderName);
+  showPreviousMedia(); // ✅ Suppression des arguments inutiles
 }
 
 /**
  * Navigation vers le média suivant.
  */
-export function handleLightboxNext(mediaArray, folderName) {
-  if (!mediaArray?.length) {
+export function handleLightboxNext() {
+  if (!window.mediaList?.length) {  // 🔥 Utilisation de mediaList globalement défini
     return logEvent("error", "Médias indisponibles.");
   }
   logEvent("info", "Navigation vers média suivant.");
-  showNextMedia(mediaArray, folderName);
+  showNextMedia(); // ✅ Suppression des arguments inutiles
 }
+
 
 /*==============================================*/
 /*         Gestion du Tri des Médias            */

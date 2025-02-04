@@ -134,8 +134,8 @@ export function initLightboxEvents(mediaArray, folderName) {
   });
 
   attachEvent(domSelectors.lightbox.lightboxCloseButton, "click", handleLightboxClose);
-  attachEvent(domSelectors.lightbox.lightboxPrevButton, "click", () => handleLightboxPrev(mediaArray, folderName));
-  attachEvent(domSelectors.lightbox.lightboxNextButton, "click", () => handleLightboxNext(mediaArray, folderName));
+  attachEvent(domSelectors.lightbox.lightboxPrevButton, "click", () => handleLightboxPrev());
+  attachEvent(domSelectors.lightbox.lightboxNextButton, "click", () => handleLightboxNext());
 
   logEvent("success", "Événements de la lightbox initialisés avec succès.");
 }

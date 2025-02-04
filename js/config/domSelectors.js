@@ -92,7 +92,6 @@ const domSelectors = (() => {
       overlayContainer: safeQuerySelector("#modal-overlay"),
       sortingSelect: safeQuerySelector("#sort-options"),
       contactButton: safeQuerySelector(".contact-button"),
-
       photographerStatsTemplate: safeQuerySelector("#photographer-stats", true), // Nouveau sélecteur pour le template
       totalLikes: null,
       dailyRate: null,
