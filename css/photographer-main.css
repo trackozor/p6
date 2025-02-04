@@ -1455,8 +1455,9 @@ footer p {
   }
 }
 
-button {
-  position: relative;
+.lightbox button {
+  z-index: 9999;
+  position: absolute;
   background: transparent;
   cursor: pointer;
   color: var(--primary-color);
@@ -1465,7 +1466,7 @@ button {
   font-weight: bold;
   transition: transform var(--transition-default);
 }
-button:hover {
+.lightbox button:hover {
   transform: scale(1.1);
 }
 

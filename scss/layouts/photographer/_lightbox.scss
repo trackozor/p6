@@ -72,8 +72,9 @@ $transition-duration: 0.6s;
 // --------------------------------------------------------------------------
 
 // Style général des boutons (fermeture et navigation)
-button {
-  position: relative; // Position indépendante du flux normal
+.lightbox button {
+  z-index: 9999;
+  position: absolute; // Position indépendante du flux normal
   background: transparent; // Fond transparent pour une meilleure intégration visuelle
   cursor: pointer; // Affiche un pointeur au survol pour indiquer une action possible
   color: var(

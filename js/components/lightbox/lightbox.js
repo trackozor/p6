@@ -153,34 +153,32 @@ function updateLightboxContent(media, folderName) {
     const folderPath = `../../../assets/photographers/${folderName}/`;
     logEvent("info", "Chemin du dossier construit.", { folderPath });
 
-    lightboxMediaContainer.innerHTML = "";
+    // ✅ Supprime uniquement l'ancien média, pas les boutons
+    const mediaElement = lightboxMediaContainer.querySelector("img, video");
+    if (mediaElement) mediaElement.remove();
 
-    let mediaElement;
+    let newMedia;
     if (media.image) {
-      const imagePath = `${folderPath}${media.image}`;
-      mediaElement = document.createElement("img");
-      mediaElement.src = imagePath;
-      mediaElement.alt = media.title || "Image sans titre";
-      mediaElement.loading = "lazy";
+      newMedia = document.createElement("img");
+      newMedia.src = `${folderPath}${media.image}`;
+      newMedia.alt = media.title || "Image sans titre";
+      newMedia.loading = "lazy";
 
       logEvent("info", "Image détectée pour mise à jour dans la lightbox.", {
-        imagePath,
-        media,
+        newMedia,
       });
     } else if (media.video) {
-      const videoPath = `${folderPath}${media.video}`;
-      mediaElement = document.createElement("video");
-      mediaElement.src = videoPath;
-      mediaElement.controls = true;
+      newMedia = document.createElement("video");
+      newMedia.src = `${folderPath}${media.video}`;
+      newMedia.controls = true;
 
       logEvent("info", "Vidéo détectée pour mise à jour dans la lightbox.", {
-        videoPath,
-        media,
+        newMedia,
       });
     }
 
-    if (mediaElement) {
-      lightboxMediaContainer.appendChild(mediaElement);
+    if (newMedia) {
+      lightboxMediaContainer.appendChild(newMedia);
       lightboxCaption.textContent = media.title || "Sans titre";
 
       logEvent("success", "Contenu de la lightbox mis à jour avec succès.", {
@@ -204,6 +202,7 @@ function updateLightboxContent(media, folderName) {
       "<p>Erreur lors du chargement du contenu.</p>";
   }
 }
+
 
 /**
  * Ferme la lightbox.
