@@ -165,7 +165,7 @@
 
     @include desktop {
         position: fixed; /* Fixation de la section pour qu’elle reste visible */
-        z-index: 99999; /* Priorité d’affichage sur d’autres éléments */
+        z-index: 99; /* Priorité d’affichage sur d’autres éléments */
         top: 94%; /* Positionnement en bas de l’écran */
         right: 2%;
         padding: 1.5% 2.5%;

@@ -27,6 +27,7 @@ import { init } from "./pages/index.js";
  * @param {number} ms - Temps max en millisecondes.
  * @returns {Promise} - Résout la promesse ou rejette après expiration.
  */
+
 const timeoutPromise = (promise, ms = 5000) => {
   return Promise.race([
     promise,

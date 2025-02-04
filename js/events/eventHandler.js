@@ -159,10 +159,10 @@ export function handleFormSubmit(event) {
  */
 export function handleLightboxOpen(event, mediaArray, folderName) {
   try {
-      console.log("📢 Vérification de mediaArray avant ouverture :", mediaArray);
+      console.log("Vérification de mediaArray avant ouverture :", mediaArray);
       
       if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
-          throw new Error("⚠️ mediaArray est vide ou invalide !");
+          throw new Error("mediaArray est vide ou invalide !");
       }
 
       const galleryItem = event.target.closest(".gallery-item");
@@ -175,7 +175,7 @@ export function handleLightboxOpen(event, mediaArray, folderName) {
           throw new Error("Index média invalide.");
       }
 
-      // ✅ Assurer que `mediaList` est bien défini
+      // Assurer que `mediaList` est bien défini
       window.mediaList = mediaArray;
       window.globalFolderName = folderName;
 
@@ -204,22 +204,22 @@ export function handleLightboxClose() {
  * Navigation vers le média précédent.
  */
 export function handleLightboxPrev() {
-  if (!window.mediaList?.length) {  // 🔥 Utilisation de mediaList globalement défini
+  if (!window.mediaList?.length) {  // Utilisation de mediaList globalement défini
     return logEvent("error", "Médias indisponibles.");
   }
   logEvent("info", "Navigation vers média précédent.");
-  showPreviousMedia(); // ✅ Suppression des arguments inutiles
+  showPreviousMedia(); //  Suppression des arguments inutiles
 }
 
 /**
  * Navigation vers le média suivant.
  */
 export function handleLightboxNext() {
-  if (!window.mediaList?.length) {  // 🔥 Utilisation de mediaList globalement défini
+  if (!window.mediaList?.length) {  // Utilisation de mediaList globalement défini
     return logEvent("error", "Médias indisponibles.");
   }
   logEvent("info", "Navigation vers média suivant.");
-  showNextMedia(); // ✅ Suppression des arguments inutiles
+  showNextMedia(); // Suppression des arguments inutiles
 }
 
 
