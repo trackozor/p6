@@ -4,23 +4,28 @@ const path = require("path");
 const cors = require("cors");
 
 const app = express();
-const PORT = 3000; // Assurez-vous que votre frontend envoie bien les requêtes sur ce port
+const PORT = 3000; // Assurez-vous que votre frontend pointe vers ce port
 
 // Middleware pour traiter les requêtes JSON
 app.use(express.json());
 
-// Configuration de CORS
+// ✅ Correction du problème CORS
 app.use(cors({
-    origin: "http://localhost:5501", // Autorise uniquement le frontend en local
+    origin: ["http://127.0.0.1:5501", "http://localhost:5501"], // Autoriser les deux versions
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"]
 }));
 
-// Chemin vers le fichier JSON des photographes
+// 🔥 Vérification de la connexion au serveur
+app.get("/", (req, res) => {
+    res.send("🚀 Serveur Fisheye en ligne !");
+});
+
+// 📂 Chemin vers le fichier JSON contenant la base de données
 const DATA_FILE = path.join(__dirname, "assets/data/photographers.json");
 
 /**
- * 🔄 Fonction pour lire le fichier JSON
+ * 🔄 Lire le fichier JSON (ASYNC)
  * @returns {Promise<Object>} Données du fichier JSON
  */
 async function readJsonFile() {
@@ -28,21 +33,22 @@ async function readJsonFile() {
         const data = await fs.promises.readFile(DATA_FILE, "utf8");
         return JSON.parse(data);
     } catch (error) {
-        console.error("❌ Erreur lors de la lecture du fichier JSON:", error);
+        console.error("❌ Erreur lecture JSON:", error);
         throw new Error("Impossible de lire les données.");
     }
 }
 
 /**
- * 💾 Fonction pour écrire dans le fichier JSON
+ * 💾 Écrire dans le fichier JSON (ASYNC)
  * @param {Object} jsonData - Données mises à jour
  */
 async function writeJsonFile(jsonData) {
     try {
         await fs.promises.writeFile(DATA_FILE, JSON.stringify(jsonData, null, 2), "utf8");
+        console.log("✅ Fichier JSON mis à jour avec succès !");
     } catch (error) {
-        console.error("❌ Erreur lors de l'écriture du fichier JSON:", error);
-        throw new Error("Impossible d'écrire les nouvelles données.");
+        console.error("❌ Erreur écriture JSON:", error);
+        throw new Error("Impossible d'écrire les données.");
     }
 }
 

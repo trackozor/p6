@@ -226,6 +226,7 @@ async function initPhotographerPage() {
 }
 
 
+
 // =============================
 // ÉVÉNEMENT DOM
 // =============================

@@ -13,7 +13,7 @@ import { fetchMedia } from "../data/dataFetcher.js";
 import { logEvent } from "../utils/utils.js";
 import domSelectors from "../config/domSelectors.js"; // Sélecteurs centralisés
 import { getPhotographerIdFromUrl } from "../pages/photographer-page.js"
-
+const API_BASE_URL = "http://localhost:3000"; // <-- Vérifie bien cette ligne
 
 /*==============================================*/
 /*         Gestion des données principales      */
@@ -232,27 +232,94 @@ export async function handleLikeDislike(action, mediaElement) {
   }
 }
 
-export async function updateLikesInDatabase(mediaId, likeCount) {
-    try {
-        const response = await fetch("http://127.0.0.1:5501/api/update-likes", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ mediaId, likeCount })
-        });
+async function updateLikesInDatabase(mediaId, likeCount) {
+  try {
+      const response = await fetch("http://localhost:3000/api/update-likes", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ mediaId, likeCount })
+      });
 
-        if (!response.ok) {
-            throw new Error(`Erreur API : ${response.status} ${response.statusText}`);
-        }
+      if (!response.ok) {
+          throw new Error(`Erreur API : ${response.status} ${response.statusText}`);
+      }
 
-        const data = await response.json();
-        logEvent("success", `Likes mis à jour avec succès pour média ID ${mediaId}`, { data });
+      const result = await response.json();
+      console.log("✅ Likes mis à jour :", result);
 
-    } catch (error) {
-        logEvent("error", `❌ Erreur mise à jour des likes en base de données : ${error.message}`);
-    }
+      // 🔥 Mise à jour de la galerie après modification des likes
+      updateMediaDisplay(result.media);
+  } catch (error) {
+      console.error("❌ Erreur mise à jour des likes en base de données :", error);
+  }
 }
+
+
+/**
+ * 🔄 Met à jour l'affichage des médias après mise à jour des likes
+ * @param {Array} newMediaArray - Nouveau tableau de médias avec les likes mis à jour
+ */
+/**
+ * 🔄 Met à jour l'affichage des médias après mise à jour des likes
+ * @param {Array} newMediaArray - Nouveau tableau de médias avec les likes mis à jour
+ */
+function updateMediaDisplay(newMediaArray) {
+  const galleryContainer = document.getElementById("gallery");
+  if (!galleryContainer) {
+      console.error("❌ Impossible de mettre à jour la galerie, élément introuvable !");
+      return;
+  }
+  galleryContainer.innerHTML = ""; // 🧹 Nettoyer l'ancienne galerie
+
+  newMediaArray.forEach(media => {
+      const mediaElement = document.createElement("article");
+      mediaElement.classList.add("media-item");
+      mediaElement.dataset.id = media.id;
+
+      mediaElement.innerHTML = `
+          <img src="../../assets/images/${media.image}" alt="${media.title}" class="media">
+          <div class="media-caption">
+              <h3>${media.title}</h3>
+              <p>
+                  <span class="media-likes">${media.likes}</span>
+                  <button type="button" class="like-icon" data-action="like" aria-label="Ajouter un like">
+                      <i class="fas fa-heart" aria-hidden="true"></i>
+                  </button>
+              </p>
+          </div>
+      `;
+
+      galleryContainer.appendChild(mediaElement);
+  });
+
+  console.log("🎨 Mise à jour de l'affichage avec les nouveaux médias !");
+}
+
+
+/**
+ * 🔄 Recharge la galerie avec les nouvelles données depuis le serveur
+ */
+async function refreshMediaGallery() {
+  try {
+      const response = await fetch("http://localhost:3000/api/media");
+      if (!response.ok) {
+          throw new Error(`Erreur API : ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      
+      // 🔥 Met à jour l'affichage de la galerie
+      updateMediaDisplay(data.media);
+      
+      console.log("🔄 Galerie mise à jour avec les nouvelles données.");
+  } catch (error) {
+      console.error("❌ Erreur lors du rechargement des médias :", error);
+  }
+}
+
+
 
 
 
