@@ -30,10 +30,12 @@ import {
 
 // Gestion des interactions clavier
 import { handleKeyboardEvent } from "./keyboardHandler.js";
-
+import { showLikeDislikeModal, hideLikeDislikeModal } from "./eventHandler.js";
+import { handleLikeDislike } from "../components/statsCalculator.js";
 
 // Utilitaire de logs
 import { logEvent } from "../utils/utils.js";
+
 
 
 /*=======================================================*/
@@ -253,7 +255,7 @@ export function initLightboxEvents(mediaArray, folderName) {
     }
 
     // Sélection des éléments de la galerie qui déclenchent la lightbox
-    const galleryItems = document.querySelectorAll(".gallery-item");
+    const galleryItems = document.querySelectorAll(".media");
 
     // Vérification que des éléments existent bien dans la galerie
     if (!galleryItems.length) {
@@ -333,7 +335,7 @@ function initSortingEvents() {
  */
 export async function setupEventListeners() {
   try {
-    logEvent("info", "⏳ Vérification des icônes de like...");
+    logEvent("info", "Vérification des icônes de like...");
 
     // Attendre un petit délai pour s'assurer que les médias sont bien chargés
     await new Promise((resolve) => setTimeout(resolve, 300));
@@ -342,16 +344,16 @@ export async function setupEventListeners() {
     const likeDislikeModal = document.querySelector("#like-dislike-modal");
 
     if (!likeIcons.length) {
-      logEvent("warn", "❌ Les icônes de like ne sont pas encore chargées. Activation du MutationObserver...");
+      logEvent("warn", "Les icônes de like ne sont pas encore chargées. Activation du MutationObserver...");
       waitForLikesToBeLoaded();
       return;
     }
 
     if (!likeDislikeModal) {
-      throw new Error("❌ La modale de like/dislike est introuvable.");
+      throw new Error("La modale de like/dislike est introuvable.");
     }
 
-    logEvent("success", `✅ ${likeIcons.length} icônes de like trouvées ! Attachement des événements...`);
+    logEvent("success", ` ${likeIcons.length} icônes de like trouvées ! Attachement des événements...`);
 
     let activeMedia = null; // Stocke l'élément actif pour la gestion des likes
 
@@ -370,9 +372,9 @@ export async function setupEventListeners() {
 
           activeMedia = mediaItem;
           showLikeDislikeModal(mediaItem);
-          logEvent("success", `👍 Modale ouverte pour média ID: ${mediaId}`);
+          logEvent("success", `Modale ouverte pour média ID: ${mediaId}`);
         } catch (error) {
-          logEvent("error", `❌ Erreur lors du clic sur un like: ${error.message}`, { error });
+          logEvent("error", ` Erreur lors du clic sur un like: ${error.message}`, { error });
         }
       });
     });
@@ -389,9 +391,9 @@ export async function setupEventListeners() {
       hideLikeDislikeModal();
     });
 
-    logEvent("success", "🎉 Les événements de like ont été initialisés avec succès.");
+    logEvent("success", " Les événements de like ont été initialisés avec succès.");
   } catch (error) {
-    logEvent("error", `❌ Erreur critique dans setupEventListeners: ${error.message}`, { error });
+    logEvent("error", ` Erreur critique dans setupEventListeners: ${error.message}`, { error });
   }
 }
 
@@ -407,7 +409,7 @@ function waitForLikesToBeLoaded() {
     const likeIcons = document.querySelectorAll(".media-item .like-icon");
 
     if (likeIcons.length) {
-      logEvent("info", `✅ Les icônes de like sont maintenant disponibles (${likeIcons.length} trouvées). Initialisation...`);
+      logEvent("info", `Les icônes de like sont maintenant disponibles (${likeIcons.length} trouvées). Initialisation...`);
 
       setTimeout(() => {
         setupEventListeners(); // Relancer l'initialisation des événements après un petit délai
@@ -417,7 +419,7 @@ function waitForLikesToBeLoaded() {
     } else {
       attempts++;
       if (attempts >= maxAttempts) {
-        logEvent("error", "❌ Les icônes de like ne sont pas apparues après plusieurs tentatives.");
+        logEvent("error", " Les icônes de like ne sont pas apparues après plusieurs tentatives.");
         obs.disconnect();
       }
     }
@@ -428,7 +430,7 @@ function waitForLikesToBeLoaded() {
   if (gallery) {
     observer.observe(gallery, { childList: true, subtree: true });
   } else {
-    logEvent("error", "❌ Le conteneur #gallery est introuvable. Impossible d'observer les ajouts.");
+    logEvent("error", " Le conteneur #gallery est introuvable. Impossible d'observer les ajouts.");
   }
 }
 

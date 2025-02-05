@@ -345,6 +345,14 @@ a {
   transition: background-color 0.2s ease-in-out;
 }
 
+/* =============================================================================
+    Projet      :   Fisheye
+    Fichier     :   _button.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Contient les styles réutilisables pour les boutons
+============================================================================= */
 /* -------------------------------------------------------------------------- */
 /* Bouton de contact                                                          */
 /* Description : Style pour le bouton de contact avec un design simple et     */
@@ -404,14 +412,6 @@ a {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Effet au survol pour les icônes SVG                                        */
-/* Description : Change la couleur de l'icône au survol.                      */
-/* -------------------------------------------------------------------------- */
-.lightbox-prev:hover .icon {
-  fill: #f00; /* Change la couleur de l'icône au survol (rouge) */
-}
-
-/* -------------------------------------------------------------------------- */
 /* Boutons de navigation et de fermeture                                      */
 /* Description : Supprime les styles par défaut et centre les icônes.         */
 /* Appliqué aux boutons suivants : lightbox-prev, lightbox-close,             */
@@ -454,6 +454,9 @@ a {
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/*                   Combo box pour choix du trie                             */
+/* -------------------------------------------------------------------------- */
 .sorting label {
   font-size: 1rem;
   font-weight: bold;

@@ -128,7 +128,6 @@ export function getPhotographerSelectors() {
             dislikeButtons: safeQuerySelectorAll(".dislike-btn"),
             likeDislikeModal: safeQuerySelector("#like-dislike-modal"),
             likeDislikeContent: safeQuerySelector(".like-dislike-content"),
-
             totalLikes: null,
             dailyRate: null,
         },

@@ -29,7 +29,22 @@
     "sass": "^1.83.4"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
     "glob": "^11.0.1",
     "lru-cache": "^11.0.2"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trackozor/p6.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/trackozor/p6/issues"
+  },
+  "homepage": "https://github.com/trackozor/p6#readme"
 }

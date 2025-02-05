@@ -209,25 +209,22 @@ async function initPhotographerPage() {
     const { mediaArray, folderName } = await displayMediaGallery();
 
     if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
-      throw new Error(
-        "Aucun média disponible pour l'initialisation des événements.",
-      );
+      throw new Error("Aucun média disponible pour l'initialisation des événements.");
     }
 
     await initstatscalculator(); // Initialise les statistiques
-    initEventListeners(mediaArray, folderName); // Passe les médias et le folderName à la gestion des événements
+
+    // ✅ Ajoute un délai pour s'assurer que la galerie est bien chargée avant d'attacher les événements
+    setTimeout(() => {
+      initEventListeners(mediaArray, folderName);
+    }, 500); // 500ms pour s'assurer que les éléments sont bien dans le DOM
 
     logEvent("success", "Page photographe initialisée avec succès.");
   } catch (error) {
-    logEvent(
-      "error",
-      "Erreur lors de l'initialisation de la page photographe.",
-      {
-        error,
-      },
-    );
+    logEvent("error", "Erreur lors de l'initialisation de la page photographe.", { error });
   }
 }
+
 
 // =============================
 // ÉVÉNEMENT DOM

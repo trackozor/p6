@@ -629,32 +629,62 @@ export async function handleSortChange(event) {
  */
 
 
-export function handleLikeDislike(action, mediaId) {
-  const mediaElement = document.querySelector(`[data-id="${mediaId}"]`);
-  if (!mediaElement) {
+
+/**
+ * Affiche la modale de like/dislike pour un média donné.
+ * @param {HTMLElement} mediaItem - L'élément média sur lequel l'utilisateur a cliqué.
+ */
+export function showLikeDislikeModal(mediaItem) {
+  if (!mediaItem) {
+    logEvent("error", "❌ Impossible d'afficher la modale : élément média introuvable.");
     return;
   }
 
-  const likeCountElement = mediaElement.querySelector(".media-likes");
-  if (!likeCountElement) {
+  const modal = document.querySelector("#like-dislike-modal");
+
+  if (!modal) {
+    logEvent("error", "❌ La modale de like/dislike est introuvable dans le DOM.");
     return;
   }
 
-  let likeCount = parseInt(likeCountElement.textContent, 10) || 0;
-  likeCount = action === "like" ? likeCount + 1 : Math.max(likeCount - 1, 0);
-  
-  likeCountElement.textContent = likeCount;
-  updateLikesInDatabase(mediaId, likeCount);
-  updateTotalLikes();
+  // Récupérer la position de l'élément cliqué
+  const rect = mediaItem.getBoundingClientRect();
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+  // Ajuster la position de la modale sous l'icône de like
+  modal.style.top = `${rect.bottom + scrollTop + 10}px`; // 10px en dessous
+  modal.style.left = `${rect.left + scrollLeft}px`; // Aligné à gauche
+
+  // Afficher la modale avec animation
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
 }
 
 
 export function hideLikeDislikeModal() {
-  const { likeDislikeModal } = domSelectors.photographerPage;
+  const modal = document.querySelector("#like-dislike-modal");
 
-  likeDislikeModal.classList.add("hidden");
-  likeDislikeModal.setAttribute("aria-hidden", "true");
+  if (modal) {
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+  }
 }
+
+// Fermer la modale au clic en dehors
+document.addEventListener("click", (event) => {
+  const modal = document.querySelector("#like-dislike-modal");
+
+  if (modal && modal.classList.contains("active")) {
+    const isInsideModal = modal.contains(event.target);
+    const isLikeButton = event.target.closest(".like-icon");
+
+    if (!isInsideModal && !isLikeButton) {
+      hideLikeDislikeModal();
+    }
+  }
+});
+
 
 /*==============================================*/
 /*         Gestion des Interactions Clavier     */

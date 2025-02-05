@@ -12,8 +12,8 @@
 import { fetchMedia } from "../data/dataFetcher.js";
 import { logEvent } from "../utils/utils.js";
 import domSelectors from "../config/domSelectors.js"; // Sélecteurs centralisés
-import { getPhotographerIdFromUrl } from "../pages/photographer-page.js";
-import { setupEventListeners } from "../events/eventlisteners.js";
+import { getPhotographerIdFromUrl } from "../pages/photographer-page.js"
+
 
 /*==============================================*/
 /*         Gestion des données principales      */
@@ -232,25 +232,29 @@ export async function handleLikeDislike(action, mediaElement) {
   }
 }
 
-export async function updateLikesInDatabase(mediaId, newLikes) {
-  try {
-    const response = await fetch(`/api/update-likes`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ mediaId, likes: newLikes }),
-    });
+export async function updateLikesInDatabase(mediaId, likeCount) {
+    try {
+        const response = await fetch("http://127.0.0.1:5501/api/update-likes", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ mediaId, likeCount })
+        });
 
-    if (!response.ok) {
-      throw new Error("Échec de la mise à jour des likes.");
+        if (!response.ok) {
+            throw new Error(`Erreur API : ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        logEvent("success", `Likes mis à jour avec succès pour média ID ${mediaId}`, { data });
+
+    } catch (error) {
+        logEvent("error", `❌ Erreur mise à jour des likes en base de données : ${error.message}`);
     }
-
-    logEvent("success", `Likes mis à jour en base de données pour le média ${mediaId}.`);
-  } catch (error) {
-    logEvent("error", `Erreur mise à jour des likes en base de données : ${error.message}`);
-  }
 }
+
+
 
 export function updateTotalLikes() {
   try {

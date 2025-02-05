@@ -632,6 +632,14 @@ a {
   transition: background-color 0.2s ease-in-out;
 }
 
+/* =============================================================================
+    Projet      :   Fisheye
+    Fichier     :   _button.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Contient les styles réutilisables pour les boutons
+============================================================================= */
 /* -------------------------------------------------------------------------- */
 /* Bouton de contact                                                          */
 /* Description : Style pour le bouton de contact avec un design simple et     */
@@ -691,14 +699,6 @@ a {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Effet au survol pour les icônes SVG                                        */
-/* Description : Change la couleur de l'icône au survol.                      */
-/* -------------------------------------------------------------------------- */
-.lightbox-prev:hover .icon {
-  fill: #f00; /* Change la couleur de l'icône au survol (rouge) */
-}
-
-/* -------------------------------------------------------------------------- */
 /* Boutons de navigation et de fermeture                                      */
 /* Description : Supprime les styles par défaut et centre les icônes.         */
 /* Appliqué aux boutons suivants : lightbox-prev, lightbox-close,             */
@@ -741,6 +741,9 @@ a {
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/*                   Combo box pour choix du trie                             */
+/* -------------------------------------------------------------------------- */
 .sorting label {
   font-size: 1rem;
   font-weight: bold;
@@ -1425,6 +1428,194 @@ footer p {
   display: block; /* Évite les marges indésirables sur certaines images */
 }
 
+.like-icon {
+  position: relative;
+  z-index: 10;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, color 0.3s ease;
+  color: #d3573c;
+}
+.like-icon:hover {
+  transform: scale(1.1);
+  color: rgb(179.4979079498, 65.3556485356, 40.5020920502);
+}
+.like-icon.liked {
+  color: #901c1c;
+  transform: scale(1.2);
+  animation: like-pop 0.3s ease-out;
+}
+
+@keyframes like-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+.media-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f8f8;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #333;
+}
+.media-caption p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.media-caption p .media-likes {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.like-icon {
+  position: relative;
+  z-index: 10;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, color 0.3s ease;
+  color: #d3573c;
+}
+.like-icon:hover {
+  transform: scale(1.1);
+  color: rgb(179.4979079498, 65.3556485356, 40.5020920502);
+}
+.like-icon.liked {
+  color: #901c1c;
+  transform: scale(1.2);
+  animation: like-pop 0.3s ease-out;
+}
+
+@keyframes like-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+.media-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f8f8;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #333;
+}
+.media-caption p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.media-caption p .media-likes {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.like-dislike-modal {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  background-color: #f8f8f8;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.9);
+}
+.like-dislike-modal.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.like-dislike-content {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.like-btn,
+.dislike-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: white;
+  outline: none;
+}
+.like-btn i,
+.dislike-btn i {
+  font-size: 16px;
+}
+.like-btn:hover,
+.dislike-btn:hover {
+  opacity: 0.8;
+}
+.like-btn:active,
+.dislike-btn:active {
+  transform: scale(0.95);
+}
+
+.like-btn {
+  background-color: #4caf50;
+}
+
+.dislike-btn {
+  background-color: #f44336;
+}
+
+@media (max-width: 480px) {
+  .like-dislike-modal {
+    flex-direction: column;
+    width: auto;
+    padding: 8px;
+  }
+  .like-dislike-content {
+    flex-direction: column;
+  }
+  .like-btn,
+  .dislike-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
 .lightbox {
   position: fixed;
   inset: 0;
