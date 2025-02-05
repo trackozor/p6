@@ -48,7 +48,9 @@ import {
 /*==============================================*/
 /*         Gestion des Modales                  */
 /*==============================================*/
-
+/*==============================================*/
+/*        Ouverture modale contact              */
+/*==============================================*/
 /**
  * Gère l'ouverture de la modale de contact d'un photographe.
  * 
@@ -123,7 +125,9 @@ export async function handleModalOpen() {
     document.body.classList.remove("loading");
   }
 }
-
+/*==============================================*/
+/*        Fermeture  modale contact             */
+/*==============================================*/
 
 /**
  * Gère la fermeture de la modale de contact.
@@ -198,7 +202,9 @@ export function handleModalBackgroundClick(event) {
   }
 }
 
-
+/*==============================================*/
+/*        ouverture modale confirmation         */
+/*==============================================*/
 /**
  * Gère la confirmation d'une action dans une modale de confirmation.
  * 
@@ -231,7 +237,9 @@ export function handleModalConfirm() {
     logEvent("error", "Erreur lors de la fermeture de la modale de confirmation", { error });
   }
 }
-
+/*==============================================*/
+/*        Mise a jour compteur message          */
+/*==============================================*/
 /**
  * Met à jour dynamiquement le compteur de caractères d'un champ `textarea`.
  * 
@@ -284,7 +292,9 @@ export function updateCharCount(event) {
     logEvent("error", `Erreur lors de la mise à jour du compteur : ${error.message}`, { error });
   }
 }
-
+/*==============================================*/
+/*           Soumission formulaire              */
+/*==============================================*/
 /**
  * Gère la soumission du formulaire de contact.
  * 
@@ -349,7 +359,9 @@ export function handleFormSubmit(event) {
 /*==============================================*/
 /*         Gestion de la Lightbox               */
 /*==============================================*/
-
+/*==============================================*/
+/*             Ouverture lightbox              */
+/*==============================================*/
 /**
  * Ouvre la lightbox avec un média spécifique sélectionné dans la galerie.
  * 
@@ -415,7 +427,9 @@ export function handleLightboxOpen(event, mediaArray, folderName) {
   }
 }
 
-
+/*==============================================*/
+/*              Fermeture lightbox              */
+/*==============================================*/
 /**
  * Gère la fermeture de la lightbox.
  * 
@@ -454,7 +468,9 @@ export function handleLightboxClose() {
   }
 }
 
-
+/*==============================================*/
+/*              Nav précédente                  */
+/*==============================================*/
 /**
  * Gère la navigation vers le média précédent dans la lightbox.
  * 
@@ -490,6 +506,10 @@ export function handleLightboxPrev() {
     logEvent("error", `Erreur lors de la navigation vers le média précédent : ${error.message}`, { error });
   }
 }
+
+/*==============================================*/
+/*                 Nav suivante                 */
+/*==============================================*/
 
 /**
  * Gère la navigation vers le média suivant dans la lightbox.
@@ -582,7 +602,9 @@ export async function handleSortChange(event) {
     logEvent("error", `Erreur lors du tri des médias : ${error.message}`, { error });
   }
 }
-
+/*==============================================*/
+/*            ajout like/dislike                */
+/*==============================================*/
 /**
  * Gère l'ajout ou la suppression d'un like sur un média.
  * 

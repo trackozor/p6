@@ -37,40 +37,83 @@ const validateMediaList = (mediaList) => {
   }
 };
 
+/*==============================================*/
+/*      comparaison  et tri par like             */
+/*==============================================*/
 /**
- * Trie la liste des médias par nombre de likes (du plus aimé au moins aimé).
+ * Compare deux médias en fonction du nombre de likes (ordre décroissant).
+ * @param {Object} a - Premier média.
+ * @param {Object} b - Second média.
+ * @returns {number} - Résultat de la comparaison.
+ */
+export function compareByLikes(a, b) {
+  return b.likes - a.likes;
+}
+
+
+/**
+ * Trie les médias en fonction du nombre de likes.
  * @param {Array} mediaList - Liste des médias à trier.
  * @returns {Array} - Liste triée par nombre de likes décroissant.
  */
-export const sortByLikes = (mediaList) => {
+export function sortByLikes(mediaList) {
   validateMediaList(mediaList);
   logEvent("info", "Tri des médias par nombre de likes.");
-  return Object.freeze([...mediaList].sort((a, b) => b.likes - a.likes));
-};
+  return Object.freeze([...mediaList].sort(compareByLikes));
+}
+
+
+/*==============================================*/
+/*     comparaison et tri alphabétique          */
+/*==============================================*/
+/**
+ * Compare deux médias en fonction du titre (ordre alphabétique).
+ * @param {Object} a - Premier média.
+ * @param {Object} b - Second média.
+ * @returns {number} - Résultat de la comparaison.
+ */
+const collator = new Intl.Collator("fr", { sensitivity: "base" });
+
+export function compareByTitle(a, b) {
+  return collator.compare(a.title, b.title);
+}
+
 
 /**
- * Trie la liste des médias par titre (ordre alphabétique).
- * Utilise `Intl.Collator` pour un tri plus performant et précis.
+ * Trie les médias en fonction du titre alphabétique.
  * @param {Array} mediaList - Liste des médias à trier.
  * @returns {Array} - Liste triée par ordre alphabétique des titres.
  */
-export const sortByTitle = (mediaList) => {
+export function sortByTitle(mediaList) {
   validateMediaList(mediaList);
   logEvent("info", "Tri des médias par titre alphabétique.");
-  const collator = new Intl.Collator("fr", { sensitivity: "base" });
-  return Object.freeze([...mediaList].sort((a, b) => collator.compare(a.title, b.title)));
-};
+  return Object.freeze([...mediaList].sort(compareByTitle));
+}
+
+
+/*==============================================*/
+/*               comparaison  par date                  */
+/*==============================================*/
+/**
+ * Compare deux médias en fonction de leur date (du plus récent au plus ancien).
+ * @param {Object} a - Premier média.
+ * @param {Object} b - Second média.
+ * @returns {number} - Résultat de la comparaison.
+ */
+export function compareByDate(a, b) {
+  return new Date(b.date) - new Date(a.date);
+}
 
 /**
- * Trie la liste des médias par date (du plus récent au plus ancien).
+ * Trie les médias en fonction de leur date (du plus récent au plus ancien).
  * @param {Array} mediaList - Liste des médias à trier.
  * @returns {Array} - Liste triée par date décroissante.
  */
-export const sortByDate = (mediaList) => {
+export function sortByDate(mediaList) {
   validateMediaList(mediaList);
   logEvent("info", "Tri des médias par date décroissante.");
-  return Object.freeze([...mediaList].sort((a, b) => new Date(b.date) - new Date(a.date)));
-};
+  return Object.freeze([...mediaList].sort(compareByDate));
+}
 
 
 /*==============================================*/
