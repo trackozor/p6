@@ -628,42 +628,32 @@ export async function handleSortChange(event) {
  * @throws {Error} Génère une erreur si `button` est invalide ou si `likeCountElement` est introuvable.
  */
 
-export function handleLikeDislike(action, button) {
-  try {
-    // Vérifie que le bouton est bien défini
-    if (!button || !(button instanceof HTMLButtonElement)) {
-      throw new Error("Bouton de like/dislike invalide ou non défini.");
-    }
 
-    // Récupère l'élément contenant le nombre de likes (situé juste avant le bouton dans le DOM)
-    const likeCountElement = button.previousElementSibling;
-
-    // Vérifie que l'élément contenant le nombre de likes existe bien
-    if (!likeCountElement || isNaN(parseInt(likeCountElement.textContent, 10))) {
-      throw new Error("Impossible de trouver le compteur de likes valide.");
-    }
-
-    // Récupère le nombre actuel de likes et le convertit en entier
-    let likeCount = parseInt(likeCountElement.textContent, 10) || 0;
-
-    // Applique l'action demandée (ajout ou suppression d'un like)
-    if (action === "like") {
-      likeCount++;
-    } else if (action === "dislike") {
-      likeCount = Math.max(likeCount - 1, 0); // Empêche d'avoir un nombre de likes négatif
-    } else {
-      throw new Error(`Action inconnue : ${action}. Attendu : "like" ou "dislike".`);
-    }
-
-    // Met à jour dynamiquement l'affichage du nombre de likes
-    likeCountElement.textContent = likeCount;
-
-    // Journalisation de l'action
-    logEvent("info", `Média ${action}d : ${likeCount} likes.`);
-  } catch (error) {
-    // Capture et journalise toute erreur rencontrée
-    logEvent("error", `Erreur lors de l'action "${action}" sur le média : ${error.message}`, { error });
+export function handleLikeDislike(action, mediaId) {
+  const mediaElement = document.querySelector(`[data-id="${mediaId}"]`);
+  if (!mediaElement) {
+    return;
   }
+
+  const likeCountElement = mediaElement.querySelector(".media-likes");
+  if (!likeCountElement) {
+    return;
+  }
+
+  let likeCount = parseInt(likeCountElement.textContent, 10) || 0;
+  likeCount = action === "like" ? likeCount + 1 : Math.max(likeCount - 1, 0);
+  
+  likeCountElement.textContent = likeCount;
+  updateLikesInDatabase(mediaId, likeCount);
+  updateTotalLikes();
+}
+
+
+export function hideLikeDislikeModal() {
+  const { likeDislikeModal } = domSelectors.photographerPage;
+
+  likeDislikeModal.classList.add("hidden");
+  likeDislikeModal.setAttribute("aria-hidden", "true");
 }
 
 /*==============================================*/

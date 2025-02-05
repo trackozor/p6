@@ -16,7 +16,7 @@ import domSelectors from "../config/domSelectors.js";
 
 // Gestionnaires d'événements
 import {
-  handleModalOpen,
+  handleModalOpen, 
   handleModalClose,
   handleFormSubmit,
   handleLightboxClose,
@@ -30,6 +30,7 @@ import {
 
 // Gestion des interactions clavier
 import { handleKeyboardEvent } from "./keyboardHandler.js";
+
 
 // Utilitaire de logs
 import { logEvent } from "../utils/utils.js";
@@ -327,44 +328,111 @@ function initSortingEvents() {
   }
 }
 
+/**
+ * Initialise les écouteurs d'événements pour les likes et la modale de like/dislike.
+ */
+export async function setupEventListeners() {
+  try {
+    logEvent("info", "⏳ Vérification des icônes de like...");
 
+    // Attendre un petit délai pour s'assurer que les médias sont bien chargés
+    await new Promise((resolve) => setTimeout(resolve, 300));
 
-export function setupEventListeners() {
-  // Sélectionne toutes les icônes de like
-  const { likeIcons, likeDislikeModal } = domSelectors.photographerPage;
+    let likeIcons = document.querySelectorAll(".media-item .like-icon");
+    const likeDislikeModal = document.querySelector("#like-dislike-modal");
 
-  if (!likeIcons || !likeDislikeModal) {
-    return;
-  }
+    if (!likeIcons.length) {
+      logEvent("warn", "❌ Les icônes de like ne sont pas encore chargées. Activation du MutationObserver...");
+      waitForLikesToBeLoaded();
+      return;
+    }
 
-  let activeIcon = null;
+    if (!likeDislikeModal) {
+      throw new Error("❌ La modale de like/dislike est introuvable.");
+    }
 
-  likeIcons.forEach(icon => {
-    // Survol du cœur pour afficher la modale
-    icon.addEventListener("mouseenter", (event) => {
-      activeIcon = event.target;
-      showLikeDislikeModal(activeIcon);
-    });
+    logEvent("success", `✅ ${likeIcons.length} icônes de like trouvées ! Attachement des événements...`);
 
-    // Quitter l'icône cache la modale après un délai
-    icon.addEventListener("mouseleave", () => {
-      setTimeout(() => {
-        if (!likeDislikeModal.matches(":hover")) {
-          hideLikeDislikeModal();
+    let activeMedia = null; // Stocke l'élément actif pour la gestion des likes
+
+    likeIcons.forEach(icon => {
+      icon.addEventListener("click", (event) => {
+        try {
+          const mediaItem = event.target.closest(".media-item");
+          if (!mediaItem) {
+            throw new Error("Élément média introuvable.");
+          }
+
+          const mediaId = mediaItem.dataset.id;
+          if (!mediaId) {
+            throw new Error("ID média introuvable.");
+          }
+
+          activeMedia = mediaItem;
+          showLikeDislikeModal(mediaItem);
+          logEvent("success", `👍 Modale ouverte pour média ID: ${mediaId}`);
+        } catch (error) {
+          logEvent("error", `❌ Erreur lors du clic sur un like: ${error.message}`, { error });
         }
-      }, 300);
+      });
     });
-  });
 
-  // Gestion du clic sur la modale Like/Dislike
-  likeDislikeModal.addEventListener("click", (event) => {
-    if (event.target.closest(".like-btn")) {
-      handleLikeDislike("like", activeIcon);
-    } else if (event.target.closest(".dislike-btn")) {
-      handleLikeDislike("dislike", activeIcon);
+    likeDislikeModal.addEventListener("click", (event) => {
+      if (event.target.closest(".like-btn")) {
+        handleLikeDislike("like", activeMedia);
+      } else if (event.target.closest(".dislike-btn")) {
+        handleLikeDislike("dislike", activeMedia);
+      }
+    });
+
+    likeDislikeModal.addEventListener("mouseleave", () => {
+      hideLikeDislikeModal();
+    });
+
+    logEvent("success", "🎉 Les événements de like ont été initialisés avec succès.");
+  } catch (error) {
+    logEvent("error", `❌ Erreur critique dans setupEventListeners: ${error.message}`, { error });
+  }
+}
+
+
+/**
+ * Attend dynamiquement que les médias et icônes de like soient chargés avant d'attacher les événements.
+ */
+function waitForLikesToBeLoaded() {
+  let attempts = 0;
+  const maxAttempts = 10; // Arrêter après 10 tentatives pour éviter une boucle infinie
+
+  const observer = new MutationObserver((mutations, obs) => {
+    const likeIcons = document.querySelectorAll(".media-item .like-icon");
+
+    if (likeIcons.length) {
+      logEvent("info", `✅ Les icônes de like sont maintenant disponibles (${likeIcons.length} trouvées). Initialisation...`);
+
+      setTimeout(() => {
+        setupEventListeners(); // Relancer l'initialisation des événements après un petit délai
+      }, 200); // On laisse le temps au DOM de finaliser son chargement
+
+      obs.disconnect(); // Arrête l'observation une fois les éléments trouvés
+    } else {
+      attempts++;
+      if (attempts >= maxAttempts) {
+        logEvent("error", "❌ Les icônes de like ne sont pas apparues après plusieurs tentatives.");
+        obs.disconnect();
+      }
     }
   });
+
+  // Surveille les modifications dans #gallery
+  const gallery = document.querySelector("#gallery");
+  if (gallery) {
+    observer.observe(gallery, { childList: true, subtree: true });
+  } else {
+    logEvent("error", "❌ Le conteneur #gallery est introuvable. Impossible d'observer les ajouts.");
+  }
 }
+
+
 /**
  * Enregistre les interactions clavier pour la navigation et l'accessibilité.
  */
@@ -386,12 +454,11 @@ export function initEventListeners(mediaArray, folderName) {
   try {
     initModalEvents();
     initModalConfirm();
-    setupEventListeners()
     setupContactFormEvents();
     initLightboxEvents(mediaArray, folderName);
     initSortingEvents();
     initKeyboardEvents();
-
+    setupEventListeners();
     logEvent("success", "Tous les événements ont été initialisés avec succès.");
   } catch (error) {
     logEvent("error", "Erreur critique lors de l'initialisation des événements.", { error });

@@ -101,10 +101,16 @@
   --transition-slow: 0.5s ease-out; /* Animation lente */
 }
 
-/* _mixins.scss */
-/* Ce fichier contient des mixins pour gérer l'orientation portrait et paysage sur les appareils mobiles */
-/* Mixin pour gérer les écrans mobile en mode paysage */
-/* Mixin pour gérer les écrans desktop*/
+/* ====================================================== */
+/*  Nom du fichier    : _mixins.scss                */
+/* Auteur            : Trackozor                        */
+/* Date de création  : 25/09/24                        */
+/*  Dernière modif.   : 08/01/25                        */
+/*  Description       : Fichier regroupant tout les mixins    */
+/* ====================================================== */
+/* Mixins pour gérer les tablettes */
+/* Mixin pour gérer les écrans desktop */
+/* Mixin pour gérer les écrans larges */
 /* =============================================================================
     Projet      : Fisheye
     Fichier     : _reset.scss
@@ -370,8 +376,9 @@ a {
 }
 @media (min-width: 767px) and (min-width: 1024px) {
   .contact_button {
+    position: absolute;
     display: flex;
-    padding: 3% 1%;
+    padding: 2% 1%;
     margin-bottom: 0;
     font-size: 0.9rem;
     align-items: center;

@@ -39,6 +39,23 @@ export function safeQuerySelector(selector, isOptional = false) {
 
     return element;
 }
+/**
+ * Récupère tous les éléments DOM correspondant à un sélecteur, avec gestion des erreurs.
+ * 
+ * @param {string} selector - Sélecteur CSS des éléments.
+ * @returns {NodeList} Liste des éléments trouvés (peut être vide).
+ */
+export function safeQuerySelectorAll(selector) {
+    const elements = document.querySelectorAll(selector);
+
+    if (!elements.length) {
+        logEvent("warn", `Aucun élément trouvé pour : ${selector}`);
+    } else {
+        logEvent("info", `Éléments trouvés pour : ${selector}, total : ${elements.length}`);
+    }
+
+    return elements;
+}
 
 /*==============================================*/
 /*            designation page                  */
@@ -106,9 +123,9 @@ export function getPhotographerSelectors() {
             sortingSelect: safeQuerySelector("#sort-options"),
             contactButton: safeQuerySelector(".contact-button"),
             photographerStatsTemplate: safeQuerySelector("#photographer-stats", true),
-
-            likeButtons: safeQuerySelector(".like-btn"),
-            dislikeButtons: safeQuerySelector(".dislike-btn"),
+            likeIcons: safeQuerySelectorAll(".like-icon"),
+            likeButtons: safeQuerySelectorAll(".like-btn"),
+            dislikeButtons: safeQuerySelectorAll(".dislike-btn"),
             likeDislikeModal: safeQuerySelector("#like-dislike-modal"),
             likeDislikeContent: safeQuerySelector(".like-dislike-content"),
 
@@ -172,24 +189,24 @@ export function getPhotographerSelectors() {
  * @param {Array<string>} missingSelectors - Tableau des sélecteurs manquants.
  */
 export function recursiveCheck(obj, parentKey = "", missingSelectors = []) {
-  Object.entries(obj).forEach(([key, value]) => {
-      const fullKey = parentKey ? `${parentKey}.${key}` : key;
+    Object.entries(obj).forEach(([key, value]) => {
+        const fullKey = parentKey ? `${parentKey}.${key}` : key;
 
       // Exclusion des sélecteurs non critiques
-      if (fullKey === "photographerPage.totalLikes" || fullKey === "photographerPage.dailyRate") {
-          return;
-      }
+        if (fullKey === "photographerPage.totalLikes" || fullKey === "photographerPage.dailyRate") {
+            return;
+        }
 
-      if (typeof value === "object" && value !== null) {
+    if (typeof value === "object" && value !== null) {
           // Vérification récursive pour les objets imbriqués
-          recursiveCheck(value, fullKey, missingSelectors);
-      } else if (!value) {
+        recursiveCheck(value, fullKey, missingSelectors);
+        } else if (!value) {
           // Ajout du sélecteur manquant à la liste
-          missingSelectors.push(fullKey);
-      }
-  });
+            missingSelectors.push(fullKey);
+        }
+    });
 
-  return missingSelectors;
+    return missingSelectors;
 }
 
 /**
@@ -199,7 +216,7 @@ export function recursiveCheck(obj, parentKey = "", missingSelectors = []) {
 * @returns {Array<string>} - Liste des sélecteurs manquants.
 */
 export function checkSelectors(selectors) {
-  return recursiveCheck(selectors);
+    return recursiveCheck(selectors);
 }
 
 /*==============================================*/

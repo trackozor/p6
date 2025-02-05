@@ -14,7 +14,7 @@ import {
   renderMediaGallery,
 } from "../templates/media-template-logic.js"; // Chargement et rendu des médias
 import { photographerTemplate } from "../templates/photographer-logic.js"; // Template photographe
-import { initEventListeners } from "../events/eventlisteners.js";
+import { initEventListeners, setupEventListeners } from "../events/eventlisteners.js";
 import { initstatscalculator } from "../components/statsCalculator.js";
 
 // =============================
@@ -214,7 +214,7 @@ async function initPhotographerPage() {
       );
     }
 
-    initstatscalculator(); // Initialise les statistiques
+    await initstatscalculator(); // Initialise les statistiques
     initEventListeners(mediaArray, folderName); // Passe les médias et le folderName à la gestion des événements
 
     logEvent("success", "Page photographe initialisée avec succès.");

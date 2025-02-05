@@ -1,3 +1,12 @@
+/* =============================================================================
+    Projet      :   Fisheye
+    Fichier     :   _button.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Contient les styles réutilisables pour les boutons
+============================================================================= */
+
 /* -------------------------------------------------------------------------- */
 /* Bouton de contact                                                          */
 /* Description : Style pour le bouton de contact avec un design simple et     */
@@ -27,8 +36,9 @@
     align-items: center;
 
     @include desktop {
+      position: absolute;
       display: flex;
-      padding: 3% 1%;
+      padding: 2% 1%;
       margin-bottom: 0;
       font-size: 0.9rem;
       align-items: center;
@@ -54,14 +64,6 @@
   transition: fill 0.3s ease; /* Ajoute une transition pour le changement de couleur au survol */
 }
 
-/* -------------------------------------------------------------------------- */
-/* Effet au survol pour les icônes SVG                                        */
-/* Description : Change la couleur de l'icône au survol.                      */
-/* -------------------------------------------------------------------------- */
-
-.lightbox-prev:hover .icon {
-  fill: #f00; /* Change la couleur de l'icône au survol (rouge) */
-}
 
 /* -------------------------------------------------------------------------- */
 /* Boutons de navigation et de fermeture                                      */
@@ -105,6 +107,9 @@
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/*                   Combo box pour choix du trie                             */
+/* -------------------------------------------------------------------------- */
 .sorting label {
   font-size: 1rem;
   font-weight: bold;

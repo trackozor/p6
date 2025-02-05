@@ -98,14 +98,6 @@ export async function loadPhotographerMedia(photographerId, mediaDataUrl) {
  * @function createMediaItem
  * @param {Object} media - Objet représentant les données d'un média.
  * @param {string} folderName - Nom du dossier contenant les fichiers du photographe.
- * @returns {HTMLElement|null} Un élément HTML `<article>` pour le média ou `null` en cas d'erreur.
- */
-/**
- * Crée un élément HTML représentant un média (image ou vidéo) avec ses métadonnées.
- *
- * @function createMediaItem
- * @param {Object} media - Objet représentant les données d'un média.
- * @param {string} folderName - Nom du dossier contenant les fichiers du photographe.
  * @param {number} position - Position du média dans la liste (optionnel).
  * @returns {HTMLElement|null} Un élément HTML `<article>` pour le média ou `null` en cas d'erreur.
  */
@@ -160,12 +152,43 @@ export function createMediaItem(media, folderName, position) {
     mediaElement.className = "media";
     mediaItem.appendChild(mediaElement);
 
+    // Création du conteneur de la légende
     const caption = document.createElement("div");
     caption.className = "media-caption";
-    caption.innerHTML = `
-      <h3>${media.title}</h3>
-      <p>${media.likes} <i class="fas fa-heart" aria-hidden="true"></i></p>
-    `;
+
+    // Création du titre
+    const title = document.createElement("h3");
+    title.textContent = media.title;
+
+    // Création du conteneur des likes
+    const likeContainer = document.createElement("p");
+
+    // Création du nombre de likes
+    const likesSpan = document.createElement("span");
+    likesSpan.className = "media-likes";
+    likesSpan.textContent = media.likes;
+
+    // Création du bouton de like
+    const likeButton = document.createElement("button");
+    likeButton.className = "like-icon";
+    likeButton.setAttribute("data-action", "like");
+    likeButton.setAttribute("aria-label", "Ajouter un like");
+
+    // Icône de like (font-awesome)
+    const likeIcon = document.createElement("i");
+    likeIcon.className = "fas fa-heart";
+    likeIcon.setAttribute("aria-hidden", "true");
+
+    // Ajout des éléments au bouton
+    likeButton.appendChild(likeIcon);
+
+    // Ajout des éléments au conteneur des likes
+    likeContainer.appendChild(likesSpan);
+    likeContainer.appendChild(likeButton);
+
+    // Ajout des éléments dans la légende
+    caption.appendChild(title);
+    caption.appendChild(likeContainer);
 
     mediaItem.appendChild(caption);
 
@@ -178,6 +201,7 @@ export function createMediaItem(media, folderName, position) {
     return null;
   }
 }
+
 
 /* ===================== Fonction : Rendu de la Galerie ===================== */
 

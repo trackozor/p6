@@ -13,6 +13,7 @@ import { fetchMedia } from "../data/dataFetcher.js";
 import { logEvent } from "../utils/utils.js";
 import domSelectors from "../config/domSelectors.js"; // Sélecteurs centralisés
 import { getPhotographerIdFromUrl } from "../pages/photographer-page.js";
+import { setupEventListeners } from "../events/eventlisteners.js";
 
 /*==============================================*/
 /*         Gestion des données principales      */
@@ -192,6 +193,85 @@ async function calculateTotalLikes(mediaList) {
   }
 }
 
+export async function handleLikeDislike(action, mediaElement) {
+  try {
+    if (!mediaElement) {
+      throw new Error("Élément du média introuvable.");
+    }
+
+    // Récupère le compteur de likes
+    const likeCountElement = mediaElement.querySelector(".media-likes");
+    if (!likeCountElement) {
+      throw new Error("Compteur de likes introuvable.");
+    }
+
+    // Convertit le nombre de likes en entier
+    let likeCount = parseInt(likeCountElement.textContent, 10) || 0;
+    const mediaId = mediaElement.dataset.id; // Récupère l'ID du média
+
+    if (action === "like") {
+      likeCount++;
+    } else if (action === "dislike") {
+      likeCount = Math.max(likeCount - 1, 0); // Empêche d'avoir des likes négatifs
+    } else {
+      throw new Error(`Action inconnue : ${action}.`);
+    }
+
+    // ✅ Met à jour dynamiquement l'affichage du nombre de likes
+    likeCountElement.textContent = likeCount;
+
+    // ✅ Mise à jour en base de données
+    await updateLikesInDatabase(mediaId, likeCount);
+
+    // ✅ Met à jour le total des likes du photographe
+    updateTotalLikes();
+
+    logEvent("success", `Média ${action}d avec succès.`);
+  } catch (error) {
+    logEvent("error", `Erreur lors de l'action "${action}" sur le média : ${error.message}`, { error });
+  }
+}
+
+export async function updateLikesInDatabase(mediaId, newLikes) {
+  try {
+    const response = await fetch(`/api/update-likes`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ mediaId, likes: newLikes }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Échec de la mise à jour des likes.");
+    }
+
+    logEvent("success", `Likes mis à jour en base de données pour le média ${mediaId}.`);
+  } catch (error) {
+    logEvent("error", `Erreur mise à jour des likes en base de données : ${error.message}`);
+  }
+}
+
+export function updateTotalLikes() {
+  try {
+    const totalLikesElement = domSelectors.photographerPage.totalLikes;
+    if (!totalLikesElement) {
+      return;
+    }
+
+    // Récupère tous les compteurs de likes visibles dans la galerie
+    const likeElements = document.querySelectorAll(".media-likes");
+    let totalLikes = Array.from(likeElements).reduce((sum, likeEl) => {
+      return sum + (parseInt(likeEl.textContent, 10) || 0);
+    }, 0);
+
+    // ✅ Met à jour le total affiché
+    totalLikesElement.textContent = totalLikes;
+    logEvent("success", `Total des likes mis à jour : ${totalLikes}`);
+  } catch (error) {
+    logEvent("error", "Erreur mise à jour du total des likes", { error });
+  }
+}
 
 /*==============================================*/
 /*           Mise à jour du DOM                 */

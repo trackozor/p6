@@ -1,25 +1,26 @@
-/* _mixins.scss */
-/* Ce fichier contient des mixins pour gérer l'orientation portrait et paysage sur les appareils mobiles */
-/* Mixin pour gérer les écrans mobile en mode paysage */
-@mixin mobile-landscape {
-  @media (max-width: 768px) and (orientation: landscape) {
-    @content;
-  }
-}
+/* ====================================================== */
+/*  Nom du fichier    : _mixins.scss                */
+/* Auteur            : Trackozor                        */
+/* Date de création  : 25/09/24                        */
+/*  Dernière modif.   : 08/01/25                        */
+/*  Description       : Fichier regroupant tout les mixins    */
+/* ====================================================== */
 
+/* Mixins pour gérer les tablettes */
 @mixin tablet {
   @media (min-width: 767px) {
     @content;
   }
 }
 
-/* Mixin pour gérer les écrans desktop*/
+/* Mixin pour gérer les écrans desktop */
 @mixin desktop {
   @media (min-width: 1024px) {
     @content;
   }
 }
 
+/* Mixin pour gérer les écrans larges */
 @mixin large-desktop {
   @media (min-width: 1440px) {
     @content;

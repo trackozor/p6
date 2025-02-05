@@ -1,15 +1,15 @@
 /* ====================================================== */
-/* 🎨 Nom du fichier    : _animations.scss                */
-/* 🎬 Auteur            : Trackozor                        */
-/* 📅 Date de création  : 25/09/24                        */
-/* 🛠 Dernière modif.   : 08/01/25                        */
-/* 📌 Description       : Fichier regroupant toutes les   */
+/*  Nom du fichier    : _animations.scss                */
+/* Auteur            : Trackozor                        */
+/* Date de création  : 25/09/24                        */
+/*  Dernière modif.   : 08/01/25                        */
+/*  Description       : Fichier regroupant toutes les   */
 /*                        animations réutilisables       */
 /*                        et les animations Lightbox.    */
 /* ====================================================== */
 
 /* ====================================================== */
-/* ⚡ Effets de Fondu (Fade In / Fade Out) */
+/*  Effets de Fondu (Fade In / Fade Out) */
 /* ====================================================== */
 
 @keyframes fade-in {
@@ -22,7 +22,7 @@
   to { opacity: 0; }
 }
 
-/* ✅ Classe utilitaire */
+/*  Classe utilitaire */
 .fade-in {
   animation: fade-in 0.5s ease-in-out forwards;
 }
@@ -31,7 +31,7 @@
 }
 
 /* ====================================================== */
-/* 🎬 Effets de Zoom et Échelle */
+/*  Effets de Zoom et Échelle */
 /* ====================================================== */
 
 @keyframes scale-up {
@@ -44,7 +44,7 @@
   to { transform: scale(0.8); }
 }
 
-/* ✅ Classes utilitaires */
+/*  Classes utilitaires */
 .scale-up {
   animation: scale-up 0.5s ease-in-out forwards;
 }
@@ -62,7 +62,7 @@
 }
 
 /* ====================================================== */
-/* 📍 Effets de Glissement (Slide In / Slide Out) */
+/*  Effets de Glissement (Slide In / Slide Out) */
 /* ====================================================== */
 
 @keyframes slide-in {
@@ -75,7 +75,7 @@
   to { transform: translateX(-100%); opacity: 0; }
 }
 
-/* ✅ Classes utilitaires */
+/*  Classes utilitaires */
 .slide-in {
   animation: slide-in 0.5s ease-in-out forwards;
 }
@@ -84,7 +84,7 @@
 }
 
 /* ====================================================== */
-/* 🔄 Effets de Rotation */
+/*  Effets de Rotation */
 /* ====================================================== */
 
 @keyframes rotate {
@@ -97,7 +97,7 @@
   to { transform: rotate(0deg); }
 }
 
-/* ✅ Classes utilitaires */
+/*  Classes utilitaires */
 .rotate {
   animation: rotate 1s linear infinite;
 }
@@ -106,7 +106,7 @@
 }
 
 /* ====================================================== */
-/* ✨ Effets pour la Lightbox */
+/*  Effets pour la Lightbox */
 /* ====================================================== */
 
 @keyframes fade-in-up {
@@ -120,7 +120,7 @@
   100% { opacity: 0; transform: scale(0.9); }
 }
 
-/* ✅ Classes utilitaires */
+/*  Classes utilitaires */
 .fade-in-up {
   animation: fade-in-up 0.5s ease-in-out forwards;
 }
@@ -129,7 +129,7 @@
 }
 
 /* ====================================================== */
-/* 🚀 Animations de navigation Lightbox (Gauche/Droite) */
+/*  Animations de navigation Lightbox (Gauche/Droite) */
 /* ====================================================== */
 
 @keyframes slide-in-right {
@@ -152,7 +152,7 @@
   to { transform: translateX(100%); opacity: 0; }
 }
 
-/* ✅ Classes spécifiques pour la Lightbox */
+/*  Classes spécifiques pour la Lightbox */
 .lightbox-enter-right {
   animation: slide-in-right 0.5s ease-in-out forwards;
 }
@@ -167,7 +167,7 @@
 }
 
 /* ====================================================== */
-/* 🌟 Effet de rebond (Bounce) pour les transitions */
+/*  Effet de rebond (Bounce) pour les transitions */
 /* ====================================================== */
 
 @keyframes bounce-in {
@@ -176,13 +176,13 @@
   100% { transform: scale(1); }
 }
 
-/* ✅ Classe utilitaire */
+/*  Classe utilitaire */
 .bounce-in {
   animation: bounce-in 0.6s ease-out forwards;
 }
 
 /* ====================================================== */
-/* ❤️ Animation Like (HeartBeat) */
+/*  Animation Like (HeartBeat) */
 /* ====================================================== */
 
 @keyframes heartbeat {
@@ -190,13 +190,13 @@
   50% { transform: scale(1.2); }
 }
 
-/* ✅ Classe utilitaire */
+/*  Classe utilitaire */
 .heartbeat {
   animation: heartbeat 1.5s ease-in-out infinite;
 }
 
 /* ====================================================== */
-/* 🌀 Animation de Chargement (Loader) */
+/*  Animation de Chargement (Loader) */
 /* ====================================================== */
 
 @keyframes spin {
@@ -204,7 +204,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* ✅ Classe utilitaire */
+/*  Classe utilitaire */
 .spin {
   animation: spin 1s linear infinite;
 }
