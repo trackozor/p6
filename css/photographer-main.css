@@ -1373,7 +1373,7 @@ footer p {
                     page responsive utilisant Flexbox et CSS Grid.
 ============================================================================= */
 /* ========================================================================= */
-/*  SECTION : CONTENEUR PRINCIPAL DE LA GALERIE                           */
+/*  SECTION : CONTENEUR PRINCIPAL DE LA GALERIE                             */
 /* ========================================================================= */
 /* Objectif : 
   - Adapter dynamiquement la disposition des médias en fonction de l’écran.
@@ -1387,6 +1387,10 @@ footer p {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  margin: 5% 0;
+  /* Disposition spécifique pour tablettes */
+  /* Disposition spécifique pour desktop */
+  /* Disposition spécifique pour les grands écrans */
 }
 @media (min-width: 767px) {
   #gallery {
@@ -1411,7 +1415,7 @@ footer p {
 }
 
 /* ========================================================================= */
-/* SECTION : STYLES DES MÉDIAS (IMAGES ET VIDÉOS)                        */
+/* SECTION : STYLES DES MÉDIAS (IMAGES ET VIDÉOS)                           */
 /* ========================================================================= */
 /* Objectif :
   - Assurer un affichage optimal des images et vidéos.
@@ -1420,14 +1424,21 @@ footer p {
 .media-item img,
 .media-item video {
   max-width: 36vw;
-  height: 36vh;
+  height: 500px;
   object-fit: cover;
   object-position: center;
   display: block;
+  /* Ajustement spécifique pour les très grands écrans */
+}
+@media (min-width: 1440px) {
+  .media-item img,
+  .media-item video {
+    height: 700px;
+  }
 }
 
 /* ========================================================================= */
-/* SECTION : ICÔNE DES LIKES                                             */
+/* SECTION : ICÔNE DES LIKES                                                */
 /* ========================================================================= */
 /* Objectif :
   - Positionner correctement l'icône des likes au-dessus des médias.
@@ -1448,7 +1459,7 @@ footer p {
 }
 
 /* ========================================================================= */
-/* SECTION : CONTENEUR DU NOMBRE DE LIKES + ICÔNE                        */
+/* SECTION : CONTENEUR DU NOMBRE DE LIKES + ICÔNE                           */
 /* ========================================================================= */
 /* Objectif :
   - Afficher le nombre de likes avec l’icône de manière structurée.
@@ -1477,7 +1488,7 @@ footer p {
 }
 
 /* ========================================================================= */
-/* SECTION : MODALE DE LIKE/DISLIKE                                       */
+/* SECTION : MODALE DE LIKE/DISLIKE                                         */
 /* ========================================================================= */
 /* Objectif :
   - Créer une transition fluide pour afficher/masquer la modale.
@@ -1488,6 +1499,7 @@ footer p {
   visibility: hidden;
   justify-content: center;
   margin: 0 auto;
+  left: 2%;
   opacity: 0;
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
@@ -1497,20 +1509,34 @@ footer p {
   transform: translateY(10px);
 }
 
+/* ========================================================================= */
+/* SECTION : CONTENU DE LA MODALE                                           */
+/* ========================================================================= */
+/* Objectif :
+  - Ajouter un design épuré avec un fond clair.
+  - Arrondir légèrement les bords pour une esthétique moderne.
+*/
 .like-dislike-content {
   background-color: lightgray;
   width: 100%;
   padding: 3%;
-  border-radius: 0.2rem;
+  border-radius: 0.5rem;
 }
 
+/* ========================================================================= */
+/* SECTION : BOUTONS LIKE & DISLIKE                                         */
+/* ========================================================================= */
+/* Objectif :
+  - Utiliser des couleurs différenciées pour les actions de like et dislike.
+  - Assurer un bon contraste pour l’accessibilité.
+*/
 .like-btn {
-  background-color: green;
+  background-color: rgb(43, 197, 43);
   color: white;
 }
 
 .dislike-btn {
-  background-color: red;
+  background-color: rgb(209, 68, 68);
   color: white;
 }
 
@@ -1525,13 +1551,17 @@ footer p {
 /* ========================================================================= */
 /*  VARIABLES LOCALES                                                      */
 /* ========================================================================= */
+/* Objectif :
+  - Centraliser les valeurs clés pour faciliter la maintenance et les modifications.
+  - Garantir une cohérence visuelle et de comportement dans l'ensemble du fichier.
+*/
 /* ========================================================================= */
 /*  LIGHTBOX PRINCIPALE                                                    */
 /* ========================================================================= */
 /* Objectif :
-  - Couvre toute la page avec un fond assombri.
-  - Gérée par l’attribut `[aria-hidden]` pour l’accessibilité.
-  - Animation fluide lors de l’ouverture/fermeture.
+  - Couvre toute la page avec un fond sombre et semi-transparent.
+  - Utilisation de l’attribut `[aria-hidden]` pour l’accessibilité et la gestion des états.
+  - Animation fluide pour une transition agréable lors de l’ouverture et de la fermeture.
 */
 .lightbox {
   position: fixed;
@@ -1544,6 +1574,8 @@ footer p {
   visibility: hidden;
   z-index: 1000;
   transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+  /* État actif : affichage de la lightbox */
+  /* État inactif : masquage de la lightbox */
 }
 .lightbox[aria-hidden=false] {
   opacity: 1;
@@ -1558,8 +1590,8 @@ footer p {
 /*  CONTENU DE LA LIGHTBOX                                                 */
 /* ========================================================================= */
 /* Objectif :
-  - Structure fluide et adaptative.
-  - Supporte différents formats de médias.
+  - Adapter le contenu de la lightbox à différentes tailles d’écran.
+  - Structurer les éléments pour assurer un affichage harmonieux des médias.
 */
 .lightbox-content {
   width: 80%;
@@ -1577,7 +1609,7 @@ footer p {
 /* ========================================================================= */
 /* Objectif :
   - Permet la navigation entre les médias et la fermeture de la lightbox.
-  - Design épuré et accessible.
+  - Design simple et épuré pour éviter toute distraction visuelle.
 */
 .lightbox button {
   z-index: 2;
@@ -1608,6 +1640,7 @@ footer p {
   font-size: 3rem;
 }
 
+/* Positionnement des boutons de navigation */
 .lightbox-prev {
   left: 2%;
 }
@@ -1620,8 +1653,8 @@ footer p {
 /*  CONTENEUR DES MÉDIAS                                                   */
 /* ========================================================================= */
 /* Objectif :
-  - Gère les médias en mode diaporama avec transition fluide.
-  - Assure un positionnement propre des médias actifs/inactifs.
+  - Gère l'affichage des médias sous forme de diaporama avec une transition fluide.
+  - S'assure que le média actif est bien positionné et les autres sont masqués.
 */
 .lightbox-media-container {
   width: 70%;
@@ -1662,8 +1695,8 @@ footer p {
 /*  LÉGENDE DES MÉDIAS                                                     */
 /* ========================================================================= */
 /* Objectif :
-  - Affichage de la description du média actif.
-  - Animation fluide pour un meilleur effet visuel.
+  - Fournit une description du média actif pour une meilleure expérience utilisateur.
+  - Intègre une animation fluide lors des changements de médias.
 */
 .lightbox-caption {
   margin-top: var(--spacing-small);
@@ -1688,8 +1721,8 @@ footer p {
 /*  OVERLAY DE LA MODALE                                                   */
 /* ========================================================================= */
 /* Objectif :
-  - Couvre toute la page pour assombrir l’arrière-plan.
-  - Devient visible uniquement lorsque la modale est active.
+  - Couvre toute la page pour masquer le fond lorsqu’une modale est affichée.
+  - S'active uniquement lorsque la classe `.modal-active` est ajoutée.
 */
 #modal-overlay {
   display: none;
@@ -1700,6 +1733,7 @@ footer p {
   height: 100vh;
   background-color: rgba(243, 233, 233, 0.7);
   z-index: 9998;
+  /* Affichage lorsque la modale est active */
 }
 #modal-overlay.modal-active {
   display: flex;
@@ -1710,8 +1744,8 @@ footer p {
 /*  MODALE PRINCIPALE                                                      */
 /* ========================================================================= */
 /* Objectif :
-  - Fenêtre centrée sur l’écran avec animation d’apparition.
-  - Responsive avec une largeur adaptée selon l’appareil.
+  - Fenêtre centrale avec une animation fluide.
+  - Design adaptatif avec un dimensionnement optimal selon l’écran.
 */
 .modal {
   display: none;
@@ -1728,6 +1762,8 @@ footer p {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.9);
   transition: opacity 0.3s ease, transform 0.3s ease;
+  /* Ajustement de la hauteur pour les tablettes */
+  /* Affichage de la modale lorsqu’elle est active */
 }
 @media (min-width: 767px) {
   .modal {
@@ -1748,8 +1784,8 @@ footer p {
 /*  BOUTON DE FERMETURE                                                    */
 /* ========================================================================= */
 /* Objectif :
-  - Permet de fermer la modale avec un bouton accessible.
-  - Position en haut à droite.
+  - Bouton en haut à droite pour fermer la modale facilement.
+  - Accessibilité et bonne visibilité.
 */
 .modal-close {
   position: absolute;
@@ -1759,6 +1795,8 @@ footer p {
   border: none;
   font-size: 2rem;
   cursor: pointer;
+  /* Ajustement de la taille du bouton pour desktop */
+  /* Icône de fermeture */
 }
 @media (min-width: 1024px) {
   .modal-close {
@@ -1775,13 +1813,15 @@ footer p {
 /*  CONTENU DE LA MODALE                                                   */
 /* ========================================================================= */
 /* Objectif :
-  - Organiser l'affichage du titre et des informations de manière lisible.
+  - Organisation claire et structurée du contenu.
+  - Adaptabilité à différentes tailles d’écrans.
 */
 .content {
   padding: 2% 0;
   width: 90%;
 }
 
+/*  EN-TÊTE DE LA MODALE */
 .modal-header {
   display: flex;
   flex-direction: column;
@@ -1790,6 +1830,8 @@ footer p {
   width: 100%;
   margin: 2% 0;
   font-size: 1.5rem;
+  /* Titre */
+  /* Texte secondaire */
 }
 .modal-header h2 {
   font-size: 1.5rem;
@@ -1817,8 +1859,8 @@ footer p {
 /*  FORMULAIRE DE CONTACT                                                  */
 /* ========================================================================= */
 /* Objectif :
-  - Organisation claire du formulaire avec un bon espacement.
-  - Champs bien alignés et accessibles.
+  - Formulaire clair et bien structuré pour améliorer l'expérience utilisateur.
+  - Adapté à tous types d’écrans.
 */
 form {
   display: flex;
@@ -1865,7 +1907,6 @@ form {
   border-radius: 0.5rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  text-align: center;
 }
 .contact-submit-button:hover {
   background-color: #b42a2a;
@@ -1882,7 +1923,8 @@ textarea.error-input {
 /*  MODALE DE CONFIRMATION                                                 */
 /* ========================================================================= */
 /* Objectif :
-  - S'affiche après une soumission réussie du formulaire.
+  - Fenêtre de confirmation après soumission du formulaire.
+  - Centrée avec un message clair.
 */
 #confirmation-modal {
   height: 90%;
@@ -1898,15 +1940,24 @@ textarea.error-input {
   font-weight: 700;
 }
 
+/* Bouton de confirmation */
 .confirma-btn {
   display: flex;
   justify-content: center;
   margin: 2% auto;
 }
 
+.honeypot-field {
+  display: none;
+}
+
 /* ========================================================================= */
 /*  MODALE DE DÉTECTION DE SPAM                                            */
 /* ========================================================================= */
+/* Objectif :
+  - S'affiche si un comportement suspect est détecté dans le formulaire.
+  - Design spécifique pour signaler une alerte.
+*/
 .modal.spam-modal {
   display: none;
   position: fixed;
@@ -1933,10 +1984,6 @@ textarea.error-input {
   color: #333;
   font-size: 1rem;
   line-height: 1.5;
-}
-.modal.spam-modal .modal-footer {
-  text-align: center;
-  padding: 10px 20px;
 }
 .modal.spam-modal .btn-close-errormodal {
   background-color: #ff4d4d;

@@ -12,20 +12,21 @@
 /*  OVERLAY DE LA MODALE                                                   */
 /* ========================================================================= */
 /* Objectif :
-  - Couvre toute la page pour assombrir l’arrière-plan.
-  - Devient visible uniquement lorsque la modale est active.
+  - Couvre toute la page pour masquer le fond lorsqu’une modale est affichée.
+  - S'active uniquement lorsque la classe `.modal-active` est ajoutée.
 */
 
 #modal-overlay {
-  display: none; // Caché par défaut
-  position: fixed;
+  display: none; // Masqué par défaut
+  position: fixed; // Se positionne sur toute la page
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(243, 233, 233, 0.7); // Fond semi-transparent
-  z-index: 9998; // Sous la modale principale
+  width: 100vw; // Couvre toute la largeur de l’écran
+  height: 100vh; // Couvre toute la hauteur de l’écran
+  background-color: rgba(243, 233, 233, 0.7); // Fond semi-transparent pour masquer légèrement l’arrière-plan
+  z-index: 9998; // S'assure que l’overlay est sous la modale mais au-dessus du contenu principal
 
+  /* Affichage lorsque la modale est active */
   &.modal-active {
     display: flex;
     opacity: 1;
@@ -36,40 +37,40 @@
 /*  MODALE PRINCIPALE                                                      */
 /* ========================================================================= */
 /* Objectif :
-  - Fenêtre centrée sur l’écran avec animation d’apparition.
-  - Responsive avec une largeur adaptée selon l’appareil.
+  - Fenêtre centrale avec une animation fluide.
+  - Design adaptatif avec un dimensionnement optimal selon l’écran.
 */
 
 .modal {
-  display: none;
-  position: fixed;
+  display: none; // Caché par défaut
+  position: fixed; // S’assure que la modale est toujours au centre
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 400px;
-  background-color: var(--secondary-color);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.7);
-  border-radius: 0.2rem;
-  z-index: 9999;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.9);
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
+  width: 90%; // Largeur relative à l’écran pour un affichage optimal
+  max-width: 400px; // Taille maximale pour éviter une expansion excessive
+  background-color: var(--secondary-color); // Couleur de fond personnalisée
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.7); // Ombre portée pour un effet de profondeur
+  border-radius: 0.2rem; // Coins légèrement arrondis pour un aspect plus moderne
+  z-index: 9999; // Toujours au premier plan
+  opacity: 0; // Invisible par défaut
+  transform: translate(-50%, -50%) scale(0.9); // Effet de réduction pour une transition plus fluide
+  transition: opacity 0.3s ease, transform 0.3s ease; // Animation d'apparition
 
+  /* Ajustement de la hauteur pour les tablettes */
   @include tablet {
     height: auto;
   }
 
+  /* Affichage de la modale lorsqu’elle est active */
   &.modal-active {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-    animation: fadeIn 1s ease forwards;
+    transform: translate(-50%, -50%) scale(1); // Effet de zoom progressif
+    animation: fadeIn 1s ease forwards; // Animation supplémentaire
   }
 }
 
@@ -77,8 +78,8 @@
 /*  BOUTON DE FERMETURE                                                    */
 /* ========================================================================= */
 /* Objectif :
-  - Permet de fermer la modale avec un bouton accessible.
-  - Position en haut à droite.
+  - Bouton en haut à droite pour fermer la modale facilement.
+  - Accessibilité et bonne visibilité.
 */
 
 .modal-close {
@@ -90,12 +91,14 @@
   font-size: 2rem;
   cursor: pointer;
 
+  /* Ajustement de la taille du bouton pour desktop */
   @include desktop {
     font-size: 4rem;
     font-weight: 50;
     top: 0;
   }
 
+  /* Icône de fermeture */
   span {
     color: white;
   }
@@ -105,7 +108,8 @@
 /*  CONTENU DE LA MODALE                                                   */
 /* ========================================================================= */
 /* Objectif :
-  - Organiser l'affichage du titre et des informations de manière lisible.
+  - Organisation claire et structurée du contenu.
+  - Adaptabilité à différentes tailles d’écrans.
 */
 
 .content {
@@ -113,15 +117,17 @@
   width: 90%;
 }
 
+/*  EN-TÊTE DE LA MODALE */
 .modal-header {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.5rem; // Espacement entre les éléments
   text-align: left;
   width: 100%;
   margin: 2% 0;
   font-size: 1.5rem;
 
+  /* Titre */
   h2 {
     font-size: 1.5rem;
 
@@ -132,6 +138,7 @@
     }
   }
 
+  /* Texte secondaire */
   span {
     font-size: 1.5rem;
 
@@ -148,14 +155,14 @@
 /*  FORMULAIRE DE CONTACT                                                  */
 /* ========================================================================= */
 /* Objectif :
-  - Organisation claire du formulaire avec un bon espacement.
-  - Champs bien alignés et accessibles.
+  - Formulaire clair et bien structuré pour améliorer l'expérience utilisateur.
+  - Adapté à tous types d’écrans.
 */
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 2%;
+  gap: 2%; // Espacement entre les champs
   width: 100%;
 }
 
@@ -171,7 +178,7 @@ form {
 .form-group label {
   font-size: 1.2rem;
   margin: 2% 0;
-  color: #333;
+  color: #333; // Couleur sobre pour une meilleure lisibilité
 }
 
 /*  CHAMPS DE SAISIE */
@@ -182,7 +189,7 @@ form {
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
-  box-sizing: border-box;
+  box-sizing: border-box; // Évite les dépassements de boîte
 }
 
 /*  BOUTON DE SOUMISSION */
@@ -197,7 +204,6 @@ form {
   border-radius: 0.5rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  text-align: center;
 
   &:hover {
     background-color: #b42a2a;
@@ -215,7 +221,8 @@ textarea.error-input {
 /*  MODALE DE CONFIRMATION                                                 */
 /* ========================================================================= */
 /* Objectif :
-  - S'affiche après une soumission réussie du formulaire.
+  - Fenêtre de confirmation après soumission du formulaire.
+  - Centrée avec un message clair.
 */
 
 #confirmation-modal {
@@ -232,15 +239,22 @@ textarea.error-input {
   font-weight: 700;
 }
 
+/* Bouton de confirmation */
 .confirma-btn {
   display: flex;
   justify-content: center;
   margin: 2% auto;
 }
-
+.honeypot-field {
+  display:none
+}
 /* ========================================================================= */
 /*  MODALE DE DÉTECTION DE SPAM                                            */
 /* ========================================================================= */
+/* Objectif :
+  - S'affiche si un comportement suspect est détecté dans le formulaire.
+  - Design spécifique pour signaler une alerte.
+*/
 
 .modal.spam-modal {
   display: none;
@@ -269,11 +283,6 @@ textarea.error-input {
     color: #333;
     font-size: 1rem;
     line-height: 1.5;
-  }
-
-  .modal-footer {
-    text-align: center;
-    padding: 10px 20px;
   }
 
   .btn-close-errormodal {

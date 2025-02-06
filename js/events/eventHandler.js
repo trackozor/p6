@@ -618,7 +618,7 @@ export function showLikeDislikeModal(mediaItem) {
 
   // Ajuster la position de la modale sous l'icône de like
   modal.style.top = `${rect.bottom + scrollTop + 0}px`; // 10px en dessous
-  modal.style.left = `${rect.left + scrollLeft+150}px`; // Aligné à gauche
+  modal.style.left = `${rect.left + scrollLeft+15}px`; // Aligné à gauche
 
   // Afficher la modale avec animation
   modal.classList.add("active");
@@ -695,7 +695,7 @@ export function handleKeyboardEvent(event) {
       handleEscapeKey(activeModal, activeLightbox);
     }
 
-    // 🎥 Gestion des flèches gauche/droite pour la navigation dans la lightbox
+    //  Gestion des flèches gauche/droite pour la navigation dans la lightbox
     else if ([KEY_CODES.ARROW_LEFT, KEY_CODES.ARROW_RIGHT].includes(event.key)) {
       handleLightboxNavigation(activeLightbox, event);
     }

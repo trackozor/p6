@@ -2,34 +2,34 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" >
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
     <meta
       name="description"
       content="Explorez les œuvres d'un photographe talentueux, découvrez sa galerie et contactez-le facilement."
-    />
+    >
     <meta name="author" content="Trackozor">
     <meta
       name="keywords"
       content="photographe, Fisheye, galerie, contact, photographie, professionnel, artistique"
-    />
+    >
     <link rel="canonical" href="https://www.fisheye-photographe.com">
-    <meta property="og:title" content="Fisheye - Photographe professionnel" />
+    <meta property="og:title" content="Fisheye - Photographe professionnel" >
     <meta
       property="og:description"
       content="Explorez les photographies uniques d'un talent exceptionnel."
-    />
-    <meta property="og:image" content="/assets/images/og-image.jpg" />
-    <meta property="og:url" content="https://www.fisheye-photographe.com" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" href="../../assets/icons/favicon.png" type="image/png" />
+    >
+    <meta property="og:image" content="/assets/images/og-image.jpg" >
+    <meta property="og:url" content="https://www.fisheye-photographe.com" >
+    <meta name="twitter:card" content="summary_large_image" >
+    <link rel="icon" href="../../assets/icons/favicon.png" type="image/png" >
     <title>Fisheye - Photographe professionnel</title>
 
     <!-- Polices et styles -->
-    <link href="../css/photographer-main.css" rel="stylesheet" />
+    <link href="../css/photographer-main.css" rel="stylesheet" >
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
+    >
   </head>
   <body>
     <!-- Lien d'accès rapide -->
@@ -42,20 +42,22 @@
           src="../../assets/images/logo.png"
           alt="Logo de Fisheye - Retour à l'accueil"
           class="logo"
-        />
+        >
       </a>
     </header>
 
     <!-- Contenu principal -->
     <main id="main" tabindex="-1">
+      <h1 class="sr-only">page dédié au photographe</h1>
       <!-- Section Informations du photographe -->
       <section
         id="photograph-info"
         class="photographer-info"
         aria-labelledby="photograph-title"
       >
+      <h2 class="sr-only">Information</h2>
         <article class="photographer-profile">
-          <h1 id="photograph-title">Titre par défaut</h1>
+          <h2 id="photograph-title">Titre par défaut</h2>
           <p class="photographer-card-location">Ville, Pays par défaut</p>
           <p class="photographer-card-tagline">Slogan par défaut</p>
         </article>
@@ -66,7 +68,7 @@
             alt="Portrait par défaut du photographe"
             class="photographer-card-portrait"
             loading="lazy"
-          />
+          >
         </div>
         
         <template id="photographer-stats">
@@ -97,12 +99,11 @@
       <section
         class="photograph-gallery"
         aria-labelledby="gallery-title"
-        role="region"
       >
         <h2 id="gallery-title" class="sr-only">Galerie de photos et vidéos</h2>
         <template id="media-template">
           <article class="media-item">
-            <img src="" alt="Image par défaut" class="media" />
+            <img src="" alt="Image par défaut" class="media" >
             <div class="media-caption">
               <h3>Titre du média</h3>
               <p>
@@ -153,7 +154,6 @@
             <span id="photographer-name" class="modal-photographer-name">
               <!-- Nom du photographe inséré ici -->
             </span>
-          </header>
         </header>
 
         <!-- Formulaire de contact -->
@@ -172,7 +172,7 @@
                 placeholder="Votre prénom"
                 autocomplete="given-name"
                 maxlength="50"
-              />
+              >
             </div>
         
             <!-- Groupe Nom -->
@@ -186,7 +186,7 @@
                 placeholder="Votre nom"
                 autocomplete="family-name"
                 maxlength="50"
-              />
+              >
             </div>
         
             <!-- Groupe Email -->
@@ -200,7 +200,7 @@
                 placeholder="Votre email"
                 autocomplete="email"
                 maxlength="100"
-              />
+              >
             </div>
         
             <!-- Champ Honeypot (Invisible pour les utilisateurs, mais détectable par les bots) -->
@@ -287,7 +287,7 @@
       aria-labelledby="confirmation-title"
     >
       <div class="content">
-        <h2 id="confirmation-title"class="confirmation-title">Message envoyé !</h2>
+        <h2 id="confirmation-title" class="confirmation-title">Message envoyé !</h2>
         <p>Merci pour votre message. Nous vous répondrons dans les plus brefs délais.</p>
         <button type="button" class="confirm-btn" aria-label="Fermer la confirmation">
           OK
@@ -338,7 +338,7 @@
 
         <!-- Barre de progression -->
         <div class="progress-container">
-          <div id="progress-bar" class="progress-bar" "></div>
+          <div id="progress-bar" class="progress-bar"></div>
         </div>
         <p id="progress-percentage" class="progress-percentage">0%</p>
       </div>
@@ -353,7 +353,6 @@
     <script
       type="module"
       src="../js/pages/photographer-page.js"
-      defer
     ></script>
   </body>
 </html>

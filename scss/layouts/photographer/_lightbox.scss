@@ -10,36 +10,43 @@
 /* ========================================================================= */
 /*  VARIABLES LOCALES                                                      */
 /* ========================================================================= */
-$lightbox-z-index: 1000;       // S'assurer que la lightbox est toujours au-dessus
-$transition-duration: 0.6s;    // Durée des transitions d'apparition et de disparition
-$lightbox-bg: rgba(0, 0, 0, 0.9); // Fond semi-transparent
+/* Objectif :
+  - Centraliser les valeurs clés pour faciliter la maintenance et les modifications.
+  - Garantir une cohérence visuelle et de comportement dans l'ensemble du fichier.
+*/
+
+$lightbox-z-index: 1000;       // Niveau d'empilement élevé pour s'assurer que la lightbox est toujours au-dessus du contenu
+$transition-duration: 0.6s;    // Durée de transition standard pour l’ouverture et la fermeture
+$lightbox-bg: rgba(0, 0, 0, 0.9); // Fond semi-transparent pour masquer l'arrière-plan sans être totalement opaque
 
 /* ========================================================================= */
 /*  LIGHTBOX PRINCIPALE                                                    */
 /* ========================================================================= */
 /* Objectif :
-  - Couvre toute la page avec un fond assombri.
-  - Gérée par l’attribut `[aria-hidden]` pour l’accessibilité.
-  - Animation fluide lors de l’ouverture/fermeture.
+  - Couvre toute la page avec un fond sombre et semi-transparent.
+  - Utilisation de l’attribut `[aria-hidden]` pour l’accessibilité et la gestion des états.
+  - Animation fluide pour une transition agréable lors de l’ouverture et de la fermeture.
 */
 
 .lightbox {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: $lightbox-bg;
-  opacity: 0;
-  visibility: hidden;
-  z-index: $lightbox-z-index;
-  transition: opacity $transition-duration ease-in-out, visibility $transition-duration ease-in-out;
+  position: fixed; // Fixé sur l'écran pour couvrir toute la fenêtre d'affichage
+  inset: 0; // Équivalent à top: 0; bottom: 0; left: 0; right: 0;
+  display: flex; // Alignement flexible du contenu
+  justify-content: center; // Centre horizontalement le contenu
+  align-items: center; // Centre verticalement le contenu
+  background-color: $lightbox-bg; // Applique le fond sombre défini dans les variables
+  opacity: 0; // Caché par défaut
+  visibility: hidden; // Empêche les interactions tant que la lightbox n’est pas affichée
+  z-index: $lightbox-z-index; // Place la lightbox au-dessus de tous les autres éléments
+  transition: opacity $transition-duration ease-in-out, visibility $transition-duration ease-in-out; // Animation fluide de l’affichage
 
+  /* État actif : affichage de la lightbox */
   &[aria-hidden="false"] {
-    opacity: 1;
+    opacity: 1; // Rendre visible progressivement
     visibility: visible;
   }
 
+  /* État inactif : masquage de la lightbox */
   &[aria-hidden="true"] {
     opacity: 0;
     visibility: hidden;
@@ -50,20 +57,19 @@ $lightbox-bg: rgba(0, 0, 0, 0.9); // Fond semi-transparent
 /*  CONTENU DE LA LIGHTBOX                                                 */
 /* ========================================================================= */
 /* Objectif :
-  - Structure fluide et adaptative.
-  - Supporte différents formats de médias.
+  - Adapter le contenu de la lightbox à différentes tailles d’écran.
+  - Structurer les éléments pour assurer un affichage harmonieux des médias.
 */
 
 .lightbox-content {
-  width: 80%;
-  height: 80%;
+  width: 80%; // Taille adaptative pour ne pas occuper toute la largeur
+  height: 80%; // Hauteur limitée pour éviter une surcharge visuelle
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
-
+  flex-direction: column; // Organisation verticale du contenu
+  justify-content: center; // Centre le contenu verticalement
+  align-items: center; // Centre le contenu horizontalement
+  overflow: hidden; // Empêche le débordement des médias
+  position: relative; // Position relative pour permettre un positionnement précis des éléments internes
 }
 
 /* ========================================================================= */
@@ -71,38 +77,39 @@ $lightbox-bg: rgba(0, 0, 0, 0.9); // Fond semi-transparent
 /* ========================================================================= */
 /* Objectif :
   - Permet la navigation entre les médias et la fermeture de la lightbox.
-  - Design épuré et accessible.
+  - Design simple et épuré pour éviter toute distraction visuelle.
 */
 
 .lightbox button {
-  z-index: 2;
-  position: absolute;
-  background: transparent;
-  cursor: pointer;
-  color: var(--primary-color);
-  font-size: 3.5rem;
-  padding: var(--spacing-xsmall);
-  transition: transform 0.3s ease-in-out;
+  z-index: 2; // Assure que les boutons restent au-dessus des médias
+  position: absolute; // Positionnement flexible pour s'adapter au contenu
+  background: transparent; // Supprime toute couleur de fond
+  cursor: pointer; // Indique que les boutons sont interactifs
+  color: var(--primary-color); // Utilisation de la couleur principale du thème
+  font-size: 3.5rem; // Taille suffisante pour une interaction confortable
+  padding: var(--spacing-xsmall); // Espacement ajusté pour une meilleure accessibilité
+  transition: transform 0.3s ease-in-out; // Ajoute un effet de zoom au survol
 }
 
 /*  Bouton de fermeture (X) */
 .lightbox-close {
-  top: var(--spacing-medium);
+  top: var(--spacing-medium); // Position en haut à droite
   right: var(--spacing-medium);
-  font-size: 2.5rem;
-  background: white;
-  border-radius: 50%;
-  padding: 0.8rem;
+  font-size: 2.5rem; // Taille légèrement réduite pour ne pas être intrusive
+  background: white; // Fond blanc pour une meilleure lisibilité
+  border-radius: 50%; // Bouton arrondi pour un aspect moderne
+  padding: 0.8rem; // Espacement interne ajusté pour un meilleur confort d’utilisation
 }
 
 /* Boutons de navigation */
 .lightbox-prev,
 .lightbox-next {
-  border-radius: 0.8rem;
-  padding: 1%;
-  font-size: 3rem;
+  border-radius: 0.8rem; // Bords légèrement arrondis
+  padding: 1%; // Ajustement de l'espacement pour un confort d'interaction
+  font-size: 3rem; // Taille cohérente avec le design global
 }
 
+/* Positionnement des boutons de navigation */
 .lightbox-prev {
   left: 2%;
 }
@@ -115,61 +122,59 @@ $lightbox-bg: rgba(0, 0, 0, 0.9); // Fond semi-transparent
 /*  CONTENEUR DES MÉDIAS                                                   */
 /* ========================================================================= */
 /* Objectif :
-  - Gère les médias en mode diaporama avec transition fluide.
-  - Assure un positionnement propre des médias actifs/inactifs.
+  - Gère l'affichage des médias sous forme de diaporama avec une transition fluide.
+  - S'assure que le média actif est bien positionné et les autres sont masqués.
 */
 
 .lightbox-media-container {
-  width: 70%;
-  height: 70%;
+  width: 70%; // Largeur ajustée pour un affichage optimal
+  height: 70%; // Hauteur suffisante pour maintenir une bonne proportion
   display: flex;
-  flex-direction: row;
+  flex-direction: row; // Disposition en ligne des médias
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  position: relative;
+  overflow: hidden; // Empêche les débordements
+  position: relative; // Permet de positionner les médias correctement
 }
 
 /* Images & Vidéos */
 .lightbox-media-container img,
 .lightbox-media-container video {
-  max-width: 80%;
-  height: auto;
-  max-height: 60%;
-  object-fit: contain;
-  position: absolute;
+  max-width: 80%; // Ajustement de la taille maximale pour éviter les dépassements
+  height: auto; // Conservation du ratio d’aspect
+  max-height: 60%; // Empêche l’image ou la vidéo de prendre toute la hauteur
+  object-fit: contain; // Ajuste le média pour éviter les coupures
+  position: absolute; // Permet un positionnement précis
   top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-  z-index: 0;
+  transform: translateX(-50%); // Centre le média horizontalement
+  opacity: 0; // Initialement invisible
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; // Effet de transition fluide
+  z-index: 0; // Position en arrière-plan
 }
 
 /*  Média actif */
 .lightbox-media-container .active-media {
-  max-width: 70%;
-  opacity: 1;
-  z-index: 1;
-  position: relative;
+  max-width: 70%; // Taille légèrement réduite pour un affichage plus équilibré
+  opacity: 1; // Rendu visible
+  z-index: 1; // Mise au premier plan
+  position: relative; // Ajustement dynamique de la position
 }
 
 /* ========================================================================= */
 /*  LÉGENDE DES MÉDIAS                                                     */
 /* ========================================================================= */
 /* Objectif :
-  - Affichage de la description du média actif.
-  - Animation fluide pour un meilleur effet visuel.
+  - Fournit une description du média actif pour une meilleure expérience utilisateur.
+  - Intègre une animation fluide lors des changements de médias.
 */
 
 .lightbox-caption {
-  margin-top: var(--spacing-small);
-  font-size: var(--font-size-base);
-  color: var(--text-color-primary);
-  max-width: 80%;
+  margin-top: var(--spacing-small); // Espacement au-dessus du texte
+  font-size: var(--font-size-base); // Taille de police définie selon les variables globales
+  color: var(--text-color-primary); // Utilisation de la couleur de texte principale
+  max-width: 80%; // Empêche les légendes trop longues d’occuper tout l’espace
   display: flex;
   position: relative;
-  
-  text-align: center;
-
+  text-align: center; // Alignement du texte centré pour un meilleur équilibre visuel
 }
