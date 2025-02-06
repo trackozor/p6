@@ -1,21 +1,27 @@
-// ========================================================
-// Nom du fichier : _lightbox.scss
-// Description    : Styles pour la lightbox de l'application Fisheye
-// Auteur         : Trackozor
-// Date           : 08/01/2025
-// Version        : 3.0 (Optimisation, corrections & animations fluides)
-// ========================================================
+/* =============================================================================
+    Projet      : Fisheye
+    Fichier     : _lightbox.scss
+    Auteur      : Trackozor
+    Date        : 08/01/2025
+    Version     : 3.1 (Optimisation, correction des animations & meilleure gestion)
+    Description : Styles pour la lightbox de l'application Fisheye.
+============================================================================= */
 
-// --------------------------------------------------------------------------
-// VARIABLES LOCALES
-// --------------------------------------------------------------------------
+/* ========================================================================= */
+/*  VARIABLES LOCALES                                                      */
+/* ========================================================================= */
+$lightbox-z-index: 1000;       // S'assurer que la lightbox est toujours au-dessus
+$transition-duration: 0.6s;    // Durée des transitions d'apparition et de disparition
+$lightbox-bg: rgba(0, 0, 0, 0.9); // Fond semi-transparent
 
-$lightbox-z-index: 1000; // S'assurer que la lightbox est toujours au-dessus
-$transition-duration: 0.6s; // Durée des transitions d'apparition et de disparition
-
-// --------------------------------------------------------------------------
-// LIGHTBOX PRINCIPALE
-// --------------------------------------------------------------------------
+/* ========================================================================= */
+/*  LIGHTBOX PRINCIPALE                                                    */
+/* ========================================================================= */
+/* Objectif :
+  - Couvre toute la page avec un fond assombri.
+  - Gérée par l’attribut `[aria-hidden]` pour l’accessibilité.
+  - Animation fluide lors de l’ouverture/fermeture.
+*/
 
 .lightbox {
   position: fixed;
@@ -23,7 +29,7 @@ $transition-duration: 0.6s; // Durée des transitions d'apparition et de dispari
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.9); // Fond semi-transparent
+  background-color: $lightbox-bg;
   opacity: 0;
   visibility: hidden;
   z-index: $lightbox-z-index;
@@ -40,29 +46,33 @@ $transition-duration: 0.6s; // Durée des transitions d'apparition et de dispari
   }
 }
 
-// --------------------------------------------------------------------------
-// CONTENU DE LA LIGHTBOX
-// --------------------------------------------------------------------------
+/* ========================================================================= */
+/*  CONTENU DE LA LIGHTBOX                                                 */
+/* ========================================================================= */
+/* Objectif :
+  - Structure fluide et adaptative.
+  - Supporte différents formats de médias.
+*/
 
 .lightbox-content {
-  width: 90vw;
-  height: 85vh;
+  width: 80%;
+  height: 80%;
   display: flex;
-  flex-direction: column; // Permet une gestion propre du contenu (boutons & média)
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   overflow: hidden;
   position: relative;
 
-  @include tablet {
-    width: 80%;
-    height: 80%;
-  }
 }
 
-// --------------------------------------------------------------------------
-// BOUTONS DE LA LIGHTBOX
-// --------------------------------------------------------------------------
+/* ========================================================================= */
+/*  BOUTONS DE NAVIGATION & FERMETURE                                      */
+/* ========================================================================= */
+/* Objectif :
+  - Permet la navigation entre les médias et la fermeture de la lightbox.
+  - Design épuré et accessible.
+*/
 
 .lightbox button {
   z-index: 2;
@@ -73,13 +83,9 @@ $transition-duration: 0.6s; // Durée des transitions d'apparition et de dispari
   font-size: 3.5rem;
   padding: var(--spacing-xsmall);
   transition: transform 0.3s ease-in-out;
-
-  &:hover {
-    transform: scale(1.2);
-  }
 }
 
-// Bouton de fermeture (X)
+/*  Bouton de fermeture (X) */
 .lightbox-close {
   top: var(--spacing-medium);
   right: var(--spacing-medium);
@@ -89,11 +95,11 @@ $transition-duration: 0.6s; // Durée des transitions d'apparition et de dispari
   padding: 0.8rem;
 }
 
-// Boutons de navigation (Précédent & Suivant)
+/* Boutons de navigation */
 .lightbox-prev,
 .lightbox-next {
   border-radius: 0.8rem;
-  padding:1%;
+  padding: 1%;
   font-size: 3rem;
 }
 
@@ -105,54 +111,65 @@ $transition-duration: 0.6s; // Durée des transitions d'apparition et de dispari
   right: 2%;
 }
 
-// --------------------------------------------------------------------------
-// CONTENEUR DES MÉDIAS
-// --------------------------------------------------------------------------
+/* ========================================================================= */
+/*  CONTENEUR DES MÉDIAS                                                   */
+/* ========================================================================= */
+/* Objectif :
+  - Gère les médias en mode diaporama avec transition fluide.
+  - Assure un positionnement propre des médias actifs/inactifs.
+*/
 
 .lightbox-media-container {
-  width: 100%;
-  height: 90%;
+  width: 70%;
+  height: 70%;
   display: flex;
-  flex-direction: row; // ✅ Organisation horizontale pour un slide fluide
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  position: relative; // ✅ Permet de gérer correctement les animations de transition
-}
-
-// ✅ Ajoute une gestion propre des médias pour éviter la superposition
-.lightbox-media-container img,
-.lightbox-media-container video {
-  width: 80%;
-  height: auto;
-  max-height: 60%;
-  object-fit: contain;
-  position: absolute; 
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0; // ✅ Initialement invisible
-  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-  z-index: 0; // ✅ Tous les médias commencent avec un z-index bas
-}
-
-// ✅ Assure que l'image actuelle est bien devant les autres
-.lightbox-media-container .active-media {
-  max-width: 70%;
-  opacity: 1;
-  z-index: 1; // ✅ Met l'élément actif au premier plan
   position: relative;
 }
 
-// --------------------------------------------------------------------------
-// LÉGENDE DES MÉDIAS
-// --------------------------------------------------------------------------
+/* Images & Vidéos */
+.lightbox-media-container img,
+.lightbox-media-container video {
+  max-width: 80%;
+  height: auto;
+  max-height: 60%;
+  object-fit: contain;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  z-index: 0;
+}
+
+/*  Média actif */
+.lightbox-media-container .active-media {
+  max-width: 70%;
+  opacity: 1;
+  z-index: 1;
+  position: relative;
+}
+
+/* ========================================================================= */
+/*  LÉGENDE DES MÉDIAS                                                     */
+/* ========================================================================= */
+/* Objectif :
+  - Affichage de la description du média actif.
+  - Animation fluide pour un meilleur effet visuel.
+*/
 
 .lightbox-caption {
   margin-top: var(--spacing-small);
   font-size: var(--font-size-base);
   color: var(--text-color-primary);
-  max-width: 100%;
+  max-width: 80%;
+  display: flex;
+  position: relative;
+  
   text-align: center;
-  animation: fade-in-scale $transition-duration ease-in-out;
+
 }

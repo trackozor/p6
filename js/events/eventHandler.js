@@ -321,7 +321,7 @@ export function handleFormSubmit(event) {
 
     logEvent("info", "Soumission du formulaire de contact en cours...");
 
-    // ✅ Vérifie l'existence des fonctions avant de les appeler
+    //  Vérifie l'existence des fonctions avant de les appeler
     if (typeof showLoader === "function") {
       showLoader();
     } else {
@@ -593,7 +593,6 @@ export async function handleSortChange(event) {
 /*            ajout like/dislike                */
 /*==============================================*/
 /**
- 
 
 /**
  * Affiche la modale de like/dislike pour un média donné.
@@ -618,8 +617,8 @@ export function showLikeDislikeModal(mediaItem) {
   const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
 
   // Ajuster la position de la modale sous l'icône de like
-  modal.style.top = `${rect.bottom + scrollTop + 10}px`; // 10px en dessous
-  modal.style.left = `${rect.left + scrollLeft}px`; // Aligné à gauche
+  modal.style.top = `${rect.bottom + scrollTop + 0}px`; // 10px en dessous
+  modal.style.left = `${rect.left + scrollLeft+150}px`; // Aligné à gauche
 
   // Afficher la modale avec animation
   modal.classList.add("active");

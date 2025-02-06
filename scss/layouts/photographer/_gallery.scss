@@ -3,301 +3,158 @@
     Fichier     :   gallery.scss
     Auteur      :   Trackozor
     Date        :   08/01/2025
-    Version     :   1.0.0
+    Version     :   1.0.1
     Description :   Styles pour la galerie d'images et vidéos, avec une mise en 
-                    page responsive utilisant Flexbox et une grille CSS adaptée 
-                    aux écrans de différentes tailles.
+                    page responsive utilisant Flexbox et CSS Grid.
 ============================================================================= */
 
-/* -------------------------------------------------------------------------- */
-/* Conteneur principal de la galerie (#gallery)                               */
-/* Objectif : Afficher dynamiquement les images et vidéos avec un design     */
-/* flexible pour petits écrans et une grille plus structurée pour les grands */
-/* écrans.                                                                    */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================= */
+/*  SECTION : CONTENEUR PRINCIPAL DE LA GALERIE                           */
+/* ========================================================================= */
+/* Objectif : 
+  - Adapter dynamiquement la disposition des médias en fonction de l’écran.
+  - Utiliser `Flexbox` pour les petits écrans et `CSS Grid` pour les grands. 
+  - Éviter les débordements et garantir une disposition fluide. 
+*/
 
 #gallery {
-  width: 100%; /* Le conteneur s'adapte à toute la largeur disponible */
-  display: flex; /* Flexbox par défaut pour les petits écrans */
-  flex-direction: column; /* Affichage en colonne pour une meilleure lisibilité */
-  justify-content: center; /* Centre les éléments horizontalement */
-  align-items: center; /* Centre les éléments verticalement */
-  overflow: hidden; /* Empêche le débordement des éléments hors du conteneur */
+  width: 100%; // S'étend sur toute la largeur disponible
+  display: flex; // Mode flexbox par défaut
+  flex-direction: column; // Alignement en colonne pour les petits écrans
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; // Empêche les éléments de sortir du conteneur
 
   @include tablet {
-    display: grid; /* Passage en mode grille pour un meilleur agencement */
-    grid-template-columns: repeat(2, 45%); /* Deux colonnes équilibrées */
+    display: grid;
+    grid-template-columns: repeat(2, 45%); // Deux colonnes équilibrées
     margin: 0 auto;
     width: 100%;
   }
 
   @include desktop {
-    display: grid; /* Conservation du mode grille */
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(235px, 1fr)
-    ); /* Grille adaptable selon le contenu */
-    height: auto;
-    margin: 0 auto;
-    width: 87%; /* Légère réduction de la largeur pour éviter de coller aux bords */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr)); // Grille adaptative
+    width: 87%; // Évite de coller aux bords
   }
 
   @include large-desktop {
-    display: grid;
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(525px, 1fr)
-    ); /* Augmentation de la taille des colonnes pour les très grands écrans */
-    height: auto;
-    margin: 0 auto;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); // Grands écrans
     width: 90%;
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* Styles des médias (images et vidéos)                                      */
-/* Objectif : Ajuster les images et vidéos pour qu'elles remplissent         */
-/* correctement leur conteneur sans distorsion, tout en maintenant un bon    */
-/* cadrage.                                                                  */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================= */
+/* SECTION : STYLES DES MÉDIAS (IMAGES ET VIDÉOS)                        */
+/* ========================================================================= */
+/* Objectif :
+  - Assurer un affichage optimal des images et vidéos.
+  - Éviter la distorsion et garantir un bon cadrage.
+*/
 
-.media-item img,
-.media-item video {
-  max-width: 36vw; /* Taille relative pour s’adapter à l’écran */
-  height: 35vh; /* Hauteur ajustée pour un rendu harmonieux */
-  object-fit: cover; /* Remplit l’espace sans déformer l’image/vidéo */
-  object-position: center; /* Centre le média horizontalement et verticalement */
-  display: block; /* Évite les marges indésirables sur certaines images */
+.media-item {
+  img,
+  video {
+    max-width: 36vw;
+    height: 36vh;
+    object-fit: cover; // Remplit l’espace sans distorsion
+    object-position: center; // Centre l’image ou la vidéo
+    display: block; // Évite les marges invisibles sur certaines images
+  
+    
+  }
 }
-// Variables
-$primary-color: #d3573c;
-$secondary-color: #901c1c;
-$hover-color: darken($primary-color, 10%);
-$background-light: #f8f8f8;
-$transition-speed: 0.3s;
-$icon-size: 20px;
 
-// Icône de like
+/* ========================================================================= */
+/* SECTION : ICÔNE DES LIKES                                             */
+/* ========================================================================= */
+/* Objectif :
+  - Positionner correctement l'icône des likes au-dessus des médias.
+  - Ajouter des effets de transition pour une meilleure interaction.
+*/
+
 .like-icon {
-  position: relative; // Assure que le z-index fonctionne
-  z-index: 10; // Place l'icône au-dessus des autres éléments
+  position: relative; // Permet d'agir sur le z-index
+  z-index: 10; // Toujours au-dessus des autres éléments
   background: none;
   border: none;
   cursor: pointer;
-  font-size: $icon-size;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform $transition-speed ease, color $transition-speed ease;
-  color: $primary-color;
-
-  &:hover {
-    transform: scale(1.1);
-    color: $hover-color; // Changement de couleur au survol
-  }
-
-  &.liked {
-    color: $secondary-color; // Couleur une fois liké
-    transform: scale(1.2);
-    animation: like-pop 0.3s ease-out;
-  }
+  transition: transform 0.3s ease;
+  color: var(--secondary-color);
 }
 
-// Animation du like (effet pop)
-@keyframes like-pop {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.3);
-  }
-  100% {
-    transform: scale(1.1);
-  }
-}
+/* ========================================================================= */
+/* SECTION : CONTENEUR DU NOMBRE DE LIKES + ICÔNE                        */
+/* ========================================================================= */
+/* Objectif :
+  - Afficher le nombre de likes avec l’icône de manière structurée.
+  - Ajouter un léger arrondi pour un meilleur design.
+*/
 
-// Conteneur du nombre de likes + icône
 .media-caption {
   display: flex;
+  height: 20px;
   justify-content: space-between;
   align-items: center;
-  background-color: $background-light;
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-weight: bold;
-  color: #333;
+  background-color: white;
+  padding:  1%;
+  margin:  0;
+  border-radius: 0 0 0.5rem 0.5rem;
+  font-weight: 500;
+  font-size: 1rem;
 
   p {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 1%;
 
     .media-likes {
-      font-size: 16px;
+      font-size: 1rem;
       font-weight: bold;
     }
   }
 }
 
-// Variables globales
-$primary-color: #d3573c;
-$secondary-color: #901c1c;
-$background-light: #f8f8f8;
-$button-like: #4caf50;
-$button-dislike: #f44336;
-$border-radius: 8px;
-$shadow-effect: 0px 4px 8px rgba(0, 0, 0, 0.3);
-$transition-speed: 0.3s;
-$icon-size: 20px;
+/* ========================================================================= */
+/* SECTION : MODALE DE LIKE/DISLIKE                                       */
+/* ========================================================================= */
+/* Objectif :
+  - Créer une transition fluide pour afficher/masquer la modale.
+  - Positionner correctement la modale au-dessus du bouton de like.
+*/
 
-// Icône de like
-.like-icon {
-  position: relative;
-  z-index: 10; // Assure que l'icône est bien au-dessus des autres éléments
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: $icon-size;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform $transition-speed ease, color $transition-speed ease;
-  color: $primary-color;
-
-  &:hover {
-    transform: scale(1.1);
-    color: darken($primary-color, 10%);
-  }
-
-  &.liked {
-    color: $secondary-color;
-    transform: scale(1.2);
-    animation: like-pop 0.3s ease-out;
-  }
-}
-
-// Animation du like
-@keyframes like-pop {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.3);
-  }
-  100% {
-    transform: scale(1.1);
-  }
-}
-
-// Conteneur des likes
-.media-caption {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: $background-light;
-  padding: 8px 12px;
-  border-radius: $border-radius;
-  font-weight: bold;
-  color: #333;
-
-  p {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-
-    .media-likes {
-      font-size: 16px;
-      font-weight: bold;
-    }
-  }
-}
-
-// Modale Like/Dislike (cachée par défaut)
-.like-dislike-modal {
+#like-dislike-modal {
   position: absolute;
-  top: -9999px; // Hors écran initialement
-  left: -9999px;
-  background-color: $background-light;
-  padding: 12px;
-  border-radius: $border-radius;
-  box-shadow: $shadow-effect;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  opacity: 0;
   visibility: hidden;
-  transform: scale(0.9);
+  justify-content: center;
+  margin:0 auto;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 
   &.active {
-    opacity: 1;
     visibility: visible;
-    transform: scale(1);
+    opacity: 1;
+    transform: translateY(10px);
   }
 }
 
-// Contenu de la modale
 .like-dislike-content {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
+  background-color: lightgray;
+  width:100%;
+  padding: 3%;
+  border-radius: 0.2rem;
 }
 
-// Boutons de like et dislike
-.like-btn,
-.dislike-btn {
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: bold;
-  border: none;
-  border-radius: $border-radius;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: white;
-  outline: none;
-
-  i {
-    font-size: 16px;
-  }
-
-  &:hover {
-    opacity: 0.8;
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
-// Bouton "J'aime"
 .like-btn {
-  background-color: $button-like;
+  background-color: green;
+  color: white;
 }
 
-// Bouton "Je n'aime pas"
 .dislike-btn {
-  background-color: $button-dislike;
-}
-
-// Responsive : mobile
-@media (max-width: 480px) {
-  .like-dislike-modal {
-    flex-direction: column;
-    width: auto;
-    padding: 8px;
-  }
-
-  .like-dislike-content {
-    flex-direction: column;
-  }
-
-  .like-btn,
-  .dislike-btn {
-    width: 100%;
-    justify-content: center;
-  }
+  background-color: red;
+  color: white;
 }

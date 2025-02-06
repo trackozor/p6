@@ -220,9 +220,7 @@ export async function handleLikeDislike(action, mediaElement) {
     //  Met à jour dynamiquement l'affichage du nombre de likes
     likeCountElement.textContent = likeCount;
 
-    //  Mise à jour en base de données
-    await updateLikesInDatabase(mediaId, likeCount);
-
+    
     //  Met à jour le total des likes du photographe
     updateTotalLikes();
 
@@ -256,11 +254,6 @@ async function updateLikesInDatabase(mediaId, likeCount) {
   }
 }
 
-
-/**
- * Met à jour l'affichage des médias après mise à jour des likes
- * @param {Array} newMediaArray - Nouveau tableau de médias avec les likes mis à jour
- */
 /**
  * Met à jour l'affichage des médias après mise à jour des likes
  * @param {Array} newMediaArray - Nouveau tableau de médias avec les likes mis à jour
@@ -271,7 +264,7 @@ function updateMediaDisplay(newMediaArray) {
       console.error(" Impossible de mettre à jour la galerie, élément introuvable !");
       return;
   }
-  galleryContainer.innerHTML = ""; // 🧹 Nettoyer l'ancienne galerie
+  galleryContainer.innerHTML = ""; 
 
   newMediaArray.forEach(media => {
       const mediaElement = document.createElement("article");
@@ -310,7 +303,7 @@ async function refreshMediaGallery() {
 
       const data = await response.json();
       
-      // 🔥 Met à jour l'affichage de la galerie
+      // Met à jour l'affichage de la galerie
       updateMediaDisplay(data.media);
       
       console.log(" Galerie mise à jour avec les nouvelles données.");

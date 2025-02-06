@@ -81,7 +81,7 @@
         display: flex;
         position: relative;
         margin-right: 0; /* Réduction de l’espace à droite sur grands écrans */
-        top: 5%; /* Ajustement fin de la position verticale */
+        top: 2%; /* Ajustement fin de la position verticale */
         width: 15%; /* Définition de la largeur */
         height: 15%; /* Hauteur ajustée */
         max-height: 13vh; /* Hauteur maximale définie en fonction de la hauteur d’écran */
@@ -168,13 +168,14 @@
         z-index: 99; /* Priorité d’affichage sur d’autres éléments */
         top: 94%; /* Positionnement en bas de l’écran */
         right: 2%;
-        padding: 1.5% 2.5%;
-        width: 18%;
+        padding:  1%;
+        width: 15%;
         font-weight: 500;
     }
 
     @include large-desktop {
-        top: 90%; /* Ajustement pour les très grands écrans */
+        top: 92%; /* Ajustement pour les très grands écrans */
+        width:8%;
     }
 }
 
@@ -196,5 +197,5 @@
 
 #daily-rate {
     font-size: 1rem; /* Taille de texte modérée */
-    margin-left: 30%; /* Décalage pour un meilleur alignement */
+    margin-left: 15%; /* Décalage pour un meilleur alignement */
 }

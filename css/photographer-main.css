@@ -1244,7 +1244,7 @@ footer p {
     display: flex;
     position: relative;
     margin-right: 0; /* Réduction de l’espace à droite sur grands écrans */
-    top: 5%; /* Ajustement fin de la position verticale */
+    top: 2%; /* Ajustement fin de la position verticale */
     width: 15%; /* Définition de la largeur */
     height: 15%; /* Hauteur ajustée */
     max-height: 13vh; /* Hauteur maximale définie en fonction de la hauteur d’écran */
@@ -1332,14 +1332,15 @@ footer p {
     z-index: 99; /* Priorité d’affichage sur d’autres éléments */
     top: 94%; /* Positionnement en bas de l’écran */
     right: 2%;
-    padding: 1.5% 2.5%;
-    width: 18%;
+    padding: 1%;
+    width: 15%;
     font-weight: 500;
   }
 }
 @media (min-width: 1440px) {
   .photographer-stats {
-    top: 90%; /* Ajustement pour les très grands écrans */
+    top: 92%; /* Ajustement pour les très grands écrans */
+    width: 8%;
   }
 }
 
@@ -1359,7 +1360,7 @@ footer p {
 /* -------------------------------------------------------------------------- */
 #daily-rate {
   font-size: 1rem; /* Taille de texte modérée */
-  margin-left: 30%; /* Décalage pour un meilleur alignement */
+  margin-left: 15%; /* Décalage pour un meilleur alignement */
 }
 
 /* =============================================================================
@@ -1367,255 +1368,171 @@ footer p {
     Fichier     :   gallery.scss
     Auteur      :   Trackozor
     Date        :   08/01/2025
-    Version     :   1.0.0
+    Version     :   1.0.1
     Description :   Styles pour la galerie d'images et vidéos, avec une mise en 
-                    page responsive utilisant Flexbox et une grille CSS adaptée 
-                    aux écrans de différentes tailles.
+                    page responsive utilisant Flexbox et CSS Grid.
 ============================================================================= */
-/* -------------------------------------------------------------------------- */
-/* Conteneur principal de la galerie (#gallery)                               */
-/* Objectif : Afficher dynamiquement les images et vidéos avec un design     */
-/* flexible pour petits écrans et une grille plus structurée pour les grands */
-/* écrans.                                                                    */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================= */
+/*  SECTION : CONTENEUR PRINCIPAL DE LA GALERIE                           */
+/* ========================================================================= */
+/* Objectif : 
+  - Adapter dynamiquement la disposition des médias en fonction de l’écran.
+  - Utiliser `Flexbox` pour les petits écrans et `CSS Grid` pour les grands. 
+  - Éviter les débordements et garantir une disposition fluide. 
+*/
 #gallery {
-  width: 100%; /* Le conteneur s'adapte à toute la largeur disponible */
-  display: flex; /* Flexbox par défaut pour les petits écrans */
-  flex-direction: column; /* Affichage en colonne pour une meilleure lisibilité */
-  justify-content: center; /* Centre les éléments horizontalement */
-  align-items: center; /* Centre les éléments verticalement */
-  overflow: hidden; /* Empêche le débordement des éléments hors du conteneur */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 @media (min-width: 767px) {
   #gallery {
-    display: grid; /* Passage en mode grille pour un meilleur agencement */
-    grid-template-columns: repeat(2, 45%); /* Deux colonnes équilibrées */
+    display: grid;
+    grid-template-columns: repeat(2, 45%);
     margin: 0 auto;
     width: 100%;
   }
 }
 @media (min-width: 1024px) {
   #gallery {
-    display: grid; /* Conservation du mode grille */
-    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr)); /* Grille adaptable selon le contenu */
-    height: auto;
-    margin: 0 auto;
-    width: 87%; /* Légère réduction de la largeur pour éviter de coller aux bords */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+    width: 87%;
   }
 }
 @media (min-width: 1440px) {
   #gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(525px, 1fr)); /* Augmentation de la taille des colonnes pour les très grands écrans */
-    height: auto;
-    margin: 0 auto;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
     width: 90%;
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* Styles des médias (images et vidéos)                                      */
-/* Objectif : Ajuster les images et vidéos pour qu'elles remplissent         */
-/* correctement leur conteneur sans distorsion, tout en maintenant un bon    */
-/* cadrage.                                                                  */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================= */
+/* SECTION : STYLES DES MÉDIAS (IMAGES ET VIDÉOS)                        */
+/* ========================================================================= */
+/* Objectif :
+  - Assurer un affichage optimal des images et vidéos.
+  - Éviter la distorsion et garantir un bon cadrage.
+*/
 .media-item img,
 .media-item video {
-  max-width: 36vw; /* Taille relative pour s’adapter à l’écran */
-  height: 35vh; /* Hauteur ajustée pour un rendu harmonieux */
-  object-fit: cover; /* Remplit l’espace sans déformer l’image/vidéo */
-  object-position: center; /* Centre le média horizontalement et verticalement */
-  display: block; /* Évite les marges indésirables sur certaines images */
+  max-width: 36vw;
+  height: 36vh;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
+/* ========================================================================= */
+/* SECTION : ICÔNE DES LIKES                                             */
+/* ========================================================================= */
+/* Objectif :
+  - Positionner correctement l'icône des likes au-dessus des médias.
+  - Ajouter des effets de transition pour une meilleure interaction.
+*/
 .like-icon {
   position: relative;
   z-index: 10;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease, color 0.3s ease;
-  color: #d3573c;
-}
-.like-icon:hover {
-  transform: scale(1.1);
-  color: rgb(179.4979079498, 65.3556485356, 40.5020920502);
-}
-.like-icon.liked {
-  color: #901c1c;
-  transform: scale(1.2);
-  animation: like-pop 0.3s ease-out;
+  transition: transform 0.3s ease;
+  color: var(--secondary-color);
 }
 
-@keyframes like-pop {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.3);
-  }
-  100% {
-    transform: scale(1.1);
-  }
-}
+/* ========================================================================= */
+/* SECTION : CONTENEUR DU NOMBRE DE LIKES + ICÔNE                        */
+/* ========================================================================= */
+/* Objectif :
+  - Afficher le nombre de likes avec l’icône de manière structurée.
+  - Ajouter un léger arrondi pour un meilleur design.
+*/
 .media-caption {
   display: flex;
+  height: 20px;
   justify-content: space-between;
   align-items: center;
-  background-color: #f8f8f8;
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-weight: bold;
-  color: #333;
+  background-color: white;
+  padding: 1%;
+  margin: 0;
+  border-radius: 0 0 0.5rem 0.5rem;
+  font-weight: 500;
+  font-size: 1rem;
 }
 .media-caption p {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 1%;
 }
 .media-caption p .media-likes {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
 }
 
-.like-icon {
-  position: relative;
-  z-index: 10;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease, color 0.3s ease;
-  color: #d3573c;
-}
-.like-icon:hover {
-  transform: scale(1.1);
-  color: rgb(179.4979079498, 65.3556485356, 40.5020920502);
-}
-.like-icon.liked {
-  color: #901c1c;
-  transform: scale(1.2);
-  animation: like-pop 0.3s ease-out;
-}
-
-@keyframes like-pop {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.3);
-  }
-  100% {
-    transform: scale(1.1);
-  }
-}
-.media-caption {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #f8f8f8;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-weight: bold;
-  color: #333;
-}
-.media-caption p {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.media-caption p .media-likes {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.like-dislike-modal {
+/* ========================================================================= */
+/* SECTION : MODALE DE LIKE/DISLIKE                                       */
+/* ========================================================================= */
+/* Objectif :
+  - Créer une transition fluide pour afficher/masquer la modale.
+  - Positionner correctement la modale au-dessus du bouton de like.
+*/
+#like-dislike-modal {
   position: absolute;
-  top: -9999px;
-  left: -9999px;
-  background-color: #f8f8f8;
-  padding: 12px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  opacity: 0;
   visibility: hidden;
-  transform: scale(0.9);
+  justify-content: center;
+  margin: 0 auto;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
-.like-dislike-modal.active {
-  opacity: 1;
+#like-dislike-modal.active {
   visibility: visible;
-  transform: scale(1);
+  opacity: 1;
+  transform: translateY(10px);
 }
 
 .like-dislike-content {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.like-btn,
-.dislike-btn {
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: white;
-  outline: none;
-}
-.like-btn i,
-.dislike-btn i {
-  font-size: 16px;
-}
-.like-btn:hover,
-.dislike-btn:hover {
-  opacity: 0.8;
-}
-.like-btn:active,
-.dislike-btn:active {
-  transform: scale(0.95);
+  background-color: lightgray;
+  width: 100%;
+  padding: 3%;
+  border-radius: 0.2rem;
 }
 
 .like-btn {
-  background-color: #4caf50;
+  background-color: green;
+  color: white;
 }
 
 .dislike-btn {
-  background-color: #f44336;
+  background-color: red;
+  color: white;
 }
 
-@media (max-width: 480px) {
-  .like-dislike-modal {
-    flex-direction: column;
-    width: auto;
-    padding: 8px;
-  }
-  .like-dislike-content {
-    flex-direction: column;
-  }
-  .like-btn,
-  .dislike-btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
+/* =============================================================================
+    Projet      : Fisheye
+    Fichier     : _lightbox.scss
+    Auteur      : Trackozor
+    Date        : 08/01/2025
+    Version     : 3.1 (Optimisation, correction des animations & meilleure gestion)
+    Description : Styles pour la lightbox de l'application Fisheye.
+============================================================================= */
+/* ========================================================================= */
+/*  VARIABLES LOCALES                                                      */
+/* ========================================================================= */
+/* ========================================================================= */
+/*  LIGHTBOX PRINCIPALE                                                    */
+/* ========================================================================= */
+/* Objectif :
+  - Couvre toute la page avec un fond assombri.
+  - Gérée par l’attribut `[aria-hidden]` pour l’accessibilité.
+  - Animation fluide lors de l’ouverture/fermeture.
+*/
 .lightbox {
   position: fixed;
   inset: 0;
@@ -1637,9 +1554,16 @@ footer p {
   visibility: hidden;
 }
 
+/* ========================================================================= */
+/*  CONTENU DE LA LIGHTBOX                                                 */
+/* ========================================================================= */
+/* Objectif :
+  - Structure fluide et adaptative.
+  - Supporte différents formats de médias.
+*/
 .lightbox-content {
-  width: 90vw;
-  height: 85vh;
+  width: 80%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1647,13 +1571,14 @@ footer p {
   overflow: hidden;
   position: relative;
 }
-@media (min-width: 767px) {
-  .lightbox-content {
-    width: 80%;
-    height: 80%;
-  }
-}
 
+/* ========================================================================= */
+/*  BOUTONS DE NAVIGATION & FERMETURE                                      */
+/* ========================================================================= */
+/* Objectif :
+  - Permet la navigation entre les médias et la fermeture de la lightbox.
+  - Design épuré et accessible.
+*/
 .lightbox button {
   z-index: 2;
   position: absolute;
@@ -1664,10 +1589,8 @@ footer p {
   padding: var(--spacing-xsmall);
   transition: transform 0.3s ease-in-out;
 }
-.lightbox button:hover {
-  transform: scale(1.2);
-}
 
+/*  Bouton de fermeture (X) */
 .lightbox-close {
   top: var(--spacing-medium);
   right: var(--spacing-medium);
@@ -1677,6 +1600,7 @@ footer p {
   padding: 0.8rem;
 }
 
+/* Boutons de navigation */
 .lightbox-prev,
 .lightbox-next {
   border-radius: 0.8rem;
@@ -1692,9 +1616,16 @@ footer p {
   right: 2%;
 }
 
+/* ========================================================================= */
+/*  CONTENEUR DES MÉDIAS                                                   */
+/* ========================================================================= */
+/* Objectif :
+  - Gère les médias en mode diaporama avec transition fluide.
+  - Assure un positionnement propre des médias actifs/inactifs.
+*/
 .lightbox-media-container {
-  width: 100%;
-  height: 90%;
+  width: 70%;
+  height: 70%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -1703,14 +1634,15 @@ footer p {
   position: relative;
 }
 
+/* Images & Vidéos */
 .lightbox-media-container img,
 .lightbox-media-container video {
-  width: 80%;
+  max-width: 80%;
   height: auto;
   max-height: 60%;
   object-fit: contain;
   position: absolute;
-  top: 0;
+  top: 50%;
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
@@ -1718,6 +1650,7 @@ footer p {
   z-index: 0;
 }
 
+/*  Média actif */
 .lightbox-media-container .active-media {
   max-width: 70%;
   opacity: 1;
@@ -1725,27 +1658,39 @@ footer p {
   position: relative;
 }
 
+/* ========================================================================= */
+/*  LÉGENDE DES MÉDIAS                                                     */
+/* ========================================================================= */
+/* Objectif :
+  - Affichage de la description du média actif.
+  - Animation fluide pour un meilleur effet visuel.
+*/
 .lightbox-caption {
   margin-top: var(--spacing-small);
   font-size: var(--font-size-base);
   color: var(--text-color-primary);
-  max-width: 100%;
+  max-width: 80%;
+  display: flex;
+  position: relative;
   text-align: center;
-  animation: fade-in-scale 0.6s ease-in-out;
 }
 
 /* =============================================================================
-  Projet      : Fisheye
-  Fichier     : _modal.scss
-  Auteur      : Trackozor
-  Date        : 08/01/2025
-  Version     : 1.3.0
-  Description : Styles pour la modale (mobile-first), avec des ajustements
-                pour différents écrans et un design accessible.
+    Projet      : Fisheye
+    Fichier     : _modal.scss
+    Auteur      : Trackozor
+    Date        : 08/01/2025
+    Version     : 1.3.1
+    Description : Styles pour la modale (mobile-first), avec des ajustements
+                  pour différents écrans et un design accessible.
 ============================================================================= */
-/* -------------------------------------------------------------------------- */
-/*                               OVERLAY                                      */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================= */
+/*  OVERLAY DE LA MODALE                                                   */
+/* ========================================================================= */
+/* Objectif :
+  - Couvre toute la page pour assombrir l’arrière-plan.
+  - Devient visible uniquement lorsque la modale est active.
+*/
 #modal-overlay {
   display: none;
   position: fixed;
@@ -1753,32 +1698,35 @@ footer p {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(243, 233, 233, 0.7); /* Fond sombre avec opacité */
-  z-index: 9998; /* Sous la modale */
+  background-color: rgba(243, 233, 233, 0.7);
+  z-index: 9998;
 }
-
 #modal-overlay.modal-active {
   display: flex;
   opacity: 1;
 }
 
-/* -------------------------------------------------------------------------- */
-/*                            MODAL GÉNÉRIQUE                                 */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================= */
+/*  MODALE PRINCIPALE                                                      */
+/* ========================================================================= */
+/* Objectif :
+  - Fenêtre centrée sur l’écran avec animation d’apparition.
+  - Responsive avec une largeur adaptée selon l’appareil.
+*/
 .modal {
-  display: none; /* Masquée par défaut */
+  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90%; /* Largeur par défaut sur mobile */
-  max-width: 400px; /* Largeur max pour les grands écrans */
-  background-color: var(--secondary-color); /* Fond blanc */
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.7); /* Ombre légère */
-  border-radius: 0.1rem; /* Coins arrondis */
-  z-index: 9999; /* Priorité d'affichage élevée */
-  opacity: 0; /* Masquée par défaut */
-  transform: translate(-50%, -50%) scale(0.9); /* Animation initiale réduite */
+  width: 90%;
+  max-width: 400px;
+  background-color: var(--secondary-color);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.7);
+  border-radius: 0.2rem;
+  z-index: 9999;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 @media (min-width: 767px) {
@@ -1788,17 +1736,21 @@ footer p {
 }
 .modal.modal-active {
   display: flex;
-  flex-direction: column; /* Organisation verticale */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  opacity: 1; /* Visible */
-  transform: translate(-50%, -50%) scale(1); /* Taille normale */
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
   animation: fadeIn 1s ease forwards;
 }
 
-/* -------------------------------------------------------------------------- */
-/*                          BOUTON DE FERMETURE                               */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================= */
+/*  BOUTON DE FERMETURE                                                    */
+/* ========================================================================= */
+/* Objectif :
+  - Permet de fermer la modale avec un bouton accessible.
+  - Position en haut à droite.
+*/
 .modal-close {
   position: absolute;
   top: 2%;
@@ -1815,14 +1767,16 @@ footer p {
     top: 0;
   }
 }
-
 .modal-close span {
   color: white;
 }
 
-/* -------------------------------------------------------------------------- */
-/*                               CONTENU                                       */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================= */
+/*  CONTENU DE LA MODALE                                                   */
+/* ========================================================================= */
+/* Objectif :
+  - Organiser l'affichage du titre et des informations de manière lisible.
+*/
 .content {
   padding: 2% 0;
   width: 90%;
@@ -1830,84 +1784,78 @@ footer p {
 
 .modal-header {
   display: flex;
-  flex-direction: column; /* Organise le titre et le nom verticalement */
-  gap: 0.5rem; /* Ajoute un espacement entre le titre et le nom */
+  flex-direction: column;
+  gap: 0.5rem;
   text-align: left;
-  margin-bottom: 1rem; /* Ajoute un espacement en bas */
   width: 100%;
   margin: 2% 0;
   font-size: 1.5rem;
-  padding: 0;
 }
-
 .modal-header h2 {
   font-size: 1.5rem;
 }
 @media (min-width: 767px) {
   .modal-header h2 {
-    display: flex;
-    position: relative;
     width: 70%;
     font-size: 2rem;
-    padding: 0;
     margin-right: 30%;
   }
 }
-
 .modal-header span {
   font-size: 1.5rem;
 }
 @media (min-width: 767px) {
   .modal-header span {
-    position: relative;
     width: 100%;
     font-size: 2rem;
-    display: flex;
     padding-left: 1%;
     margin-bottom: 5%;
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/*                          FORMULAIRE DE LA MODALE                           */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================= */
+/*  FORMULAIRE DE CONTACT                                                  */
+/* ========================================================================= */
+/* Objectif :
+  - Organisation claire du formulaire avec un bon espacement.
+  - Champs bien alignés et accessibles.
+*/
 form {
   display: flex;
   flex-direction: column;
-  gap: 2%; /* Espacement entre les champs */
+  gap: 2%;
   width: 100%;
 }
 
-/* Groupes de champs */
+/*  GROUPES DE CHAMPS */
 .form-group {
   display: flex;
   flex-direction: column;
   width: 100%;
-  text-align: left; /* Alignement à gauche pour les labels */
+  text-align: left;
 }
 
-/* Labels */
+/*  LABELS */
 .form-group label {
   font-size: 1.2rem;
   margin: 2% 0;
-  color: #333; /* Texte sombre */
+  color: #333;
 }
 
-/* Champs de saisie */
+/*  CHAMPS DE SAISIE */
 .form-group input,
 .form-group textarea {
   width: 100%;
   padding: 4% 2%;
   font-size: 1rem;
-  border: 1px solid #ccc; /* Bordure grise */
+  border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box;
 }
 
-/* Bouton d'envoi */
+/*  BOUTON DE SOUMISSION */
 .contact-submit-button {
   background-color: #901c1c;
-  position: relative;
   color: #fff;
   border: none;
   width: 30%;
@@ -1923,97 +1871,19 @@ form {
   background-color: #b42a2a;
 }
 
-/* Classe pour les bordures rouges des champs avec des erreurs */
+/*  CHAMPS D’ERREUR */
 input.error-input,
 textarea.error-input {
-  border: 2px solid red; /* Bordure rouge pour indiquer une erreur */
-  box-shadow: 0 0 1rem red; /* Ombre rouge pour mettre en évidence l'erreur */
-}
-
-/*----------------------------------------------------------------*/
-/* Classe pour le message d'erreur */
-.error-modal {
-  display: block; /* Rend l'erreur visible */
-  font-size: 1rem; /* Taille de police légèrement réduite */
-  background-color: #232323; /* Fond noir pour contraster avec le texte */
-  color: #fe142f; /* Texte rouge pour indiquer une erreur */
-  padding: 2%; /* Ajoute un espacement interne pour rendre le texte plus lisible */
-  width: 95%; /* Largeur ajustée pour s'insérer correctement sous le champ */
-  text-align: left; /* Texte aligné à gauche */
-  margin-top: 2%; /* Espace au-dessus pour ne pas chevaucher le champ */
-  position: relative; /* Position relative pour s'adapter dynamiquement à son parent */
-  border-radius: 4px; /* Coins arrondis pour un design moderne */
-}
-
-/*.honeypot-field {
-  display: block !important;
-  visibility: visible;
-  opacity: 1;
-  color: red;  
-  border: 1px solid red;
-}*/
-.honeypot-field {
-  position: absolute;
-  left: -9999px;
-  visibility: hidden;
-  opacity: 0;
-  height: 0;
-  width: 0;
-  overflow: hidden;
-}
-
-* .modal.spam-modal {
-  display: none; /* Masquée par défaut */
-  position: fixed;
-  z-index: 1000;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 500px;
-  background-color: #fff;
   border: 2px solid red;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 1rem red;
 }
 
-.modal.spam-modal .modal-header {
-  background-color: #ff4d4d; /* Rouge pour indiquer l'alerte */
-  color: #fff;
-  padding: 15px;
-  border-radius: 8px 8px 0 0;
-  text-align: center;
-}
-
-.modal.spam-modal .modal-body {
-  padding: 20px;
-  color: #333;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.modal.spam-modal .modal-footer {
-  text-align: center;
-  padding: 10px 20px;
-}
-
-.modal.spam-modal .btn-close-errormodal {
-  background-color: #ff4d4d;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.modal.spam-modal .btn-close-errormodal:hover {
-  background-color: #cc0000;
-}
-
-/* -------------------------------------------------------------------------- */
-/*                          Modale de confirmation                         */
-/* -------------------------------------------------------------------------- */
+/* ========================================================================= */
+/*  MODALE DE CONFIRMATION                                                 */
+/* ========================================================================= */
+/* Objectif :
+  - S'affiche après une soumission réussie du formulaire.
+*/
 #confirmation-modal {
   height: 90%;
   justify-content: center;
@@ -2032,6 +1902,53 @@ textarea.error-input {
   display: flex;
   justify-content: center;
   margin: 2% auto;
+}
+
+/* ========================================================================= */
+/*  MODALE DE DÉTECTION DE SPAM                                            */
+/* ========================================================================= */
+.modal.spam-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background-color: #fff;
+  border: 2px solid red;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.modal.spam-modal .modal-header {
+  background-color: #ff4d4d;
+  color: #fff;
+  padding: 15px;
+  border-radius: 8px 8px 0 0;
+  text-align: center;
+}
+.modal.spam-modal .modal-body {
+  padding: 20px;
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.modal.spam-modal .modal-footer {
+  text-align: center;
+  padding: 10px 20px;
+}
+.modal.spam-modal .btn-close-errormodal {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.modal.spam-modal .btn-close-errormodal:hover {
+  background-color: #cc0000;
 }
 
 /* Loader global */
