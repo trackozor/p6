@@ -18,61 +18,84 @@
 /*==============================================*/
 import { logEvent } from "../utils/utils.js";
 
+
 /*==============================================*/
 /*          Récupération éléments DOM           */
 /*==============================================*/
 const domCache = new Map(); // Stocke les sélections DOM pour éviter les requêtes répétées
 
-/**
- * Récupère un élément DOM avec cache et gestion des erreurs.
+
+/**------------------------------------------------------------------------------------
+ *  FONCTION :Sélectionne un élément du DOM en toute sécurité avec gestion du cache et des erreurs.
+ * --------------------------------------------------------------------------------------
  * 
- * @param {string} selector - Sélecteur CSS.
- * @param {boolean} [isOptional=false] - Si true, ne log pas d'erreur si l'élément est introuvable.
- * @returns {Element|null} Élément trouvé ou `null`.
+ * - Utilise un cache (`domCache`) pour éviter les requêtes répétitives.
+ * - Vérifie si l'élément est toujours présent dans le DOM avant de l'utiliser.
+ * - Gère les erreurs si l'élément est absent, sauf s'il est optionnel.
+ * 
+ * @param {string} selector - Sélecteur CSS de l'élément à récupérer.
+ * @param {boolean} [isOptional=false] - Si `true`, ne génère pas d'erreur si l'élément est introuvable.
+ * @returns {Element|null} L'élément DOM trouvé ou `null` si non trouvé.
  */
 export function safeQuerySelector(selector, isOptional = false) {
-    // Vérifie si l'élément est dans le cache et toujours valide
+    // Vérifie d'abord si l'élément est déjà présent dans le cache
     if (domCache.has(selector)) {
         const cachedElement = domCache.get(selector);
+
+        // Vérifie si l'élément en cache est toujours dans le DOM
         if (document.body.contains(cachedElement)) {
-            return cachedElement; // Retourne l'élément s'il est encore valide
+            return cachedElement; // Retourne l'élément valide depuis le cache
         } else {
-            domCache.delete(selector); // Supprime l'entrée invalide du cache
+            domCache.delete(selector); // Supprime du cache si l'élément n'existe plus
         }
     }
 
-    // Recherche de l'élément si non présent ou invalide dans le cache
+    // Recherche de l'élément dans le DOM si absent du cache ou supprimé du DOM
     const element = document.querySelector(selector);
 
-    if (!element && !isOptional) {
-        logEvent("error", `Élément non trouvé : ${selector}`);
-    } else if (element) {
-        logEvent("info", `Élément trouvé : ${selector}`);
-        domCache.set(selector, element); // Stocke l'élément dans le cache
+    // Gestion des cas où l'élément n'est pas trouvé
+    if (!element) {
+        if (!isOptional) {
+            logEvent("error", `Élément non trouvé : ${selector}`); // Log d'erreur si l'élément est requis
+        }
+        return null; // Retourne `null` si l'élément est introuvable
     }
 
-    return element;
+    // Si l'élément est trouvé, l'ajoute dans le cache pour éviter une nouvelle requête
+    logEvent("info", `Élément trouvé : ${selector}`);
+    domCache.set(selector, element);
+
+    return element; // Retourne l'élément sélectionné
 }
 
-/**
- * Récupère tous les éléments DOM correspondant à un sélecteur, avec cache.
+/**-------------------------------------------------------------------------------
+ *  FONCTION: Sélectionne plusieurs éléments du DOM en toute sécurité avec gestion du cache.
+ * -------------------------------------------------------------------------------
  * 
- * @param {string} selector - Sélecteur CSS.
- * @returns {NodeList} Liste des éléments trouvés.
+ * - Stocke la `NodeList` en cache (`domCache`) pour éviter les requêtes répétitives.
+ * - Vérifie si les éléments en cache existent toujours dans le DOM avant de les utiliser.
+ * - Journalise les résultats et gère les cas où aucun élément n'est trouvé.
+ * 
+ * @param {string} selector - Sélecteur CSS des éléments à récupérer.
+ * @returns {NodeList} Liste des éléments trouvés (peut être vide).
  */
 export function safeQuerySelectorAll(selector) {
-    // Vérifie si la NodeList est encore valide dans le cache
+    // Vérifie si la NodeList est déjà présente et toujours valide dans le cache
     if (domCache.has(selector)) {
         const cachedNodeList = domCache.get(selector);
+
+        // Vérifie si la liste d'éléments est encore valide en testant le premier élément
         if (cachedNodeList.length > 0 && document.body.contains(cachedNodeList[0])) {
-            return cachedNodeList;
+            return cachedNodeList; // Retourne la liste d'éléments valide depuis le cache
         } else {
             domCache.delete(selector); // Supprime la NodeList invalide du cache
         }
     }
 
+    // Recherche des éléments correspondants dans le DOM
     const elements = document.querySelectorAll(selector);
 
+    // Gestion des cas où aucun élément correspondant n'est trouvé
     if (!elements.length) {
         logEvent("warn", `Aucun élément trouvé pour : ${selector}`);
     } else {
@@ -80,261 +103,371 @@ export function safeQuerySelectorAll(selector) {
         domCache.set(selector, elements); // Stocke la NodeList dans le cache
     }
 
-    return elements;
+    return elements; // Retourne la liste des éléments trouvés (peut être vide)
 }
 
 
-/**
- * Vide le cache des sélections DOM pour permettre un rafraîchissement.
+
+/**------------------------------------------------------------------------
+ *  FONCTION: Vide entièrement le cache des sélections DOM.
+ * -----------------------------------------------------------------------
+ * 
+ * - Supprime toutes les entrées stockées dans `domCache`.
+ * - Permet de forcer une nouvelle récupération des éléments du DOM.
+ * - Journalise l’action pour un meilleur suivi dans la console.
  */
 export function clearDomCache() {
+    // Vide complètement le cache des sélections DOM
     domCache.clear();
-    logEvent("info", "🔄 Cache des sélections DOM vidé !");
+
+    // Journalise l'action pour indiquer que le cache a été supprimé
+    logEvent("info", "Cache des sélections DOM vidé avec succès.");
 }
 
 
 /*==============================================*/
 /*            designation page                  */
 /*==============================================*/
-/**
- * Détermine la page actuelle en fonction de l'URL.
+
+/**---------------------------------------------------------------
+ *  FONCTION : Détermine la page actuelle en fonction de l'URL.
+ *---------------------------------------------------------------
  * 
- * @returns {string} - Nom de la page détectée (`"index"`, `"photographer"` ou `"unknown"`).
+ * - Analyse `window.location.pathname` pour identifier la page courante.
+ * - Renvoie `"photographer"` si l'URL contient `"photographer"`.
+ * - Renvoie `"index"` si l'URL contient `"index"` ou correspond à la racine `/`.
+ * - Renvoie `"unknown"` si aucun match n'est trouvé.
+ * 
+ * @returns {string} Le nom de la page détectée (`"index"`, `"photographer"` ou `"unknown"`).
  */
 export function getCurrentPage() {
+    // Récupère le chemin de l'URL et le met en minuscules pour éviter toute casse sensible
     const url = window.location.pathname.toLowerCase();
 
+    // Vérifie si l'URL correspond à une page photographe
     if (url.includes("photographer")) {
-        return "photographer";
+        return "photographer"; // Page détectée : photographe
     }
+
+    // Vérifie si l'URL correspond à la page d'accueil (index.html ou `/`)
     if (url.includes("index") || url === "/") {
-        return "index";
+        return "index"; // Page détectée : index
     }
-    return "unknown";
+
+    // Si aucune correspondance trouvée, renvoie "unknown"
+    return "unknown"; // Page inconnue
 }
 
 /*==============================================*/
 /*       definition sélecteurs page index       */
 /*==============================================*/
-/**
- * Définit les sélecteurs spécifiques pour la page `index.html`.
+
+/**---------------------------------------------------------------
+ *  FONCTION : Récupère les sélecteurs spécifiques pour la page d'accueil (`index.html`).
+ *---------------------------------------------------------------
  * 
- * @returns {Object} Sélecteurs pour la page d'accueil.
+ * - Utilise `safeQuerySelector()` pour récupérer les éléments du DOM en toute sécurité.
+ * - Sépare les sélecteurs en deux groupes : `indexPage` (éléments principaux) et `templates` (modèles réutilisables).
+ * - Certains sélecteurs (`photographerTemplate`) sont facultatifs (`true`).
+ * 
+ * @returns {Object} Un objet contenant les sélecteurs organisés par catégorie.
  */
 export function getIndexSelectors() {
     return {
+        // Sélecteurs principaux de la page d'accueil
         indexPage: {
-            header: safeQuerySelector("header"),
-            logoLink: safeQuerySelector(".logo-link"),
-            mainContent: safeQuerySelector("#main"),
-            photographersSection: safeQuerySelector(".photographer-section"),
-            photographersContainer: safeQuerySelector("#photographers-container"),
-            photographerTemplate: safeQuerySelector("#photographer-template", true),
-            footer: safeQuerySelector("footer"),
+            header: safeQuerySelector("header"), // En-tête principal
+            logoLink: safeQuerySelector(".logo-link"), // Lien du logo
+            mainContent: safeQuerySelector("#main"), // Section principale du contenu
+            photographersSection: safeQuerySelector(".photographer-section"), // Section regroupant les photographes
+            photographersContainer: safeQuerySelector("#photographers-container"), // Conteneur dynamique des cartes de photographes
+            photographerTemplate: safeQuerySelector("#photographer-template", true), // Modèle de carte de photographe (facultatif)
+            footer: safeQuerySelector("footer"), // Pied de page
         },
+
+        // Sélecteurs liés aux modèles réutilisables (templates)
         templates: {
-            photographerTemplate: safeQuerySelector("#photographer-template"),
+            photographerTemplate: safeQuerySelector("#photographer-template"), // Modèle de carte de photographe
         },
     };
 }
+
 
 /*==============================================*/
 /*    definition sélecteurs page photographe    */
 /*==============================================*/
-/**
- * Définit les sélecteurs spécifiques pour la page `photographer.html`.
+
+/**---------------------------------------------------------------
+ *  FONCTION : Récupère les sélecteurs spécifiques pour la page `photographer.html`.
+ *---------------------------------------------------------------
  * 
- * @returns {Object} Sélecteurs pour la page photographe.
+ * - Utilise `safeQuerySelector()` pour récupérer les éléments de manière sécurisée.
+ * - Organise les sélecteurs en plusieurs groupes logiques :
+ *   - `photographerPage` : Contenu principal du photographe.
+ *   - `lightbox` : Sélecteurs liés à l'affichage en plein écran des médias.
+ *   - `modal` : Gestion des formulaires de contact et alertes.
+ *   - `sorting` : Options de tri des médias.
+ *   - `loader` : Éléments du chargement.
+ * 
+ * @returns {Object} Un objet contenant les sélecteurs organisés par catégorie.
  */
 export function getPhotographerSelectors() {
     return {
+        // Sélecteurs principaux de la page photographe
         photographerPage: {
-            photographerHeader: safeQuerySelector(".photographer-info"),
-            photographerTitle: safeQuerySelector("#photograph-title"),
-            photographerLocation: safeQuerySelector(".photographer-card-location"),
-            photographerTagline: safeQuerySelector(".photographer-card-tagline"),
-            photographerProfileImage: safeQuerySelector(".photographer-card-portrait"),
-            galleryContainer: safeQuerySelector("#gallery"),
-            overlayContainer: safeQuerySelector("#modal-overlay"),
-            sortingSelect: safeQuerySelector("#sort-options"),
+            photographerHeader: safeQuerySelector(".photographer-info"), // En-tête de la section photographe
+            photographerTitle: safeQuerySelector("#photograph-title"), // Titre affichant le nom du photographe
+            photographerLocation: safeQuerySelector(".photographer-card-location"), // Localisation du photographe
+            photographerTagline: safeQuerySelector(".photographer-card-tagline"), // Slogan du photographe
+            photographerProfileImage: safeQuerySelector(".photographer-card-portrait"), // Photo de profil
+            galleryContainer: safeQuerySelector("#gallery"), // Conteneur principal des médias du photographe
+            overlayContainer: safeQuerySelector("#modal-overlay"), // Overlay pour la modale de contact
+            sortingSelect: safeQuerySelector("#sort-options"), // Menu déroulant pour le tri des médias
+
+            // Éléments liés aux statistiques et aux interactions
+            photographerStatsTemplate: safeQuerySelector("#photographer-stats", true), // Gabarit pour les statistiques du photographe (facultatif)
+            likeIcons: safeQuerySelectorAll(".like-icon"), // Icônes de likes sur chaque média
+            likeButtons: safeQuerySelectorAll(".like-btn"), // Boutons de like
+            dislikeButtons: safeQuerySelectorAll(".dislike-btn"), // Boutons de dislike
+            likeDislikeModal: safeQuerySelector("#like-dislike-modal"), // Modale affichant les interactions de likes/dislikes
+            likeDislikeContent: safeQuerySelector(".like-dislike-content"), // Contenu interne de la modale de likes/dislikes
             
-            photographerStatsTemplate: safeQuerySelector("#photographer-stats", true),
-            likeIcons: safeQuerySelectorAll(".like-icon"),
-            likeButtons: safeQuerySelectorAll(".like-btn"),
-            dislikeButtons: safeQuerySelectorAll(".dislike-btn"),
-            likeDislikeModal: safeQuerySelector("#like-dislike-modal"),
-            likeDislikeContent: safeQuerySelector(".like-dislike-content"),
-            totalLikes: null,
-            dailyRate: null,
+            totalLikes: null, // Stocke le total des likes (mis à jour dynamiquement)
+            dailyRate: null, // Stocke le tarif journalier du photographe (mis à jour dynamiquement)
         },
+
+        // Sélecteurs liés à la lightbox (affichage plein écran des médias)
         lightbox: {
-            lightboxContainer: safeQuerySelector("#lightbox"),
-            lightboxCloseButton: safeQuerySelector(".lightbox-close"),
-            lightboxPrevButton: safeQuerySelector(".lightbox-prev"),
-            lightboxNextButton: safeQuerySelector(".lightbox-next"),
-            lightboxMediaContainer: safeQuerySelector(".lightbox-content"),
-            lightboxCaption: safeQuerySelector("#lightbox-caption"),
+            lightboxContainer: safeQuerySelector("#lightbox"), // Conteneur de la lightbox
+            lightboxCloseButton: safeQuerySelector(".lightbox-close"), // Bouton pour fermer la lightbox
+            lightboxPrevButton: safeQuerySelector(".lightbox-prev"), // Bouton pour aller à l'image précédente
+            lightboxNextButton: safeQuerySelector(".lightbox-next"), // Bouton pour aller à l'image suivante
+            lightboxMediaContainer: safeQuerySelector(".lightbox-content"), // Conteneur principal du média affiché
+            lightboxCaption: safeQuerySelector("#lightbox-caption"), // Texte descriptif sous le média
         },
+
+        // Sélecteurs liés aux modales (contact et alertes)
         modal: {
-            modalOverlay: safeQuerySelector("#modal-overlay"),
-            contactForm: safeQuerySelector("#contact-modal form"),
-            closeButton: safeQuerySelector(".modal-close"),
+            modalOverlay: safeQuerySelector("#modal-overlay"), // Fond d'écran de la modale de contact
+            contactForm: safeQuerySelector("#contact-modal form"), // Formulaire de contact principal
+            closeButton: safeQuerySelector(".modal-close"), // Bouton de fermeture de la modale
+
+            // Formulaire de contact (champs et bouton)
             form: {
-                formElement: safeQuerySelector("form[aria-label='Formulaire de contact']"),
-                firstName: safeQuerySelector("#first-name"),
-                lastName: safeQuerySelector("#last-name"),
-                email: safeQuerySelector("#email"),
-                messageField: safeQuerySelector("#message"),
-                submitButton: safeQuerySelector(".contact-submit-button"),
-                confirmButton: safeQuerySelector(".confirm-btn"),
+                formElement: safeQuerySelector("form[aria-label='Formulaire de contact']"), // Formulaire de contact
+                firstName: safeQuerySelector("#first-name"), // Champ prénom
+                lastName: safeQuerySelector("#last-name"), // Champ nom
+                email: safeQuerySelector("#email"), // Champ email
+                messageField: safeQuerySelector("#message"), // Champ du message
+                submitButton: safeQuerySelector(".contact-submit-button"), //  Bouton d'envoi du formulaire
+                confirmButton: safeQuerySelector(".confirm-btn"), // Bouton de confirmation après envoi
             },
+
+            //  Modale de confirmation après envoi du formulaire
             confirmationModal: {
-                container: safeQuerySelector("#confirmation-modal"),
-                title: safeQuerySelector("#confirmation-title", true),
-                confirmButton: safeQuerySelector(".confirm-btn"),
+                container: safeQuerySelector("#confirmation-modal"), // Conteneur de la confirmation
+                title: safeQuerySelector("#confirmation-title", true), // Titre de la confirmation (facultatif)
+                confirmButton: safeQuerySelector(".confirm-btn"), //  Bouton de validation après confirmation
             },
+
+            // Modale en cas de détection de spam
             spamModal: {
-                container: safeQuerySelector("#spam-error-modal"),
-                title: safeQuerySelector("#spam-error-title"),
-                body: safeQuerySelector(".modal-body"),
-                footer: safeQuerySelector(".modal-footer"),
-                closeButton: safeQuerySelector(".btn-close-error"),
+                container: safeQuerySelector("#spam-error-modal"), //  Conteneur de l'alerte spam
+                title: safeQuerySelector("#spam-error-title"), // Titre de l'alerte
+                body: safeQuerySelector(".modal-body"), //  Corps du message d'erreur
+                footer: safeQuerySelector(".modal-footer"), // Pied de la modale
+                closeButton: safeQuerySelector(".btn-close-error"), // Bouton pour fermer l'alerte
             },
         },
+
+        // Sélecteurs pour le tri des médias
         sorting: {
-            sortOptions: safeQuerySelector("#sort-options"),
+            sortOptions: safeQuerySelector("#sort-options"), // Sélecteur du tri des médias
         },
+
+        // Sélecteurs liés au chargement de la page
         loader: {
-            loader: safeQuerySelector("#loader"),
-            loaderText: safeQuerySelector("#loader-text"),
-            progressBar: safeQuerySelector("#progress-bar"),
-            progressPercentage: safeQuerySelector("#progress-percentage"),
+            loader: safeQuerySelector("#loader"), // Conteneur du loader d'attente
+            loaderText: safeQuerySelector("#loader-text"), // Texte affiché lors du chargement
+            progressBar: safeQuerySelector("#progress-bar"), // Barre de progression
+            progressPercentage: safeQuerySelector("#progress-percentage"), // Affichage du pourcentage de chargement
         },
     };
 }
+
 /*==============================================*/
 /*    Verification présence sélecteurs   */
 /*==============================================*/
 
-/**
- * Vérifie récursivement la présence des sélecteurs dans un objet donné.
+/**---------------------------------------------------------------
+ *  FONCTION : Vérifie récursivement la présence des sélecteurs dans un objet donné.
+ *---------------------------------------------------------------
  * 
- * @param {Object} obj - Objet contenant les sélecteurs.
- * @param {string} [parentKey=""] - Clé parent pour générer le chemin complet.
- * @param {Array<string>} missingSelectors - Tableau des sélecteurs manquants.
+ * - Parcourt de manière récursive un objet contenant des sélecteurs DOM.
+ * - Ajoute les sélecteurs manquants dans un tableau `missingSelectors`.
+ * - Ignore certains sélecteurs non critiques (`totalLikes`, `dailyRate`).
+ * 
+ * @param {Object} obj - Objet contenant les sélecteurs à vérifier.
+ * @param {string} [parentKey=""] - Clé parent pour générer le chemin complet du sélecteur.
+ * @param {Array<string>} [missingSelectors=[]] - Tableau contenant les sélecteurs manquants.
+ * @returns {Array<string>} Liste des sélecteurs manquants.
  */
 export function recursiveCheck(obj, parentKey = "", missingSelectors = []) {
     Object.entries(obj).forEach(([key, value]) => {
+        // Construit la clé complète pour suivre la hiérarchie
         const fullKey = parentKey ? `${parentKey}.${key}` : key;
 
-      // Exclusion des sélecteurs non critiques
+        // Exclut les sélecteurs non critiques de la vérification
         if (fullKey === "photographerPage.totalLikes" || fullKey === "photographerPage.dailyRate") {
-            return;
+            return; // 🔄 Ignore ces sélecteurs spécifiques
         }
 
-    if (typeof value === "object" && value !== null) {
-          // Vérification récursive pour les objets imbriqués
-        recursiveCheck(value, fullKey, missingSelectors);
-        } else if (!value) {
-          // Ajout du sélecteur manquant à la liste
-            missingSelectors.push(fullKey);
+        // Si la valeur est un objet, on applique la récursivité
+        if (typeof value === "object" && value !== null) {
+            recursiveCheck(value, fullKey, missingSelectors);
+        } 
+        // Si la valeur est absente (null ou undefined), elle est ajoutée aux sélecteurs manquants
+        else if (!value) {
+            missingSelectors.push(fullKey); //  Ajoute le sélecteur manquant à la liste
         }
     });
 
-    return missingSelectors;
+    return missingSelectors; // Retourne la liste des sélecteurs manquants
 }
 
-/**
-* Vérifie la présence des sélecteurs nécessaires pour une page donnée.
-* 
-* @param {Object} selectors - Objet contenant les sélecteurs DOM.
-* @returns {Array<string>} - Liste des sélecteurs manquants.
-*/
+
+/**---------------------------------------------------------------
+ *  FONCTION : Vérifie la présence des sélecteurs nécessaires pour une page donnée.
+ *---------------------------------------------------------------
+ * 
+ * - Utilise la fonction `recursiveCheck()` pour parcourir l'objet des sélecteurs.
+ * - Retourne une liste des sélecteurs manquants.
+ * 
+ * @param {Object} selectors - Objet contenant les sélecteurs DOM de la page.
+ * @returns {Array<string>} Liste des sélecteurs manquants.
+ */
 export function checkSelectors(selectors) {
-    return recursiveCheck(selectors);
+    return recursiveCheck(selectors); //  Exécute la vérification récursive des sélecteurs
 }
 
 /*==============================================*/
 /*          Chargement sélecteurs               */
 /*==============================================*/
-/**
- * Charge dynamiquement les sélecteurs pour la page actuelle et les vérifie.
+/**---------------------------------------------------------------
+ *  FONCTION : Charge dynamiquement les sélecteurs en fonction de la page actuelle.
+ *---------------------------------------------------------------
  * 
- * @returns {Object} Sélecteurs spécifiques à la page.
+ * - Détecte la page en cours grâce à `getCurrentPage()`.
+ * - Sélectionne les sélecteurs correspondants (`index.html` ou `photographer.html`).
+ * - Vérifie si des sélecteurs sont manquants via `checkSelectors()`.
+ * - Journalise les informations et erreurs éventuelles.
+ * 
+ * @returns {Object} Objet contenant les sélecteurs spécifiques à la page actuelle.
  */
 export function loadSelectorsForCurrentPage() {
+    //  Détecte la page actuelle en fonction de l'URL
     const currentPage = getCurrentPage();
     logEvent("info", `Page détectée : ${currentPage}`);
 
+    // Initialisation des sélecteurs (par défaut vide)
     let selectors = {};
 
+    // Sélectionne les sélecteurs correspondant à la page actuelle
     if (currentPage === "index") {
-        selectors = getIndexSelectors();
+        selectors = getIndexSelectors(); // Charge les sélecteurs pour la page index
     } else if (currentPage === "photographer") {
-        selectors = getPhotographerSelectors();
+        selectors = getPhotographerSelectors(); // Charge les sélecteurs pour la page photographe
     }
 
+    //  Vérification des sélecteurs manquants
     const missingSelectors = checkSelectors(selectors);
     if (missingSelectors.length > 0) {
         logEvent("error", "Sélecteurs manquants détectés.", { missingSelectors });
     }
 
-    return selectors;
+    return selectors; // Retourne l'objet des sélecteurs trouvés
 }
+
 
 /*==============================================*/
 /*           Initialisation sélecteurs          */
 /*==============================================*/
 
-/**
- * Fonction permettant de rafraîchir dynamiquement les sélecteurs en cas de modification du DOM.
- * Utile si certains éléments sont ajoutés après le chargement initial.
- */
-/**
- * Met à jour dynamiquement les sélecteurs DOM après une modification du DOM.
+/**---------------------------------------------------------------
+ *  FONCTION : Rafraîchit dynamiquement les sélecteurs DOM.
+ *---------------------------------------------------------------
+ * 
+ * - Vide le cache des sélecteurs pour éviter l’utilisation d’éléments obsolètes.
+ * - Recharge les sélecteurs en fonction de la page actuelle.
+ * - Met à jour l’objet `domSelectors` avec les nouveaux sélecteurs.
+ * - Journalise l’opération pour le suivi des mises à jour.
  */
 export function refreshSelectors() {
     logEvent("info", "Rafraîchissement des sélecteurs DOM...");
 
-    // Vider le cache pour forcer une nouvelle récupération des éléments
+    // Vide le cache des sélections pour garantir une nouvelle récupération
     clearDomCache();
 
-    // Mise à jour des sélecteurs selon la page actuelle
+    // Recharge les sélecteurs en fonction de la page active et met à jour `domSelectors`
     Object.assign(domSelectors, loadSelectorsForCurrentPage());
 
-    logEvent("success", "Sélecteurs DOM mis à jour.");
+    logEvent("success", "Sélecteurs DOM mis à jour avec succès.");
 }
 
 
-// Initialisation des sélecteurs au chargement
+
+/**---------------------------------------------------------------
+ *  FONCTION : Initialise les sélecteurs après le chargement du DOM.
+ *---------------------------------------------------------------
+ */
+function initializeDomSelectors() {
+    logEvent("info", "Initialisation des sélecteurs DOM...");
+
+    Object.assign(domSelectors, loadSelectorsForCurrentPage());
+
+    logEvent("success", "Sélecteurs DOM chargés.");
+}
+
+// Initialisation différée après le chargement complet du DOM
+document.addEventListener("DOMContentLoaded", initializeDomSelectors);
+
+/**---------------------------------------------------------------
+ *  OBJET : `domSelectors` - Stocke tous les sélecteurs globaux.
+ *---------------------------------------------------------------
+ */
 const domSelectors = {
-    safeQuerySelector,
-    getCurrentPage,
-    refreshSelectors,  
-    ...loadSelectorsForCurrentPage(),
+    safeQuerySelector, 
+    getCurrentPage, 
+    refreshSelectors,
 };
-/**
- * Surveille les changements du DOM et met à jour les sélecteurs dynamiquement.
+
+/**---------------------------------------------------------------
+ *  FONCTION : Observe les modifications du DOM et met à jour les sélecteurs dynamiquement.
+ *---------------------------------------------------------------
+ * 
+ * - Utilise `MutationObserver` pour détecter l'ajout de nouveaux éléments au DOM.
+ * - Vérifie si un élément surveillé a été ajouté avant de rafraîchir les sélecteurs.
+ * - Évite les mises à jour inutiles pour préserver les performances.
+ * - Journalise les événements pour assurer un bon suivi des changements détectés.
  */
 function observeDomChanges() {
     const observer = new MutationObserver((mutations) => {
-        let shouldRefresh = false;
+        const modifiedSelectors = new Set(); //  Évite les doublons
 
         mutations.forEach((mutation) => {
             mutation.addedNodes.forEach((node) => {
-                if (node.nodeType === 1) { // Vérifie si c'est un élément HTML
-                    // Vérifie si un élément surveillé a été ajouté
-                    Object.values(domSelectors).forEach((selector) => {
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    for (const selector of Object.values(domSelectors)) {
                         if (selector instanceof Element && node.contains(selector)) {
-                            shouldRefresh = true;
+                            modifiedSelectors.add(selector);
                         }
-                    });
+                    }
                 }
             });
         });
 
-        if (shouldRefresh) {
-            logEvent("info", "Modification détectée dans le DOM, mise à jour des sélecteurs...");
+        if (modifiedSelectors.size > 0) {
+            logEvent("info", `Modification détectée (${modifiedSelectors.size} élément(s) touché(s)), mise à jour...`);
             refreshSelectors();
         }
     });
@@ -343,11 +476,23 @@ function observeDomChanges() {
     logEvent("success", "Observation des changements du DOM activée.");
 }
 
+
+
 /*==============================================*/
-/*        Activation de l'Observation DOM       */
+/*        ACTIVATION DE L'OBSERVATION DOM       */
 /*==============================================*/
 
-// Active l'observation des changements du DOM après initialisation des sélecteurs
-observeDomChanges();
+/**---------------------------------------------------------------
+ *  ACTIVATION : Démarre l'observation des changements du DOM.
+ *---------------------------------------------------------------
+ * 
+ * - Assure que l'observation ne démarre qu'après l'initialisation des sélecteurs.
+ * - Surveille les modifications du DOM pour détecter l'ajout ou la suppression d'éléments clés.
+ * - Permet de maintenir `domSelectors` toujours à jour sans impact sur les performances.
+ */
+document.addEventListener("DOMContentLoaded", () => {
+    logEvent("info", "Initialisation complète du DOM. Démarrage de l'observation...");
+    observeDomChanges();
+});
 
 export default domSelectors;

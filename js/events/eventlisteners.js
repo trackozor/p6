@@ -44,7 +44,7 @@ import { logEvent } from "../utils/utils.js";
 
 
 /**
- * ✅ Attache un événement à un ou plusieurs éléments de manière sécurisée.
+ * Attache un événement à un ou plusieurs éléments de manière sécurisée.
  * 
  * @param {NodeList|HTMLElement} elements - Élément(s) cible(s) pour l'événement.
  * @param {string} eventType - Type d'événement à écouter (ex: "click").
@@ -54,7 +54,7 @@ import { logEvent } from "../utils/utils.js";
  */
 function attachEvent(elements, eventType, callback, once = false) {
   if (!elements) {
-      logEvent("error", `❌ Aucun élément trouvé pour l'événement "${eventType}".`);
+      logEvent("error", ` Aucun élément trouvé pour l'événement "${eventType}".`);
       return false;
   }
 
@@ -69,13 +69,13 @@ function attachEvent(elements, eventType, callback, once = false) {
                       await callback(event);
                       return true; // Empêche l'attente infinie d'une réponse asynchrone
                   } catch (error) {
-                      logEvent("error", `⚠️ Erreur dans l'exécution de "${eventType}".`);
+                      logEvent("error", `Erreur dans l'exécution de "${eventType}".`);
                   }
               }, { once });
 
-              logEvent("success", `✅ Événement "${eventType}" attaché à ${element.className || element.id || "un élément inconnu"}.`);
+              logEvent("success", ` Événement "${eventType}" attaché à ${element.className || element.id || "un élément inconnu"}.`);
           } catch (error) {
-              logEvent("error", `⚠️ Impossible d'attacher l'événement "${eventType}".`);
+              logEvent("error", `Impossible d'attacher l'événement "${eventType}".`);
           }
       }
   });
@@ -86,95 +86,97 @@ function attachEvent(elements, eventType, callback, once = false) {
 /*=======================================================*/
 // INITIALISATION DES ÉVÉNEMENTS
 /*=======================================================*/
-/**
+
 
 /**
- /**
  * ✅ Initialise la modale de contact.
  * 
- * 🎯 Objectifs :
- * - Vérifie que les éléments DOM de la modale existent avant d'ajouter les événements.
- * - Attache les événements nécessaires pour ouvrir et fermer la modale.
- * - Utilise un **MutationObserver** pour détecter les changements dynamiques dans le DOM.
- * - Empêche les attachements multiples des événements (`dataset.eventAttached`).
- * 
- * @function initModal
+ * - Vérifie que les éléments DOM de la modale existent.
+ * - Attache les événements nécessaires.
+ * - Active un **MutationObserver** si le bouton de contact n'est pas immédiatement disponible.
  */
 export function initModal() {
-    logEvent("info", "➡ Initialisation de la modale de contact...");
+  logEvent("info", "➡ Initialisation de la modale de contact...");
 
-    // Vérifie d'abord si le DOM est chargé
-    document.addEventListener("DOMContentLoaded", () => {
-        logEvent("success", "✅ Le DOM est complètement chargé.");
-
-        // Vérifie immédiatement si le bouton de contact existe déjà
-        if (document.querySelector(".contact-button")) {
-            logEvent("info", "📌 Bouton de contact déjà présent dans le DOM.");
-            attachModalEvents();
-        } else {
-            logEvent("warning", "⚠️ Bouton de contact non trouvé. Activation du MutationObserver...");
-            observeDOMForContactButton();
-        }
-    });
+  // Vérifie si le bouton est déjà présent et attache les événements
+  if (document.querySelector(".contact-button")) {
+      logEvent("info", "📌 Bouton de contact trouvé immédiatement.");
+      attachModalEvents();
+  } else {
+      logEvent("warning", "⚠️ Bouton de contact non trouvé. Activation de l'observation DOM...");
+      observeDOMForContactButton();
+  }
 }
 
 /**
 * ✅ Attache les événements d'ouverture et de fermeture de la modale.
 */
-function attachModalEvents() {
-  logEvent("info", "🔗 Attachement des événements de la modale...");
+export function attachModalEvents() {
+    logEvent("info", "🔗 Attachement des événements de la modale...");
 
-  // Vérification et attachement du bouton de contact
-  if (contactButton && !contactButton.dataset.eventAttached) {
-      logEvent("success", "✅ Événement attaché au bouton Contact.");
-      contactButton.dataset.eventAttached = "true"; // Empêche l'attachement multiple
-      contactButton.addEventListener("click", () => {
-          logEvent("info", "📌 Clic sur le bouton Contact.");
-          handleModalOpen();
-      });
-  }
+    // 🔄 Récupérer dynamiquement le bouton de contact
+    const contactButton = document.querySelector(".contact-button");
 
-  // Vérification et attachement du bouton de fermeture
-  const {closeButton} = domSelectors.modal;
-  if (closeButton && !closeButton.dataset.eventAttached) {
-      logEvent("success", "✅ Événement attaché au bouton de fermeture de la modale.");
-      closeButton.dataset.eventAttached = "true";
-      closeButton.addEventListener("click", handleModalClose);
-  }
+    if (!contactButton) {
+        logEvent("error", "❌ Bouton de contact introuvable.");
+        return;
+    }
 
-  // Fermeture au clic sur l'arrière-plan (overlay)
-  const {modalOverlay} = domSelectors.modal;
-  if (modalOverlay && !modalOverlay.dataset.eventAttached) {
-      logEvent("success", "✅ Événement attaché à l'overlay de la modale.");
-      modalOverlay.dataset.eventAttached = "true";
-      modalOverlay.addEventListener("click", handleModalBackgroundClick);
-  }
+    // ✅ Empêche l'attachement multiple des événements
+    if (!contactButton.dataset.eventAttached) {
+        contactButton.dataset.eventAttached = "true";
+        contactButton.addEventListener("click", () => {
+            logEvent("info", "📌 Clic sur le bouton Contact.");
+            handleModalOpen();
+        });
+        logEvent("success", "✅ Événement attaché au bouton Contact.");
+    }
 
-  // Ajout de l'événement pour le clavier (ESC pour fermer)
-  document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-          logEvent("info", "🔑 Touche Échap détectée, fermeture de la modale.");
-          handleModalClose();
-      }
-  });
+    // ✅ Récupération et attachement des événements à tous les éléments de la modale
+    const { modalOverlay, contactForm, closeButton, form, confirmationModal, spamModal } = domSelectors.modal;
 
-  logEvent("success", "🎉 Tous les événements de la modale sont attachés !");
+    // 🔄 Fermeture de la modale
+    attachEvent(closeButton, "click", handleModalClose);
+    attachEvent(modalOverlay, "click", handleModalClose);
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            logEvent("info", "🔑 Touche Échap détectée, fermeture de la modale.");
+            handleModalClose();
+        }
+    });
+
+    // 📩 Attachement des événements au formulaire de contact
+    if (form) {
+        attachEvent(form.submitButton, "click", (event) => {
+            event.preventDefault();
+            handleModalConfirm();
+        });
+
+        attachEvent(form.firstName, "input", () => logEvent("info", "👤 Saisie du prénom."));
+        attachEvent(form.lastName, "input", () => logEvent("info", "📝 Saisie du nom."));
+        attachEvent(form.email, "input", () => logEvent("info", "📧 Saisie de l'email."));
+        attachEvent(form.messageField, "input", () => logEvent("info", "✏️ Saisie du message."));
+    }
+
+    // ✅ Gestion de la modale de confirmation après soumission du formulaire
+    if (confirmationModal) {
+        attachEvent(confirmationModal.confirmButton, "click", handleModalClose);
+    }
+
+    // ✅ Gestion de la modale de détection de spam
+    if (spamModal) {
+        attachEvent(spamModal.closeButton, "click", handleModalClose);
+    }
+
+    logEvent("success", "🎉 Tous les événements de la modale sont attachés !");
 }
-
-/**
-* ✅ Surveille l'apparition dynamique du bouton de contact et attache l'événement dès qu'il apparaît.
-*/
-/**
- * Observe le DOM pour détecter l'ajout du bouton de contact
- * et exécuter attachModalEvents() dès qu'il est présent.
- */
 function observeDOMForContactButton() {
   const observer = new MutationObserver((mutations, obs) => {
       const button = document.querySelector(".contact-button");
       if (button) {
           logEvent("success", "✅ Bouton de contact détecté par MutationObserver !");
           attachModalEvents(); // Attache les événements dès que le bouton est ajouté
-          obs.disconnect(); // Stoppe l'observation une fois le bouton détecté
+          obs.disconnect(); // Stoppe l'observation
       }
   });
 
@@ -185,41 +187,30 @@ function observeDOMForContactButton() {
   });
 }
 
-
-
 /**
- * Initialise l'événement de confirmation pour la modale.
- * 
- * - Vérifie l'existence du bouton de confirmation avant d'attacher l'événement.
- * - Attache un événement "click" au bouton pour exécuter l'action de confirmation.
- * - Permet de fermer la modale après validation.
- * - Gère les erreurs si l'élément cible est introuvable.
- * 
- * @function initModalConfirm
- */
+* ✅ Initialise l'événement de confirmation pour la modale.
+*/
 export function initModalConfirm() {
   try {
-    // Journalisation du début de l'initialisation de l'événement
-    logEvent("info", "Initialisation de l'événement de confirmation...");
+      logEvent("info", "➡ Initialisation de l'événement de confirmation...");
 
-    // Sélectionne le bouton de confirmation dans le DOM
-    const confirmButton = domSelectors.modal;
+      // Sélectionne le bouton de confirmation dans le DOM
+      const confirmButton = document.querySelector(".confirm-btn");
 
-    // Vérifie si le bouton existe avant d'attacher l'événement
-    if (!confirmButton) {
-      throw new Error("Bouton de confirmation '.confirm-btn' introuvable.");
-    }
+      if (!confirmButton) {
+          throw new Error("❌ Bouton de confirmation introuvable.");
+      }
 
-    // Attache un événement "click" pour gérer l'action de confirmation
-    attachEvent(confirmButton, "click", handleModalConfirm);
+      // Attache un événement "click" pour la validation
+      attachEvent(confirmButton, "click", handleModalConfirm);
 
-    // Journalisation du succès de l'attachement de l'événement
-    logEvent("success", "Événement de confirmation initialisé avec succès.");
+      logEvent("success", "✅ Événement de confirmation attaché.");
   } catch (error) {
-    // Capture et journalise toute erreur survenant lors de l'initialisation
-    logEvent("error", `Erreur dans initModalConfirm : ${error.message}`);
+      logEvent("error", `❌ Erreur dans initModalConfirm : ${error.message}`);
   }
 }
+
+
 
 
 /*=======================================================*/

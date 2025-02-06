@@ -14,7 +14,7 @@ import {
   renderMediaGallery,
 } from "../templates/media-template-logic.js"; // Chargement et rendu des médias
 import { photographerTemplate } from "../templates/photographer-logic.js"; // Template photographe
-import { initEventListeners, setupEventListeners } from "../events/eventlisteners.js";
+import { initEventListeners, attachModalEvents } from "../events/eventlisteners.js";
 import { initstatscalculator } from "../components/statsCalculator.js";
 
 // =============================
@@ -105,7 +105,7 @@ async function displayPhotographerBanner() {
     // Mise à jour de la bannière
     const bannerContainer = domSelectors.photographerPage.photographerHeader;
     if (!bannerContainer) {
-      throw new Error("Conteneur de la bannière introuvable.");
+        throw new Error("Conteneur de la bannière introuvable.");
     }
 
     const { getBannerDOM } = photographerTemplate(photographerData);
@@ -113,13 +113,17 @@ async function displayPhotographerBanner() {
 
     bannerContainer.innerHTML = ""; // Nettoyer le contenu précédent
     bannerContainer.appendChild(bannerDOM);
+
     logEvent("success", "Bannière du photographe affichée avec succès.");
+    attachModalEvents();
+    logEvent("success", "Événements de la modale attachés après génération du bouton.");
   } catch (error) {
     logEvent(
       "error",
       `Erreur lors de l'affichage de la bannière : ${error.message}`,
       { error },
     );
+    
   }
 }
 

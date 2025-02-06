@@ -46,40 +46,45 @@ export async function launchModal(photographerData) {
   logEvent("test_start", "Début de l'ouverture de la modale.");
 
   try {
-      if (!photographerData || !photographerData.name) {
-          throw new Error("Données du photographe invalides ou manquantes.");
-      }
+    if (!photographerData || !photographerData.name) {
+      throw new Error("Données du photographe invalides ou manquantes.");
+    }
 
-      logEvent("info", "Données du photographe valides.", { photographerData });
+    logEvent("info", "Données du photographe valides.", { photographerData });
 
-      const contactOverlay = domSelectors.modal.modalOverlay;
-      const contactModal = domSelectors.modal.container;
+    // Sélection des éléments DOM
+    const contactOverlay = document.getElementById("modal-overlay");
+    const contactModal = document.getElementById("contact-modal");
 
-      if (!contactOverlay || !contactModal) {
-          throw new Error("Éléments DOM requis pour la modale introuvables.");
-      }
+    if (!contactOverlay || !contactModal) {
+      throw new Error("Éléments DOM requis pour la modale introuvables.");
+    }
 
-      const modalTitle = contactModal.querySelector(".modal-photographer-name");
-      if (modalTitle) {
-          modalTitle.textContent = `${photographerData.name}`;
-          logEvent("info", "Nom du photographe inséré dans la modale.");
-      }
+    // Insertion du nom dans la modale
+    const modalTitle = contactModal.querySelector(".modal-photographer-name");
+    if (modalTitle) {
+      modalTitle.textContent = `${photographerData.name}`;
+      logEvent("info", "Nom du photographe inséré dans la modale.");
+    } else {
+      logEvent("warn", "Impossible de trouver l'élément pour insérer le nom.");
+    }
 
-      // ✅ Activation de la modale
-      contactOverlay.classList.add("modal-active");
-      contactModal.classList.add("modal-active");
-      document.body.classList.add("no-scroll");
+    // Affichage de la modale
+    contactOverlay.classList.add("modal-active");
+    contactModal.classList.add("modal-active");
+    document.body.classList.add("no-scroll");
 
-      // ✅ Mise à jour de l'état global
-      modalOpen = true;
-      
-      logEvent("success", "Modale affichée avec succès.");
+    logEvent("success", "Modale affichée avec succès.");
   } catch (error) {
-      logEvent("error", "Erreur lors de l'ouverture de la modale.", { message: error.message });
+    logEvent("error", "Erreur lors de l'ouverture de la modale.", {
+      message: error.message,
+      stack: error.stack,
+    });
   }
-
+  modalOpen = true;
   logEvent("test_end", "Fin de l'ouverture de la modale.");
 }
+
 
 
 /*==============================================*/
@@ -106,30 +111,65 @@ export async function launchModal(photographerData) {
  */
 
 export async function closeModal() {
-  logEvent("test_start", "Début de la fermeture de la modale.");
+  logEvent("test_start", "Début de la tentative de fermeture de la modale.");
 
   try {
-      const { modalOverlay, container } = domSelectors.modal;
+    logEvent("info", "Vérification de l'état de la modale...");
+    const contactOverlay = document.getElementById("modal-overlay");
+    const contactModal = document.getElementById("contact-modal");
+    const confirmationModal = document.getElementById("confirmation-modal");
 
-      if (!modalOpen || !container?.classList?.contains("modal-active")) {
-          logEvent("warn", "Modale déjà fermée ou état incohérent.", { modalOpen });
-          return;
-      }
+    if (!modalOpen || !contactModal?.classList?.contains("modal-active")) {
+      logEvent("warn", "Modale déjà fermée ou état incohérent.", {
+        modalOpen,
+        modalClasses: contactModal?.classList?.value || "Inexistant",
+      });
+      return;
+    }
 
-      // ✅ Suppression des classes actives
-      modalOverlay?.classList.remove("modal-active");
-      container?.classList.remove("modal-active");
+    // Suppression des classes pour masquer la modale
+    if (contactOverlay && contactOverlay.classList) {
+      contactOverlay.classList.remove("modal-active");
+      logEvent("info", "Classe 'modal-active' supprimée de l'overlay.");
+    } else {
+      logEvent("warn", "Overlay introuvable ou invalide.");
+    }
+
+    if (contactModal && contactModal.classList) {
+      contactModal.classList.remove("modal-active");
+      logEvent("info", "Classe 'modal-active' supprimée de la modale.");
+    } else {
+      logEvent("warn", "Modale principale introuvable ou invalide.");
+    }
+
+    if (confirmationModal && confirmationModal.classList) {
+      confirmationModal.classList.remove("modal-active");
+      logEvent(
+        "info",
+        "Classe 'modal-active' supprimée de la modale de confirmation.",
+      );
+    } else {
+      logEvent("warn", "Aucune modale de confirmation active à fermer.");
+    }
+
+    // Réactivation du défilement
+    if (document.body.classList.contains("no-scroll")) {
       document.body.classList.remove("no-scroll");
+      logEvent("success", "Défilement réactivé.");
+    }
 
-      // ✅ Mise à jour de l'état global
-      modalOpen = false;
-
-      logEvent("success", "Modale fermée avec succès.");
+    modalOpen = false;
+    logEvent("info", "État global de la modale mis à jour : 'fermé'.", {
+      modalOpen,
+    });
   } catch (error) {
-      logEvent("error", "Erreur lors de la fermeture de la modale.", { message: error.message });
+    logEvent("error", "Erreur lors de la fermeture de la modale.", {
+      message: error.message,
+      stack: error.stack,
+    });
   }
 
-  logEvent("test_end", "Fin de la fermeture de la modale.");
+  logEvent("test_end", "Fin de la tentative de fermeture de la modale.");
 }
 
 
@@ -162,47 +202,57 @@ export function openConfirmationModal() {
   logEvent("test_start", "Début de l'ouverture de la modale de confirmation.");
 
   try {
-    // Vérification préalable pour éviter une erreur lors de la déstructuration
-    if (!domSelectors?.modal?.confirmationModal) {
-      logEvent("error", "Objet domSelectors.modal.confirmationModal non défini.");
-      throw new Error("L'objet de la modale de confirmation est introuvable.");
-    }
+    const { container: confirmationModal } =
+      domSelectors.modal.confirmationModal;
 
-    const { container: confirmationModal } = domSelectors.modal.confirmationModal;
-
-    // Vérification stricte avant d'ouvrir la modale
     if (!confirmationModal) {
-      logEvent("error", "Élément DOM de la modale de confirmation introuvable.");
+      logEvent(
+        "error",
+        "Élément DOM de la modale de confirmation introuvable.",
+      );
       throw new Error("L'élément 'confirmation-modal' est introuvable.");
     }
 
-    // Vérifie si la modale est déjà active
-    if (modalConfirm || confirmationModal.classList.contains("modal-active")) {
-      logEvent("warn", "La modale de confirmation est déjà ouverte.");
-      modalConfirm = true; // Assure la synchronisation avec l'état DOM
+    if (modalConfirm) {
+      logEvent(
+        "warn",
+        "La modale de confirmation est déjà ouverte (via modalConfirm).",
+      );
       return;
     }
 
-    // Activation de la modale
+    // Vérifie également dans le DOM pour plus de robustesse
+    if (confirmationModal.classList.contains("modal-active")) {
+      logEvent("warn", "La modale de confirmation est déjà ouverte (via DOM).");
+      modalConfirm = true; // Met à jour l'état
+      return;
+    }
+
+    // Ajoute la classe pour afficher la modale
     confirmationModal.classList.add("modal-active");
     confirmationModal.setAttribute("aria-hidden", "false");
 
-    // Mise à jour de l'état global
+    // Met à jour l'état global
     modalConfirm = true;
 
     logEvent("success", "Modale de confirmation affichée avec succès.", {
       modalClasses: confirmationModal.classList.value,
     });
-
   } catch (error) {
-    logEvent("error", "Erreur lors de l'ouverture de la modale de confirmation.", {
-      message: error.message,
-      stack: error.stack,
-    });
+    logEvent(
+      "error",
+      "Erreur lors de l'ouverture de la modale de confirmation.",
+      {
+        message: error.message,
+        stack: error.stack,
+      },
+    );
   }
 
   logEvent("test_end", "Fin de l'ouverture de la modale de confirmation.");
 }
+
+
 
 
 /*==============================================*/
@@ -227,38 +277,32 @@ export function openConfirmationModal() {
  * @returns {void}
  */
 
+/*
+ * Ferme la modale de confirmation.
+ *
+ * @returns {void}
+ */
 export function closeConfirmationModal() {
   logEvent("test_start", "Début de la fermeture de la modale de confirmation.");
 
   try {
-    // Vérification préliminaire pour éviter une erreur lors de la déstructuration
-    if (!domSelectors?.modal?.confirmationModal) {
-      logEvent("error", "Objet domSelectors.modal.confirmationModal non défini.");
-      throw new Error("L'objet de la modale de confirmation est introuvable.");
-    }
+    const { container: confirmationModal } =
+      domSelectors.modal.confirmationModal;
+    const { formElement } = domSelectors.modal.form; // Récupération du formulaire
 
-    const { container: confirmationModal } = domSelectors.modal.confirmationModal;
-    const { formElement } = domSelectors.modal.form; // Récupération du formulaire associé
-
-    // Vérification stricte avant de fermer la modale
-    if (!confirmationModal) {
-      logEvent("error", "Élément DOM de la modale de confirmation introuvable.");
-      throw new Error("L'élément 'confirmation-modal' est introuvable.");
-    }
-
-    if (!modalConfirm && !confirmationModal.classList.contains("modal-active")) {
-      logEvent("warn", "La modale de confirmation est déjà fermée.");
+    if (!confirmationModal || !modalConfirm) {
+      logEvent(
+        "warn",
+        "La modale de confirmation est déjà fermée ou introuvable.",
+      );
       return;
     }
 
-    // Suppression des classes et mise à jour de l'état de la modale
-    if (confirmationModal.classList.contains("modal-active")) {
-      confirmationModal.classList.remove("modal-active");
-      confirmationModal.setAttribute("aria-hidden", "true");
-      logEvent("info", "Classe 'modal-active' supprimée de la modale de confirmation.");
-    }
+    // Supprime la classe pour masquer la modale
+    confirmationModal.classList.remove("modal-active");
+    confirmationModal.setAttribute("aria-hidden", "true");
 
-    // Réinitialisation du formulaire si présent
+    // Réinitialise le formulaire si présent
     if (formElement) {
       formElement.reset();
       logEvent("info", "Formulaire réinitialisé avec succès.");
@@ -266,17 +310,21 @@ export function closeConfirmationModal() {
       logEvent("warn", "Aucun formulaire à réinitialiser.");
     }
 
-    // Mise à jour de l’état global
+    // Met à jour l'état global
     modalConfirm = false;
-    logEvent("success", "Modale de confirmation fermée avec succès.", {
+
+    logEvent("success", "Modale de confirmation masquée avec succès.", {
       modalClasses: confirmationModal.classList.value,
     });
-
   } catch (error) {
-    logEvent("error", "Erreur lors de la fermeture de la modale de confirmation.", {
-      message: error.message,
-      stack: error.stack,
-    });
+    logEvent(
+      "error",
+      "Erreur lors de la fermeture de la modale de confirmation.",
+      {
+        message: error.message,
+        stack: error.stack,
+      },
+    );
   }
 
   logEvent("test_end", "Fin de la fermeture de la modale de confirmation.");

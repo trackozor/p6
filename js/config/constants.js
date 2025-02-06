@@ -22,24 +22,30 @@ export const ENVIRONMENTS = {
 };
 
 /**
- * Détecte l'environnement actif en fonction du domaine.
+ * Détecte l'environnement actif en fonction du domaine ou d'un paramètre d'URL.
  * @returns {string} L'environnement détecté (development, staging ou production).
  */
 export const detectEnvironment = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const envOverride = urlParams.get("env"); // Récupère ?env=production
+
+  if (envOverride && Object.values(ENVIRONMENTS).includes(envOverride)) {
+      return envOverride;
+  }
+
   const { hostname } = window.location;
 
-  if (hostname === "username.github.io") {
-    return ENVIRONMENTS.PRODUCTION;
+  if (hostname === "trackozor.github.io") {
+      return ENVIRONMENTS.PRODUCTION;
   }
 
-  // Vérification correcte pour le localhost ou autre domaine local
   if (hostname === "127.0.0.1" || hostname === "localhost") {
-    return ENVIRONMENTS.STAGING;
+      return ENVIRONMENTS.STAGING;
   }
 
-  // Par défaut, retourner l'environnement développement
   return ENVIRONMENTS.DEVELOPMENT;
 };
+
 
 // Force le mode développement, quelle que soit l'URL (utile pour les tests locaux).
 export const FORCE_DEV_MODE = false;
@@ -180,11 +186,14 @@ export const CONFIGLOG = {
     test_end: "🏁", // Icône pour la fin des tests.
   },
 };
-export const KEY_CODES = Object.freeze({
-  ESCAPE: "Escape",
-  TAB: "Tab",
-  ARROW_LEFT: "ArrowLeft",
-  ARROW_RIGHT: "ArrowRight",
-  ENTER: "Enter",
-  SPACE: " ",
-});
+export const KEY_CODES = (() => {
+    return Object.freeze({
+        ESCAPE: "Escape",
+        TAB: "Tab",
+        ARROW_LEFT: "ArrowLeft",
+        ARROW_RIGHT: "ArrowRight",
+        ENTER: "Enter",
+        SPACE: " ",
+    });
+})();
+
