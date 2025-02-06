@@ -218,7 +218,7 @@ async function initPhotographerPage() {
 
     await initstatscalculator(); // Initialise les statistiques
 
-    // ✅ Ajoute un délai pour s'assurer que la galerie est bien chargée avant d'attacher les événements
+    //  Ajoute un délai pour s'assurer que la galerie est bien chargée avant d'attacher les événements
     setTimeout(() => {
       initEventListeners(mediaArray, folderName);
     }, 500); // 500ms pour s'assurer que les éléments sont bien dans le DOM

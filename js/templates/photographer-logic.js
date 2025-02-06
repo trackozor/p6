@@ -119,7 +119,7 @@ function getUserCardDOM() {
       return link
   } catch (error) {
       logEvent("error", `Erreur lors de la génération de la carte pour ${name}.`, { error })
-      return null // ⚠️ Retourne null en cas d'erreur pour éviter un plantage
+      return null // Retourne null en cas d'erreur pour éviter un plantage
   }
 }
 
@@ -150,7 +150,7 @@ function getBannerDOM() {
             attributes: { src: picture, alt: `Portrait de ${name}`, loading: "lazy" },
         })
 
-        // ⚠️ Suppression de l'ajout de l'événement ici
+        // Suppression de l'ajout de l'événement ici
         const button = createElement("button", {
             className: "contact-button",
             textContent: "Contactez-moi",

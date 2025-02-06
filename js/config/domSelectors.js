@@ -319,7 +319,7 @@ export function recursiveCheck(obj, parentKey = "", missingSelectors = []) {
 
         // Exclut les sélecteurs non critiques de la vérification
         if (fullKey === "photographerPage.totalLikes" || fullKey === "photographerPage.dailyRate") {
-            return; // 🔄 Ignore ces sélecteurs spécifiques
+            return; // Ignore ces sélecteurs spécifiques
         }
 
         // Si la valeur est un objet, on applique la récursivité

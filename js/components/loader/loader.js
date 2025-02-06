@@ -8,6 +8,7 @@
 // 
 
 import domSelectors from "../../config/domSelectors.js";
+import { logEvent } from "../../utils/utils.js";
 
 // Tableau de messages dynamiques pour l'affichage progressif
     const messages = [

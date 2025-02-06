@@ -217,13 +217,13 @@ export async function handleLikeDislike(action, mediaElement) {
       throw new Error(`Action inconnue : ${action}.`);
     }
 
-    // ✅ Met à jour dynamiquement l'affichage du nombre de likes
+    //  Met à jour dynamiquement l'affichage du nombre de likes
     likeCountElement.textContent = likeCount;
 
-    // ✅ Mise à jour en base de données
+    //  Mise à jour en base de données
     await updateLikesInDatabase(mediaId, likeCount);
 
-    // ✅ Met à jour le total des likes du photographe
+    //  Met à jour le total des likes du photographe
     updateTotalLikes();
 
     logEvent("success", `Média ${action}d avec succès.`);
@@ -247,28 +247,28 @@ async function updateLikesInDatabase(mediaId, likeCount) {
       }
 
       const result = await response.json();
-      console.log("✅ Likes mis à jour :", result);
+      console.log(" Likes mis à jour :", result);
 
-      // 🔥 Mise à jour de la galerie après modification des likes
+      // Mise à jour de la galerie après modification des likes
       updateMediaDisplay(result.media);
   } catch (error) {
-      console.error("❌ Erreur mise à jour des likes en base de données :", error);
+      console.error(" Erreur mise à jour des likes en base de données :", error);
   }
 }
 
 
 /**
- * 🔄 Met à jour l'affichage des médias après mise à jour des likes
+ * Met à jour l'affichage des médias après mise à jour des likes
  * @param {Array} newMediaArray - Nouveau tableau de médias avec les likes mis à jour
  */
 /**
- * 🔄 Met à jour l'affichage des médias après mise à jour des likes
+ * Met à jour l'affichage des médias après mise à jour des likes
  * @param {Array} newMediaArray - Nouveau tableau de médias avec les likes mis à jour
  */
 function updateMediaDisplay(newMediaArray) {
   const galleryContainer = document.getElementById("gallery");
   if (!galleryContainer) {
-      console.error("❌ Impossible de mettre à jour la galerie, élément introuvable !");
+      console.error(" Impossible de mettre à jour la galerie, élément introuvable !");
       return;
   }
   galleryContainer.innerHTML = ""; // 🧹 Nettoyer l'ancienne galerie
@@ -294,12 +294,12 @@ function updateMediaDisplay(newMediaArray) {
       galleryContainer.appendChild(mediaElement);
   });
 
-  console.log("🎨 Mise à jour de l'affichage avec les nouveaux médias !");
+  console.log(" Mise à jour de l'affichage avec les nouveaux médias !");
 }
 
 
 /**
- * 🔄 Recharge la galerie avec les nouvelles données depuis le serveur
+ *  Recharge la galerie avec les nouvelles données depuis le serveur
  */
 async function refreshMediaGallery() {
   try {
@@ -313,9 +313,9 @@ async function refreshMediaGallery() {
       // 🔥 Met à jour l'affichage de la galerie
       updateMediaDisplay(data.media);
       
-      console.log("🔄 Galerie mise à jour avec les nouvelles données.");
+      console.log(" Galerie mise à jour avec les nouvelles données.");
   } catch (error) {
-      console.error("❌ Erreur lors du rechargement des médias :", error);
+      console.error(" Erreur lors du rechargement des médias :", error);
   }
 }
 
@@ -336,7 +336,7 @@ export function updateTotalLikes() {
       return sum + (parseInt(likeEl.textContent, 10) || 0);
     }, 0);
 
-    // ✅ Met à jour le total affiché
+    //  Met à jour le total affiché
     totalLikesElement.textContent = totalLikes;
     logEvent("success", `Total des likes mis à jour : ${totalLikes}`);
   } catch (error) {

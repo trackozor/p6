@@ -312,43 +312,35 @@ export function updateCharCount(event) {
 
 export function handleFormSubmit(event) {
   try {
-    // Vérifie que l'événement existe avant de l'utiliser
-    if (!event) {
-      throw new Error("Événement de soumission non défini.");
+    //  Vérifie si event existe et empêche la soumission par défaut
+    if (event) {
+      event.preventDefault();
+    } else {
+      logEvent("warn", "handleFormSubmit() a été appelé sans événement. Vérifiez son attachement.");
     }
 
-    // Empêche le rechargement automatique de la page après soumission
-    event.preventDefault();
-
-    // Journalisation de l'événement de soumission du formulaire
     logEvent("info", "Soumission du formulaire de contact en cours...");
 
-    // Vérifie que la fonction showLoader existe avant de l'appeler
-    if (typeof showLoader !== "function") {
-      throw new Error("showLoader() est introuvable ou non définie.");
+    // ✅ Vérifie l'existence des fonctions avant de les appeler
+    if (typeof showLoader === "function") {
+      showLoader();
+    } else {
+      logEvent("warn", "showLoader() est introuvable.");
     }
 
-    // Affiche un indicateur de chargement pour signaler le traitement en cours
-    showLoader();
-
-    // Vérifie que la fonction initvalidform existe avant de l'exécuter
-    if (typeof initvalidform !== "function") {
+    if (typeof initvalidform === "function") {
+      initvalidform();
+    } else {
       throw new Error("initvalidform() est introuvable ou non définie.");
     }
 
-    // Exécute la validation et le traitement du formulaire
-    initvalidform();
-
-    // Journalisation du succès de la soumission du formulaire
-    logEvent("success", "Le formulaire de contact a été soumis avec succès.");
+    logEvent("success", " Le formulaire de contact a été soumis avec succès.");
   } catch (error) {
-    // Capture et journalise toute erreur rencontrée
-    logEvent("error", `Erreur lors de la soumission du formulaire : ${error.message}`, { error });
-
-    // Affichage d'un message utilisateur si une erreur est détectée (optionnel)
+    logEvent("error", ` Erreur lors de la soumission du formulaire : ${error.message}`, { error });
     alert("Une erreur est survenue lors de la soumission du formulaire. Veuillez réessayer.");
   }
 }
+
 
 
 /*==============================================*/
@@ -601,29 +593,7 @@ export async function handleSortChange(event) {
 /*            ajout like/dislike                */
 /*==============================================*/
 /**
- * Gère l'ajout ou la suppression d'un like sur un média.
- * 
- * ### **Fonctionnement :**
- * - Vérifie que `button` est bien un élément valide.
- * - Récupère l'élément contenant le nombre de likes (`button.previousElementSibling`).
- * - Convertit le texte en nombre entier (`parseInt()`) et applique une valeur par défaut (`0` si conversion échoue).
- * - Incrémente (`like++`) ou décrémente (`like--` en s'assurant qu'il reste positif).
- * - Met à jour dynamiquement l'affichage du nombre de likes.
- * - Journalise l'action dans `logEvent()`.
- * 
- * ### **Gestion des erreurs :**
- * - Vérifie si `button` est bien défini.
- * - Vérifie si `likeCountElement` existe avant d'essayer de modifier son contenu.
- * - Vérifie que `action` est bien `"like"` ou `"dislike"`.
- * - Capture et journalise toute erreur inattendue.
- * 
- * @function handleLikeDislike
- * @param {string} action - Action à exécuter (`"like"` ou `"dislike"`).
- * @param {HTMLButtonElement} button - Le bouton sur lequel l'utilisateur a cliqué.
- * @throws {Error} Génère une erreur si `button` est invalide ou si `likeCountElement` est introuvable.
- */
-
-
+ 
 
 /**
  * Affiche la modale de like/dislike pour un média donné.
@@ -631,14 +601,14 @@ export async function handleSortChange(event) {
  */
 export function showLikeDislikeModal(mediaItem) {
   if (!mediaItem) {
-    logEvent("error", "❌ Impossible d'afficher la modale : élément média introuvable.");
+    logEvent("error", "Impossible d'afficher la modale : élément média introuvable.");
     return;
   }
 
   const modal = document.querySelector("#like-dislike-modal");
 
   if (!modal) {
-    logEvent("error", "❌ La modale de like/dislike est introuvable dans le DOM.");
+    logEvent("error", "La modale de like/dislike est introuvable dans le DOM.");
     return;
   }
 
@@ -706,7 +676,6 @@ document.addEventListener("click", (event) => {
 
 export function handleKeyboardEvent(event) {
   try {
-    // Vérifie que l'événement est bien défini
     if (!event || !event.key) {
       throw new Error("Événement clavier invalide ou non défini.");
     }
@@ -714,31 +683,31 @@ export function handleKeyboardEvent(event) {
     // Récupère la modale active et la lightbox ouverte
     const activeModal = document.querySelector(".modal.modal-active");
     const activeLightbox = document.querySelector(".lightbox[aria-hidden='false']");
-   
 
-    // Journalisation de la détection d'un événement clavier
     logEvent("debug", `Événement clavier détecté : ${event.key}`);
 
-    // Gestion de la touche TAB : Maintient le focus dans la modale si elle est ouverte
+    // Empêcher le focus de sortir de la modale (Gestion de TAB)
     if (event.key === KEY_CODES.TAB && activeModal) {
-      trapFocus(activeModal);
-      event.preventDefault(); // Empêche le comportement par défaut du focus en dehors de la modale
+      trapFocus(activeModal, event);
     }
-    
+
     // Gestion de la touche ESCAPE : Ferme la modale ou la lightbox
     else if (event.key === KEY_CODES.ESCAPE) {
       handleEscapeKey(activeModal, activeLightbox);
     }
-    
-    // Gestion des flèches gauche/droite pour la navigation dans la lightbox
+
+    // 🎥 Gestion des flèches gauche/droite pour la navigation dans la lightbox
     else if ([KEY_CODES.ARROW_LEFT, KEY_CODES.ARROW_RIGHT].includes(event.key)) {
       handleLightboxNavigation(activeLightbox, event);
     }
   } catch (error) {
-    // Capture et journalise toute erreur rencontrée
-    logEvent("error", `Erreur lors de la gestion de l'événement clavier : ${error.message}`, { error });
+    logEvent("error", ` Erreur lors de la gestion de l'événement clavier : ${error.message}`, { error });
   }
 }
+
+// Ajout de l'écouteur global des événements clavier
+document.addEventListener("keydown", handleKeyboardEvent);
+
 
 // Enregistrement de l'écouteur global pour détecter les événements clavier sur toute la page
 document.addEventListener("keydown", handleKeyboardEvent);

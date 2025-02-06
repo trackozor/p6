@@ -89,7 +89,7 @@ function attachEvent(elements, eventType, callback, once = false) {
 
 
 /**
- * ✅ Initialise la modale de contact.
+ * Initialise la modale de contact.
  * 
  * - Vérifie que les éléments DOM de la modale existent.
  * - Attache les événements nécessaires.
@@ -100,81 +100,104 @@ export function initModal() {
 
   // Vérifie si le bouton est déjà présent et attache les événements
   if (document.querySelector(".contact-button")) {
-      logEvent("info", "📌 Bouton de contact trouvé immédiatement.");
+      logEvent("info", "Bouton de contact trouvé immédiatement.");
       attachModalEvents();
   } else {
-      logEvent("warning", "⚠️ Bouton de contact non trouvé. Activation de l'observation DOM...");
+      logEvent("warning", " Bouton de contact non trouvé. Activation de l'observation DOM...");
       observeDOMForContactButton();
   }
 }
 
 /**
-* ✅ Attache les événements d'ouverture et de fermeture de la modale.
+*  Attache les événements d'ouverture et de fermeture de la modale.
 */
 export function attachModalEvents() {
-    logEvent("info", "🔗 Attachement des événements de la modale...");
+    logEvent("info", " Attachement des événements de la modale...");
 
-    // 🔄 Récupérer dynamiquement le bouton de contact
+    // Récupération dynamique du bouton de contact
     const contactButton = document.querySelector(".contact-button");
 
     if (!contactButton) {
-        logEvent("error", "❌ Bouton de contact introuvable.");
+        logEvent("error", "Bouton de contact introuvable.");
         return;
     }
 
-    // ✅ Empêche l'attachement multiple des événements
+    //  Empêche l'attachement multiple
     if (!contactButton.dataset.eventAttached) {
         contactButton.dataset.eventAttached = "true";
         contactButton.addEventListener("click", () => {
-            logEvent("info", "📌 Clic sur le bouton Contact.");
+            logEvent("info", " Clic sur le bouton Contact.");
             handleModalOpen();
         });
-        logEvent("success", "✅ Événement attaché au bouton Contact.");
+        logEvent("success", " Événement attaché au bouton Contact.");
     }
 
-    // ✅ Récupération et attachement des événements à tous les éléments de la modale
+    //  Récupération des éléments de la modale
     const { modalOverlay, contactForm, closeButton, form, confirmationModal, spamModal } = domSelectors.modal;
 
-    // 🔄 Fermeture de la modale
+    if (!modalOverlay || !contactForm || !closeButton || !form) {
+        logEvent("error", "Certains éléments de la modale sont introuvables.");
+        return;
+    }
+
+    // Attachement des événements de fermeture de la modale
     attachEvent(closeButton, "click", handleModalClose);
     attachEvent(modalOverlay, "click", handleModalClose);
+    
     document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
-            logEvent("info", "🔑 Touche Échap détectée, fermeture de la modale.");
+            logEvent("info", " Touche Échap détectée, fermeture de la modale.");
             handleModalClose();
         }
     });
 
-    // 📩 Attachement des événements au formulaire de contact
+    //Attachement des événements au formulaire de contact
     if (form) {
-        attachEvent(form.submitButton, "click", (event) => {
-            event.preventDefault();
-            handleModalConfirm();
-        });
+        // 🔹 **Bouton d'envoi du formulaire**
+        if (form.submitButton && !form.submitButton.dataset.eventAttached) {
+            form.submitButton.dataset.eventAttached = "true";
+            attachEvent(form.submitButton, "click", (event) => {
+                event.preventDefault();
+                logEvent("info", "Formulaire soumis !");
+                handleFormSubmit();
+            });
+            logEvent("success", "Événement attaché au bouton d'envoi du formulaire.");
+        }
 
-        attachEvent(form.firstName, "input", () => logEvent("info", "👤 Saisie du prénom."));
-        attachEvent(form.lastName, "input", () => logEvent("info", "📝 Saisie du nom."));
-        attachEvent(form.email, "input", () => logEvent("info", "📧 Saisie de l'email."));
-        attachEvent(form.messageField, "input", () => logEvent("info", "✏️ Saisie du message."));
+        // 🔹 **Champs du formulaire avec logs de saisie**
+        const formFields = [
+            { element: form.firstName, logMessage: "Saisie du prénom." },
+            { element: form.lastName, logMessage: "Saisie du nom." },
+            { element: form.email, logMessage: "Saisie de l'email." },
+            { element: form.messageField, logMessage: " Saisie du message." },
+        ];
+
+        formFields.forEach(({ element, logMessage }) => {
+            if (element && !element.dataset.eventAttached) {
+                element.dataset.eventAttached = "true";
+                attachEvent(element, "input", () => logEvent("info", logMessage));
+            }
+        });
     }
 
-    // ✅ Gestion de la modale de confirmation après soumission du formulaire
-    if (confirmationModal) {
+    // Gestion de la confirmation après soumission du formulaire
+    if (confirmationModal?.confirmButton) {
         attachEvent(confirmationModal.confirmButton, "click", handleModalClose);
     }
 
-    // ✅ Gestion de la modale de détection de spam
-    if (spamModal) {
+    // Gestion de la modale de détection de spam
+    if (spamModal?.closeButton) {
         attachEvent(spamModal.closeButton, "click", handleModalClose);
     }
 
     logEvent("success", "🎉 Tous les événements de la modale sont attachés !");
 }
+
 function observeDOMForContactButton() {
   const observer = new MutationObserver((mutations, obs) => {
       const button = document.querySelector(".contact-button");
       if (button) {
-          logEvent("success", "✅ Bouton de contact détecté par MutationObserver !");
+          logEvent("success", "Bouton de contact détecté par MutationObserver !");
           attachModalEvents(); // Attache les événements dès que le bouton est ajouté
           obs.disconnect(); // Stoppe l'observation
       }
@@ -188,7 +211,7 @@ function observeDOMForContactButton() {
 }
 
 /**
-* ✅ Initialise l'événement de confirmation pour la modale.
+* Initialise l'événement de confirmation pour la modale.
 */
 export function initModalConfirm() {
   try {
@@ -198,15 +221,15 @@ export function initModalConfirm() {
       const confirmButton = document.querySelector(".confirm-btn");
 
       if (!confirmButton) {
-          throw new Error("❌ Bouton de confirmation introuvable.");
+          throw new Error("Bouton de confirmation introuvable.");
       }
 
       // Attache un événement "click" pour la validation
       attachEvent(confirmButton, "click", handleModalConfirm);
 
-      logEvent("success", "✅ Événement de confirmation attaché.");
+      logEvent("success", "Événement de confirmation attaché.");
   } catch (error) {
-      logEvent("error", `❌ Erreur dans initModalConfirm : ${error.message}`);
+      logEvent("error", `Erreur dans initModalConfirm : ${error.message}`);
   }
 }
 
