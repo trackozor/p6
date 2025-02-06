@@ -21,41 +21,77 @@ import { logEvent } from "../utils/utils.js";
 /*==============================================*/
 /*          Récupération éléments DOM           */
 /*==============================================*/
+const domCache = new Map(); // Stocke les sélections DOM pour éviter les requêtes répétées
+
 /**
- * Récupère un élément DOM en toute sécurité, avec gestion des erreurs et option de journalisation.
+ * Récupère un élément DOM avec cache et gestion des erreurs.
  * 
- * @param {string} selector - Sélecteur CSS de l'élément.
- * @param {boolean} [isOptional=false] - Si true, ne génère pas d'erreur si l'élément est introuvable.
- * @returns {Element|null} Élément DOM trouvé ou `null` si introuvable.
+ * @param {string} selector - Sélecteur CSS.
+ * @param {boolean} [isOptional=false] - Si true, ne log pas d'erreur si l'élément est introuvable.
+ * @returns {Element|null} Élément trouvé ou `null`.
  */
 export function safeQuerySelector(selector, isOptional = false) {
+    // Vérifie si l'élément est dans le cache et toujours valide
+    if (domCache.has(selector)) {
+        const cachedElement = domCache.get(selector);
+        if (document.body.contains(cachedElement)) {
+            return cachedElement; // Retourne l'élément s'il est encore valide
+        } else {
+            domCache.delete(selector); // Supprime l'entrée invalide du cache
+        }
+    }
+
+    // Recherche de l'élément si non présent ou invalide dans le cache
     const element = document.querySelector(selector);
 
     if (!element && !isOptional) {
         logEvent("error", `Élément non trouvé : ${selector}`);
     } else if (element) {
         logEvent("info", `Élément trouvé : ${selector}`);
+        domCache.set(selector, element); // Stocke l'élément dans le cache
     }
 
     return element;
 }
+
 /**
- * Récupère tous les éléments DOM correspondant à un sélecteur, avec gestion des erreurs.
+ * Récupère tous les éléments DOM correspondant à un sélecteur, avec cache.
  * 
- * @param {string} selector - Sélecteur CSS des éléments.
- * @returns {NodeList} Liste des éléments trouvés (peut être vide).
+ * @param {string} selector - Sélecteur CSS.
+ * @returns {NodeList} Liste des éléments trouvés.
  */
 export function safeQuerySelectorAll(selector) {
+    // Vérifie si la NodeList est encore valide dans le cache
+    if (domCache.has(selector)) {
+        const cachedNodeList = domCache.get(selector);
+        if (cachedNodeList.length > 0 && document.body.contains(cachedNodeList[0])) {
+            return cachedNodeList;
+        } else {
+            domCache.delete(selector); // Supprime la NodeList invalide du cache
+        }
+    }
+
     const elements = document.querySelectorAll(selector);
 
     if (!elements.length) {
         logEvent("warn", `Aucun élément trouvé pour : ${selector}`);
     } else {
         logEvent("info", `Éléments trouvés pour : ${selector}, total : ${elements.length}`);
+        domCache.set(selector, elements); // Stocke la NodeList dans le cache
     }
 
     return elements;
 }
+
+
+/**
+ * Vide le cache des sélections DOM pour permettre un rafraîchissement.
+ */
+export function clearDomCache() {
+    domCache.clear();
+    logEvent("info", "🔄 Cache des sélections DOM vidé !");
+}
+
 
 /*==============================================*/
 /*            designation page                  */
@@ -121,7 +157,7 @@ export function getPhotographerSelectors() {
             galleryContainer: safeQuerySelector("#gallery"),
             overlayContainer: safeQuerySelector("#modal-overlay"),
             sortingSelect: safeQuerySelector("#sort-options"),
-            contactButton: safeQuerySelector(".contact-button"),
+            
             photographerStatsTemplate: safeQuerySelector("#photographer-stats", true),
             likeIcons: safeQuerySelectorAll(".like-icon"),
             likeButtons: safeQuerySelectorAll(".like-btn"),
@@ -249,13 +285,69 @@ export function loadSelectorsForCurrentPage() {
 /*==============================================*/
 /*           Initialisation sélecteurs          */
 /*==============================================*/
+
 /**
- * Initialise les sélecteurs de la page actuelle et les expose.
+ * Fonction permettant de rafraîchir dynamiquement les sélecteurs en cas de modification du DOM.
+ * Utile si certains éléments sont ajoutés après le chargement initial.
  */
+/**
+ * Met à jour dynamiquement les sélecteurs DOM après une modification du DOM.
+ */
+export function refreshSelectors() {
+    logEvent("info", "Rafraîchissement des sélecteurs DOM...");
+
+    // Vider le cache pour forcer une nouvelle récupération des éléments
+    clearDomCache();
+
+    // Mise à jour des sélecteurs selon la page actuelle
+    Object.assign(domSelectors, loadSelectorsForCurrentPage());
+
+    logEvent("success", "Sélecteurs DOM mis à jour.");
+}
+
+
+// Initialisation des sélecteurs au chargement
 const domSelectors = {
     safeQuerySelector,
     getCurrentPage,
+    refreshSelectors,  
     ...loadSelectorsForCurrentPage(),
 };
+/**
+ * Surveille les changements du DOM et met à jour les sélecteurs dynamiquement.
+ */
+function observeDomChanges() {
+    const observer = new MutationObserver((mutations) => {
+        let shouldRefresh = false;
+
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.nodeType === 1) { // Vérifie si c'est un élément HTML
+                    // Vérifie si un élément surveillé a été ajouté
+                    Object.values(domSelectors).forEach((selector) => {
+                        if (selector instanceof Element && node.contains(selector)) {
+                            shouldRefresh = true;
+                        }
+                    });
+                }
+            });
+        });
+
+        if (shouldRefresh) {
+            logEvent("info", "Modification détectée dans le DOM, mise à jour des sélecteurs...");
+            refreshSelectors();
+        }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+    logEvent("success", "Observation des changements du DOM activée.");
+}
+
+/*==============================================*/
+/*        Activation de l'Observation DOM       */
+/*==============================================*/
+
+// Active l'observation des changements du DOM après initialisation des sélecteurs
+observeDomChanges();
 
 export default domSelectors;

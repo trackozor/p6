@@ -41,45 +41,41 @@ let modalConfirm = false; // Suivi global de l'état de la modale de confirmatio
  * @throws {Error} Génère une erreur si les éléments DOM ou les données sont invalides.
  */
 
+
 export async function launchModal(photographerData) {
   logEvent("test_start", "Début de l'ouverture de la modale.");
 
   try {
-    // Vérification des données du photographe
-    if (!photographerData || !photographerData.name) {
-      throw new Error("Données du photographe invalides ou manquantes.");
-    }
+      if (!photographerData || !photographerData.name) {
+          throw new Error("Données du photographe invalides ou manquantes.");
+      }
 
-    logEvent("info", " Données du photographe valides.", { photographerData });
+      logEvent("info", "Données du photographe valides.", { photographerData });
 
-    // Sélection des éléments DOM requis
-    const contactOverlay = domSelectors.modal.modalOverlay;
-    const contactModal = domSelectors.modal.container;
+      const contactOverlay = domSelectors.modal.modalOverlay;
+      const contactModal = domSelectors.modal.container;
 
-    if (!contactOverlay || !contactModal) {
-      throw new Error("Éléments DOM requis pour la modale introuvables.");
-    }
+      if (!contactOverlay || !contactModal) {
+          throw new Error("Éléments DOM requis pour la modale introuvables.");
+      }
 
-    // Insertion du nom du photographe dans la modale
-    const modalTitle = contactModal.querySelector(".modal-photographer-name");
-    if (modalTitle) {
-      modalTitle.textContent = `${photographerData.name}`;
-      logEvent("info", "Nom du photographe inséré dans la modale.");
-    } else {
-      logEvent("warn", "Impossible de trouver l'élément pour insérer le nom.");
-    }
+      const modalTitle = contactModal.querySelector(".modal-photographer-name");
+      if (modalTitle) {
+          modalTitle.textContent = `${photographerData.name}`;
+          logEvent("info", "Nom du photographe inséré dans la modale.");
+      }
 
-    // Activation de la modale et désactivation du scroll en arrière-plan
-    contactOverlay.classList.add("modal-active");
-    contactModal.classList.add("modal-active");
-    document.body.classList.add("no-scroll");
+      // ✅ Activation de la modale
+      contactOverlay.classList.add("modal-active");
+      contactModal.classList.add("modal-active");
+      document.body.classList.add("no-scroll");
 
-    logEvent("success", "Modale affichée avec succès.");
+      // ✅ Mise à jour de l'état global
+      modalOpen = true;
+      
+      logEvent("success", "Modale affichée avec succès.");
   } catch (error) {
-    logEvent("error", "Erreur lors de l'ouverture de la modale.", {
-      message: error.message,
-      stack: error.stack,
-    });
+      logEvent("error", "Erreur lors de l'ouverture de la modale.", { message: error.message });
   }
 
   logEvent("test_end", "Fin de l'ouverture de la modale.");
@@ -113,54 +109,29 @@ export async function closeModal() {
   logEvent("test_start", "Début de la fermeture de la modale.");
 
   try {
-    logEvent("info", "Vérification de l'état de la modale...");
+      const { modalOverlay, container } = domSelectors.modal;
 
-    // Sélection des éléments DOM
-    const { modalOverlay, container, confirmationModal } = domSelectors.modal;
+      if (!modalOpen || !container?.classList?.contains("modal-active")) {
+          logEvent("warn", "Modale déjà fermée ou état incohérent.", { modalOpen });
+          return;
+      }
 
-    if (!modalOpen || !container?.classList?.contains("modal-active")) {
-      logEvent("warn", "Modale déjà fermée ou état incohérent.", {
-        modalOpen,
-        modalClasses: container?.classList?.value || "Inexistant",
-      });
-      return; // Évite d'exécuter le reste si la modale est déjà fermée
-    }
-
-    // Suppression des classes pour masquer la modale
-    if (modalOverlay && modalOverlay.classList.contains("modal-active")) {
-      modalOverlay.classList.remove("modal-active");
-      logEvent("info", "Overlay masqué.");
-    }
-
-    if (container && container.classList.contains("modal-active")) {
-      container.classList.remove("modal-active");
-      logEvent("info", "Modale masquée.");
-    }
-
-    if (confirmationModal && confirmationModal.classList.contains("modal-active")) {
-      confirmationModal.classList.remove("modal-active");
-      logEvent("info", "Modale de confirmation masquée.");
-    }
-
-    // Réactivation du défilement
-    if (document.body.classList.contains("no-scroll")) {
+      // ✅ Suppression des classes actives
+      modalOverlay?.classList.remove("modal-active");
+      container?.classList.remove("modal-active");
       document.body.classList.remove("no-scroll");
-      logEvent("success", "Défilement réactivé.");
-    }
 
-    // Mise à jour de l'état global
-    modalOpen = false;
-    logEvent("info", "État global de la modale mis à jour : 'fermé'.", { modalOpen });
+      // ✅ Mise à jour de l'état global
+      modalOpen = false;
 
+      logEvent("success", "Modale fermée avec succès.");
   } catch (error) {
-    logEvent("error", "Erreur lors de la fermeture de la modale.", {
-      message: error.message,
-      stack: error.stack,
-    });
+      logEvent("error", "Erreur lors de la fermeture de la modale.", { message: error.message });
   }
 
   logEvent("test_end", "Fin de la fermeture de la modale.");
 }
+
 
 /*==============================================*/
 /*              Modale de confirmation          */

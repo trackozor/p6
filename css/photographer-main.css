@@ -645,9 +645,9 @@ a {
 /* Description : Style pour le bouton de contact avec un design simple et     */
 /* élégant. Inclut des ajustements responsive pour les tablettes.             */
 /* -------------------------------------------------------------------------- */
-.contact_button {
+.contact-button {
   font-size: 1rem; /* Taille de la police pour le texte du bouton */
-  z-index: 50;
+  z-index: 550;
   font-weight: bold; /* Texte en gras pour plus de visibilité */
   color: white; /* Couleur du texte */
   padding: 3%; /* Espacement interne pour rendre le bouton plus grand */
@@ -660,7 +660,7 @@ a {
   cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
 }
 @media (min-width: 767px) {
-  .contact_button {
+  .contact-button {
     max-height: 20px; /* Réduit la hauteur maximale sur tablette */
     padding: 2% 1%; /* Diminue les espacements internes */
     margin-left: 7%;
@@ -670,7 +670,7 @@ a {
   }
 }
 @media (min-width: 767px) and (min-width: 1024px) {
-  .contact_button {
+  .contact-button {
     position: absolute;
     display: flex;
     padding: 2% 1%;
@@ -681,7 +681,7 @@ a {
   }
 }
 @media (min-width: 767px) and (min-width: 1440px) {
-  .contact_button {
+  .contact-button {
     padding: 1.5% 1%;
   }
 }

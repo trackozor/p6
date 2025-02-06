@@ -42,116 +42,149 @@ import { logEvent } from "../utils/utils.js";
 // UTILITAIRE : ATTACHER DES ÉVÉNEMENTS
 /*=======================================================*/
 
+
 /**
- * Attache un gestionnaire d'événement à un ou plusieurs éléments DOM.
+ * ✅ Attache un événement à un ou plusieurs éléments de manière sécurisée.
  * 
- * - Vérifie si l'élément existe avant d'attacher l'événement.
- * - Supprime les anciens événements avant d'en ajouter un nouveau pour éviter les doublons.
- * - Peut être configuré pour exécuter l'événement une seule fois.
- *
- * @param {HTMLElement | NodeListOf<HTMLElement>} elements - Élément(s) cible(s) du DOM.
- * @param {string} eventType - Type d'événement à écouter (ex: "click", "mouseover").
- * @param {Function} callback - Fonction exécutée lorsqu'un événement est déclenché.
- * @param {boolean} [once=false] - Indique si l'événement doit être exécuté une seule fois.
- * @returns {boolean} - Retourne `true` si un ou plusieurs événements ont été attachés, sinon `false`.
+ * @param {NodeList|HTMLElement} elements - Élément(s) cible(s) pour l'événement.
+ * @param {string} eventType - Type d'événement à écouter (ex: "click").
+ * @param {Function} callback - Fonction à exécuter lors de l'événement.
+ * @param {boolean} once - Si true, l'événement ne s'exécute qu'une seule fois.
+ * @returns {boolean} - Retourne true si un événement a été attaché, false sinon.
  */
 function attachEvent(elements, eventType, callback, once = false) {
-  // Vérifie si l'élément cible existe avant d'ajouter un événement
   if (!elements) {
-    logEvent("error", `Échec d'attachement : Aucun élément trouvé pour "${eventType}".`);
-    return false; // Arrête la fonction si l'élément est invalide
+      logEvent("error", `❌ Aucun élément trouvé pour l'événement "${eventType}".`);
+      return false;
   }
 
-  // Convertit NodeList en tableau si plusieurs éléments sont sélectionnés
+  // Convertit un NodeList en tableau si plusieurs éléments sont sélectionnés
   const elementList = elements instanceof NodeList ? Array.from(elements) : [elements];
 
-  // Parcourt la liste des éléments pour attacher l'événement à chacun d'eux
   elementList.forEach((element) => {
-    if (element instanceof HTMLElement) {
-      // Supprime tout événement existant pour éviter les doublons
-      element.removeEventListener(eventType, callback);
+      if (element instanceof HTMLElement) {
+          try {
+              element.addEventListener(eventType, async (event) => {
+                  try {
+                      await callback(event);
+                      return true; // Empêche l'attente infinie d'une réponse asynchrone
+                  } catch (error) {
+                      logEvent("error", `⚠️ Erreur dans l'exécution de "${eventType}".`);
+                  }
+              }, { once });
 
-      // Ajoute un nouvel écouteur d'événement avec gestion d'erreur
-      element.addEventListener(eventType, async (event) => {
-        try {
-          await callback(event); // Exécute la fonction fournie en paramètre
-        } catch (error) {
-          logEvent("error", `Erreur lors de l'exécution de "${eventType}".`);
-        }
-      }, { once }); // Option "once" pour exécuter l'événement une seule fois si nécessaire
-
-      // Journalise l'ajout réussi de l'événement pour faciliter le débogage
-      logEvent("success", `Événement "${eventType}" attaché à ${element.className || element.id || "un élément inconnu"}.`);
-    }
+              logEvent("success", `✅ Événement "${eventType}" attaché à ${element.className || element.id || "un élément inconnu"}.`);
+          } catch (error) {
+              logEvent("error", `⚠️ Impossible d'attacher l'événement "${eventType}".`);
+          }
+      }
   });
 
-  // Retourne "true" si au moins un élément a été traité
   return elementList.length > 0;
 }
-
 
 /*=======================================================*/
 // INITIALISATION DES ÉVÉNEMENTS
 /*=======================================================*/
-
-
-/*========================*/
-//    1.Modale
-/*========================*/
+/**
 
 /**
- * Initialise les événements liés à la gestion des modales.
+ /**
+ * ✅ Initialise la modale de contact.
  * 
- * - Ouvre la modale lorsqu'on clique sur le bouton "Contact".
- * - Ferme la modale lorsqu'on clique sur le bouton de fermeture ou l'overlay.
- * - Gère la soumission du formulaire de contact.
- * - Vérifie que tous les éléments requis existent avant d'attacher les événements.
- * - Journalise les erreurs si un élément est manquant.
+ * 🎯 Objectifs :
+ * - Vérifie que les éléments DOM de la modale existent avant d'ajouter les événements.
+ * - Attache les événements nécessaires pour ouvrir et fermer la modale.
+ * - Utilise un **MutationObserver** pour détecter les changements dynamiques dans le DOM.
+ * - Empêche les attachements multiples des événements (`dataset.eventAttached`).
  * 
- * @function initModalEvents
+ * @function initModal
  */
-export function initModalEvents() {
-  try {
-    // Journalisation de l'initialisation des événements
-    logEvent("info", "Initialisation des événements pour la modale...");
+export function initModal() {
+    logEvent("info", "➡ Initialisation de la modale de contact...");
 
-    // Sélectionne les éléments nécessaires
-    const contactButton = domSelectors.photographerPage;
-    const { closeButton, modalOverlay, contactForm } = domSelectors.modal;
+    // Vérifie d'abord si le DOM est chargé
+    document.addEventListener("DOMContentLoaded", () => {
+        logEvent("success", "✅ Le DOM est complètement chargé.");
 
-    // Vérifie si chaque élément existe avant d'attacher les événements
-    if (!contactButton) {
-      throw new Error("Bouton de contact '.contact_button' introuvable.");
-    }
-    if (!closeButton) {
-      throw new Error("Bouton de fermeture '.modal-close' introuvable.");
-    }
-    if (!modalOverlay && !contactForm) {
-          throw new Error("Formulaire de contact '#contact-modal form' introuvable.");
-    }
-    if (!contactForm) {
-      throw new Error("Formulaire de contact '#contact-modal form' introuvable.");
-    }
-
-    // Ajoute un événement "click" au bouton de contact pour ouvrir la modale
-    attachEvent(contactButton, "click", handleModalOpen);
-
-    // Ajoute un événement "click" au bouton de fermeture pour fermer la modale
-    attachEvent(closeButton, "click", handleModalClose);
-
-    // Ajoute un événement "click" sur l'overlay pour fermer la modale si on clique en dehors
-    attachEvent(modalOverlay, "click", handleModalClose);
-
-    // Ajoute un événement "submit" sur le formulaire pour gérer la soumission du formulaire de contact
-    attachEvent(contactForm, "submit", handleFormSubmit);
-
-    // Journalisation de la réussite des événements
-    logEvent("success", "Événements pour la modale initialisés avec succès.");
-  } catch (error) {
-    // Capture et journalise toute erreur survenant lors de l'initialisation
-    logEvent("error", `Erreur dans initModalEvents : ${error.message}`);
-  }
+        // Vérifie immédiatement si le bouton de contact existe déjà
+        if (document.querySelector(".contact-button")) {
+            logEvent("info", "📌 Bouton de contact déjà présent dans le DOM.");
+            attachModalEvents();
+        } else {
+            logEvent("warning", "⚠️ Bouton de contact non trouvé. Activation du MutationObserver...");
+            observeDOMForContactButton();
+        }
+    });
 }
+
+/**
+* ✅ Attache les événements d'ouverture et de fermeture de la modale.
+*/
+function attachModalEvents() {
+  logEvent("info", "🔗 Attachement des événements de la modale...");
+
+  // Vérification et attachement du bouton de contact
+  if (contactButton && !contactButton.dataset.eventAttached) {
+      logEvent("success", "✅ Événement attaché au bouton Contact.");
+      contactButton.dataset.eventAttached = "true"; // Empêche l'attachement multiple
+      contactButton.addEventListener("click", () => {
+          logEvent("info", "📌 Clic sur le bouton Contact.");
+          handleModalOpen();
+      });
+  }
+
+  // Vérification et attachement du bouton de fermeture
+  const {closeButton} = domSelectors.modal;
+  if (closeButton && !closeButton.dataset.eventAttached) {
+      logEvent("success", "✅ Événement attaché au bouton de fermeture de la modale.");
+      closeButton.dataset.eventAttached = "true";
+      closeButton.addEventListener("click", handleModalClose);
+  }
+
+  // Fermeture au clic sur l'arrière-plan (overlay)
+  const {modalOverlay} = domSelectors.modal;
+  if (modalOverlay && !modalOverlay.dataset.eventAttached) {
+      logEvent("success", "✅ Événement attaché à l'overlay de la modale.");
+      modalOverlay.dataset.eventAttached = "true";
+      modalOverlay.addEventListener("click", handleModalBackgroundClick);
+  }
+
+  // Ajout de l'événement pour le clavier (ESC pour fermer)
+  document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+          logEvent("info", "🔑 Touche Échap détectée, fermeture de la modale.");
+          handleModalClose();
+      }
+  });
+
+  logEvent("success", "🎉 Tous les événements de la modale sont attachés !");
+}
+
+/**
+* ✅ Surveille l'apparition dynamique du bouton de contact et attache l'événement dès qu'il apparaît.
+*/
+/**
+ * Observe le DOM pour détecter l'ajout du bouton de contact
+ * et exécuter attachModalEvents() dès qu'il est présent.
+ */
+function observeDOMForContactButton() {
+  const observer = new MutationObserver((mutations, obs) => {
+      const button = document.querySelector(".contact-button");
+      if (button) {
+          logEvent("success", "✅ Bouton de contact détecté par MutationObserver !");
+          attachModalEvents(); // Attache les événements dès que le bouton est ajouté
+          obs.disconnect(); // Stoppe l'observation une fois le bouton détecté
+      }
+  });
+
+  // Lance l'observation des changements dans le body
+  observer.observe(document.body, {
+      childList: true, // Surveille l'ajout/suppression d'éléments
+      subtree: true, // Inclut tous les nœuds enfants
+  });
+}
+
 
 
 /**
@@ -453,14 +486,14 @@ function initKeyboardEvents() {
 export function initEventListeners(mediaArray, folderName) {
   logEvent("info", "Début de l'initialisation globale des événements...");
 
-  try {
-    initModalEvents();
+  try { 
+    setupEventListeners();
     initModalConfirm();
     setupContactFormEvents();
     initLightboxEvents(mediaArray, folderName);
     initSortingEvents();
     initKeyboardEvents();
-    setupEventListeners();
+  
     logEvent("success", "Tous les événements ont été initialisés avec succès.");
   } catch (error) {
     logEvent("error", "Erreur critique lors de l'initialisation des événements.", { error });

@@ -59,13 +59,7 @@
           <p class="photographer-card-location">Ville, Pays par défaut</p>
           <p class="photographer-card-tagline">Slogan par défaut</p>
         </article>
-        <button
-          id="contact-button"
-          type="button"
-          class="contact-button"
-        >
-          Contactez-moi
-        </button>
+        
         <div class="photographer-card-portrait-wrapper">
           <img
             src="../../assets/photographers/account.png"
@@ -163,14 +157,10 @@
         </header>
 
         <!-- Formulaire de contact -->
-        <form
-          action="#"
-          method="POST"
-          aria-label="Formulaire de contact"
-          novalidate
-        >
+        <form action="#" method="POST" aria-label="Formulaire de contact" novalidate>
           <fieldset>
             <legend class="sr-only">Informations de contact</legend>
+        
             <!-- Groupe Prénom -->
             <div class="form-group">
               <label for="first-name">Prénom</label>
@@ -180,8 +170,11 @@
                 name="first-name"
                 required
                 placeholder="Votre prénom"
+                autocomplete="given-name"
+                maxlength="50"
               />
             </div>
+        
             <!-- Groupe Nom -->
             <div class="form-group">
               <label for="last-name">Nom</label>
@@ -191,8 +184,11 @@
                 name="last-name"
                 required
                 placeholder="Votre nom"
+                autocomplete="family-name"
+                maxlength="50"
               />
             </div>
+        
             <!-- Groupe Email -->
             <div class="form-group">
               <label for="email">Email</label>
@@ -202,15 +198,17 @@
                 name="email"
                 required
                 placeholder="Votre email"
+                autocomplete="email"
+                maxlength="100"
               />
             </div>
-
+        
             <!-- Champ Honeypot (Invisible pour les utilisateurs, mais détectable par les bots) -->
-            <div class="honeypot-field">
+            <div class="honeypot-field" aria-hidden="true">
               <label for="hidden-field" class="sr-only">Ne pas remplir ce champ</label>
-              <input type="text" name="hidden-field" id="hidden-field" autocomplete="off">
+              <input type="text" name="hidden-field" id="hidden-field" autocomplete="off" tabindex="-1">
             </div>
-
+        
             <!-- Groupe Message -->
             <div class="form-group">
               <label for="message">Votre message</label>
@@ -220,15 +218,18 @@
                 rows="5"
                 required
                 placeholder="Votre message"
+                maxlength="500"
               ></textarea>
-              <span id="message-counter" class="char-counter">
+              <span id="message-counter" class="char-counter" aria-live="polite">
                 0 / 500 caractères
               </span>
             </div>
           </fieldset>
+        
           <!-- Bouton Soumettre -->
           <button type="submit" class="contact-submit-button">Envoyer</button>
         </form>
+        
       </div>
     </div>
     

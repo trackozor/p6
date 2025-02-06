@@ -76,15 +76,10 @@ import {
  */
 
 export async function handleModalOpen() {
-  // Indique dans les logs que le processus d'ouverture de la modale commence
-  logEvent("info", "Ouverture de la modale...");
-
-  // Ajoute la classe "loading" au body pour signaler qu'un chargement est en cours
-  document.body.classList.add("loading");
-
+  logEvent("info", "Appel à l'ouverture de la modale.");
   try {
     // Récupère les données des photographes depuis l'API ou la base de données
-    const mediaData = await fetchMedia();
+    const mediaData =  await fetchMedia();
 
     // Vérifie que les données ont bien été récupérées et contiennent une liste de photographes
     if (!mediaData?.photographers) {
