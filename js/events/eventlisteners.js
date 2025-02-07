@@ -26,12 +26,11 @@ import {
   handleSortChange,
   handleModalConfirm,
   updateCharCount,
+  handleLikeClick,
 } from "./eventHandler.js";
 
 // Gestion des interactions clavier
-import { handleKeyboardEvent } from "./keyboardHandler.js";
-import { showLikeDislikeModal, hideLikeDislikeModal } from "./eventHandler.js";
-import { handleLikeDislike } from "../components/statsCalculator.js";
+import { handleKeyboardEvent } from "./keyboardHandler.js"
 
 // Utilitaire de logs
 import { logEvent } from "../utils/utils.js";
@@ -380,6 +379,8 @@ function initSortingEvents() {
 /**
  * Initialise les écouteurs d'événements pour les likes et la modale de like/dislike.
  */
+
+
 export async function setupEventListeners() {
   try {
     logEvent("info", "Vérification des icônes de like...");
@@ -388,7 +389,7 @@ export async function setupEventListeners() {
     await new Promise((resolve) => setTimeout(resolve, 300));
 
     let likeIcons = document.querySelectorAll(".media-item .like-icon");
-    const likeDislikeModal = document.querySelector("#like-dislike-modal");
+    let totalLikesElement = document.querySelector("#total-likes");
 
     if (!likeIcons.length) {
       logEvent("warn", "Les icônes de like ne sont pas encore chargées. Activation du MutationObserver...");
@@ -396,54 +397,23 @@ export async function setupEventListeners() {
       return;
     }
 
-    if (!likeDislikeModal) {
-      throw new Error("La modale de like/dislike est introuvable.");
+    if (!totalLikesElement) {
+      logEvent("error", "L'élément affichant le total des likes (#total-likes) est introuvable.");
+      return;
     }
 
-    logEvent("success", ` ${likeIcons.length} icônes de like trouvées ! Attachement des événements...`);
+    logEvent("success", `${likeIcons.length} icônes de like trouvées ! Attachement des événements...`);
 
-    let activeMedia = null; // Stocke l'élément actif pour la gestion des likes
-
+    // Attacher un gestionnaire d'événements à chaque icône de like
     likeIcons.forEach(icon => {
-      icon.addEventListener("click", (event) => {
-        try {
-          const mediaItem = event.target.closest(".media-item");
-          if (!mediaItem) {
-            throw new Error("Élément média introuvable.");
-          }
-
-          const mediaId = mediaItem.dataset.id;
-          if (!mediaId) {
-            throw new Error("ID média introuvable.");
-          }
-
-          activeMedia = mediaItem;
-          showLikeDislikeModal(mediaItem);
-          logEvent("success", `Modale ouverte pour média ID: ${mediaId}`);
-        } catch (error) {
-          logEvent("error", ` Erreur lors du clic sur un like: ${error.message}`, { error });
-        }
-      });
+      icon.addEventListener("click", (event) => handleLikeClick(event, totalLikesElement));
     });
 
-    likeDislikeModal.addEventListener("click", (event) => {
-      if (event.target.closest(".like-btn")) {
-        handleLikeDislike("like", activeMedia);
-      } else if (event.target.closest(".dislike-btn")) {
-        handleLikeDislike("dislike", activeMedia);
-      }
-    });
-
-    likeDislikeModal.addEventListener("mouseleave", () => {
-      hideLikeDislikeModal();
-    });
-
-    logEvent("success", " Les événements de like ont été initialisés avec succès.");
+    logEvent("success", "Les événements de like ont été initialisés avec succès.");
   } catch (error) {
-    logEvent("error", ` Erreur critique dans setupEventListeners: ${error.message}`, { error });
+    logEvent("error", `Erreur critique dans setupEventListeners: ${error.message}`, { error });
   }
 }
-
 
 /**
  * Attend dynamiquement que les médias et icônes de like soient chargés avant d'attacher les événements.

@@ -13,7 +13,7 @@
 
 
 /* =============================================================================*/
-/* 🛠️ SECTION : IMPORTATIONS (Imports des constantes globales) */
+/* SECTION : IMPORTATIONS (Imports des constantes globales) */
 /* =============================================================================*/
 
 import {

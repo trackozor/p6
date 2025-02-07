@@ -1,4 +1,5 @@
-/* =============================================================================
+/**
+ * =============================================================================
  * Projet      : Fisheye
  * Fichier     : accessibility.js
  * Auteur      : Trackozor
@@ -15,92 +16,61 @@
 
 import { logEvent } from "../utils/utils.js";
 
-/* =============================================================================
- * SECTION : NAVIGATION AU CLAVIER
- * =============================================================================
- */
 
-/**
- * Active la navigation au clavier pour tous les éléments focusables d'un conteneur donné.
- * @param {HTMLElement} container - Conteneur des éléments focusables.
- * @param {string} selector - Sélecteur CSS pour cibler les éléments focusables.
- * @param {boolean} includeDynamic - Si `true`, inclut les éléments ajoutés dynamiquement.
- */
-export function enableKeyboardNavigation(
-  container,
-  selector = "a, button, input, textarea, select, [tabindex]",
-  includeDynamic = false,
-) {
-  if (!(container instanceof HTMLElement)) {
-    logEvent("error", "enableKeyboardNavigation: Conteneur invalide.", {
-      container,
-    });
-    return;
-  }
-
-  const getFocusableElements = () =>
-    Array.from(container.querySelectorAll(selector));
-  let focusableElements = getFocusableElements();
-  let currentIndex = 0;
-
-  const updateFocusableElements = () => {
-    if (includeDynamic) {
-      focusableElements = getFocusableElements();
-    }
-  };
-
-  container.addEventListener("keydown", (e) => {
-    if (e.key === "Tab") {
-      e.preventDefault();
-      focusableElements[currentIndex]?.focus();
-      currentIndex =
-        (currentIndex + (e.shiftKey ? -1 : 1) + focusableElements.length) %
-        focusableElements.length;
-    }
-  });
-
-  if (includeDynamic) {
-    const observer = new MutationObserver(updateFocusableElements);
-    observer.observe(container, { childList: true, subtree: true });
-    logEvent("info", "Observation des éléments focusables activée.");
-  }
-
-  logEvent("success", "Navigation au clavier activée pour le conteneur.", {
-    container,
-  });
-}
-
-/* =============================================================================
+/**=============================================================================
  * SECTION : LIENS D'ACCÈS RAPIDE
  * =============================================================================
  */
 
 /**
- * Ajoute un lien d'accès rapide pour atteindre le contenu principal.
- * @param {HTMLElement} skipLink - Élément lien d'accès rapide.
- * @param {HTMLElement} target - Élément cible (contenu principal).
+ * Active un lien d'accès rapide permettant aux utilisateurs d'accéder directement
+ * au contenu principal via le clavier ou un lecteur d'écran.
+ *
+ * Fonctionnement :
+ * - Le clic sur `skipLink` redirige le focus vers `target`.
+ * - Ajoute temporairement `tabindex="-1"` sur `target` pour permettre le focus.
+ * - Supprime immédiatement `tabindex` après le focus pour éviter un comportement inattendu.
+ * - Améliore l'accessibilité pour les utilisateurs de clavier et de lecteurs d'écran.
+ *
+ * @param {HTMLElement} skipLink - Élément HTML représentant le lien d'accès rapide.
+ * @param {HTMLElement} target - Élément HTML vers lequel le focus sera redirigé.
  */
 export function enableSkipLink(skipLink, target) {
-  if (!(skipLink instanceof HTMLElement) || !(target instanceof HTMLElement)) {
-    logEvent("error", "enableSkipLink: Paramètres invalides.", {
-      skipLink,
-      target,
-    });
+  // Vérification des paramètres : doivent être des éléments HTML valides
+  if (!(skipLink instanceof HTMLElement)) {
+    logEvent("error", "enableSkipLink: `skipLink` doit être un élément HTML valide.", { skipLink });
+    return;
+  }
+  if (!(target instanceof HTMLElement)) {
+    logEvent("error", "enableSkipLink: `target` doit être un élément HTML valide.", { target });
     return;
   }
 
+  /**
+   * Gestionnaire de l'événement "click" sur le lien d'accès rapide.
+   * - Empêche le comportement par défaut du lien (`e.preventDefault()`).
+   * - Ajoute temporairement `tabindex="-1"` pour permettre le focus sur `target`.
+   * - Déplace le focus sur `target`.
+   * - Supprime immédiatement `tabindex` après la mise au point.
+   */
   skipLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    target.setAttribute("tabindex", "-1");
-    target.focus();
-    target.removeAttribute("tabindex");
+    e.preventDefault(); // Empêche le défilement et le comportement par défaut du lien
+    target.setAttribute("tabindex", "-1"); // Ajout temporaire de l'attribut pour le focus
+    target.focus(); // Déplacement du focus sur l'élément cible
+    target.removeAttribute("tabindex"); // Suppression immédiate de l'attribut après focus
+
+    // Journalisation du succès de l'opération
     logEvent("success", "Lien d'accès rapide activé.", { skipLink, target });
   });
+
+  // Journalisation de l'activation du skip link
+  logEvent("info", "Lien d'accès rapide configuré avec succès.", { skipLink, target });
 }
 
-/* =============================================================================
- * SECTION : ATTRIBUTS ARIA
- * =============================================================================
+
+/** =============================================================================
+ *  SECTION : ATTRIBUTS ARIA
+ *  =============================================================================
  */
 
 /**
@@ -116,27 +86,21 @@ export function updateAriaAttribute(element, ariaAttr, value) {
   }
 
   if (!ariaAttr.startsWith("aria-")) {
-    logEvent(
-      "warn",
-      `updateAriaAttribute: "${ariaAttr}" n'est pas un attribut ARIA valide.`,
-    );
+    logEvent("warn", `updateAriaAttribute: "${ariaAttr}" n'est pas un attribut ARIA valide.`);
   }
 
   element.setAttribute(ariaAttr, value.toString());
-  logEvent("success", `Attribut ARIA "${ariaAttr}" mis à jour avec succès.`, {
-    element,
-    value,
-  });
+  logEvent("success", `Attribut ARIA "${ariaAttr}" mis à jour avec succès.`, { element, value });
 }
 
-/* =============================================================================
- * SECTION : DÉTECTION DES MÉDIAS
- * =============================================================================
+/** =============================================================================
+ *  SECTION : DÉTECTION DES MÉDIAS
+ *  =============================================================================
  */
 
 /**
  * Détecte si l'utilisateur est sur un appareil mobile.
- * @returns {boolean} - `true` si l'utilisateur est sur mobile, sinon `false`.
+ * @returns {boolean} `true` si l'utilisateur est sur mobile, sinon `false`.
  */
 export function isMobile() {
   const result = window.matchMedia("(max-width: 1023px)").matches;
@@ -144,16 +108,16 @@ export function isMobile() {
   return result;
 }
 
-/* =============================================================================
- * SECTION : CONTRASTE DES COULEURS
- * =============================================================================
+/** =============================================================================
+ *  SECTION : CONTRASTE DES COULEURS
+ *  =============================================================================
  */
 
 /**
  * Vérifie le contraste entre deux couleurs selon les normes WCAG 2.1.
  * @param {string} color1 - Première couleur (hexadécimal).
  * @param {string} color2 - Deuxième couleur (hexadécimal).
- * @returns {boolean} - `true` si le contraste est suffisant, sinon `false`.
+ * @returns {boolean} `true` si le contraste est suffisant, sinon `false`.
  */
 export function checkColorContrast(color1, color2) {
   const hexToRgb = (hex) => {
@@ -162,57 +126,27 @@ export function checkColorContrast(color1, color2) {
   };
 
   const luminance = (r, g, b) => {
-    const a = [r, g, b].map((v) => {
-      v /= 255;
-      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-    });
+    const a = [r, g, b].map((v) => (v /= 255) <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
     return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
   };
 
   const [r1, g1, b1] = hexToRgb(color1);
   const [r2, g2, b2] = hexToRgb(color2);
-  const lum1 = luminance(r1, g1, b1);
-  const lum2 = luminance(r2, g2, b2);
-  const contrastRatio =
-    (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05);
+  const contrastRatio = (Math.max(luminance(r1, g1, b1), luminance(r2, g2, b2)) + 0.05) / 
+                        (Math.min(luminance(r1, g1, b1), luminance(r2, g2, b2)) + 0.05);
 
-  logEvent(
-    "info",
-    `Contraste entre ${color1} et ${color2} : ${contrastRatio.toFixed(2)}`,
-  );
+  logEvent("info", `Contraste entre ${color1} et ${color2} : ${contrastRatio.toFixed(2)}`);
   return contrastRatio >= 4.5;
 }
 
-/* =============================================================================
- * SECTION : ANIMATIONS CLAVIER
- * =============================================================================
- */
-
-/**
- * Désactive les animations pour les utilisateurs de clavier.
- */
-export function disableAnimationsForKeyboardUsers() {
-  const disableAnimations = () => document.body.classList.add("no-animations");
-  const enableAnimations = () =>
-    document.body.classList.remove("no-animations");
-
-  window.addEventListener(
-    "keydown",
-    (e) => e.key === "Tab" && disableAnimations(),
-  );
-  window.addEventListener("mousemove", enableAnimations);
-
-  logEvent("info", "Gestion des animations clavier activée.");
-}
-/* =============================================================================
- * SECTION : TRAP FOCUS
- * =============================================================================
- */
+/** =============================================================================
+*   SECTION : TRAP FOCUS (PIÉGEAGE DU FOCUS)
+*   =============================================================================*/
 
 /**
  * Restreint le focus clavier à un conteneur donné.
  * @param {HTMLElement} container - Conteneur dans lequel le focus doit être piégé.
- * @returns {Function} Une fonction pour nettoyer les événements associés.
+ * @returns {Function} Fonction de nettoyage des événements.
  */
 export function trapFocus(container) {
   if (!(container instanceof HTMLElement)) {
@@ -220,16 +154,12 @@ export function trapFocus(container) {
     return;
   }
 
-  const focusableElements = Array.from(
-    container.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    ),
-  );
+  const focusableElements = Array.from(container.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  ));
 
   if (focusableElements.length === 0) {
-    logEvent("warn", "trapFocus: Aucun élément focusable trouvé.", {
-      container,
-    });
+    logEvent("warn", "trapFocus: Aucun élément focusable trouvé.", { container });
     return;
   }
 
@@ -246,18 +176,10 @@ export function trapFocus(container) {
         firstElement.focus();
       }
     }
-
-    if (e.key === "Escape") {
-      logEvent("info", "Escape key pressed, closing the container.");
-      container.dispatchEvent(new Event("close"));
-    }
   };
 
   container.addEventListener("keydown", handleKeyDown);
-
-  // Mettre le focus sur le premier élément
   firstElement.focus();
 
-  // Retourne une fonction pour nettoyer les événements
   return () => container.removeEventListener("keydown", handleKeyDown);
 }

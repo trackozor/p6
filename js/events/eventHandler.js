@@ -589,66 +589,51 @@ export async function handleSortChange(event) {
     logEvent("error", `Erreur lors du tri des médias : ${error.message}`, { error });
   }
 }
-/*==============================================*/
-/*            ajout like/dislike                */
-/*==============================================*/
-/**
 
 /**
- * Affiche la modale de like/dislike pour un média donné.
- * @param {HTMLElement} mediaItem - L'élément média sur lequel l'utilisateur a cliqué.
+ * Gère le clic sur une icône de like.
+ * @param {Event} event - L'événement déclenché par le clic.
+ * @param {HTMLElement} totalLikesElement - Élément affichant le total des likes.
  */
-export function showLikeDislikeModal(mediaItem) {
-  if (!mediaItem) {
-    logEvent("error", "Impossible d'afficher la modale : élément média introuvable.");
-    return;
-  }
+export function handleLikeClick(event, totalLikesElement) {
+  try {
+    const icon = event.target;
+    const mediaItem = icon.closest(".media-item");
 
-  const modal = document.querySelector("#like-dislike-modal");
-
-  if (!modal) {
-    logEvent("error", "La modale de like/dislike est introuvable dans le DOM.");
-    return;
-  }
-
-  // Récupérer la position de l'élément cliqué
-  const rect = mediaItem.getBoundingClientRect();
-  const scrollTop = window.scrollY || document.documentElement.scrollTop;
-  const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
-
-  // Ajuster la position de la modale sous l'icône de like
-  modal.style.top = `${rect.bottom + scrollTop + 0}px`; // 10px en dessous
-  modal.style.left = `${rect.left + scrollLeft+15}px`; // Aligné à gauche
-
-  // Afficher la modale avec animation
-  modal.classList.add("active");
-  modal.setAttribute("aria-hidden", "false");
-}
-
-
-export function hideLikeDislikeModal() {
-  const modal = document.querySelector("#like-dislike-modal");
-
-  if (modal) {
-    modal.classList.remove("active");
-    modal.setAttribute("aria-hidden", "true");
-  }
-}
-
-// Fermer la modale au clic en dehors
-document.addEventListener("click", (event) => {
-  const modal = document.querySelector("#like-dislike-modal");
-
-  if (modal && modal.classList.contains("active")) {
-    const isInsideModal = modal.contains(event.target);
-    const isLikeButton = event.target.closest(".like-icon");
-
-    if (!isInsideModal && !isLikeButton) {
-      hideLikeDislikeModal();
+    if (!mediaItem) {
+      throw new Error("Élément média introuvable.");
     }
-  }
-});
 
+    const mediaId = mediaItem.dataset.id;
+    if (!mediaId) {
+      throw new Error("ID média introuvable.");
+    }
+
+    const likeCounter = mediaItem.querySelector(".media-likes");
+    if (!likeCounter) {
+      throw new Error("Compteur de likes introuvable.");
+    }
+
+    let currentLikes = parseInt(likeCounter.textContent, 10) || 0;
+    let totalLikes = parseInt(totalLikesElement.textContent, 10) || 0;
+
+    if (icon.classList.contains("liked")) {
+      // Si déjà liké, on enlève le like
+      icon.classList.remove("liked");
+      likeCounter.textContent = currentLikes - 1;
+      totalLikesElement.textContent = totalLikes - 1;
+      logEvent("info", `Like retiré pour le média ID: ${mediaId}`);
+    } else {
+      // Sinon, on ajoute le like
+      icon.classList.add("liked");
+      likeCounter.textContent = currentLikes + 1;
+      totalLikesElement.textContent = totalLikes + 1;
+      logEvent("success", `Like ajouté pour le média ID: ${mediaId}`);
+    }
+  } catch (error) {
+    logEvent("error", `Erreur lors du clic sur un like: ${error.message}`, { error });
+  }
+}
 
 /*==============================================*/
 /*         Gestion des Interactions Clavier     */
@@ -708,5 +693,3 @@ export function handleKeyboardEvent(event) {
 document.addEventListener("keydown", handleKeyboardEvent);
 
 
-// Enregistrement de l'écouteur global pour détecter les événements clavier sur toute la page
-document.addEventListener("keydown", handleKeyboardEvent);

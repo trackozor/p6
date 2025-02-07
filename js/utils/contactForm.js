@@ -68,7 +68,7 @@ export function validateTextField(field, fieldId) {
     const fieldName = FIELD_NAMES[fieldId] || "Champ"; // Nom du champ pour affichage clair
     let errorMessage = "";
 
-    // ✅ Autorisation stricte : Seulement lettres, espaces, apostrophes, tirets
+    //  Autorisation stricte : Seulement lettres, espaces, apostrophes, tirets
     const VALID_NAME_REGEX =
       /^(?!.*[\s'-]{2})[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[\s'-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;
 
@@ -220,11 +220,11 @@ export function checkHoneypot() {
     const honeypotValue = honeypotField.value.trim();
 
     if (honeypotValue !== "") {
-      logEvent("error", "🚨 Spam détecté via Honeypot !", { honeypotValue });
+      logEvent("error", "Spam détecté via Honeypot !", { honeypotValue });
       return false; // Bloque l'envoi du formulaire en cas de spam détecté
     }
 
-    logEvent("success", "✅ Honeypot validé, pas de spam détecté.");
+    logEvent("success", "Honeypot validé, pas de spam détecté.");
     return true; // Aucun spam détecté, formulaire valide
 
   } catch (error) {
@@ -297,13 +297,13 @@ export function isMessageSafe(message) {
     // Vérification du message en le comparant aux motifs interdits
     for (let pattern of forbiddenPatterns) {
       if (pattern.test(sanitizedMessage)) {
-        logEvent("error", "🚨 Message suspect détecté !", { message });
+        logEvent("error", "Message suspect détecté !", { message });
         return false; // Bloque l'envoi du message suspect
       }
     }
 
     // Message validé avec succès
-    logEvent("success", "✅ Message validé et sécurisé.", { sanitizedMessage });
+    logEvent("success", " Message validé et sécurisé.", { sanitizedMessage });
     return true; // Autorise l'envoi du message
 
   } catch (error) {
@@ -375,7 +375,7 @@ export function validateMessageField(field) {
     // Si une erreur est détectée, l'afficher et enregistrer l'échec
     if (errorMessage) {
       showError(errorMessage, field);
-      logEvent("warn", "⚠️ Validation échouée pour le message.", {
+      logEvent("warn", " Validation échouée pour le message.", {
         errorMessage,
         value,
       });
@@ -427,7 +427,7 @@ export function validateForm() {
 
   // Vérification du champ Honeypot (détection anti-spam)
   if (!checkHoneypot()) {
-    logEvent("error", "🚨 Validation échouée : spam détecté via Honeypot.");
+    logEvent("error", " Validation échouée : spam détecté via Honeypot.");
     showSpamModal(); // Affiche une alerte de détection de spam
     return false; // Stoppe immédiatement la validation
   }

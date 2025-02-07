@@ -116,17 +116,20 @@
 }
 #sort-options {
   display: flex;
+  z-index: 20;
   flex-direction: column;
   justify-content: center;
   color: white;
   background-color: #901c1c;
   align-items: center;
   margin: 2%;
+  padding:0.5% 1%;
   border: none;
-  border-radius: 0.1rem;
+  border-radius: 0.5rem;
   cursor: pointer;
 }
 
 #sort-options:focus {
   transform-origin: top; /* Définit le point de pivot pour l'animation */
+  z-index:999;
 }

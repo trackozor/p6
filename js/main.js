@@ -20,14 +20,14 @@ import { init } from "./pages/index.js";
  * =====================================================================
  * Fonction utilitaire : timeoutPromise
  * =====================================================================
- * @function
+ * @function timeoutPromise
  * @description
- *   Ajoute un timeout pour éviter un chargement bloquant de `init()`.
- * @param {Promise} promise - Promesse à surveiller.
- * @param {number} ms - Temps max en millisecondes.
- * @returns {Promise} - Résout la promesse ou rejette après expiration.
+ *   Définit un délai maximal pour l'exécution d'une promesse afin d'éviter
+ *   un chargement bloqué lors de l'initialisation des composants.
+ * @param {Promise<any>} promise - La promesse à surveiller.
+ * @param {number} [ms=5000] - Temps maximal d'exécution en millisecondes (défaut : 5000ms).
+ * @returns {Promise<any>} - Résout la promesse si elle est terminée à temps, sinon la rejette.
  */
-
 const timeoutPromise = (promise, ms = 5000) => {
   return Promise.race([
     promise,
@@ -42,27 +42,28 @@ const timeoutPromise = (promise, ms = 5000) => {
  * Fonction : initializeComponents
  * =====================================================================
  * @async
- * @function
+ * @function initializeComponents
  * @description
- *   Initialise les composants de l'application de manière asynchrone.
- *   Gère les erreurs critiques et logue les événements importants.
- * @throws {Error} - Si un composant critique échoue.
+ *   Initialise les composants principaux de l'application de manière asynchrone.
+ *   Capture et journalise les erreurs critiques pour éviter un blocage total.
+ * @throws {Error} - Propage une erreur en cas d'échec d'initialisation critique.
  * @returns {Promise<void>}
  */
 const initializeComponents = async () => {
   logEvent("info", "Initialisation des composants principaux...");
 
   try {
-    logEvent("info", "Initialisation de la page d'accueil...");
+    logEvent("info", "Chargement de la page d'accueil...");
     await timeoutPromise(init(), 5000);
-    logEvent("success", "Page d'accueil initialisée.");
+    logEvent("success", "Page d'accueil chargée avec succès.");
   } catch (error) {
     logEvent("error", "Échec de l'initialisation de la page d'accueil.", {
       message: error.message,
       stack: error.stack,
     });
+
     displayError("Une erreur est survenue lors du chargement de la page.");
-    throw error;
+    throw error; // Propagation de l'erreur pour un meilleur suivi des échecs critiques.
   }
 };
 
@@ -70,15 +71,18 @@ const initializeComponents = async () => {
  * =====================================================================
  * Fonction : displayError
  * =====================================================================
- * @function
+ * @function displayError
  * @description
- *   Affiche un message d'erreur utilisateur.
- * @param {string} message - Message à afficher.
+ *   Affiche dynamiquement un message d'erreur dans l'interface utilisateur.
+ *   Ce message est inséré en haut de la page pour une meilleure visibilité.
+ * @param {string} message - Message d'erreur à afficher.
  */
 const displayError = (message) => {
   const errorContainer = document.createElement("div");
   errorContainer.className = "error-message";
   errorContainer.textContent = message;
+
+  // Insertion du message d'erreur en haut de la page
   document.body.prepend(errorContainer);
 };
 
@@ -87,10 +91,10 @@ const displayError = (message) => {
  * Fonction : main
  * =====================================================================
  * @async
- * @function
+ * @function main
  * @description
- *   Fonction principale orchestrant l'initialisation.
- *   Capture les erreurs critiques et logue les événements.
+ *   Fonction principale orchestrant l'initialisation de l'application.
+ *   Capture les erreurs critiques et logue les événements liés au démarrage.
  * @returns {Promise<void>}
  */
 const main = async () => {
@@ -100,10 +104,11 @@ const main = async () => {
     await initializeComponents();
     logEvent("success", "Application lancée avec succès.");
   } catch (error) {
-    logEvent("error", "Erreur critique au lancement.", {
+    logEvent("error", "Erreur critique au lancement de l'application.", {
       message: error.message,
       stack: error.stack,
     });
+
     displayError("Impossible de charger l'application.");
   }
 };
@@ -113,10 +118,11 @@ const main = async () => {
  * Événement : DOMContentLoaded
  * =====================================================================
  * @description
- *   Lance `main()` une fois le DOM chargé, après nettoyage des événements.
+ *   Exécute `main()` après le chargement complet du DOM.
+ *   Supprime les anciens écouteurs pour éviter les doublons.
  */
 document.removeEventListener("DOMContentLoaded", main);
 document.addEventListener("DOMContentLoaded", async () => {
-  console.log("[INFO] DOM chargé, appel de main()...");
+  console.log("[INFO] DOM chargé, exécution de main()...");
   await main();
 });
