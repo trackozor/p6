@@ -227,11 +227,7 @@ export function getPhotographerSelectors() {
             // Éléments liés aux statistiques et aux interactions
             photographerStatsTemplate: safeQuerySelector("#photographer-stats", true), // Gabarit pour les statistiques du photographe (facultatif)
             likeIcons: safeQuerySelectorAll(".like-icon"), // Icônes de likes sur chaque média
-            likeButtons: safeQuerySelectorAll(".like-btn"), // Boutons de like
-            dislikeButtons: safeQuerySelectorAll(".dislike-btn"), // Boutons de dislike
-            likeDislikeModal: safeQuerySelector("#like-dislike-modal"), // Modale affichant les interactions de likes/dislikes
-            likeDislikeContent: safeQuerySelector(".like-dislike-content"), // Contenu interne de la modale de likes/dislikes
-            
+            likeButtons: safeQuerySelectorAll(".like-btn"), // Boutons de like 
             totalLikes: null, // Stocke le total des likes (mis à jour dynamiquement)
             dailyRate: null, // Stocke le tarif journalier du photographe (mis à jour dynamiquement)
         },
@@ -269,28 +265,11 @@ export function getPhotographerSelectors() {
                 title: safeQuerySelector("#confirmation-title", true), // Titre de la confirmation (facultatif)
                 confirmButton: safeQuerySelector(".confirm-btn"), //  Bouton de validation après confirmation
             },
-
-            // Modale en cas de détection de spam
-            spamModal: {
-                container: safeQuerySelector("#spam-error-modal"), //  Conteneur de l'alerte spam
-                title: safeQuerySelector("#spam-error-title"), // Titre de l'alerte
-                body: safeQuerySelector(".modal-body"), //  Corps du message d'erreur
-                footer: safeQuerySelector(".modal-footer"), // Pied de la modale
-                closeButton: safeQuerySelector(".btn-close-error"), // Bouton pour fermer l'alerte
-            },
         },
 
         // Sélecteurs pour le tri des médias
         sorting: {
             sortOptions: safeQuerySelector("#sort-options"), // Sélecteur du tri des médias
-        },
-
-        // Sélecteurs liés au chargement de la page
-        loader: {
-            loader: safeQuerySelector("#loader"), // Conteneur du loader d'attente
-            loaderText: safeQuerySelector("#loader-text"), // Texte affiché lors du chargement
-            progressBar: safeQuerySelector("#progress-bar"), // Barre de progression
-            progressPercentage: safeQuerySelector("#progress-percentage"), // Affichage du pourcentage de chargement
         },
     };
 }

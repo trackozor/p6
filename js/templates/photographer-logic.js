@@ -68,10 +68,10 @@ function createElement(tagName, { className = "", textContent, attributes } = {}
     try {
         const element = document.createElement(tagName)
         if (className) {
-          element.classList.add(...className.split(" ")) // Ajoute plusieurs classes CSS
+            element.classList.add(...className.split(" ")) // Ajoute plusieurs classes CSS
         }
         if (textContent) {
-          element.textContent = textContent
+            element.textContent = textContent
         }
         if (attributes) {
             Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value))
@@ -95,32 +95,32 @@ function createElement(tagName, { className = "", textContent, attributes } = {}
  * @returns {HTMLElement | null} Élément DOM contenant la carte du photographe ou null en cas d'erreur.
  */
 function getUserCardDOM() {
-  try {
-      const article = createElement("article", { className: "photographer-card" })
+    try {
+        const article = createElement("article", { className: "photographer-card" })
 
-      const img = createElement("img", {
-          className: "photographer-card-portrait",
-          attributes: { src: picture, alt: `Portrait de ${name}` },
-      })
+        const img = createElement("img", {
+            className: "photographer-card-portrait",
+            attributes: { src: picture, alt: `Portrait de ${name}` },
+        })
 
-      const h3 = createElement("h3", { className: "photographer-card-name", textContent: name })
-      const location = createElement("p", { className: "photographer-card-location", textContent: `${city}, ${country}` })
-      const taglineElement = createElement("p", { className: "photographer-card-tagline", textContent: tagline })
-      const priceElement = createElement("p", { className: "photographer-card-price", textContent: `${price}€/jour` })
+        const h3 = createElement("h3", { className: "photographer-card-name", textContent: name })
+        const location = createElement("p", { className: "photographer-card-location", textContent: `${city}, ${country}` })
+        const taglineElement = createElement("p", { className: "photographer-card-tagline", textContent: tagline })
+        const priceElement = createElement("p", { className: "photographer-card-price", textContent: `${price}€/jour` })
 
-      article.append(img, h3, location, taglineElement, priceElement)
+        article.append(img, h3, location, taglineElement, priceElement)
 
-      const link = createElement("a", {
-          attributes: { href: `../../html/photographer.html?id=${id}`, "aria-label": `Voir la page de ${name}` },
-      })
+        const link = createElement("a", {
+            attributes: { href: `../../html/photographer.html?id=${id}`, "aria-label": `Voir la page de ${name}` },
+        })
 
-      link.appendChild(article)
-      logEvent("success", `Carte du photographe ${name} générée avec succès.`)
-      return link
-  } catch (error) {
-      logEvent("error", `Erreur lors de la génération de la carte pour ${name}.`, { error })
-      return null // Retourne null en cas d'erreur pour éviter un plantage
-  }
+        link.appendChild(article)
+        logEvent("success", `Carte du photographe ${name} générée avec succès.`)
+        return link
+    } catch (error) {
+        logEvent("error", `Erreur lors de la génération de la carte pour ${name}.`, { error })
+        return null // Retourne null en cas d'erreur pour éviter un plantage
+    }
 }
 
 /**
@@ -169,8 +169,6 @@ function getBannerDOM() {
         return null
     }
 }
-
-
 
 
     return { name, getUserCardDOM, getBannerDOM }
