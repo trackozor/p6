@@ -645,7 +645,7 @@ a {
 /* Description : Style pour le bouton de contact avec un design simple et     */
 /* élégant. Inclut des ajustements responsive pour les tablettes.             */
 /* -------------------------------------------------------------------------- */
-.contact-button {
+.contact-button, .confirm-btn {
   font-size: 1rem; /* Taille de la police pour le texte du bouton */
   z-index: 550;
   font-weight: bold; /* Texte en gras pour plus de visibilité */
@@ -660,7 +660,7 @@ a {
   cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
 }
 @media (min-width: 767px) {
-  .contact-button {
+  .contact-button, .confirm-btn {
     max-height: 20px; /* Réduit la hauteur maximale sur tablette */
     padding: 2% 1%; /* Diminue les espacements internes */
     margin-left: 7%;
@@ -670,7 +670,7 @@ a {
   }
 }
 @media (min-width: 767px) and (min-width: 1024px) {
-  .contact-button {
+  .contact-button, .confirm-btn {
     position: absolute;
     display: flex;
     padding: 2% 1%;
@@ -681,9 +681,17 @@ a {
   }
 }
 @media (min-width: 767px) and (min-width: 1440px) {
-  .contact-button {
+  .contact-button, .confirm-btn {
     padding: 1.5% 1%;
   }
+}
+
+.confirm-btn {
+  display: flex;
+  align-items: center;
+  margin: 5% auto;
+  padding: 2% 1.5%;
+  width: 15%;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -723,6 +731,10 @@ a {
 
 .fa-heart::before {
   color: #901c1c;
+}
+
+.fa-heart.liked::before {
+  color: #d88876;
 }
 
 .sorting {
@@ -1480,67 +1492,16 @@ footer p {
   font-weight: 500;
   font-size: 1rem;
 }
+
 .media-caption p {
   display: flex;
   align-items: center;
   gap: 1%;
 }
-.media-caption p .media-likes {
+
+.media-caption .media-likes {
   font-size: 1rem;
   font-weight: bold;
-}
-
-/* ========================================================================= */
-/* SECTION : MODALE DE LIKE/DISLIKE                                         */
-/* ========================================================================= */
-/* Objectif :
-  - Créer une transition fluide pour afficher/masquer la modale.
-  - Positionner correctement la modale au-dessus du bouton de like.
-*/
-#like-dislike-modal {
-  position: absolute;
-  visibility: hidden;
-  justify-content: center;
-  margin: 0 auto;
-  left: 2%;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-#like-dislike-modal.active {
-  visibility: visible;
-  opacity: 1;
-  transform: translateY(10px);
-}
-
-/* ========================================================================= */
-/* SECTION : CONTENU DE LA MODALE                                           */
-/* ========================================================================= */
-/* Objectif :
-  - Ajouter un design épuré avec un fond clair.
-  - Arrondir légèrement les bords pour une esthétique moderne.
-*/
-.like-dislike-content {
-  background-color: lightgray;
-  width: 100%;
-  padding: 3%;
-  border-radius: 0.5rem;
-}
-
-/* ========================================================================= */
-/* SECTION : BOUTONS LIKE & DISLIKE                                         */
-/* ========================================================================= */
-/* Objectif :
-  - Utiliser des couleurs différenciées pour les actions de like et dislike.
-  - Assurer un bon contraste pour l’accessibilité.
-*/
-.like-btn {
-  background-color: rgb(43, 197, 43);
-  color: white;
-}
-
-.dislike-btn {
-  background-color: rgb(209, 68, 68);
-  color: white;
 }
 
 /* =============================================================================
@@ -1944,11 +1905,11 @@ textarea.error-input {
 }
 
 /* Bouton de confirmation */
-button.confirma-btn {
+.confirma-btn button {
   display: flex;
   justify-content: center;
   margin: 10% auto;
-  color: var(--primary-color);
+  color: red;
 }
 
 .honeypot-field {

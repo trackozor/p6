@@ -113,72 +113,17 @@
   border-radius: 0 0 0.5rem 0.5rem; // Arrondi uniquement sur le bas du conteneur
   font-weight: 500; // Texte légèrement plus gras pour une bonne visibilité
   font-size: 1rem; // Taille adaptée à une lecture confortable
+}
 
-  p {
+.media-caption  p {
     display: flex; // Affichage en ligne des éléments
     align-items: center; // Alignement vertical optimal
     gap: 1%; // Ajoute un petit espacement entre l’icône et le texte
-
-    .media-likes {
+}
+.media-caption   .media-likes {
       font-size: 1rem; // Taille standard pour le nombre de likes
       font-weight: bold; // Mise en avant du nombre de likes
-    }
-  }
 }
+  
 
-/* ========================================================================= */
-/* SECTION : MODALE DE LIKE/DISLIKE                                         */
-/* ========================================================================= */
-/* Objectif :
-  - Créer une transition fluide pour afficher/masquer la modale.
-  - Positionner correctement la modale au-dessus du bouton de like.
-*/
 
-#like-dislike-modal {
-  position: absolute; // Position absolue pour flotter au-dessus des éléments
-  visibility: hidden; // Caché par défaut
-  justify-content: center; // Centrage du contenu
-  margin: 0 auto; // Centrage horizontal
-  left: 2%; // Légèrement décalé vers la gauche pour éviter un chevauchement excessif
-  opacity: 0; // Invisibilité initiale
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; // Animation fluide pour l’apparition/disparition
-
-  &.active {
-    visibility: visible; // Rendu visible lorsque la classe est activée
-    opacity: 1; // Pleine visibilité
-    transform: translateY(10px); // Effet de glissement vers le bas pour une apparition dynamique
-  }
-}
-
-/* ========================================================================= */
-/* SECTION : CONTENU DE LA MODALE                                           */
-/* ========================================================================= */
-/* Objectif :
-  - Ajouter un design épuré avec un fond clair.
-  - Arrondir légèrement les bords pour une esthétique moderne.
-*/
-
-.like-dislike-content {
-  background-color: lightgray; // Fond gris clair pour un contraste léger
-  width: 100%; // S'étend sur toute la largeur disponible
-  padding: 3%; // Ajoute un léger espacement interne
-  border-radius: 0.5rem; // Coins arrondis pour un aspect doux
-}
-
-/* ========================================================================= */
-/* SECTION : BOUTONS LIKE & DISLIKE                                         */
-/* ========================================================================= */
-/* Objectif :
-  - Utiliser des couleurs différenciées pour les actions de like et dislike.
-  - Assurer un bon contraste pour l’accessibilité.
-*/
-
-.like-btn {
-  background-color: rgb(43, 197, 43); // Vert vif pour une action positive
-  color: white; // Texte blanc pour un bon contraste
-}
-
-.dislike-btn {
-  background-color: rgb(209, 68, 68); // Rouge pour indiquer une action négative
-  color: white; // Texte blanc pour un bon contraste
-}

@@ -240,11 +240,11 @@ textarea.error-input {
 }
 
 /* Bouton de confirmation */
-button.confirma-btn{
+.confirma-btn button{
   display: flex;
   justify-content: center;
   margin: 10% auto;
-  color: var(--primary-color); 
+  color: red; 
 }
 .honeypot-field {
   display:none

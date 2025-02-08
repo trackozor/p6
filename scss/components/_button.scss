@@ -13,7 +13,7 @@
 /* élégant. Inclut des ajustements responsive pour les tablettes.             */
 /* -------------------------------------------------------------------------- */
 
-.contact-button {
+.contact-button, .confirm-btn {
   font-size: 1rem; /* Taille de la police pour le texte du bouton */
   z-index: 550;
   font-weight: bold; /* Texte en gras pour plus de visibilité */
@@ -50,7 +50,14 @@
     }
   }
 }
-
+.confirm-btn {
+  display: flex;
+  align-items: center;
+  margin:5% auto;
+  padding:2% 1.5%;
+  width: 15%;
+  
+}
 /* -------------------------------------------------------------------------- */
 /* Icônes SVG                                                                 */
 /* Description : Style générique pour les icônes SVG avec des transitions     */
@@ -91,6 +98,9 @@
 .fa-heart::before {
   color: #901c1c;
 }
+.fa-heart.liked::before {
+  color:#d88876;
+}
 
 .sorting {
   display: flex;
@@ -106,7 +116,6 @@
     margin: 2% 0 3% 10%;
   }
 }
-
 /* -------------------------------------------------------------------------- */
 /*                   Combo box pour choix du trie                             */
 /* -------------------------------------------------------------------------- */
