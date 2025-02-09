@@ -568,7 +568,7 @@ export function showPreviousMedia() {
 function updateLightboxContent(media, folderName, direction) {
     try {
         // Journalisation de la mise à jour de la lightbox
-        logEvent("debug", `🔄 Mise à jour de la lightbox : ${currentIndex} / ${mediaList.length}`, {
+        logEvent("debug", ` Mise à jour de la lightbox : ${currentIndex} / ${mediaList.length}`, {
             media, 
             currentIndex, 
             folderName, 

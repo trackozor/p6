@@ -13,7 +13,7 @@
 /* élégant. Inclut des ajustements responsive pour les tablettes.             */
 /* -------------------------------------------------------------------------- */
 
-.contact-button, .confirm-btn {
+.contact-button {
   font-size: 1rem; /* Taille de la police pour le texte du bouton */
   z-index: 550;
   font-weight: bold; /* Texte en gras pour plus de visibilité */
@@ -34,6 +34,7 @@
     display: flex;
     margin-bottom: 0;
     align-items: center;
+    }
 
     @include desktop {
       position: absolute;
@@ -48,14 +49,18 @@
     @include large-desktop {
       padding: 1.5% 1%;
     }
-  }
 }
+
 .confirm-btn {
   display: flex;
   align-items: center;
   margin:5% auto;
-  padding:2% 1.5%;
-  width: 15%;
+  padding:2%;
+  background-color: #901c1c; /* Couleur de fond rouge foncé */
+  font-weight: bold; /* Texte en gras pour plus de visibilité */
+  color: white; /* Couleur du texte */
+  border-radius: 0.3rem; /* Coins légèrement arrondis */
+
   
 }
 /* -------------------------------------------------------------------------- */

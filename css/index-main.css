@@ -358,7 +358,7 @@ a {
 /* Description : Style pour le bouton de contact avec un design simple et     */
 /* élégant. Inclut des ajustements responsive pour les tablettes.             */
 /* -------------------------------------------------------------------------- */
-.contact-button, .confirm-btn {
+.contact-button {
   font-size: 1rem; /* Taille de la police pour le texte du bouton */
   z-index: 550;
   font-weight: bold; /* Texte en gras pour plus de visibilité */
@@ -373,7 +373,7 @@ a {
   cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
 }
 @media (min-width: 767px) {
-  .contact-button, .confirm-btn {
+  .contact-button {
     max-height: 20px; /* Réduit la hauteur maximale sur tablette */
     padding: 2% 1%; /* Diminue les espacements internes */
     margin-left: 7%;
@@ -382,8 +382,8 @@ a {
     align-items: center;
   }
 }
-@media (min-width: 767px) and (min-width: 1024px) {
-  .contact-button, .confirm-btn {
+@media (min-width: 1024px) {
+  .contact-button {
     position: absolute;
     display: flex;
     padding: 2% 1%;
@@ -393,8 +393,8 @@ a {
     justify-content: center;
   }
 }
-@media (min-width: 767px) and (min-width: 1440px) {
-  .contact-button, .confirm-btn {
+@media (min-width: 1440px) {
+  .contact-button {
     padding: 1.5% 1%;
   }
 }
@@ -403,8 +403,11 @@ a {
   display: flex;
   align-items: center;
   margin: 5% auto;
-  padding: 2% 1.5%;
-  width: 15%;
+  padding: 2%;
+  background-color: #901c1c; /* Couleur de fond rouge foncé */
+  font-weight: bold; /* Texte en gras pour plus de visibilité */
+  color: white; /* Couleur du texte */
+  border-radius: 0.3rem; /* Coins légèrement arrondis */
 }
 
 /* -------------------------------------------------------------------------- */

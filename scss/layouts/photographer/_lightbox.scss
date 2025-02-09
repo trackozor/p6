@@ -126,40 +126,17 @@ $lightbox-bg: rgba(0, 0, 0, 0.9); // Fond semi-transparent pour masquer l'arriè
   - S'assure que le média actif est bien positionné et les autres sont masqués.
 */
 
-.lightbox-media-container {
-  width: 70%; // Largeur ajustée pour un affichage optimal
-  height: 70%; // Hauteur suffisante pour maintenir une bonne proportion
+.lightbox-media {
+  max-width: 70%; // Largeur ajustée pour un affichage optimal
+  height: 90%; // Hauteur suffisante pour maintenir une bonne proportion
   display: flex;
   flex-direction: row; // Disposition en ligne des médias
-  justify-content: center;
-  align-items: center;
   overflow: hidden; // Empêche les débordements
   position: relative; // Permet de positionner les médias correctement
+  padding-bottom:3%;
+  background-color:white;
 }
 
-/* Images & Vidéos */
-.lightbox-media-container img,
-.lightbox-media-container video {
-  max-width: 80%; // Ajustement de la taille maximale pour éviter les dépassements
-  height: auto; // Conservation du ratio d’aspect
-  max-height: 60%; // Empêche l’image ou la vidéo de prendre toute la hauteur
-  object-fit: contain; // Ajuste le média pour éviter les coupures
-  position: absolute; // Permet un positionnement précis
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%); // Centre le média horizontalement
-  opacity: 0; // Initialement invisible
-  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; // Effet de transition fluide
-  z-index: 0; // Position en arrière-plan
-}
-
-/*  Média actif */
-.lightbox-media-container .active-media {
-  max-width: 70%; // Taille légèrement réduite pour un affichage plus équilibré
-  opacity: 1; // Rendu visible
-  z-index: 1; // Mise au premier plan
-  position: relative; // Ajustement dynamique de la position
-}
 
 /* ========================================================================= */
 /*  LÉGENDE DES MÉDIAS                                                     */
@@ -170,11 +147,14 @@ $lightbox-bg: rgba(0, 0, 0, 0.9); // Fond semi-transparent pour masquer l'arriè
 */
 
 .lightbox-caption {
-  margin-top: var(--spacing-small); // Espacement au-dessus du texte
-  font-size: var(--font-size-base); // Taille de police définie selon les variables globales
-  color: var(--text-color-primary); // Utilisation de la couleur de texte principale
-  max-width: 80%; // Empêche les légendes trop longues d’occuper tout l’espace
+  font-size: 1rem;
+  z-index:9999;
+  background-color: white;
+  color: red; // Utilisation de la couleur de texte principale
+  bottom:3.5%; // Empêche les légendes trop longues d’occuper tout l’espace
+  margin-right:auto;
   display: flex;
-  position: relative;
-  text-align: center; // Alignement du texte centré pour un meilleur équilibre visuel
+  position: absolute;
+  justify-content: left;
+  
 }
