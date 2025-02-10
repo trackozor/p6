@@ -290,8 +290,21 @@ async function updatePhotographerStatsDOM(photographerData, totalLikes) {
 
 
 /*==============================================*/
-/*        Initialisation et exportation         */
-/*=============================================*/
+/*   INITIALISATION ET EXPORTATION DES STATS   */
+/*==============================================*/
+
+/**
+ * Initialise le calcul des statistiques du photographe et met à jour le DOM.
+ *
+ * - Récupère les données du photographe et la liste des médias.
+ * - Calcule le total des likes cumulés sur tous les médias.
+ * - Met à jour l'affichage des statistiques dans le DOM.
+ * - Gère les erreurs de manière robuste et logue chaque étape.
+ *
+ * @async
+ * @function initStatsCalculator
+ * @throws {Error} - Capture et logue toute erreur survenue lors du processus.
+ */
 
 export async function initstatscalculator() {
   logEvent(

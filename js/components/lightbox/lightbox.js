@@ -230,8 +230,9 @@ export function closeLightbox() {
 /*             Gestion des animations          */
 /*==============================================*/
 
-/**
+/**-----------------------------------------------------------------------------------------------
  * Applique une animation de sortie vers la gauche au média actuellement affiché dans la lightbox.
+ * ------------------------------------------------------------------------------------------------
  * 
  * ### **Fonctionnement :**
  * - Ajoute la classe CSS `"lightbox-exit-left"` pour déclencher l'animation de sortie.
@@ -283,8 +284,9 @@ function animateMediaExitLeft(mediaElement, callback) {
 }
 
 
-/**
+/**-------------------------------------------------------------------------------------------------
  * Applique une animation de sortie vers la droite au média actuellement affiché dans la lightbox.
+ * -------------------------------------------------------------------------------------------------
  * 
  * ### **Fonctionnement :**
  * - Ajoute la classe CSS `"lightbox-exit-right"` pour déclencher l'animation de sortie.
@@ -415,8 +417,10 @@ function insertNewMedia(media, folderPath, direction) {
 /*==============================================*/
 /*             Navigation          */
 /*==============================================*/
-/**
+
+/**----------------------------------------------------------------
  * Gère la navigation vers le média suivant dans la lightbox.
+ * ----------------------------------------------------------------
  * 
  * ### **Fonctionnement :**
  * - Vérifie que `mediaList` est bien défini et contient des médias.
@@ -477,8 +481,9 @@ export function showNextMedia() {
     }
 }
 
-/**
+/**----------------------------------------------------------------
  * Gère la navigation vers le média précédent dans la lightbox.
+ * ----------------------------------------------------------------
  * 
  * ### **Fonctionnement :**
  * - Vérifie que `mediaList` est bien défini et contient des médias.

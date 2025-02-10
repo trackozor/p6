@@ -75,20 +75,43 @@ export async function getPhotographers() {
 
 
 /*==============================================*/
-/*             Validation                       */
+/*             VALIDATION                       */
 /*==============================================*/
+
 /**
- * Valide les données d’un photographe.
+ * Vérifie si un objet représente un photographe valide.
+ *
+ * - Assure que l'objet **existe et est bien défini**.
+ * - Vérifie que **l'identifiant (`id`) est un nombre valide**.
+ * - Vérifie que **le nom (`name`) est une chaîne de caractères non vide**.
+ * - Logue un avertissement si les données sont invalides.
+ *
  * @param {Object} photographer - Objet représentant un photographe.
- * @returns {boolean} Vrai si les données sont valides.
+ * @returns {boolean} - `true` si les données sont valides, sinon `false`.
  */
 function isValidPhotographer(photographer) {
-  return (
-    photographer &&
-    typeof photographer.id === "number" &&
-    typeof photographer.name === "string"
-  );
+  // Vérification que l'objet est bien défini
+  if (!photographer || typeof photographer !== "object") {
+      logEvent("warn", "Données du photographe invalides ou non définies.", { photographer });
+      return false;
+  }
+
+  // Vérification de l'ID du photographe (doit être un nombre entier strictement positif)
+  if (typeof photographer.id !== "number" || photographer.id <= 0 || !Number.isInteger(photographer.id)) {
+      logEvent("warn", `ID du photographe invalide : ${photographer.id}`, { photographer });
+      return false;
+  }
+
+  // Vérification du nom du photographe (doit être une chaîne de caractères non vide)
+  if (typeof photographer.name !== "string" || photographer.name.trim().length === 0) {
+      logEvent("warn", "Nom du photographe invalide ou vide.", { photographer });
+      return false;
+  }
+
+  logEvent("info", `Photographe valide : ${photographer.name}`, { photographer });
+  return true;
 }
+
 
 /*==============================================*/
 /*              Affichage             */

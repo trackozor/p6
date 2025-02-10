@@ -213,7 +213,7 @@ export function checkHoneypot() {
     const honeypotField = document.getElementById("hidden-field");
 
     if (!honeypotField) {
-      throw new Error("🚨 Champ Honeypot introuvable dans le DOM !");
+      throw new Error(" Champ Honeypot introuvable dans le DOM !");
     }
 
     // Vérification du contenu du champ Honeypot
@@ -361,15 +361,15 @@ export function validateMessageField(field) {
 
     // Vérification de la sécurité du message (XSS, SQLi, etc.)
     if (!isMessageSafe(value)) {
-      errorMessage = "🚨 Le message contient du code suspect et a été bloqué.";
+      errorMessage = " Le message contient du code suspect et a été bloqué.";
     }
     // Vérification de la longueur minimale
     else if (value.length < MIN_LENGTH) {
-      errorMessage = `⚠️ Le message doit contenir au moins ${MIN_LENGTH} caractères.`;
+      errorMessage = ` Le message doit contenir au moins ${MIN_LENGTH} caractères.`;
     }
     // Vérification de la longueur maximale
     else if (value.length > MAX_LENGTH) {
-      errorMessage = `⚠️ Le message ne doit pas dépasser ${MAX_LENGTH} caractères.`;
+      errorMessage = ` Le message ne doit pas dépasser ${MAX_LENGTH} caractères.`;
     }
 
     // Si une erreur est détectée, l'afficher et enregistrer l'échec

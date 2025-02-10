@@ -1,10 +1,10 @@
 /* =============================================================================*/
-/* 🎯 PROJET      : Fisheye */
-/* 📄 FICHIER     : utils.js */
-/* 🖊️ AUTEUR      : Trackozor */
-/* 📆 DATE        : 21/01/2025 */
-/* 🔄 VERSION     : 1.2.0 */
-/* 📝 DESCRIPTION : Fonctions utilitaires globales du projet Fisheye :     */
+/* PROJET      : Fisheye */
+/* FICHIER     : utils.js */
+/* AUTEUR      : Trackozor */
+/* DATE        : 21/01/2025 */
+/* VERSION     : 1.2.0 */
+/* DESCRIPTION : Fonctions utilitaires globales du projet Fisheye :     */
 /*   - Gestion et vérification des logs.                                    */
 /*   - Manipulation sécurisée des classes CSS.                               */
 /*   - Détection de la page actuelle.                                        */
@@ -31,37 +31,70 @@ import {
  * Vérifie si un niveau de log est activé en fonction de la verbosité, du niveau de log configuré,
  * et de l'environnement actif.
  *
- * @param {string} level - Niveau de log à vérifier (ex : "info", "error", etc.).
+ * - Filtre les logs en fonction du niveau de verbosité défini.
+ * - Vérifie si le niveau de log est activé dans la configuration.
+ * - Restreint certains logs aux environnements de développement.
+ *
+ * @param {string} level - Niveau de log à vérifier (ex : "info", "error", "warn").
  * @returns {boolean} - `true` si le log est autorisé, sinon `false`.
  */
 export const isLogEnabled = (level) => {
-  const verbosityMap = {
-    low: ["error", "warn"], // Verbosité basse : uniquement erreurs et avertissements
-    medium: ["error", "warn", "success"], // Verbosité moyenne : ajoute les succès
-    high: ["error", "warn", "success", "info", "test_start", "test_end"], // Verbosité haute : tous les logs
-  };
+  try {
+      // Validation : Vérifie si le niveau de log est une chaîne non vide
+      if (typeof level !== "string" || level.trim() === "") {
+          console.warn("isLogEnabled : Niveau de log invalide.", { level });
+          return false;
+      }
 
-  // Récupération des niveaux autorisés par la verbosité
-  const allowedLevels = verbosityMap[CONFIGLOG.VERBOSITY] || [];
+      /** 
+       * Mapping des niveaux de verbosité et des logs autorisés
+       * - `low`    : Seuls les logs critiques et avertissements.
+       * - `medium` : Ajoute les logs de succès.
+       * - `high`   : Active tous les niveaux de log.
+       */
+      const verbosityMap = {
+          low: new Set(["error", "warn"]),
+          medium: new Set(["error", "warn", "success"]),
+          high: new Set(["error", "warn", "success", "info", "test_start", "test_end"]),
+      };
 
-  // Vérifie si le niveau est activé dans la configuration
-  const isLevelEnabledInConfig = CONFIGLOG.LOG_LEVELS?.[level] ?? false;
+      // Récupération des niveaux autorisés par la verbosité
+      const allowedLevels = verbosityMap[CONFIGLOG.VERBOSITY] || new Set();
 
-  // Vérifie si le niveau est permis par la verbosité
-  const isAllowedByVerbosity = allowedLevels.includes(level);
+      // Vérifie si le niveau est activé dans la configuration
+      const isLevelEnabledInConfig = Boolean(CONFIGLOG.LOG_LEVELS?.[level]);
 
-  // Limite certains logs à l'environnement développement
-  const isEnvironmentAllowed =
-    ACTIVE_ENVIRONMENT === ENVIRONMENTS.DEVELOPMENT ||
-    !["info", "test_start", "test_end"].includes(level);
+      // Vérifie si le niveau est permis par la verbosité
+      const isAllowedByVerbosity = allowedLevels.has(level);
 
-  // La combinaison des trois critères détermine si le log est activé
-  return isLevelEnabledInConfig && isAllowedByVerbosity && isEnvironmentAllowed;
+      // Restreint certains logs aux environnements de développement
+      const isEnvironmentAllowed =
+          ACTIVE_ENVIRONMENT === ENVIRONMENTS.DEVELOPMENT ||
+          !["info", "test_start", "test_end"].includes(level);
+
+      // Validation finale : Tous les critères doivent être remplis pour activer le log
+      return isLevelEnabledInConfig && isAllowedByVerbosity && isEnvironmentAllowed;
+      
+  } catch (error) {
+      console.error("isLogEnabled : Erreur critique lors de la vérification du niveau de log.", { error });
+      return false;
+  }
 };
 
+
+/* ============================================================================= */
+/* SECTION : FONCTIONS DE LOG                                                    */
+/* ============================================================================= */
+
 /**
- * Logue des événements dans la console avec horodatage, icônes et styles.
- * @param {string} type - Type de log (info, warn, error, etc.).
+ * Logue des événements dans la console avec un horodatage standardisé.
+ *
+ * - Filtre les logs en fonction du niveau de verbosité défini.
+ * - Ajoute un préfixe `[Fisheye]` pour un repérage facile.
+ * - Vérifie la validité des paramètres pour éviter les erreurs.
+ * - Sécurise l'accès aux méthodes `console` pour éviter les plantages.
+ *
+ * @param {string} type - Type de log (info, warn, error, success).
  * @param {string} message - Message à afficher.
  * @param {Object} [data={}] - Données supplémentaires pour le contexte.
  */
@@ -217,7 +250,7 @@ export const getCurrentPage = () => {
   return "unknown";
 };
 
-/*================================================================================================================================================*/
+
 /*===============================================================================================*/
 /*                                 ======= Messages erreurs =======                              */
 /*===============================================================================================*/

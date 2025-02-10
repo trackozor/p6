@@ -138,48 +138,70 @@ export function checkColorContrast(color1, color2) {
   logEvent("info", `Contraste entre ${color1} et ${color2} : ${contrastRatio.toFixed(2)}`);
   return contrastRatio >= 4.5;
 }
-
-/** =============================================================================
-*   SECTION : TRAP FOCUS (PIÉGEAGE DU FOCUS)
-*   =============================================================================*/
-
 /**
- * Restreint le focus clavier à un conteneur donné.
- * @param {HTMLElement} container - Conteneur dans lequel le focus doit être piégé.
- * @returns {Function} Fonction de nettoyage des événements.
+/**
+ * =============================================================================
+ * Fonction : trapFocus
+ * =============================================================================
+ * Empêche l'utilisateur de sortir du focus lorsqu'une modale est ouverte.
+ *
+ * - Capture tous les éléments interactifs (input, boutons, liens...).
+ * - Permet la navigation avec `Tab` entre ces éléments.
+ * - Empêche la sortie de la modale avec `Shift + Tab` et `Tab` cyclique.
+ *
+ * @param {HTMLElement} modal - Élément de la modale active.
  */
-export function trapFocus(container) {
-  if (!(container instanceof HTMLElement)) {
-    logEvent("error", "trapFocus: Conteneur invalide.", { container });
-    return;
+export function trapFocus(modal) {
+  if (!modal || !(modal instanceof HTMLElement)) {
+      logEvent("error", "trapFocus : Élément de modale invalide ou inexistant.", { modal });
+      return;
   }
 
-  const focusableElements = Array.from(container.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-  ));
+  logEvent("info", "trapFocus : Activation du focus trap.", { modal });
+
+  // Sélectionne tous les éléments interactifs dans la modale
+  const focusableElements = modal.querySelectorAll(
+      'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+  );
 
   if (focusableElements.length === 0) {
-    logEvent("warn", "trapFocus: Aucun élément focusable trouvé.", { container });
-    return;
+      logEvent("warn", "trapFocus : Aucun élément interactif trouvé dans la modale.");
+      return;
   }
 
   const firstElement = focusableElements[0];
   const lastElement = focusableElements[focusableElements.length - 1];
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Tab") {
-      if (e.shiftKey && document.activeElement === firstElement) {
-        e.preventDefault();
-        lastElement.focus();
-      } else if (!e.shiftKey && document.activeElement === lastElement) {
-        e.preventDefault();
-        firstElement.focus();
+  function handleTabKey(event) {
+      if (event.key !== "Tab") {
+        return;
       }
-    }
-  };
 
-  container.addEventListener("keydown", handleKeyDown);
+      logEvent("debug", "trapFocus : Gestion du Tab.", { keyPressed: event.key });
+
+      if (event.shiftKey) {
+                // Shift + Tab : Retourne au dernier élément si focus sur le premier
+                if (document.activeElement === firstElement) {
+                    lastElement.focus();
+                    event.preventDefault();
+                }
+            }
+      else if (document.activeElement === lastElement) {
+                    firstElement.focus();
+                    event.preventDefault();
+                }
+  }
+
+  // Ajout de l'écouteur pour `Tab`
+  modal.addEventListener("keydown", handleTabKey);
+
+  // Place le focus sur le premier élément interactif à l'ouverture
   firstElement.focus();
 
-  return () => container.removeEventListener("keydown", handleKeyDown);
+  // Supprime l'événement au moment de la fermeture de la modale
+  modal.addEventListener("transitionend", () => {
+      modal.removeEventListener("keydown", handleTabKey);
+  });
 }
+
+

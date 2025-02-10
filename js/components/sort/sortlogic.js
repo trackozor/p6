@@ -15,105 +15,283 @@ import { getPhotographerIdFromUrl } from "../../pages/photographer-page.js";
 
 /**
  * Vérifie si la liste des médias est valide.
+ *
+ * - Assure que `mediaList` est un tableau non vide.
+ * - Vérifie que chaque média est un objet contenant `likes`, `title` et `date`.
+ * - Génère une erreur détaillée en cas d’invalidité.
+ *
  * @param {Array} mediaList - Liste des médias à vérifier.
- * @throws {TypeError} - Si `mediaList` n'est pas un tableau ou contient des objets invalides.
+ * @throws {TypeError} - Si `mediaList` n'est pas un tableau valide ou contient des objets invalides.
  */
 const validateMediaList = (mediaList) => {
-  if (!Array.isArray(mediaList)) {
-    logEvent("error", "La liste des médias doit être un tableau valide.");
-    throw new TypeError("La liste des médias doit être un tableau.");
-  }
-
-  for (const media of mediaList) {
-    if (
-      typeof media !== "object" ||
-      !("likes" in media) ||
-      !("title" in media) ||
-      !("date" in media)
-    ) {
-      logEvent("error", "Un ou plusieurs médias sont invalides.", { media });
-      throw new TypeError("Chaque média doit être un objet contenant 'likes', 'title' et 'date'.");
+  try {
+    // Vérification que mediaList est bien un tableau
+    if (!Array.isArray(mediaList) || mediaList.length === 0) {
+      throw new TypeError("La liste des médias doit être un tableau non vide.");
     }
+
+    // Vérification de chaque média avec Array.every()
+    const isValid = mediaList.every(
+      (media) =>
+        media &&
+        typeof media === "object" &&
+        "likes" in media &&
+        "title" in media &&
+        "date" in media
+    );
+
+    if (!isValid) {
+      throw new TypeError(
+        "Un ou plusieurs médias sont invalides. Chaque média doit contenir 'likes', 'title' et 'date'."
+      );
+    }
+
+    logEvent("success", "Validation de la liste des médias réussie.");
+  } catch (error) {
+    logEvent("error", `Erreur dans validateMediaList : ${error.message}`, { error });
+    throw error;
   }
 };
 
 /*==============================================*/
-/*      comparaison  et tri par like             */
+/*      COMPARAISON ET TRI PAR NOMBRE DE LIKES  */
 /*==============================================*/
-/**
+
+/**---------------------------------------------------------------------------
  * Compare deux médias en fonction du nombre de likes (ordre décroissant).
+ *------------------------------------------------------------------------------
+ *
+ * - Vérifie que chaque média possède un champ `likes` valide.
+ * - Effectue une comparaison sécurisée pour éviter des erreurs inattendues.
+ * - Logue une erreur si une valeur de `likes` est absente ou invalide.
+ *
  * @param {Object} a - Premier média.
  * @param {Object} b - Second média.
- * @returns {number} - Résultat de la comparaison.
+ * @returns {number} - Résultat de la comparaison (`< 0` si `b` a plus de likes, `> 0` si `a` a plus de likes).
+ * @throws {Error} - Lève une erreur si `likes` est absent ou non valide.
  */
 export function compareByLikes(a, b) {
-  return b.likes - a.likes;
+  try {
+      // Vérification des valeurs de `likes`
+      if (
+          typeof a.likes !== "number" || isNaN(a.likes) ||
+          typeof b.likes !== "number" || isNaN(b.likes)
+      ) {
+          throw new Error(`Valeur de 'likes' invalide : ${a.likes} ou ${b.likes}`);
+      }
+
+      return b.likes - a.likes; // Tri décroissant (du plus aimé au moins aimé)
+  } catch (error) {
+      logEvent("error", "Erreur dans compareByLikes", { a, b, error });
+      throw error;
+  }
+}
+
+/**-------------------------------------------------------------------------
+* Trie les médias en fonction du nombre de likes (du plus aimé au moins aimé).
+*-----------------------------------------------------------------------------
+
+* - Valide la liste des médias avant exécution.
+* - Utilise un **tri sécurisé et immuable** (`Object.freeze`).
+* - Capture et logue les erreurs pour éviter un crash en cas de données invalides.
+*
+* @param {Array} mediaList - Liste des médias à trier.
+* @returns {Array} - Nouvelle liste triée par nombre de likes décroissant.
+* @throws {Error} - Lève une erreur si la liste contient des données invalides.
+*/
+export function sortByLikes(mediaList) {
+  try {
+      // Validation de la liste des médias
+      validateMediaList(mediaList);
+      logEvent("info", "Tri des médias par nombre de likes.");
+
+      // Tri sécurisé et immuable
+      return Object.freeze([...mediaList].sort(compareByLikes));
+  } catch (error) {
+      logEvent("error", "Erreur dans sortByLikes", { mediaList, error });
+      throw error;
+  }
 }
 
 
-/**
- * Trie les médias en fonction du nombre de likes.
+
+/**---------------------------------------------------------------------------------------
+ * Trie les médias en fonction du nombre de likes (du plus populaire au moins populaire).
+ *----------------------------------------------------------------------------------------
+ *
+ * - Vérifie la validité de `mediaList` avant d'effectuer le tri.
+ * - Utilise `.slice()` pour préserver l'originalité de `mediaList`.
+ * - Applique `.sort()` avec une fonction de comparaison optimisée.
+ * - Retourne un tableau trié de manière immuable (`Object.freeze`).
+ * - Journalise le processus pour faciliter le suivi.
+ *
  * @param {Array} mediaList - Liste des médias à trier.
  * @returns {Array} - Liste triée par nombre de likes décroissant.
+ * @throws {TypeError} - En cas de données invalides.
  */
 export function sortByLikes(mediaList) {
-  validateMediaList(mediaList);
-  logEvent("info", "Tri des médias par nombre de likes.");
-  return Object.freeze([...mediaList].sort(compareByLikes));
+  try {
+    // Validation de l'entrée
+    validateMediaList(mediaList);
+
+    logEvent("info", "Début du tri des médias par nombre de likes.");
+
+    // Création d'une copie triée et immuable du tableau
+    const sortedMedia = Object.freeze(
+      mediaList.slice().sort((a, b) => b.likes - a.likes) // Tri décroissant
+    );
+
+    logEvent("success", `Tri terminé avec succès (${sortedMedia.length} médias triés).`);
+    
+    return sortedMedia;
+  } catch (error) {
+    logEvent("error", `Erreur dans sortByLikes : ${error.message}`, { error });
+    throw error;
+  }
 }
 
+/*==============================================*/
+/*  Comparaison et tri alphabétique (titres)    */
+/*==============================================*/
 
-/*==============================================*/
-/*     comparaison et tri alphabétique          */
-/*==============================================*/
 /**
- * Compare deux médias en fonction du titre (ordre alphabétique).
- * @param {Object} a - Premier média.
- * @param {Object} b - Second média.
- * @returns {number} - Résultat de la comparaison.
+ * Instance de `Intl.Collator` pour comparer les titres en français.
+ * 
+ * - Sensibilité de tri définie à "base" pour ignorer la casse et les accents.
+ * - Assure un tri correct en prenant en compte l'ordre alphabétique français.
  */
 const collator = new Intl.Collator("fr", { sensitivity: "base" });
 
+/**-------------------------------------------------------------------
+ * Compare deux médias en fonction de leur titre (tri alphabétique).
+ *---------------------------------------------------------------------
+ *
+ * - Vérifie la validité des titres avant comparaison.
+ * - Utilise `Intl.Collator` pour un tri optimisé et adapté au français.
+ * - Capture et journalise les erreurs en cas d'objets mal structurés.
+ *
+ * @param {Object} a - Premier média à comparer.
+ * @param {Object} b - Second média à comparer.
+ * @returns {number} - Résultat de la comparaison (`-1`, `0` ou `1`).
+ * @throws {TypeError} - Si `title` est manquant ou invalide.
+ */
 export function compareByTitle(a, b) {
-  return collator.compare(a.title, b.title);
+    try {
+        // Vérification des paramètres
+        if (!a || typeof a !== "object" || typeof a.title !== "string") {
+            throw new TypeError("L'objet 'a' est invalide ou ne contient pas de titre.");
+        }
+        if (!b || typeof b !== "object" || typeof b.title !== "string") {
+            throw new TypeError("L'objet 'b' est invalide ou ne contient pas de titre.");
+        }
+
+        // Comparaison alphabétique via `Intl.Collator`
+        return collator.compare(a.title, b.title);
+    } catch (error) {
+        logEvent("error", `Erreur dans compareByTitle : ${error.message}`, { error });
+        return 0; // Retourne 0 en cas d'erreur pour éviter un crash
+    }
 }
 
 
-/**
+
+/**------------------------------------------------------------------
  * Trie les médias en fonction du titre alphabétique.
+ *------------------------------------------------------------------
+
+ * - Vérifie que la liste des médias est valide avant exécution.
+ * - Utilise `compareByTitle()` pour un tri alphabétique précis.
+ * - Empêche la modification accidentelle du tableau trié avec `Object.freeze()`.
+ * - Capture et journalise toute erreur potentielle pour éviter un plantage.
+ *
  * @param {Array} mediaList - Liste des médias à trier.
- * @returns {Array} - Liste triée par ordre alphabétique des titres.
+ * @returns {Array} - Liste triée par ordre alphabétique des titres, ou une liste vide en cas d'erreur.
  */
 export function sortByTitle(mediaList) {
-  validateMediaList(mediaList);
-  logEvent("info", "Tri des médias par titre alphabétique.");
-  return Object.freeze([...mediaList].sort(compareByTitle));
+    try {
+        // Vérification initiale des entrées
+        if (!Array.isArray(mediaList)) {
+            throw new TypeError("Le paramètre 'mediaList' doit être un tableau.");
+        }
+
+        // Validation approfondie des médias avant tri
+        validateMediaList(mediaList);
+
+        // Journalisation avant d'effectuer le tri
+        logEvent("info", `Tri des médias par titre alphabétique (${mediaList.length} éléments).`);
+
+        // Tri alphabétique des médias
+        return Object.freeze([...mediaList].sort(compareByTitle));
+
+    } catch (error) {
+        logEvent("error", `Erreur dans sortByTitle : ${error.message}`, { error });
+        return []; // Retourne une liste vide pour éviter tout plantage
+    }
 }
 
 
+
 /*==============================================*/
-/*               comparaison  par date                  */
+/*           COMPARAISON ET TRI PAR DATE        */
 /*==============================================*/
-/**
+
+/**-------------------------------------------------------------------------------
  * Compare deux médias en fonction de leur date (du plus récent au plus ancien).
+ *--------------------------------------------------------------------------------
+ *
+ * - Convertit les dates en **objet `Date`** avant la comparaison.
+ * - Assure que chaque média possède une **date valide** avant comparaison.
+ * - Gère les erreurs si une date est absente ou mal formatée.
+ *
  * @param {Object} a - Premier média.
  * @param {Object} b - Second média.
- * @returns {number} - Résultat de la comparaison.
+ * @returns {number} - Résultat de la comparaison (`< 0` si `b` est plus récent, `> 0` si `a` est plus récent).
+ * @throws {Error} - Lève une erreur si une des dates est invalide.
  */
 export function compareByDate(a, b) {
-  return new Date(b.date) - new Date(a.date);
+  try {
+      // Vérification et conversion des dates
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+
+      // Vérification que les dates sont valides
+      if (isNaN(dateA) || isNaN(dateB)) {
+          throw new Error(`Date invalide détectée : ${a.date} ou ${b.date}`);
+      }
+
+      return dateB - dateA; // Tri décroissant (du plus récent au plus ancien)
+  } catch (error) {
+      logEvent("error", "Erreur dans compareByDate", { a, b, error });
+      throw error; // Propagation de l'erreur pour gestion en amont
+  }
 }
 
-/**
- * Trie les médias en fonction de leur date (du plus récent au plus ancien).
- * @param {Array} mediaList - Liste des médias à trier.
- * @returns {Array} - Liste triée par date décroissante.
- */
+/**---------------------------------------------------------------------------
+* Trie les médias en fonction de leur date (du plus récent au plus ancien).
+*------------------------------------------------------------------------------
+*
+* - Valide la liste des médias avant exécution.
+* - Utilise un **tri optimisé** en conservant l'immutabilité (`Object.freeze`).
+* - Capture les erreurs pour éviter un plantage en cas de problème de données.
+*
+* @param {Array} mediaList - Liste des médias à trier.
+* @returns {Array} - Nouvelle liste triée par date décroissante.
+* @throws {Error} - Lève une erreur si la liste contient des données invalides.
+*/
 export function sortByDate(mediaList) {
-  validateMediaList(mediaList);
-  logEvent("info", "Tri des médias par date décroissante.");
-  return Object.freeze([...mediaList].sort(compareByDate));
+  try {
+      // Validation de la liste des médias
+      validateMediaList(mediaList);
+      logEvent("info", "Tri des médias par date décroissante.");
+
+      // Tri sécurisé et immuable
+      return Object.freeze([...mediaList].sort(compareByDate));
+  } catch (error) {
+      logEvent("error", "Erreur dans sortByDate", { mediaList, error });
+      throw error;
+  }
 }
+
 
 
 /*==============================================*/
