@@ -53,65 +53,6 @@ const validateMediaList = (mediaList) => {
   }
 };
 
-/*==============================================*/
-/*      COMPARAISON ET TRI PAR NOMBRE DE LIKES  */
-/*==============================================*/
-
-/**---------------------------------------------------------------------------
- * Compare deux médias en fonction du nombre de likes (ordre décroissant).
- *------------------------------------------------------------------------------
- *
- * - Vérifie que chaque média possède un champ `likes` valide.
- * - Effectue une comparaison sécurisée pour éviter des erreurs inattendues.
- * - Logue une erreur si une valeur de `likes` est absente ou invalide.
- *
- * @param {Object} a - Premier média.
- * @param {Object} b - Second média.
- * @returns {number} - Résultat de la comparaison (`< 0` si `b` a plus de likes, `> 0` si `a` a plus de likes).
- * @throws {Error} - Lève une erreur si `likes` est absent ou non valide.
- */
-export function compareByLikes(a, b) {
-  try {
-      // Vérification des valeurs de `likes`
-      if (
-          typeof a.likes !== "number" || isNaN(a.likes) ||
-          typeof b.likes !== "number" || isNaN(b.likes)
-      ) {
-          throw new Error(`Valeur de 'likes' invalide : ${a.likes} ou ${b.likes}`);
-      }
-
-      return b.likes - a.likes; // Tri décroissant (du plus aimé au moins aimé)
-  } catch (error) {
-      logEvent("error", "Erreur dans compareByLikes", { a, b, error });
-      throw error;
-  }
-}
-
-/**-------------------------------------------------------------------------
-* Trie les médias en fonction du nombre de likes (du plus aimé au moins aimé).
-*-----------------------------------------------------------------------------
-
-* - Valide la liste des médias avant exécution.
-* - Utilise un **tri sécurisé et immuable** (`Object.freeze`).
-* - Capture et logue les erreurs pour éviter un crash en cas de données invalides.
-*
-* @param {Array} mediaList - Liste des médias à trier.
-* @returns {Array} - Nouvelle liste triée par nombre de likes décroissant.
-* @throws {Error} - Lève une erreur si la liste contient des données invalides.
-*/
-export function sortByLikes(mediaList) {
-  try {
-      // Validation de la liste des médias
-      validateMediaList(mediaList);
-      logEvent("info", "Tri des médias par nombre de likes.");
-
-      // Tri sécurisé et immuable
-      return Object.freeze([...mediaList].sort(compareByLikes));
-  } catch (error) {
-      logEvent("error", "Erreur dans sortByLikes", { mediaList, error });
-      throw error;
-  }
-}
 
 
 
