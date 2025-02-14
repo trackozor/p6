@@ -22,6 +22,8 @@ let mediaList = [];
 let globalFolderName = "";
 
 let isTransitioning = false;
+let lastDirection = "right";  
+
 
 /*==============================================*/
 /*              Initialisation              */
@@ -49,41 +51,35 @@ let isTransitioning = false;
  */
 
 export function initLightbox(mediaArray, folderName) {
-    // Journalisation du début de l'initialisation
     logEvent("init", "Début de l'initialisation de la lightbox.", { mediaArray });
 
-    // Vérifie que `mediaArray` est un tableau et contient au moins un élément
     if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
         logEvent("warn", "Le tableau de médias est vide ou invalide.");
-        mediaList = []; // Vide la liste pour éviter tout affichage erroné
-        globalFolderName = folderName || ""; // Stocke un nom de dossier par défaut
+        mediaList = [];
+        globalFolderName = folderName || "";
         return;
     }
 
-    // Vérifie que `folderName` est une chaîne de caractères valide
     if (typeof folderName !== "string" || folderName.trim() === "") {
         logEvent("error", "Nom du dossier (folderName) invalide ou manquant.", { folderName });
         throw new Error("Le nom du dossier doit être une chaîne de caractères non vide.");
     }
 
     try {
-        // Stocke les médias et le nom du dossier dans des variables globales
         mediaList = [...mediaArray];
         globalFolderName = folderName;
-
-        // Réinitialise l'index du média actuellement affiché
         currentIndex = 0;
 
-        // Journalisation du succès
+        lastDirection = "right";  
+        isTransitioning = false;  
+
         logEvent("success", "Lightbox initialisée avec succès.", { mediaList });
     } catch (error) {
-        // Capture et journalise toute erreur rencontrée
         logEvent("error", "Erreur lors de l'initialisation de la lightbox.", { error });
-
-        // Lève une erreur pour éviter une configuration incorrecte
         throw new Error("Erreur d'initialisation de la lightbox : " + error.message);
     }
 }
+
 
 /*==============================================*/
 /*              Ouverture lightbox            */
@@ -182,48 +178,40 @@ export function openLightbox(index, mediaArray, folderName) {
  */
 
 export function closeLightbox() {
-    // Journalisation de l'action de fermeture
     logEvent("action", "Fermeture de la lightbox et réinitialisation.");
 
     try {
-        // Récupération des éléments clés de la lightbox
         const { lightboxContainer, lightboxMediaContainer, lightboxCaption } = domSelectors.lightbox;
         
-        // Vérifie que la lightbox existe dans le DOM avant d’agir
         if (!lightboxContainer) {
             throw new Error("Conteneur principal de la lightbox introuvable.");
         }
 
-        // Suppression du média actuellement affiché pour éviter une accumulation en mémoire
         const currentMedia = lightboxMediaContainer.querySelector(".active-media");
         if (currentMedia) {
             currentMedia.remove();
             logEvent("info", "Média supprimé de la lightbox.");
         }
 
-        // Réinitialisation du texte du titre/caption
         if (lightboxCaption) {
             lightboxCaption.textContent = "";
             logEvent("info", "Caption de la lightbox réinitialisée.");
         }
 
-        // Réinitialisation des variables globales
-        currentIndex = 0;  // Remise à zéro de l'index du média
-        mediaList = [];     // Vidage de la liste des médias
-        globalFolderName = ""; // Suppression du nom du dossier
+        currentIndex = 0;  
+        mediaList = [];     
+        globalFolderName = ""; 
 
-        // Masquer la lightbox avec une classe CSS et un attribut d'accessibilité
         lightboxContainer.classList.add("hidden");
         lightboxContainer.setAttribute("aria-hidden", "true");
 
-        // Journalisation du succès de la fermeture
         logEvent("success", "Lightbox fermée et réinitialisée avec succès.");
 
     } catch (error) {
-        // Capture et journalise toute erreur rencontrée
         logEvent("error", `Erreur lors de la fermeture de la lightbox : ${error.message}`, { error });
     }
 }
+
 
 
 /*==============================================*/
@@ -630,4 +618,3 @@ function updateLightboxContent(media, folderName, direction) {
         logEvent("error", `Erreur lors de la mise à jour du média dans la lightbox : ${error.message}`, { error });
     }
 }
-
