@@ -11,7 +11,7 @@
 /*==============================================*/
 import { logEvent } from "../../utils/utils.js";
 import domSelectors from "../../config/domSelectors.js";
-
+import {updateGallery} from "../sort/sortlogic.js";
 // Indice du média actuellement affiché dans la lightbox
 let currentIndex = 0;
 
@@ -23,7 +23,8 @@ let globalFolderName = "";
 
 let isTransitioning = false;
 let lastDirection = "right";  
-
+import {sorted} from "../sort/sortlogic.js";
+let exitClass = "";
 
 /*==============================================*/
 /*              Initialisation              */
@@ -217,6 +218,19 @@ export function closeLightbox() {
 /*==============================================*/
 /*             Gestion des animations          */
 /*==============================================*/
+function handleAnimationEnd() {
+        try {
+            // Retirer l'écouteur d'événement pour éviter les répétitions
+            mediaElement.removeEventListener("animationend", handleAnimationEnd);
+
+            // Exécute la fonction de rappel après l'animation
+            callback();
+
+            logEvent("success", `Animation de sortie terminée avec effet : ${exitClass}`);
+        } catch (callbackError) {
+            logEvent("error", `Erreur dans la fonction de rappel après l'animation : ${callbackError.message}`, { callbackError });
+        }
+    }
 
 /**-----------------------------------------------------------------------------------------------
  * Applique une animation de sortie vers la gauche au média actuellement affiché dans la lightbox.
@@ -237,7 +251,6 @@ export function closeLightbox() {
  * @param {Function} callback - Fonction de rappel exécutée une fois l'animation terminée.
  * @throws {Error} Lève une erreur si `mediaElement` n'est pas valide ou si `callback` n'est pas une fonction.
  */
-
 function animateMediaExitLeft(mediaElement, callback) {
     try {
         // Vérifie que `mediaElement` est un élément HTML valide
@@ -250,27 +263,35 @@ function animateMediaExitLeft(mediaElement, callback) {
             throw new Error("Le paramètre `callback` doit être une fonction valide.");
         }
 
-        // Ajoute la classe CSS pour déclencher l'animation de sortie vers la gauche
-        mediaElement.classList.add("lightbox-exit-left");
+        // Déterminer la direction de l'animation en fonction du tri
+        const exitClass = sorted ? "lightbox-exit-right" : "lightbox-exit-left";
 
-        // Ajoute un écouteur d'événement pour détecter la fin de l'animation
+        // Supprime toutes les classes d'animation pour éviter les conflits
+        mediaElement.classList.remove("lightbox-exit-left", "lightbox-exit-right");
+
+        // Ajoute la classe CSS pour déclencher l'animation de sortie
+        mediaElement.classList.add(exitClass);
+
+        // Attacher un écouteur d'événement avec une fonction fléchée pour capturer `exitClass`
         mediaElement.addEventListener("animationend", () => {
             try {
+                // Supprime l'écouteur immédiatement après exécution
+                mediaElement.removeEventListener("animationend", handleAnimationEnd);
+
                 // Exécute la fonction de rappel après l'animation
                 callback();
-                logEvent("success", "Animation de sortie vers la gauche terminée.");
+
+                logEvent("success", `Animation de sortie terminée avec effet : ${exitClass}`);
             } catch (callbackError) {
                 logEvent("error", `Erreur dans la fonction de rappel après l'animation : ${callbackError.message}`, { callbackError });
             }
         }, { once: true });
 
-        logEvent("info", "Animation de sortie vers la gauche lancée.");
+        logEvent("info", `Animation de sortie lancée avec effet : ${exitClass}`);
     } catch (error) {
-        // Capture et journalise toute erreur rencontrée
-        logEvent("error", `Erreur lors de l'animation de sortie vers la gauche : ${error.message}`, { error });
+        logEvent("error", `Erreur lors de l'animation de sortie : ${error.message}`, { error });
     }
 }
-
 
 /**-------------------------------------------------------------------------------------------------
  * Applique une animation de sortie vers la droite au média actuellement affiché dans la lightbox.
@@ -304,26 +325,43 @@ function animateMediaExitRight(mediaElement, callback) {
             throw new Error("Le paramètre `callback` doit être une fonction valide.");
         }
 
-        // Ajoute la classe CSS pour déclencher l'animation de sortie vers la droite
-        mediaElement.classList.add("lightbox-exit-right");
+        // Déterminer la direction de l'animation en fonction du tri
+        const exitClass = sorted ? "lightbox-exit-left" : "lightbox-exit-right";
 
-        // Ajoute un écouteur d'événement pour détecter la fin de l'animation
-        mediaElement.addEventListener("animationend", () => {
-            try {
-                // Exécute la fonction de rappel après l'animation
-                callback();
-                logEvent("success", "Animation de sortie vers la droite terminée.");
-            } catch (callbackError) {
-                logEvent("error", `Erreur dans la fonction de rappel après l'animation : ${callbackError.message}`, { callbackError });
-            }
-        }, { once: true });
+        // Supprime toutes les classes d'animation pour éviter les conflits
+        mediaElement.classList.remove("lightbox-exit-left", "lightbox-exit-right");
 
-        logEvent("info", "Animation de sortie vers la droite lancée.");
+        // Ajoute la classe CSS pour déclencher l'animation de sortie
+        mediaElement.classList.add(exitClass);
+
+        // Attacher un écouteur d'événement pour détecter la fin de l'animation
+        mediaElement.addEventListener("animationend", handleAnimationEnd);
+
+        logEvent("info", `Animation de sortie lancée avec effet : ${exitClass}`);
     } catch (error) {
-        // Capture et journalise toute erreur rencontrée
-        logEvent("error", `Erreur lors de l'animation de sortie vers la droite : ${error.message}`, { error });
+        logEvent("error", `Erreur lors de l'animation de sortie : ${error.message}`, { error });
+}
+
+
+
+    // Fonction séparée pour gérer la fin de l'animation
+function handleAnimationEnd() {
+        try {
+            // Retirer l'écouteur d'événement pour éviter les répétitions
+            mediaElement.removeEventListener("animationend", handleAnimationEnd);
+
+            // Exécute la fonction de rappel après l'animation
+            callback();
+
+            logEvent("success", `Animation de sortie terminée avec effet : ${exitClass}`);
+        } catch (callbackError) {
+            logEvent("error", `Erreur dans la fonction de rappel après l'animation : ${callbackError.message}`, { callbackError });
+        }
     }
 }
+
+
+
 /*==============================================*/
 /*             Insertion           */
 /*==============================================*/
@@ -371,7 +409,7 @@ function insertNewMedia(media, folderPath, direction) {
         }
 
         // Crée un nouvel élément média en fonction du type (image ou vidéo)
-        const newMedia = document.createElement(media.image ? "img" : "video");
+        let newMedia = document.createElement(media.image ? "img" : "video");
         newMedia.classList.add("lightbox-media", "active-media");
 
         // Configure les attributs spécifiques selon le type de média
@@ -429,45 +467,42 @@ function insertNewMedia(media, folderPath, direction) {
 
 export function showNextMedia() {
     try {
-        // Vérifie que `mediaList` est défini et contient au moins un média
         if (!Array.isArray(mediaList) || mediaList.length === 0) {
             throw new Error("Aucun média disponible pour la navigation.");
         }
 
-        // Vérifie que `globalFolderName` est une chaîne valide avant de l'utiliser
         if (typeof globalFolderName !== "string") {
             throw new Error("Nom du dossier invalide ou non défini.");
         }
 
-        // Empêche la navigation si une transition est déjà en cours
         if (isTransitioning) {
             logEvent("warn", "Tentative de navigation alors qu'une transition est en cours.");
             return;
         }
 
-        // Active la protection contre les changements trop rapides
         isTransitioning = true;
 
-        // Met à jour l'index en avançant dans la liste (retourne au début si fin de liste)
-        currentIndex = (currentIndex + 1) % mediaList.length;
+        // Si un tri a été fait, inverser la direction de navigation
+        if (sorted) {
+            currentIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
+        } else {
+            currentIndex = (currentIndex + 1) % mediaList.length;
+        }
 
-        // Met à jour l'affichage avec le nouveau média
-        updateLightboxContent(mediaList[currentIndex], globalFolderName, "right");
+        updateLightboxContent(mediaList[currentIndex], globalFolderName, sorted ? "left" : "right");
 
-        // Désactive la protection après l'animation (500ms)
         setTimeout(() => {
             isTransitioning = false;
             logEvent("info", "Transition terminée, navigation autorisée.");
         }, 500);
 
-        // Journalisation du succès
-        logEvent("success", `Navigation vers le média suivant. Index actuel : ${currentIndex}.`);
+        logEvent("success", `Navigation vers le média suivant (avec tri : ${sorted}). Index actuel : ${currentIndex}.`);
 
     } catch (error) {
-        // Capture et journalise toute erreur rencontrée
         logEvent("error", `Erreur lors de la navigation vers le média suivant : ${error.message}`, { error });
     }
 }
+
 
 /**----------------------------------------------------------------
  * Gère la navigation vers le média précédent dans la lightbox.
@@ -492,45 +527,42 @@ export function showNextMedia() {
 
 export function showPreviousMedia() {
     try {
-        // Vérifie que `mediaList` est défini et contient au moins un média
         if (!Array.isArray(mediaList) || mediaList.length === 0) {
             throw new Error("Aucun média disponible pour la navigation.");
         }
 
-        // Vérifie que `globalFolderName` est une chaîne valide avant de l'utiliser
         if (typeof globalFolderName !== "string") {
             throw new Error("Nom du dossier invalide ou non défini.");
         }
 
-        // Empêche la navigation si une transition est déjà en cours
         if (isTransitioning) {
             logEvent("warn", "Tentative de navigation alors qu'une transition est en cours.");
             return;
         }
 
-        // Active la protection contre les changements trop rapides
         isTransitioning = true;
 
-        // Met à jour l'index en reculant dans la liste (retourne à la fin si au début)
-        currentIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
+        // Si un tri a été fait, inverser la direction de navigation
+        if (sorted) {
+            currentIndex = (currentIndex + 1) % mediaList.length;
+        } else {
+            currentIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
+        }
 
-        // Met à jour l'affichage avec le nouveau média
-        updateLightboxContent(mediaList[currentIndex], globalFolderName, "left");
+        updateLightboxContent(mediaList[currentIndex], globalFolderName, sorted ? "right" : "left");
 
-        // Désactive la protection après l'animation (500ms)
         setTimeout(() => {
             isTransitioning = false;
             logEvent("info", "Transition terminée, navigation autorisée.");
         }, 500);
 
-        // Journalisation du succès
-        logEvent("success", `Navigation vers le média précédent. Index actuel : ${currentIndex}.`);
+        logEvent("success", `Navigation vers le média précédent (avec tri : ${sorted}). Index actuel : ${currentIndex}.`);
 
     } catch (error) {
-        // Capture et journalise toute erreur rencontrée
         logEvent("error", `Erreur lors de la navigation vers le média précédent : ${error.message}`, { error });
     }
 }
+
 /*==============================================*/
 /*             Mise a jour du contenu
 /*==============================================*/

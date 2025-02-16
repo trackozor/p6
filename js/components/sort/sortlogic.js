@@ -8,6 +8,7 @@
 
 import { logEvent } from "../../utils/utils.js";
 import { getPhotographerIdFromUrl } from "../../pages/photographer-page.js";
+export let sorted = false; // Par défaut, pas de tri
 
 /*==============================================*/
 /*              Fonctions de tri                */
@@ -396,6 +397,18 @@ export async function captureGalleryState() {
 }
 
 
+export function updateGallery() {
+  let images = document.querySelectorAll('.gallery img');
+  let imageSources = [];
+  
+  images.forEach(img => imageSources.push(img.src));
+
+  // Met à jour la lightbox avec les nouvelles images
+  document.querySelectorAll('.lightbox img').forEach((img, index) => {
+      img.src = imageSources[index];
+  });
+}
+
 /*==============================================*/
 /* Fonction Principale : Gérer le Tri des Médias*/
 /*==============================================*/
@@ -508,6 +521,7 @@ export async function handleMediaSort(sortOption) {
       stack: error.stack,
     });
   } finally {
+    sorted = true;
     // Fin du processus de tri
     logEvent("test_end", "Fin du processus de tri des médias.");
   }
