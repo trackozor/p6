@@ -71,16 +71,43 @@ const validateMediaList = (mediaList) => {
  * @returns {Array} - Liste triée par nombre de likes décroissant.
  * @throws {TypeError} - En cas de données invalides.
  */
+/**---------------------------------------------------------------------------------------
+ * Trie les médias en fonction du nombre de likes (du plus populaire au moins populaire).
+ *----------------------------------------------------------------------------------------
+ *
+ * - Vérifie la validité de `mediaList` avant d'effectuer le tri.
+ * - Vérifie que chaque média contient bien une propriété `likes` de type `number`.
+ * - Utilise `.slice()` pour préserver l'originalité de `mediaList`.
+ * - Applique `.sort()` avec une fonction de comparaison robuste.
+ * - Retourne un tableau trié de manière immuable (`Object.freeze`).
+ * - Journalise le processus pour faciliter le suivi.
+ *
+ * @param {Array} mediaList - Liste des médias à trier.
+ * @returns {Array} - Liste triée par nombre de likes décroissant.
+ * @throws {TypeError} - En cas de données invalides.
+ */
 export function sortByLikes(mediaList) {
   try {
-    // Validation de l'entrée
-    validateMediaList(mediaList);
+    // Validation de la liste des médias
+    if (!Array.isArray(mediaList)) {
+      throw new TypeError("Le paramètre 'mediaList' doit être un tableau.");
+    }
+    
+    // Vérification des objets médias
+    mediaList.forEach(media => {
+      if (!media || typeof media !== "object") {
+        throw new TypeError("Chaque élément de 'mediaList' doit être un objet.");
+      }
+      if (!("likes" in media) || typeof media.likes !== "number") {
+        throw new TypeError(`L'objet ${JSON.stringify(media)} ne contient pas de 'likes' valide.`);
+      }
+    });
 
-    logEvent("info", "Début du tri des médias par nombre de likes.");
+    logEvent("info", `Début du tri des médias par nombre de likes (${mediaList.length} éléments).`);
 
-    // Création d'une copie triée et immuable du tableau
+    // Tri décroissant (du plus grand au plus petit nombre de likes)
     const sortedMedia = Object.freeze(
-      mediaList.slice().sort((a, b) => b.likes - a.likes) // Tri décroissant
+      [...mediaList].sort((a, b) => (b.likes || 0) - (a.likes || 0))
     );
 
     logEvent("success", `Tri terminé avec succès (${sortedMedia.length} médias triés).`);
@@ -88,9 +115,10 @@ export function sortByLikes(mediaList) {
     return sortedMedia;
   } catch (error) {
     logEvent("error", `Erreur dans sortByLikes : ${error.message}`, { error });
-    throw error;
+    return []; // Retourne une liste vide en cas d'erreur
   }
 }
+
 
 /*==============================================*/
 /*  Comparaison et tri alphabétique (titres)    */

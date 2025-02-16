@@ -445,6 +445,14 @@ export function initLightboxEvents(mediaArray, folderName) {
 
         // Gestion des boutons de navigation et de fermeture
         attachLightboxControls();
+         // Attacher l'événement de fermeture au clic sur l'overlay
+        const { lightboxContainer } = domSelectors.lightbox;
+        if (lightboxContainer) {
+            attachEvent(lightboxContainer, "click", handleLightboxClose);
+            logEvent("success", "Événement attaché : clic sur l'overlay ferme la lightbox.");
+        } else {
+            logEvent("error", "Impossible d'attacher l'événement de fermeture sur l'overlay : élément introuvable.");
+        }
 
         logEvent("success", "Événements de la lightbox initialisés avec succès.");
     } catch (error) {
@@ -516,12 +524,11 @@ function attachLightboxControls() {
     }
 }
 
-
-
-/*=======================================================*/
+/**=======================================================
 //    4.tri
-/*=======================================================*/
-/* =============================================================================
+/*=======================================================
+
+* =============================================================================
  * Fonction : initSortingEvents
  * =============================================================================
  * Initialise et gère les événements liés au tri des médias.
@@ -548,7 +555,7 @@ function initSortingEvents() {
     }
 }
 
-/* =============================================================================
+/** =============================================================================
  * Fonction : validateSortingElement
  * =============================================================================
  * Vérifie l'existence et la validité de l'élément de tri avant de l'utiliser.

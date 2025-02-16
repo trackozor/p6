@@ -157,6 +157,63 @@ export function handleModalClose() {
   }
 }
 
+export function handleGalleryNavigation(event, direction) {
+  let mediaGallery = document.querySelector("#media-container");
+  if (!mediaGallery) {
+    return;
+  }
+
+  const mediaItems = Array.from(mediaGallery.querySelectorAll(".media-item")); // Récupère tous les médias affichés
+  const activeMedia = document.querySelector(".media-item.selected"); // Trouve l'élément sélectionné
+
+  let currentIndex = mediaItems.findIndex(item => item === activeMedia);
+
+  if (currentIndex === -1) {
+      currentIndex = 0; // Si aucun média n'est sélectionné, démarre au premier
+  }
+
+  // Vérifie si le média actuel est une vidéo
+  const isVideo = activeMedia?.querySelector("video");
+
+  // Si une vidéo est sélectionnée, empêcher qu'elle capte les flèches gauche/droite
+  if (isVideo && (event.key === KEY_CODES.ARROW_LEFT || event.key === KEY_CODES.ARROW_RIGHT)) {
+      event.preventDefault(); // Empêche la vidéo d'intercepter l'événement
+  }
+
+  // Détermine la direction et met à jour l'index
+  if (direction === "vertical") {
+      if (event.key === KEY_CODES.ARROW_UP) {
+          currentIndex = (currentIndex - 1 + mediaItems.length) % mediaItems.length; // Défilement circulaire vers le haut
+      } else if (event.key === KEY_CODES.ARROW_DOWN) {
+          currentIndex = (currentIndex + 1) % mediaItems.length; // Défilement circulaire vers le bas
+      }
+  } else if (direction === "horizontal") {
+      if (event.key === KEY_CODES.ARROW_LEFT) {
+          currentIndex = (currentIndex - 1 + mediaItems.length) % mediaItems.length; // Défilement circulaire vers la gauche
+      } else if (event.key === KEY_CODES.ARROW_RIGHT) {
+          currentIndex = (currentIndex + 1) % mediaItems.length; // Défilement circulaire vers la droite
+      }
+  }
+
+  // Met à jour la sélection visuelle
+  mediaItems.forEach(item => item.classList.remove("selected")); // Retire les classes actives
+  mediaItems[currentIndex].classList.add("selected"); // Ajoute la classe au nouvel élément actif
+  mediaItems[currentIndex].scrollIntoView({ behavior: "smooth", block: "center", inline: "center" }); // Fait défiler la galerie pour centrer l’élément sélectionné
+
+  // Piège le focus sur l'élément sélectionné
+  mediaItems[currentIndex].setAttribute("tabindex", "0"); // Ajoute tabindex pour le focus
+  mediaItems[currentIndex].focus(); // Force le focus sur l'élément
+
+  // Supprime tabindex des autres éléments pour éviter le focus accidentel
+  mediaItems.forEach((item, index) => {
+      if (index !== currentIndex) {
+          item.setAttribute("tabindex", "-1");
+      }
+  });
+
+  logEvent("info", `Média sélectionné via les flèches : Index ${currentIndex}`);
+}
+
 
 /**
  * Gère la fermeture de la modale lorsque l'utilisateur clique sur l'arrière-plan.
@@ -452,6 +509,26 @@ export function handleLightboxClose() {
   } catch (error) {
     // Capture et journalise toute erreur rencontrée
     logEvent("error", `Erreur lors de la fermeture de la lightbox : ${error.message}`, { error });
+  }
+}
+export function handleLightboxBackgroundClick(event) {
+  try {
+    // Vérifie que l'événement et la cible existent bien
+    if (!event || !event.target) {
+      throw new Error("Événement invalide ou non défini.");
+    }
+
+    // Vérifie que l'élément cliqué est bien l'overlay de la lightbox
+    if (event.target === domSelectors.lightbox.lightboxOverlay) {
+      // Journalisation du clic sur l'arrière-plan
+      logEvent("info", "Clic détecté sur l'arrière-plan de la lightbox. Fermeture en cours...");
+
+      // Déclenche la fermeture de la lightbox
+      closeLightbox();
+    }
+  } catch (error) {
+    // Capture et journalise toute erreur survenant lors du traitement du clic
+    logEvent("error", `Erreur lors du clic sur l'arrière-plan de la lightbox : ${error.message}`, { error });
   }
 }
 

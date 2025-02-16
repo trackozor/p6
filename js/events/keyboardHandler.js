@@ -18,7 +18,7 @@ import {
     showPreviousMedia,
 } from "../components/lightbox/lightbox.js";
 import { KEY_CODES } from "../config/constants.js";
-
+import { handleGalleryNavigation } from "./eventHandler.js";    
 /** =============================================================================
  *                      PROTECTION ANTI-SPAM CLAVIER
  * ============================================================================= */
@@ -152,10 +152,20 @@ export function handleKeyboardEvent(event) {
                 break;
 
             // Gère la navigation avec `Flèche gauche` et `Flèche droite` dans la lightbox
+            
             case KEY_CODES.ARROW_LEFT:
             case KEY_CODES.ARROW_RIGHT:
                 if (activeLightbox) {
-                    handleLightboxNavigation(event, focusedElement);
+                    handleLightboxNavigation(event, focusedElement); // Navigation dans la lightbox
+                } else if (mediaGallery) {
+                    handleGalleryNavigation(event, "horizontal"); // Navigation horizontale dans la galerie
+                }
+                break;
+
+            case KEY_CODES.ARROW_UP:
+            case KEY_CODES.ARROW_DOWN:
+                if (!activeLightbox && mediaGallery) {
+                    handleGalleryNavigation(event, "vertical"); // Navigation verticale dans la galerie
                 }
                 break;
 

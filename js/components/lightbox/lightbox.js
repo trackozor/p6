@@ -12,6 +12,7 @@
 import { logEvent } from "../../utils/utils.js";
 import domSelectors from "../../config/domSelectors.js";
 import {updateGallery} from "../sort/sortlogic.js";
+import { handleLightboxBackgroundClick } from "../../events/eventHandler.js";
 // Indice du média actuellement affiché dans la lightbox
 let currentIndex = 0;
 
@@ -111,49 +112,43 @@ export function initLightbox(mediaArray, folderName) {
  */
 
 export function openLightbox(index, mediaArray, folderName) {
-    // Journalisation de l'action d'ouverture
     logEvent("action", `Ouverture de la lightbox pour l'index ${index}.`, { index });
 
     try {
-        // Récupère le conteneur principal de la lightbox
-        const { lightboxContainer } = domSelectors.lightbox;
+        const { lightboxContainer, lightboxOverlay } = domSelectors.lightbox;
 
-        // Vérifie que la lightbox existe bien dans le DOM avant de procéder
         if (!lightboxContainer) {
             throw new Error("Conteneur principal de la lightbox introuvable.");
         }
 
-        // Mise à jour de `mediaList` si une nouvelle liste de médias est fournie
         if (Array.isArray(mediaArray) && mediaArray.length > 0 && mediaArray !== mediaList) {
             mediaList = [...mediaArray];
             globalFolderName = folderName;
         }
 
-        // Vérifie que l'index fourni est dans les limites de la liste de médias
         if (index < 0 || index >= mediaList.length) {
             throw new Error(`Index ${index} hors limites (doit être entre 0 et ${mediaList.length - 1}).`);
         }
 
-        // Met à jour l'index du média actuellement affiché
         currentIndex = index;
-
-        // Met à jour le contenu de la lightbox en fonction du média sélectionné
         updateLightboxContent(mediaList[currentIndex], globalFolderName, "right");
 
-        // Rend la lightbox visible en supprimant la classe "hidden"
         lightboxContainer.classList.remove("hidden");
-
-        // Indique que la lightbox est visible pour l'accessibilité
         lightboxContainer.setAttribute("aria-hidden", "false");
 
-        // Journalisation du succès de l'ouverture
+        // Ajoute un écouteur pour fermer la lightbox au clic sur l'overlay
+        lightboxOverlay.addEventListener("click", handleLightboxBackgroundClick);
+
+        // Ajout de l'écouteur pour la navigation au clavier
+        document.addEventListener("keydown", handleLightboxKeyboardNav);
+
         logEvent("success", "Lightbox ouverte avec succès.", { currentIndex });
 
     } catch (error) {
-        // Capture et journalise toute erreur survenue lors de l'ouverture de la lightbox
         logEvent("error", "Erreur lors de l'ouverture de la lightbox.", { error });
     }
 }
+
 
 /*==============================================*/
 /*              Fermeture lightbox            */
@@ -179,40 +174,47 @@ export function openLightbox(index, mediaArray, folderName) {
  */
 
 export function closeLightbox() {
-    logEvent("action", "Fermeture de la lightbox et réinitialisation.");
+    logEvent("action", "Fermeture de la lightbox et réinitialisation du contenu.");
 
     try {
-        const { lightboxContainer, lightboxMediaContainer, lightboxCaption } = domSelectors.lightbox;
-        
+        const { lightboxContainer, lightboxOverlay, lightboxMediaContainer, lightboxCaption } = domSelectors.lightbox;
+
         if (!lightboxContainer) {
             throw new Error("Conteneur principal de la lightbox introuvable.");
         }
 
-        const currentMedia = lightboxMediaContainer.querySelector(".active-media");
-        if (currentMedia) {
-            currentMedia.remove();
-            logEvent("info", "Média supprimé de la lightbox.");
+        // Suppression UNIQUEMENT des médias (image/vidéo) sans toucher aux boutons
+        const mediaToRemove = lightboxMediaContainer.querySelector(".active-media");
+        if (mediaToRemove) {
+            mediaToRemove.remove();
+            logEvent("info", "Média actuel supprimé de la lightbox.");
         }
 
+        // Réinitialisation du titre (caption)
         if (lightboxCaption) {
             lightboxCaption.textContent = "";
             logEvent("info", "Caption de la lightbox réinitialisée.");
         }
 
-        currentIndex = 0;  
-        mediaList = [];     
-        globalFolderName = ""; 
+        // Réinitialisation des variables globales
+        currentIndex = null;
+        mediaList = null;
+        globalFolderName = null;
 
+        // Masquer la lightbox sans supprimer ses éléments de structure
         lightboxContainer.classList.add("hidden");
         lightboxContainer.setAttribute("aria-hidden", "true");
 
-        logEvent("success", "Lightbox fermée et réinitialisée avec succès.");
+        // Suppression des écouteurs d'événements pour éviter les conflits
+        lightboxOverlay.removeEventListener("click", handleLightboxBackgroundClick);
+        document.removeEventListener("keydown", handleLightboxKeyboardNav);
+
+        logEvent("success", "Lightbox fermée et réinitialisée correctement.");
 
     } catch (error) {
         logEvent("error", `Erreur lors de la fermeture de la lightbox : ${error.message}`, { error });
     }
 }
-
 
 
 /*==============================================*/
