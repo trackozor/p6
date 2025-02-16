@@ -37,7 +37,7 @@ export async function loadPhotographerMedia(photographerId, mediaDataUrl) {
 
     try {
          // Étape 1 : Validation des paramètres
-         validatePhotographerMediaParams(photographerId, mediaDataUrl);
+        validatePhotographerMediaParams(photographerId, mediaDataUrl);
 
         // Étape 2 : Récupération des données JSON
         const data = await fetchJSON(mediaDataUrl);
@@ -257,7 +257,6 @@ function validateMediaParams(media, folderName) {
  */
 function createImageElement(media, folderName) {
     try {
-        // Vérification des paramètres
         if (!media || typeof media !== "object" || !media.image) {
             logEvent("error", "createImageElement : Données image invalides ou manquantes.", { media });
             return null;
@@ -268,20 +267,34 @@ function createImageElement(media, folderName) {
             return null;
         }
 
-        // Création de l'élément `<img>`
+        // Création du `picture` pour charger WebP en priorité
+        const picture = document.createElement("picture");
+
+        // Création de la source WebP
+        const sourceWebP = document.createElement("source");
+        sourceWebP.srcset = `../../assets/photographers/${folderName}/${media.image.replace(/\.(jpg|png)$/, ".webp")}`;
+        sourceWebP.type = "image/webp";
+        picture.appendChild(sourceWebP);
+
+        // Création de l'élément image (JPG/PNG + fallback)
         const img = document.createElement("img");
         img.src = `../../assets/photographers/${folderName}/${media.image}`;
         img.className = "media";
         img.alt = media.title || "Image sans titre";
         img.setAttribute("aria-label", `Image : ${media.title || "Sans titre"}`);
-        img.loading = "lazy"; // Charge l'image uniquement quand elle entre dans le viewport
-        img.decoding = "async"; // Décode l'image de manière asynchrone pour réduire le blocage du rendu
-        img.width = 300; // Taille fixe pour améliorer le layout (modifiable selon le design)
-        img.height = 200; // Idem
+        img.loading = "lazy";
+        img.decoding = "async";
+        img.width = 300;
+        img.height = 200;
+
+        // Gestion du fallback (si WebP et JPG échouent)
+        img.onerror = () => img.src = "../../assets/photographers/account.png";
+
+        picture.appendChild(img);
 
         logEvent("success", `createImageElement : Image générée avec succès (${media.image}).`, { img });
 
-        return img;
+        return picture;
     } catch (error) {
         logEvent("error", "createImageElement : Erreur lors de la création de l'image.", { error });
         return null;

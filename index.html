@@ -43,6 +43,7 @@
       rel="stylesheet"
     >
     <link href="./css/index-main.css" rel="stylesheet" >
+    <link rel="preload" as="image" href="./assets/photographers/{{id}}.webp" type="image/webp">
 
     <!-- Titre -->
     <title>Fisheye - Nos Photographes</title>
@@ -93,12 +94,15 @@
     <template id="photographer-template">
       <article class="photographer-card" aria-labelledby="photographer-name">
         <div class="photographer-card-portrait-wrapper">
+          <picture>
+          <source srcset="./assets/photographers/{{id}}.webp" type="image/webp">
           <img
-            src=""
+            src="./assets/photographers/{{id}}.jpg"
             alt="Portrait de {{name}}"
             class="photographer-card-portrait"
-            loading="lazy"
+            fetchpriority="high"
           >
+        </picture>
         </div>
         <div class="photographer-card-details">
           <h3 id="photographer-name">{{name}}</h3>

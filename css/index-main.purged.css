@@ -1,0 +1,1052 @@
+@charset "UTF-8";
+/* =============================================================================
+    Projet      :   Fisheye
+    Fichier     :   _index.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Styles spécifiques à la page d'accueil du projet Fisheye.
+                    Inclut les composants, layouts et sections nécessaires pour
+                    construire cette page.
+============================================================================= */
+/* =============================================================================
+    Projet      :   Fisheye
+    Fichier     :   _variables.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Contient les variables globales utilisées dans le projet.
+                    Couvre les couleurs, typographies, tailles et espacements.
+============================================================================= */
+:root {
+  /* ================================ */
+  /* Palette principale               */
+  /* ================================ */
+  --primary-color: #901c1c; /* Rouge foncé pour accentuation */
+  --primary-color-light: #d3573c; /* Rouge plus clair pour hover */
+  --secondary-color: #d88878; /* Rouge clair pour éléments secondaires */
+  --neutral-color: #fafafa; /* Blanc cassé pour les fonds */
+  /* Couleurs complémentaires */
+  --accent-color: #ff5722; /* Orange vif pour les appels à l'action */
+  --secondary-neutral: #525252; /* Gris foncé pour textes secondaires */
+  /* Couleurs de texte */
+  --text-color-primary: #000; /* Texte principal (noir) */
+  --text-color-secondary: #901c1c; /* Texte secondaire */
+  --text-color-tertiary: #757575; /* Texte peu important */
+  --text-color-name: #d3573c; /* Texte pour noms ou accents */
+  /* Couleurs d'état */
+  --success-color: #4caf50; /* Succès */
+  --warning-color: #ff9800; /* Avertissement */
+  --error-color: #f44336; /* Erreur */
+  --info-color: #2196f3; /* Information */
+  /* ================================ */
+  /* Typographie                      */
+  /* ================================ */
+  --font-primary: "DM Sans", sans-serif; /* Police principale */
+  --font-secondary: "Arial", sans-serif; /* Police secondaire */
+  /* Tailles des polices */
+  --font-size-xsmall: 0.7rem; /* Texte très petit */
+  --font-size-small: 0.8rem; /* Texte petit */
+  --font-size-base: 1rem; /* Texte de base */
+  --font-size-medium: 1.2rem; /* Texte légèrement plus grand */
+  --font-size-large: 1.6rem; /* Grand texte */
+  --font-size-xlarge: 2rem; /* Très grand texte */
+  --font-size-giant: 2.4rem; /* Texte énorme */
+  /* Poids des polices */
+  --font-weight-light: 300; /* Poids léger */
+  --font-weight-regular: 400; /* Poids normal */
+  --font-weight-medium: 500; /* Poids intermédiaire */
+  --font-weight-bold: 700; /* Poids gras */
+  /* Hauteur de ligne */
+  --line-height-tight: 1.2; /* Compact */
+  --line-height-normal: 1.4; /* Standard */
+  --line-height-loose: 1.6; /* Espacé */
+  /* ================================ */
+  /* Espacements                      */
+  /* ================================ */
+  --spacing-xxsmall: 0.2rem; /* Très petit */
+  --spacing-xsmall: 0.4rem; /* Petit */
+  --spacing-small: 0.8rem; /* Moyen-petit */
+  --spacing-medium: 1.6rem; /* Moyen */
+  --spacing-large: 2.4rem; /* Grand */
+  --spacing-xlarge: 3.2rem; /* Très grand */
+  --spacing-xxlarge: 4rem; /* Énorme */
+  /* ================================ */
+  /* Gaps                             */
+  /* ================================ */
+  --gap-small: 0.8rem; /* Petit espace */
+  --gap-medium: 1.6rem; /* Moyen espace */
+  --gap-large: 2.4rem; /* Grand espace */
+  /* ================================ */
+  /* Tailles                          */
+  /* ================================ */
+  --size-small: 2rem; /* Objets petits */
+  --size-medium: 4rem; /* Objets moyens */
+  --size-large: 6rem; /* Objets grands */
+  --size-xlarge: 8rem; /* Objets très grands */
+  /* ================================ */
+  /* Bordures et ombres               */
+  /* ================================ */
+  --border-radius-small: 0.3rem; /* Coins légèrement arrondis */
+  --border-radius-medium: 0.5rem; /* Coins arrondis */
+  --border-radius-large: 1rem; /* Coins très arrondis */
+  --box-shadow-small: 0 1px 3px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  --box-shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.15); /* Ombre moyenne */
+  --box-shadow-large: 0 10px 20px rgba(0, 0, 0, 0.2); /* Ombre prononcée */
+  /* ================================ */
+  /* Transitions et Animations        */
+  /* ================================ */
+  --transition-fast: 0.2s ease-in-out; /* Animation rapide */
+  --transition-default: 0.3s ease; /* Animation standard */
+  --transition-slow: 0.5s ease-out; /* Animation lente */
+}
+
+/* ====================================================== */
+/*  Nom du fichier    : _mixins.scss                */
+/* Auteur            : Trackozor                        */
+/* Date de création  : 25/09/24                        */
+/*  Dernière modif.   : 08/01/25                        */
+/*  Description       : Fichier regroupant tout les mixins    */
+/* ====================================================== */
+/* Mixins pour gérer les tablettes */
+/* Mixin pour gérer les écrans desktop */
+/* Mixin pour gérer les écrans larges */
+/* ====================================================== */
+/*  Nom du fichier    : _animations.scss                */
+/* Auteur            : Trackozor                        */
+/* Date de création  : 25/09/24                        */
+/*  Dernière modif.   : 08/01/25                        */
+/*  Description       : Fichier regroupant toutes les   */
+/*                        animations réutilisables       */
+/*                        et les animations Lightbox.    */
+/* ====================================================== */
+/* ====================================================== */
+/*  Effets de Fondu (Fade In / Fade Out) */
+/* ====================================================== */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+/*  Classe utilitaire */
+
+.fade-out {
+  animation: fade-out 0.5s ease-in-out forwards;
+}
+
+/* ====================================================== */
+/*  Effets de Zoom et Échelle */
+/* ====================================================== */
+@keyframes scale-up {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes scale-down {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.8);
+  }
+}
+/*  Classes utilitaires */
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* ====================================================== */
+/*  Effets de Glissement (Slide In / Slide Out) */
+/* ====================================================== */
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+/*  Classes utilitaires */
+
+/* ====================================================== */
+/*  Effets de Rotation */
+/* ====================================================== */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotate-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+/*  Classes utilitaires */
+
+/* ====================================================== */
+/*  Effets pour la Lightbox */
+/* ====================================================== */
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateX(20px) scale(0.95);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-3px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+@keyframes fade-out-scale {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+/*  Classes utilitaires */
+
+/* ====================================================== */
+/*  Animations de navigation Lightbox (Gauche/Droite) */
+/* ====================================================== */
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-out-left {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-out-right {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+/*  Classes spécifiques pour la Lightbox */
+
+.lightbox-exit-left {
+  animation: slide-out-left 0.5s ease-in-out forwards;
+}
+
+.lightbox-exit-right {
+  animation: slide-out-right 0.5s ease-in-out forwards;
+}
+
+/* ====================================================== */
+/*  Effet de rebond (Bounce) pour les transitions */
+/* ====================================================== */
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+/*  Classe utilitaire */
+
+/* ====================================================== */
+/*  Animation Like (HeartBeat) */
+/* ====================================================== */
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+/*  Classe utilitaire */
+
+/* ====================================================== */
+/*  Animation de Chargement (Loader) */
+/* ====================================================== */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/*  Classe utilitaire */
+
+/* =============================================================================
+    Projet      : Fisheye
+    Fichier     : _reset.scss
+    Auteur      : Trackozor
+    Date        : 01/01/2025
+    Version     : 1.0.0
+    Description : Fichier de reset CSS pour normaliser les styles par défaut
+                  des navigateurs. Prépare une base cohérente pour les styles
+                  personnalisés du projet.
+============================================================================= */
+/* ================================ */
+/* Général                          */
+/* ================================ */
+/* Remet à zéro les marges, paddings, bordures et styles par défaut */
+html,
+body,
+div,
+span,
+object,
+h1,
+h2,
+h3,
+p,
+a,
+code,
+img,
+ins,
+s,
+b,
+i,
+center,
+li,
+form,
+caption,
+article,
+details,
+footer,
+header,
+section,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%; /* Taille de police par défaut */
+  font: inherit; /* Hérite de la famille de police du parent */
+  vertical-align: baseline; /* Normalise l'alignement vertical */
+  color: black;
+}
+
+/* ================================ */
+/* HTML5 : Compatibilité des blocs  */
+/* ================================ */
+/* Assure une prise en charge correcte des éléments HTML5 */
+article,
+details,
+footer,
+header,
+section {
+  display: block; /* Rend les éléments block-level */
+}
+
+/* ================================ */
+/* Corps du document                */
+/* ================================ */
+/* Configuration de base pour le <body> */
+body {
+  line-height: 1; /* Normalise l'interligne */
+  font-family: var(--font-primary, sans-serif); /* Police par défaut */
+  background-color: white; /* Fond par défaut */
+  color: var(--text-color-primary); /* Texte par défaut */
+}
+
+/* ================================ */
+/* Listes                           */
+/* ================================ */
+/* Supprime les styles par défaut des listes */
+
+/* ================================ */
+/* Citations                        */
+/* ================================ */
+/* Supprime les guillemets automatiques des citations */
+
+/* Empêche les pseudo-éléments de guillemets */
+
+/* ================================ */
+/* Tables                           */
+/* ================================ */
+/* Supprime les espacements entre les cellules des tableaux */
+
+/* ================================ */
+/* Médias                           */
+/* ================================ */
+/* Adapte les images et vidéos au conteneur parent */
+img,
+video {
+  max-width: 100%; /* Limite la largeur à celle du conteneur */
+  height: 100%; /* Conserve les proportions des médias */
+}
+
+/* =============================================================================
+    Projet      :   Fisheye
+    Fichier     :   _utilities.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Classes utilitaires pour des fonctionnalités spécifiques,
+                    notamment pour l'accessibilité et des comportements génériques.
+============================================================================= */
+/* =========================================================================== */
+/*                          Classes pour l'accessibilité                       */
+/* =========================================================================== */
+/* Masque visuellement un élément tout en le gardant accessible aux lecteurs d'écran */
+.sr-only {
+  position: absolute; /* Retire l'élément du flux visuel */
+  width: 1px; /* Taille réduite à 1 pixel */
+  height: 1px; /* Taille réduite à 1 pixel */
+  padding: 0; /* Pas de padding */
+  margin: -1px; /* Place l'élément hors écran */
+  overflow: hidden; /* Masque le contenu débordant */
+  clip: rect(0, 0, 0, 0); /* Masque visuellement l'élément */
+  border: 0; /* Supprime les bordures */
+}
+
+/* Affiche un élément précédemment masqué pour les lecteurs d'écran */
+
+/* Classe pour masquer le scroll du corps de la page */
+.no-scroll {
+  overflow: hidden;
+}
+
+/* =========================================================================== */
+/*                     Classes pour les styles par défaut                      */
+/* =========================================================================== */
+/* Retire les soulignements des liens */
+a {
+  text-decoration: none; /* Supprime la décoration par défaut */
+  color: inherit; /* Hérite de la couleur du texte parent */
+}
+
+/* =============================================================================
+    Projet      :   Fisheye
+    Fichier     :   _button.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :   1.0.0
+    Description :   Contient les styles réutilisables pour les boutons
+============================================================================= */
+/* -------------------------------------------------------------------------- */
+/* Bouton de contact                                                          */
+/* Description : Style pour le bouton de contact avec un design simple et     */
+/* élégant. Inclut des ajustements responsive pour les tablettes.             */
+/* -------------------------------------------------------------------------- */
+.contact-button {
+  font-size: 1rem; /* Taille de la police pour le texte du bouton */
+  z-index: 550;
+  font-weight: bold; /* Texte en gras pour plus de visibilité */
+  color: white; /* Couleur du texte */
+  padding: 3%; /* Espacement interne pour rendre le bouton plus grand */
+  max-width: 150px; /* Limite la largeur maximale du bouton */
+  max-height: 70px; /* Limite la hauteur maximale du bouton */
+  border: none; /* Supprime les bordures */
+  background-color: #901c1c; /* Couleur de fond rouge foncé */
+  border-radius: 0.3rem; /* Coins légèrement arrondis */
+  margin-bottom: 12%; /* Ajoute un espace vertical autour du bouton */
+  cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
+}
+@media (min-width: 767px) {
+  .contact-button {
+    max-height: 20px; /* Réduit la hauteur maximale sur tablette */
+    padding: 2% 1%; /* Diminue les espacements internes */
+    margin-left: 7%;
+    display: flex;
+    margin-bottom: 0;
+    align-items: center;
+  }
+}
+@media (min-width: 1024px) {
+  .contact-button {
+    position: absolute;
+    display: flex;
+    padding: 2% 1%;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    align-items: center;
+    justify-content: center;
+  }
+}
+@media (min-width: 1440px) {
+  .contact-button {
+    padding: 1.5% 1%;
+  }
+}
+
+.confirm-btn {
+  display: flex;
+  align-items: center;
+  margin: 5% auto;
+  padding: 2%;
+  background-color: #901c1c; /* Couleur de fond rouge foncé */
+  font-weight: bold; /* Texte en gras pour plus de visibilité */
+  color: white; /* Couleur du texte */
+  border-radius: 0.3rem; /* Coins légèrement arrondis */
+}
+
+/* -------------------------------------------------------------------------- */
+/* Icônes SVG                                                                 */
+/* Description : Style générique pour les icônes SVG avec des transitions     */
+/* pour un changement de couleur fluide au survol.                            */
+/* -------------------------------------------------------------------------- */
+.icon {
+  width: 24px; /* Largeur fixe pour toutes les icônes */
+  height: 24px; /* Hauteur fixe pour toutes les icônes */
+  fill: #fff; /* Couleur de l'icône par défaut (blanc) */
+  transition: fill 0.3s ease; /* Ajoute une transition pour le changement de couleur au survol */
+}
+
+/* -------------------------------------------------------------------------- */
+/* Boutons de navigation et de fermeture                                      */
+/* Description : Supprime les styles par défaut et centre les icônes.         */
+/* Appliqué aux boutons suivants : lightbox-prev, lightbox-close,             */
+/* lightbox-next, modal-close.                                                */
+/* -------------------------------------------------------------------------- */
+.lightbox-prev,
+.lightbox-close,
+.lightbox-next,
+.modal-close {
+  background: none; /* Supprime tout arrière-plan pour un design minimal */
+  border: none; /* Supprime les bordures par défaut */
+  padding: 0; /* Supprime les espacements internes */
+  margin: 0; /* Supprime les marges externes */
+  box-shadow: none; /* Supprime les ombres éventuelles */
+  cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
+  display: flex; /* Utilise Flexbox pour organiser le contenu */
+  /* Centre les icônes verticalement */
+  justify-content: center; /* Centre les icônes horizontalement */
+  width: auto; /* Ajuste automatiquement la largeur au contenu */
+  height: auto; /* Ajuste automatiquement la hauteur au contenu */
+}
+
+.fa-heart::before {
+  color: #901c1c;
+}
+
+.fa-heart.liked::before {
+  color: #d88876;
+}
+
+.sorting {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5%;
+}
+@media (min-width: 767px) {
+  .sorting {
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 10%;
+    margin: 2% 0 3% 10%;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*                   Combo box pour choix du trie                             */
+/* -------------------------------------------------------------------------- */
+
+#sort-options {
+  display: flex;
+  z-index: 20;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  background-color: #901c1c;
+  align-items: center;
+  margin: 2%;
+  padding: 0.5% 1%;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+#sort-options:focus {
+  transform-origin: top; /* Définit le point de pivot pour l'animation */
+  z-index: 999;
+}
+
+/* =============================================================================
+    Projet      :    Fisheye
+    Fichier     :   _card.scss
+    Auteur      :   Trackozor
+    Date        :   01/01/2025
+    Version     :    1.0.0
+    Description :    Styles pour la carte des photographes (photographer-card).
+                    Inclut les styles de base et des media queries pour
+                    l'adaptation aux différents écrans.
+============================================================================= */
+/*============================================================================*/
+/* Carte du photographe (Mobile First)                                        */
+/* Description : Style principal pour la carte des photographes               */
+/*============================================================================*/
+.photographer-card {
+  position: relative; /* Nécessaire pour placer des éléments enfants en absolu */
+  display: flex; /* Utilise Flexbox pour organiser les éléments de la carte */
+  flex-direction: column; /* Les éléments sont empilés verticalement */
+  align-items: center; /* Centre les éléments horizontalement */
+  text-align: center; /* Centre le texte à l'intérieur */
+  background-color: white; /* Fond neutre pour la carte */
+  max-width: 100%; /* Adapte la largeur de la carte à celle du conteneur */
+  margin: 6% auto; /* Centre la carte avec un espace vertical */
+  transition: transform 0.3s ease; /* Ajoute une animation fluide sur hover */
+  cursor: pointer; /* Change le curseur au survol */
+  text-decoration: none; /* Supprime les décorations de texte */
+  /*----------------------- Responsive --------------------------------*/
+}
+@media (min-width: 767px) {
+  .photographer-card {
+    padding: 0; /* Supprime les espacements internes */
+    width: 90%; /* Réduit légèrement la largeur pour un alignement centré */
+  }
+}
+@media (min-width: 1024px) {
+  .photographer-card {
+    padding: 0; /* Supprime les espacements */
+    width: 90%; /* Maintient une largeur adaptée */
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Effet hover sur la carte                                                   */
+/* Description : Ajoute un effet visuel lorsque la carte est survolée          */
+/* -------------------------------------------------------------------------- */
+.photographer-card:hover {
+  transform: scale(1.2); /* Agrandit légèrement la carte */
+  box-shadow: var(--box-shadow-large);
+  text-decoration: none; /* Assure qu'il n'y ait pas de soulignement de texte */
+}
+
+/* -------------------------------------------------------------------------- */
+/* Image du photographe                                                      */
+/* Description : Définit les dimensions et le style de l'image circulaire     */
+/* -------------------------------------------------------------------------- */
+.photographer-card-portrait {
+  width: 10vh; /* Largeur de l'image basée sur la hauteur de la fenêtre */
+  height: 10vh; /* Hauteur de l'image */
+  border-radius: 50%; /* Rend l'image circulaire */
+  object-fit: cover; /* Assure que l'image garde ses proportions */
+  object-position: center; /* Centre le contenu de l'image */
+  transform: scale(1.2); /* Agrandit légèrement l'image */
+  margin: 5% 0; /* Ajoute un espacement autour de l'image */
+  transition: transform 0.3s ease; /* Ajoute une animation fluide */
+  cursor: pointer; /* Change le curseur au survol */
+  /* ------------------------- Responsive ------------------------*/
+}
+@media (min-width: 767px) {
+  .photographer-card-portrait {
+    width: 12vw; /* Ajuste la largeur de l'image en fonction de la fenêtre */
+    height: 12vw; /* Ajuste la hauteur de l'image */
+    margin: 1% 0 3% 0; /* Diminue les marges autour de l'image */
+  }
+}
+@media (min-width: 1024px) {
+  .photographer-card-portrait {
+    width: 100px; /* Ajuste la taille de l'image */
+    height: 100px; /* Hauteur proportionnelle */
+    margin: 5% 0 8% 0; /* Ajuste les espacements verticaux */
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Nom du photographe                                                        */
+/* Description : Style pour le nom du photographe affiché en gras             */
+/* -------------------------------------------------------------------------- */
+.photographer-card-name {
+  font-size: var(--font-size-xlarge); /* Utilise une taille de texte importante */
+  color: var(--text-color-name); /* Utilise une couleur d'accentuation */
+  font-weight: bold; /* Affiche le texte en gras */
+  margin-bottom: 2%; /* Ajoute un espace en dessous du nom */
+  /*---------------------------Responsive --------------------------------*/
+}
+@media (min-width: 767px) {
+  .photographer-card-name {
+    font-size: var(--font-size-large); /* Réduit la taille du texte */
+  }
+}
+@media (min-width: 1024px) {
+  .photographer-card-name {
+    font-size: var(--font-size-large); /* Ajuste la taille du texte */
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Localisation du photographe                                               */
+/* Description : Affiche la ville et le pays du photographe                   */
+/* -------------------------------------------------------------------------- */
+.photographer-card-location {
+  font-size: var(--font-size-base); /* Taille de texte standard */
+  color: var(--text-color-secondary); /* Couleur secondaire pour moins d'importance */
+  margin-bottom: 2%; /* Ajoute un espace en dessous */
+}
+
+/* -------------------------------------------------------------------------- */
+/* Slogan du photographe                                                     */
+/* Description : Style pour le slogan du photographe             */
+/* -------------------------------------------------------------------------- */
+.photographer-card-tagline {
+  font-size: var(--font-size-small); /* Texte légèrement plus petit */
+  font-weight: 500; /* Texte avec une importance moyenne */
+  color: var(--text-color-primary); /* Couleur principale du texte */
+  margin-bottom: 2%; /* Ajoute un espace en dessous */
+  /*--------------------------- Responsive -------------------------------*/
+}
+@media (min-width: 767px) {
+  .photographer-card-tagline {
+    font-size: var(--font-size-base); /* Unifie les tailles de texte */
+  }
+}
+@media (min-width: 1024px) {
+  .photographer-card-tagline {
+    font-size: var(--font-size-base); /* Unifie les tailles de texte */
+  }
+}
+@media (min-width: 1440px) {
+  .photographer-card-tagline {
+    font-size: var(--font-size-base); /* Unifie les tailles de texte */
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Prix par jour du photographe                                              */
+/* Description : Affiche le tarif journalier du photographe                   */
+/* -------------------------------------------------------------------------- */
+.photographer-card-price {
+  font-size: var(--font-size-small); /* Texte de taille discrète */
+  font-weight: 500; /* Texte légèrement mis en avant */
+  color: var(--text-color-tertiary); /* Couleur tertiaire pour moins de priorité */
+  /*-------------------------- Responsive -------------------------------*/
+}
+@media (min-width: 767px) {
+  .photographer-card-price {
+    font-size: var(--font-size-base); /* Unifie les tailles de texte */
+  }
+}
+@media (min-width: 1024px) {
+  .photographer-card-price {
+    font-size: var(--font-size-base); /* Unifie les tailles de texte */
+  }
+}
+@media (min-width: 1440px) {
+  .photographer-card-price {
+    font-size: var(--font-size-base); /* Unifie les tailles de texte */
+  }
+}
+
+/*============================================================================*/
+/* Carte des médias (Mobile First)                                            */
+/* Description : Style principal pour la carte des médias                     */
+/*============================================================================*/
+.media-item {
+  display: block;
+  background-color: var(--color-background-light); /* Fond clair */
+  border-radius: var(--radius-base); /* Coins arrondis */
+  overflow: hidden;
+  width: 90%;
+  margin: 1% auto;
+  height: 200px;
+  height: 300px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  object-position: center;
+}
+@media (min-width: 767px) {
+  .media-item {
+    margin: 5% auto;
+    width: 250px;
+    height: 250px;
+  }
+}
+
+/* Animation au survol */
+.media-item:hover {
+  transform: scale(1.05); /* Légère augmentation */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre plus marquée */
+}
+
+/* -------------------------------------------------------------------------- */
+/* image ou video                                                            */
+/* Description : Définit les dimensions et le style du média                 */
+/* -------------------------------------------------------------------------- */
+.media {
+  width: 100%; /* Prend toute la largeur */
+  height: 100%; /* Conserve les proportions */
+  max-height: 230px;
+  object-fit: cover;
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex; /* S'assure que c'est un bloc */
+  object-position: center;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Légende sous le média (conteneur)                                          */
+/* Description : Définit les dimensions et le style du conteneur               */
+/* -------------------------------------------------------------------------- */
+.media-caption {
+  padding: var(--spacing-small) 0; /* Espacement interne */
+  font-size: var(--font-size-small); /* Taille de police réduite */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 5%;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Légende sous le média (titre)                                              */
+/* Description : Définit les dimensions et le style du titre                  */
+/* -------------------------------------------------------------------------- */
+.media-caption h3 {
+  font-size: 0.8rem; /* Titre du média */
+  color: var(--text-color-secondary); /* Couleur principale */
+}
+
+/* -------------------------------------------------------------------------- */
+/* Légende sous le média (nombre de likes)                                    */
+/* Description : Définit les dimensions et le style du nombre de likes        */
+/* -------------------------------------------------------------------------- */
+.media-caption p {
+  display: flex;
+  font-size: 0.8rem;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-xxsmall); /* Espace entre les likes et l'icône */
+  color: var(--text-color-secondary);
+  font-weight: bold;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Légende sous le média (icône)                                              */
+/* Description : Définit les dimensions et le style de l'icône                */
+/* -------------------------------------------------------------------------- */
+.media-likes {
+  font-weight: bold;
+  color: var(--color-secondary); /* Couleur des likes */
+  font-size: 0.8rem;
+}
+
+/* =========================================================================================== */
+/* Projet      : Fisheye                                                                       */
+/* Fichier     : _header.scss                                                                  */
+/* Auteur      : Trackozor                                                                      */
+/* Date        : 01/01/2025                                                                    */
+/* Version     : 1.0.0                                                                         */
+/* Description : Styles pour le header du site, incluant le logo et le titre.                  */
+/*               Gestion responsive pour différentes tailles d'écran.                          */
+/* =========================================================================================== */
+/* ------------------------------------------------------------------------- */
+/*                              STYLES GÉNÉRAUX                              */
+/* ------------------------------------------------------------------------- */
+/* Description : Applique les styles principaux pour le header (Mobile First) 
+                 et gère les différentes tailles d'écran.                    */
+header {
+  display: flex; /* Organisation des enfants en ligne */
+  flex-direction: row; /* Aligne horizontalement les éléments enfants */
+  justify-content: space-between; /* Espace entre le logo et le titre */
+  align-items: center; /* Centrage vertical des éléments */
+  width: 95%; /* Largeur adaptative */
+  height: auto; /* Hauteur dynamique */
+  padding: 5% 0; /* Marges verticales */
+  gap: 2%; /* Espacement horizontal entre les éléments */
+  margin: 0 auto; /* Centrage horizontal du header */
+  /* Styles Responsives */
+}
+@media (min-width: 767px) {
+  header {
+    width: 80%; /* Ajustement pour tablettes */
+  }
+}
+@media (min-width: 1024px) {
+  header {
+    width: 80%; /* Ajustement pour écrans de bureau */
+    padding: 0; /* Marges réduites */
+  }
+}
+@media (min-width: 1440px) {
+  header {
+    width: 80%; /* Ajustement pour grands écrans */
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* LOGO                                                                       */
+/* -------------------------------------------------------------------------- */
+/* Description : Définit les dimensions et le positionnement du logo */
+.logo {
+  width: 30vw; /* Largeur adaptative basée sur le viewport */
+  max-width: 120px; /* Limite la taille maximale */
+  height: auto; /* Conserve les proportions */
+  padding-left: 15%; /* Espacement à gauche */
+  margin: 4% 0;
+  /* Styles Responsives */
+}
+@media (min-width: 767px) {
+  .logo {
+    max-width: 200px; /* Taille maximale augmentée */
+    margin-right: 20%; /* Réduction de l'espacement gauche */
+    padding-left: 0;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* TITRE                                                                      */
+/* -------------------------------------------------------------------------- */
+/* Description : Définit la typographie, le positionnement et les dimensions 
+                 du titre principal */
+h1 {
+  position: relative; /* Permet des ajustements précis */
+  top: 4%; /* Décalage vertical léger */
+  font-size: var(--font-size-base); /* Taille de police par défaut */
+  color: var(--primary-color); /* Couleur principale */
+  margin: 0; /* Supprime les marges par défaut */
+  /* Styles Responsives */
+}
+@media (min-width: 767px) {
+  h1 {
+    font-size: var(--font-size-large); /* Taille augmentée pour tablettes */
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* HEADER PHOTOGRAPHER                                                        */
+/* -------------------------------------------------------------------------- */
+/* Description : Ajustements spécifiques pour la page photographer.html */
+
+/* =============================================================================
+    Projet      : Fisheye
+    Fichier     : _footer.scss
+    Auteur      : Trackozor
+    Date        : 01/01/2025
+    Version     : 1.0.0
+    Description : Styles pour le footer du site, incluant le positionnement,
+                  la typographie et les couleurs.                              
+============================================================================= */
+/* ------------------------------------------------------------------------- */
+/*                              FOOTER                                       */
+/* ------------------------------------------------------------------------- */
+/* Description : Définit le style global du footer.                          */
+footer {
+  display: flex; /* Utilise Flexbox pour un alignement facile */
+  justify-content: center; /* Centre le contenu horizontalement */
+  margin: 1% 0; /* Ajoute un espacement vertical autour du footer */
+}
+
+/* ------------------------------------------------------------------------- */
+/*                          TEXTE DU FOOTER                                  */
+/* ------------------------------------------------------------------------- */
+/* Description : Définit le style des paragraphes dans le footer.            */
+footer p {
+  color: var(--text-color-secondary); /* Couleur secondaire pour le texte */
+  font-weight: bold; /* Accentue la police avec une graisse plus élevée */
+}
+
+/* =============================================================================
+    Projet      : Fisheye
+    Fichier     : photographer-section.scss
+    Auteur      : Trackozor
+    Date        : 01/01/2025
+    Version     : 1.0.0
+    Description : Styles pour la section des photographes, incluant la gestion
+                des conteneurs des cartes et leur adaptation responsive.
+============================================================================= */
+/* -------------------------------------------------------------------------- */
+/* Conteneur principal des photographes                                       */
+/* Description : Organisation des cartes des photographes dans une grille.    */
+/* Inclut une gestion responsive pour les tablettes et grands écrans.         */
+/* -------------------------------------------------------------------------- */
+#photographers-container {
+  display: grid; /* Mise en page avec une grille CSS */
+  max-width: 80%; /* Limite la largeur maximale du conteneur */
+  gap: var(--spacing-base); /* Espacement entre les éléments (utilise une variable) */
+  margin: 2% auto; /* Centre le conteneur verticalement et horizontalement */
+  padding: 0 var(--spacing-base); /* Espacement horizontal pour l'alignement */
+  /* ----------------------------------------------------------------------- */
+  /* Responsive : Tablettes                                                  */
+  /* Description : Adapte la grille pour afficher 2 colonnes sur tablette.   */
+  /* ----------------------------------------------------------------------- */
+  /* ----------------------------------------------------------------------- */
+  /* Responsive : Ordinateurs                                                */
+  /* Description : Adapte la grille pour afficher 3 colonnes sur ordinateur. */
+  /* ----------------------------------------------------------------------- */
+}
+@media (min-width: 767px) {
+  #photographers-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes de tailles égales */
+  }
+}
+@media (min-width: 1024px) {
+  #photographers-container {
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de tailles égales */
+    margin: 0 auto;
+  }
+}
+
+/*# sourceMappingURL=index-main.purged.css.map */

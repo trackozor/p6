@@ -61,16 +61,18 @@
           <p class="photographer-card-location">Ville, Pays par défaut</p>
           <p class="photographer-card-tagline">Slogan par défaut</p>
         </article>
-        
         <div class="photographer-card-portrait-wrapper">
-          <img
-            src="../../assets/photographers/account.png"
-            alt="Portrait par défaut du photographe"
-            class="photographer-card-portrait"
-            loading="lazy"
-          >
+          <picture>
+            <source srcset="../../assets/photographers/{{id}}.webp" type="image/webp">
+            <img
+              src="../assets/photographers/{{id}}.jpg"
+              alt="Portrait du photographe {{name}}"
+              class="photographer-card-portrait"
+              loading="lazy"
+              onerror="this.onerror=null; this.src='../assets/photographers/account.png';"
+            >
+          </picture>
         </div>
-        
         <template id="photographer-stats">
           <div class="photographer-stats">
             <span id="total-likes" class="totalLikes">
@@ -102,22 +104,30 @@
       >
         <h2 id="gallery-title" class="sr-only">Galerie de photos et vidéos</h2>
         <template id="media-template">
-          <article class="media-item">
-            <img src="" alt="Image par défaut" class="media" >
+          <article class="media-item" data-id="{{id}}">
+            <img 
+              src="./assets/media/{{id}}.jpg" 
+              alt="Média : {{title}}" 
+              class="media"
+              loading="lazy"
+              onerror="this.onerror=null; this.src='./assets/media/default.jpg';"
+            >
             <div class="media-caption">
-              <h3>Titre du média</h3>
+              <h3>{{title}}</h3>
               <p>
-                <span class="media-likes">0</span>
+                <span class="media-likes">{{likes}}</span>
                 <!-- Bouton accessible pour les likes -->
-                <button type="button" class="like-icon" data-action="like" aria-label="Ajouter un like">
+                <button 
+                  type="button" 
+                  class="like-icon" 
+                  data-action="like" 
+                  aria-label="Ajouter un like à {{title}}">
                   <i class="fas fa-heart" aria-hidden="true"></i>
                 </button>
               </p>
             </div>
           </article>
         </template>
-        
-        
         <div
           id="gallery"
           class="gallery"

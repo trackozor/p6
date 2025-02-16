@@ -860,8 +860,8 @@ a {
 }
 @media (min-width: 1024px) {
   .photographer-card-portrait {
-    width: 10vw; /* Ajuste la taille de l'image */
-    height: 10vw; /* Hauteur proportionnelle */
+    width: 100px; /* Ajuste la taille de l'image */
+    height: 100px; /* Hauteur proportionnelle */
     margin: 5% 0 8% 0; /* Ajuste les espacements verticaux */
   }
 }
@@ -962,16 +962,16 @@ a {
   overflow: hidden;
   width: 90%;
   margin: 1% auto;
-  height: 100%;
-  height: 40vh;
+  height: 200px;
+  height: 300px;
   transition: transform 0.3s, box-shadow 0.3s;
   object-position: center;
 }
 @media (min-width: 767px) {
   .media-item {
     margin: 5% auto;
-    width: 80%;
-    height: 30vh;
+    width: 250px;
+    height: 250px;
   }
 }
 
@@ -988,17 +988,12 @@ a {
 .media {
   width: 100%; /* Prend toute la largeur */
   height: 100%; /* Conserve les proportions */
-  max-height: 30vh;
+  max-height: 230px;
   object-fit: cover;
   margin: 0 auto;
   overflow: hidden;
   display: flex; /* S'assure que c'est un bloc */
   object-position: center;
-}
-@media (min-width: 767px) {
-  .media {
-    max-height: 27vh;
-  }
 }
 
 /* -------------------------------------------------------------------------- */

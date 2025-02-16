@@ -4,14 +4,22 @@
   "description": "Photographers Directory permet de rechercher et contacter des photographes talentueux pour des projets professionnels et personnels.",
   "main": "index.js",
   "scripts": {
-    "start": "npm-run-all --parallel server sass",
+    "start": "npm-run-all --parallel dev",
+    "dev": "npm-run-all --parallel server watch-css",
     "server": "json-server --watch db.json --port 3001",
-    "sass": "sass --watch scss/pages-scss/index-main.scss:css/index-main.css --watch scss/pages-scss/photographer-main.scss:css/photographer-main.css" ,
+    "build-css": "sass --style=compressed scss/pages-scss/index-main.scss:css/index-main.css scss/pages-scss/photographer-main.scss:css/photographer-main.css",
+    "watch-css": "sass --watch scss/pages-scss/index-main.scss:css/index-main.css scss/pages-scss/photographer-main.scss:css/photographer-main.css",
+    "purge-css": "postcss css/index-main.css -o css/index-main.purged.css && postcss css/photographer-main.css -o css/photographer-main.purged.css",
+    "convert-images": "cwebp -q 80 assets/photographers/*.{jpg,png} -o assets/photographers/webp/ && cwebp -q 80 assets/icons/*.{jpg,png} -o assets/icons/webp/ && cwebp -q 80 assets/images/*.{jpg,png} -o assets/images/webp/",
+    "minify-js": "terser js/*.js --compress --mangle --output js/*.min.js",
+    "minify-css": "postcss css/*.css --use cssnano --output css/*.min.css",
+    "optimize": "npm-run-all purge-css convert-images minify-js",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:e2e": "jest --testMatch '**/e2e/**'",
     "lint": "eslint . --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "analyze": "webpack --config webpack.config.mjs --profile --json reports/stats.json && webpack-bundle-analyzer reports/stats.json --mode static -r reports/report.html"
   },
   "keywords": [
     "photography",
@@ -21,19 +29,40 @@
   "author": "Ton Nom",
   "license": "ISC",
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^7.0.2",
+    "cypress": "^14.0.3",
+    "dotenv": "^16.4.7",
     "eslint": "^9.19.0",
     "jest": "^29.7.0",
     "json-server": "^1.0.0-beta.3",
+    "lighthouse": "^12.3.0",
+    "mongoose": "^8.10.1",
+    "mysql": "^2.18.1",
     "npm-run-all": "^4.1.5",
+    "pg": "^8.13.3",
+    "postcss": "^8.5.2",
+    "postcss-cli": "^11.0.0",
     "prettier": "^3.4.2",
-    "sass": "^1.83.4"
+    "rimraf": "^6.0.1",
+    "sass": "^1.83.4",
+    "sequelize": "^6.37.5",
+    "sharp": "^0.33.5",
+    "snyk": "^1.1295.3",
+    "sqlite3": "^5.1.7",
+    "supertest": "^7.0.0",
+    "unused-files-webpack-plugin": "^3.4.0",
+    "webpack": "^5.98.0",
+    "webpack-bundle-analyzer": "^4.10.2",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "cwebp": "^3.2.0",
     "express": "^4.21.2",
     "fs": "^0.0.1-security",
     "glob": "^11.0.1",
-    "lru-cache": "^11.0.2"
+    "lru-cache": "^11.0.2",
+    "pdfkit": "^0.16.0"
   },
   "directories": {
     "test": "test"
@@ -42,7 +71,7 @@
     "type": "git",
     "url": "git+https://github.com/trackozor/p6.git"
   },
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/trackozor/p6/issues"
   },
