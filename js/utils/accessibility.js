@@ -15,6 +15,7 @@
  */
 
 import { logEvent } from "../utils/utils.js";
+import { handleTabKey } from "../events/keyboardHandler.js";
 
 
 /**=============================================================================
@@ -68,30 +69,7 @@ export function enableSkipLink(skipLink, target) {
 }
 
 
-/** =============================================================================
- *  SECTION : ATTRIBUTS ARIA
- *  =============================================================================
- */
 
-/**
- * Met à jour dynamiquement un attribut ARIA d'un élément HTML.
- * @param {HTMLElement} element - Élément cible.
- * @param {string} ariaAttr - Nom de l'attribut ARIA (ex : 'aria-hidden').
- * @param {string | boolean} value - Valeur de l'attribut.
- */
-export function updateAriaAttribute(element, ariaAttr, value) {
-  if (!(element instanceof HTMLElement)) {
-    logEvent("error", "updateAriaAttribute: Élément non valide.", { element });
-    return;
-  }
-
-  if (!ariaAttr.startsWith("aria-")) {
-    logEvent("warn", `updateAriaAttribute: "${ariaAttr}" n'est pas un attribut ARIA valide.`);
-  }
-
-  element.setAttribute(ariaAttr, value.toString());
-  logEvent("success", `Attribut ARIA "${ariaAttr}" mis à jour avec succès.`, { element, value });
-}
 
 /** =============================================================================
  *  SECTION : DÉTECTION DES MÉDIAS
@@ -108,37 +86,7 @@ export function isMobile() {
   return result;
 }
 
-/** =============================================================================
- *  SECTION : CONTRASTE DES COULEURS
- *  =============================================================================
- */
 
-/**
- * Vérifie le contraste entre deux couleurs selon les normes WCAG 2.1.
- * @param {string} color1 - Première couleur (hexadécimal).
- * @param {string} color2 - Deuxième couleur (hexadécimal).
- * @returns {boolean} `true` si le contraste est suffisant, sinon `false`.
- */
-export function checkColorContrast(color1, color2) {
-  const hexToRgb = (hex) => {
-    const bigint = parseInt(hex.replace("#", ""), 16);
-    return [bigint >> 16, (bigint >> 8) & 255, bigint & 255];
-  };
-
-  const luminance = (r, g, b) => {
-    const a = [r, g, b].map((v) => (v /= 255) <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
-    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
-  };
-
-  const [r1, g1, b1] = hexToRgb(color1);
-  const [r2, g2, b2] = hexToRgb(color2);
-  const contrastRatio = (Math.max(luminance(r1, g1, b1), luminance(r2, g2, b2)) + 0.05) / 
-                        (Math.min(luminance(r1, g1, b1), luminance(r2, g2, b2)) + 0.05);
-
-  logEvent("info", `Contraste entre ${color1} et ${color2} : ${contrastRatio.toFixed(2)}`);
-  return contrastRatio >= 4.5;
-}
-/**
 /**
  * =============================================================================
  * Fonction : trapFocus
@@ -159,49 +107,29 @@ export function trapFocus(modal) {
 
   logEvent("info", "trapFocus : Activation du focus trap.", { modal });
 
-  // Sélectionne tous les éléments interactifs dans la modale
-  const focusableElements = modal.querySelectorAll(
-      'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
-  );
+  // Sélectionne tous les éléments interactifs dans la modale (exclut ceux désactivés)
+  const focusableElements = Array.from(modal.querySelectorAll(
+      'a, button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  ));
 
   if (focusableElements.length === 0) {
       logEvent("warn", "trapFocus : Aucun élément interactif trouvé dans la modale.");
       return;
   }
 
-  const firstElement = focusableElements[0];
-  const lastElement = focusableElements[focusableElements.length - 1];
+  // 🔹 Ajout de l'écouteur d'événement sur `document` pour capter tous les `Tab`
+  document.addEventListener("keydown", handleTabKey);
 
-  function handleTabKey(event) {
-      if (event.key !== "Tab") {
-        return;
-      }
-
-      logEvent("debug", "trapFocus : Gestion du Tab.", { keyPressed: event.key });
-
-      if (event.shiftKey) {
-                // Shift + Tab : Retourne au dernier élément si focus sur le premier
-                if (document.activeElement === firstElement) {
-                    lastElement.focus();
-                    event.preventDefault();
-                }
-            }
-      else if (document.activeElement === lastElement) {
-                    firstElement.focus();
-                    event.preventDefault();
-                }
+  
+  // 🔹 Suppression de l'événement lorsque la modale est fermée
+  function removeTrapFocus() {
+      document.removeEventListener("keydown");
+      modal.removeEventListener("transitionend", removeTrapFocus);
+      logEvent("info", "trapFocus : Désactivation du focus trap.");
   }
 
-  // Ajout de l'écouteur pour `Tab`
-  modal.addEventListener("keydown", handleTabKey);
-
-  // Place le focus sur le premier élément interactif à l'ouverture
-  firstElement.focus();
-
-  // Supprime l'événement au moment de la fermeture de la modale
-  modal.addEventListener("transitionend", () => {
-      modal.removeEventListener("keydown", handleTabKey);
-  });
+  modal.addEventListener("transitionend", removeTrapFocus);
 }
+
 
 

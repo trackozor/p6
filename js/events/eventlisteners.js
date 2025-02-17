@@ -16,17 +16,16 @@ import domSelectors from "../config/domSelectors.js";
 
 // Gestionnaires d'événements
 import {
-  handleModalOpen, 
-  handleModalClose,
-  handleFormSubmit,
-  handleLightboxClose,
-  handleLightboxPrev,
-  handleLightboxNext,
-  handleLightboxOpen,
-  handleSortChange,
-  handleModalConfirm,
-  updateCharCount,
-  handleLikeClick,
+    handleModalOpen, 
+    handleModalClose,
+    handleFormSubmit,
+    handleLightboxClose,
+    handleLightboxPrev,
+    handleLightboxNext,
+    handleLightboxOpen,
+    handleSortChange,
+    handleModalConfirm,
+    handleLikeClick,
 } from "./eventHandler.js";
 
 // Gestion des interactions clavier
@@ -59,62 +58,62 @@ import { logEvent } from "../utils/utils.js";
  * @param {boolean} [once=false] - Si `true`, l'événement ne s'exécute qu'une seule fois.
  * @returns {boolean} - Retourne `true` si au moins un événement a été attaché, `false` sinon.
  */
-function attachEvent(elements, eventType, callback, once = false) {
-  try {
-      // Vérification des paramètres
-      if (!elements) {
-          logEvent("error", `attachEvent : Aucun élément trouvé pour l'événement "${eventType}".`);
-          return false;
-      }
-      if (typeof eventType !== "string" || !eventType.trim()) {
-          logEvent("error", `attachEvent : Type d'événement invalide "${eventType}".`);
-          return false;
-      }
-      if (typeof callback !== "function") {
-          logEvent("error", `attachEvent : Callback fourni invalide pour l'événement "${eventType}".`);
-          return false;
-      }
+export function attachEvent(elements, eventType, callback, once = false) {
+    try {
+        // Vérification des paramètres
+        if (!elements) {
+            logEvent("error", `attachEvent : Aucun élément trouvé pour l'événement "${eventType}".`);
+            return false;
+        }
+        if (typeof eventType !== "string" || !eventType.trim()) {
+            logEvent("error", `attachEvent : Type d'événement invalide "${eventType}".`);
+            return false;
+        }
+        if (typeof callback !== "function") {
+            logEvent("error", `attachEvent : Callback fourni invalide pour l'événement "${eventType}".`);
+            return false;
+        }
 
-      // Normalisation de `elements` en tableau pour itération sécurisée
-      const elementList = elements instanceof NodeList ? Array.from(elements) : [elements];
+        // Normalisation de `elements` en tableau pour itération sécurisée
+        const elementList = elements instanceof NodeList ? Array.from(elements) : [elements];
 
-      // Vérification : au moins un élément valide
-      if (!elementList.length) {
-          logEvent("warn", `attachEvent : Aucun élément valide pour attacher l'événement "${eventType}".`);
-          return false;
-      }
+        // Vérification : au moins un élément valide
+        if (!elementList.length) {
+            logEvent("warn", `attachEvent : Aucun élément valide pour attacher l'événement "${eventType}".`);
+            return false;
+        }
 
-      // Itération sur les éléments valides
-      elementList.forEach((element) => {
-          if (!(element instanceof HTMLElement)) {
-              logEvent("warn", `attachEvent : Élément ignoré car non valide.`, { element });
-              return;
-          }
+        // Itération sur les éléments valides
+        elementList.forEach((element) => {
+            if (!(element instanceof HTMLElement)) {
+                logEvent("warn", `attachEvent : Élément ignoré car non valide.`, { element });
+                return;
+            }
 
-          try {
-              // Attachement de l'événement avec gestion asynchrone sécurisée
-              element.addEventListener(eventType, async (event) => {
-                  try {
-                      await callback(event);
-                      logEvent("info", `attachEvent : Callback exécuté avec succès pour "${eventType}".`);
-                  } catch (callbackError) {
-                      logEvent("error", `attachEvent : Erreur dans le callback de "${eventType}".`, { callbackError });
-                  }
-              }, { once });
+            try {
+                // Attachement de l'événement avec gestion asynchrone sécurisée
+                element.addEventListener(eventType, async (event) => {
+                    try {
+                        await callback(event);
+                        logEvent("info", `attachEvent : Callback exécuté avec succès pour "${eventType}".`);
+                    } catch (callbackError) {
+                        logEvent("error", `attachEvent : Erreur dans le callback de "${eventType}".`, { callbackError });
+                    }
+                }, { once });
 
-              logEvent("success", `attachEvent : Événement "${eventType}" attaché à ${element.className || element.id || "un élément inconnu"}.`);
+                logEvent("success", `attachEvent : Événement "${eventType}" attaché à ${element.className || element.id || "un élément inconnu"}.`);
 
-          } catch (error) {
-              logEvent("error", `attachEvent : Impossible d'attacher l'événement "${eventType}" à un élément valide.`, { error });
-          }
-      });
+            } catch (error) {
+                logEvent("error", `attachEvent : Impossible d'attacher l'événement "${eventType}" à un élément valide.`, { error });
+            }
+        });
 
-      return true;
+        return true;
 
-  } catch (error) {
-      logEvent("error", "attachEvent : Erreur inattendue lors de l'attachement des événements.", { error });
-      return false;
-  }
+    } catch (error) {
+        logEvent("error", "attachEvent : Erreur inattendue lors de l'attachement des événements.", { error });
+        return false;
+    }
 }
 
 /*=======================================================*/
@@ -133,24 +132,24 @@ function attachEvent(elements, eventType, callback, once = false) {
  * - Capture les erreurs potentielles et assure la robustesse du processus.
  */
 export function initModal() {
-  try {
-      logEvent("info", "➡ Initialisation de la modale de contact...");
+    try {
+        logEvent("info", "➡ Initialisation de la modale de contact...");
 
-      // Vérification immédiate de la présence du bouton de contact
-      const contactButton = document.querySelector(".contact-button");
+        // Vérification immédiate de la présence du bouton de contact
+        const contactButton = document.querySelector(".contact-button");
 
-      if (contactButton) {
-          logEvent("info", " Bouton de contact trouvé immédiatement.");
-          attachModalEvents(); // Attache directement les événements si le bouton est présent
-      } else {
-          logEvent("warning", " Bouton de contact non trouvé. Activation de l'observation DOM...");
-          observeDOMForContactButton(); // Lance un observateur pour détecter son apparition
-      }
+        if (contactButton) {
+            logEvent("info", " Bouton de contact trouvé immédiatement.");
+            attachModalEvents(); // Attache directement les événements si le bouton est présent
+        } else {
+            logEvent("warning", " Bouton de contact non trouvé. Activation de l'observation DOM...");
+            observeDOMForContactButton(); // Lance un observateur pour détecter son apparition
+        }
 
-  } catch (error) {
-      logEvent("error", " initModal : Erreur lors de l'initialisation de la modale.", { error });
-      throw new Error(`Erreur critique dans initModal : ${error.message}`);
-  }
+    } catch (error) {
+        logEvent("error", " initModal : Erreur lors de l'initialisation de la modale.", { error });
+        throw new Error(`Erreur critique dans initModal : ${error.message}`);
+    }
 }
 
 
@@ -170,91 +169,91 @@ export function initModal() {
  * @throws {Error} Enregistre et remonte toute erreur critique dans les logs.
  */
 export function attachModalEvents() {
-  try {
-      logEvent("info", "Attachement des événements de la modale...");
+    try {
+        logEvent("info", "Attachement des événements de la modale...");
 
-      // Récupération dynamique du bouton de contact
-      const contactButton = document.querySelector(".contact-button");
+        // Récupération dynamique du bouton de contact
+        const contactButton = document.querySelector(".contact-button");
 
-      if (!contactButton) {
-          logEvent("error", "Bouton de contact introuvable.");
-          return;
-      }
+        if (!contactButton) {
+            logEvent("error", "Bouton de contact introuvable.");
+            return;
+        }
 
-      // Empêche l'attachement multiple
-      if (!contactButton.dataset.eventAttached) {
-          contactButton.dataset.eventAttached = "true";
-          contactButton.addEventListener("click", () => {
-              logEvent("info", "Clic sur le bouton Contact.");
-              handleModalOpen();
-          });
-          logEvent("success", "Événement attaché au bouton Contact.");
-      }
+        // Empêche l'attachement multiple
+        if (!contactButton.dataset.eventAttached) {
+            contactButton.dataset.eventAttached = "true";
+            contactButton.addEventListener("click", () => {
+                logEvent("info", "Clic sur le bouton Contact.");
+                handleModalOpen();
+            });
+            logEvent("success", "Événement attaché au bouton Contact.");
+        }
 
-      // Récupération des éléments principaux de la modale
-      const { modalOverlay, contactForm, closeButton, form, confirmationModal, spamModal } = domSelectors.modal;
+        // Récupération des éléments principaux de la modale
+        const { modalOverlay, contactForm, closeButton, form, confirmationModal, spamModal } = domSelectors.modal;
 
-      if (!modalOverlay || !contactForm || !closeButton || !form) {
-          logEvent("error", "Certains éléments de la modale sont introuvables.");
-          return;
-      }
+        if (!modalOverlay || !contactForm || !closeButton || !form) {
+            logEvent("error", "Certains éléments de la modale sont introuvables.");
+            return;
+        }
 
-      // Attachement des événements de fermeture de la modale
-      attachEvent(closeButton, "click", handleModalClose);
-      attachEvent(modalOverlay, "click", handleModalClose);
+        // Attachement des événements de fermeture de la modale
+        attachEvent(closeButton, "click", handleModalClose);
+        attachEvent(modalOverlay, "click", handleModalClose);
 
-      document.addEventListener("keydown", (event) => {
-          if (event.key === "Escape") {
-              logEvent("info", "Touche Échap détectée, fermeture de la modale.");
-              handleModalClose();
-          }
-      });
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                logEvent("info", "Touche Échap détectée, fermeture de la modale.");
+                handleModalClose();
+            }
+        });
 
-      // Attachement des événements au formulaire de contact
-      if (form) {
-          // Bouton d'envoi du formulaire
-          if (form.submitButton && !form.submitButton.dataset.eventAttached) {
-              form.submitButton.dataset.eventAttached = "true";
-              attachEvent(form.submitButton, "click", (event) => {
-                  event.preventDefault();
-                  logEvent("info", "Formulaire soumis.");
-                  handleFormSubmit();
-              });
-              logEvent("success", "Événement attaché au bouton d'envoi du formulaire.");
-          }
+        // Attachement des événements au formulaire de contact
+        if (form) {
+            // Bouton d'envoi du formulaire
+            if (form.submitButton && !form.submitButton.dataset.eventAttached) {
+                form.submitButton.dataset.eventAttached = "true";
+                attachEvent(form.submitButton, "click", (event) => {
+                    event.preventDefault();
+                    logEvent("info", "Formulaire soumis.");
+                    handleFormSubmit();
+                });
+                logEvent("success", "Événement attaché au bouton d'envoi du formulaire.");
+            }
 
-          // Gestion des champs du formulaire avec logs de saisie
-          const formFields = [
-              { element: form.firstName, logMessage: "Saisie du prénom." },
-              { element: form.lastName, logMessage: "Saisie du nom." },
-              { element: form.email, logMessage: "Saisie de l'email." },
-              { element: form.messageField, logMessage: "Saisie du message." },
-          ];
+            // Gestion des champs du formulaire avec logs de saisie
+            const formFields = [
+                { element: form.firstName, logMessage: "Saisie du prénom." },
+                { element: form.lastName, logMessage: "Saisie du nom." },
+                { element: form.email, logMessage: "Saisie de l'email." },
+                { element: form.messageField, logMessage: "Saisie du message." },
+            ];
 
-          formFields.forEach(({ element, logMessage }) => {
-              if (element && !element.dataset.eventAttached) {
-                  element.dataset.eventAttached = "true";
-                  attachEvent(element, "input", () => logEvent("info", logMessage));
-              }
-          });
-      }
+            formFields.forEach(({ element, logMessage }) => {
+                if (element && !element.dataset.eventAttached) {
+                    element.dataset.eventAttached = "true";
+                    attachEvent(element, "input", () => logEvent("info", logMessage));
+                }
+            });
+        }
 
-      // Gestion de la confirmation après soumission du formulaire
-      if (confirmationModal?.confirmButton) {
-          attachEvent(confirmationModal.confirmButton, "click", handleModalClose);
-      }
+        // Gestion de la confirmation après soumission du formulaire
+        if (confirmationModal?.confirmButton) {
+            attachEvent(confirmationModal.confirmButton, "click", handleModalClose);
+        }
 
-      // Gestion de la modale de détection de spam
-      if (spamModal?.closeButton) {
-          attachEvent(spamModal.closeButton, "click", handleModalClose);
-      }
+        // Gestion de la modale de détection de spam
+        if (spamModal?.closeButton) {
+            attachEvent(spamModal.closeButton, "click", handleModalClose);
+        }
 
-      logEvent("success", "Tous les événements de la modale sont attachés avec succès.");
-  
-  } catch (error) {
-      logEvent("error", "Une erreur est survenue lors de l'attachement des événements de la modale.", { error });
-      throw new Error(`Erreur critique dans attachModalEvents : ${error.message}`);
-  }
+        logEvent("success", "Tous les événements de la modale sont attachés avec succès.");
+    
+    } catch (error) {
+        logEvent("error", "Une erreur est survenue lors de l'attachement des événements de la modale.", { error });
+        throw new Error(`Erreur critique dans attachModalEvents : ${error.message}`);
+    }
 }
 
 /**
@@ -325,36 +324,36 @@ function observeDOMForContactButton() {
  * @throws {Error} Enregistre toute erreur critique lors de l'initialisation.
  */
 export function initModalConfirm() {
-  try {
-      logEvent("info", "Initialisation de l'événement de confirmation...");
+    try {
+        logEvent("info", "Initialisation de l'événement de confirmation...");
 
-      // Sélectionne le bouton de confirmation dans le DOM
-      const confirmButton = document.querySelector(".confirm-btn");
+        // Sélectionne le bouton de confirmation dans le DOM
+        const confirmButton = document.querySelector(".confirm-btn");
 
-      // Vérification de l'existence du bouton
-      if (!confirmButton) {
-          logEvent("error", "Bouton de confirmation introuvable.");
-          throw new Error("Le bouton de confirmation n'a pas été trouvé dans le DOM.");
-      }
+        // Vérification de l'existence du bouton
+        if (!confirmButton) {
+            logEvent("error", "Bouton de confirmation introuvable.");
+            throw new Error("Le bouton de confirmation n'a pas été trouvé dans le DOM.");
+        }
 
-      // Empêche l'attachement multiple de l'événement
-      if (confirmButton.dataset.eventAttached) {
-          logEvent("warn", "L'événement de confirmation est déjà attaché.");
-          return;
-      }
+        // Empêche l'attachement multiple de l'événement
+        if (confirmButton.dataset.eventAttached) {
+            logEvent("warn", "L'événement de confirmation est déjà attaché.");
+            return;
+        }
 
-      // Marque le bouton pour éviter les attachements multiples
-      confirmButton.dataset.eventAttached = "true";
+        // Marque le bouton pour éviter les attachements multiples
+        confirmButton.dataset.eventAttached = "true";
 
-      // Attache l'événement "click" au bouton de confirmation
-      attachEvent(confirmButton, "click", handleModalConfirm);
+        // Attache l'événement "click" au bouton de confirmation
+        attachEvent(confirmButton, "click", handleModalConfirm);
 
-      logEvent("success", "Événement de confirmation attaché avec succès.");
+        logEvent("success", "Événement de confirmation attaché avec succès.");
 
-  } catch (error) {
-      logEvent("error", `Erreur critique dans initModalConfirm : ${error.message}`);
-      throw new Error(`Erreur lors de l'initialisation de la confirmation : ${error.message}`);
-  }
+    } catch (error) {
+        logEvent("error", `Erreur critique dans initModalConfirm : ${error.message}`);
+        throw new Error(`Erreur lors de l'initialisation de la confirmation : ${error.message}`);
+    }
 }
 
 
@@ -446,13 +445,7 @@ export function initLightboxEvents(mediaArray, folderName) {
         // Gestion des boutons de navigation et de fermeture
         attachLightboxControls();
          // Attacher l'événement de fermeture au clic sur l'overlay
-        const { lightboxContainer } = domSelectors.lightbox;
-        if (lightboxContainer) {
-            attachEvent(lightboxContainer, "click", handleLightboxClose);
-            logEvent("success", "Événement attaché : clic sur l'overlay ferme la lightbox.");
-        } else {
-            logEvent("error", "Impossible d'attacher l'événement de fermeture sur l'overlay : élément introuvable.");
-        }
+        
 
         logEvent("success", "Événements de la lightbox initialisés avec succès.");
     } catch (error) {
@@ -499,29 +492,27 @@ function validateLightboxParams(mediaArray, folderName) {
  *
  * @throws {Error} Si un bouton de la lightbox est introuvable.
  */
-function attachLightboxControls() {
-    try {
-        const { lightboxCloseButton, lightboxPrevButton, lightboxNextButton } = domSelectors.lightbox;
+export function attachLightboxControls() {
+    logEvent("debug", "Vérification de l'existence des boutons avant attachement.");
 
-        if (!lightboxCloseButton) {
-            throw new Error("Bouton de fermeture de la lightbox introuvable.");
-        }
-        attachEvent(lightboxCloseButton, "click", handleLightboxClose);
+    const prevButton = document.querySelector(".lightbox-prev");
+    const nextButton = document.querySelector(".lightbox-next");
+    const closeButton = document.querySelector(".lightbox-close");
 
-        if (!lightboxPrevButton) {
-            throw new Error("Bouton précédent de la lightbox introuvable.");
-        }
-        attachEvent(lightboxPrevButton, "click", handleLightboxPrev);
-
-        if (!lightboxNextButton) {
-            throw new Error("Bouton suivant de la lightbox introuvable.");
-        }
-        attachEvent(lightboxNextButton, "click", handleLightboxNext);
-
-        logEvent("success", "Événements des boutons de la lightbox attachés.");
-    } catch (error) {
-        logEvent("error", `Erreur dans attachLightboxControls : ${error.message}`);
+    if (!prevButton || !nextButton || !closeButton) {
+        logEvent("error", "Un ou plusieurs boutons de contrôle de la lightbox sont introuvables.", {
+            prevButton,
+            nextButton,
+            closeButton
+        });
+        return; // Stoppe l'attachement des événements si les boutons n'existent pas
     }
+
+    logEvent("success", "Boutons détectés, attachement des événements en cours.");
+
+    prevButton.addEventListener("click", handleLightboxPrev);
+    nextButton.addEventListener("click", handleLightboxNext);
+    closeButton.addEventListener("click", handleLightboxClose);
 }
 
 /**=======================================================
@@ -688,36 +679,36 @@ function attachLikeEvents(likeIcons, totalLikesElement) {
  * Attend dynamiquement que les médias et icônes de like soient chargés avant d'attacher les événements.
  */
 function waitForLikesToBeLoaded() {
-  let attempts = 0;
-  const maxAttempts = 10; // Arrêter après 10 tentatives pour éviter une boucle infinie
+        let attempts = 0;
+        const maxAttempts = 10; // Arrêter après 10 tentatives pour éviter une boucle infinie
 
-  const observer = new MutationObserver((mutations, obs) => {
+    const observer = new MutationObserver((mutations, obs) => {
     const likeIcons = document.querySelectorAll(".media-item .like-icon");
 
     if (likeIcons.length) {
-      logEvent("info", `Les icônes de like sont maintenant disponibles (${likeIcons.length} trouvées). Initialisation...`);
+        logEvent("info", `Les icônes de like sont maintenant disponibles (${likeIcons.length} trouvées). Initialisation...`);
 
-      setTimeout(() => {
-        setupEventListeners(); // Relancer l'initialisation des événements après un petit délai
-      }, 200); // On laisse le temps au DOM de finaliser son chargement
+        setTimeout(() => {
+            setupEventListeners(); // Relancer l'initialisation des événements après un petit délai
+        }, 200); // On laisse le temps au DOM de finaliser son chargement
 
-      obs.disconnect(); // Arrête l'observation une fois les éléments trouvés
+        obs.disconnect(); // Arrête l'observation une fois les éléments trouvés
+        } else {
+        attempts++;
+        if (attempts >= maxAttempts) {
+            logEvent("error", " Les icônes de like ne sont pas apparues après plusieurs tentatives.");
+            obs.disconnect();
+        }
+        }
+    });
+
+     // Surveille les modifications dans #gallery
+    const gallery = document.querySelector("#gallery");
+    if (gallery) {
+        observer.observe(gallery, { childList: true, subtree: true });
     } else {
-      attempts++;
-      if (attempts >= maxAttempts) {
-        logEvent("error", " Les icônes de like ne sont pas apparues après plusieurs tentatives.");
-        obs.disconnect();
-      }
+        logEvent("error", " Le conteneur #gallery est introuvable. Impossible d'observer les ajouts.");
     }
-  });
-
-  // Surveille les modifications dans #gallery
-  const gallery = document.querySelector("#gallery");
-  if (gallery) {
-    observer.observe(gallery, { childList: true, subtree: true });
-  } else {
-    logEvent("error", " Le conteneur #gallery est introuvable. Impossible d'observer les ajouts.");
-  }
 }
 
 
@@ -739,25 +730,25 @@ function waitForLikesToBeLoaded() {
  * @throws {Error} Si une erreur survient lors de l'attachement de l'événement.
  */
 function initKeyboardEvents() {
-  try {
-      logEvent("info", "Initialisation des événements clavier...");
+    try {
+        logEvent("info", "Initialisation des événements clavier...");
 
-      // Vérifie si l'événement est déjà attaché pour éviter les doublons
-      if (document.__keyboardEventsAttached) {
-          logEvent("warn", "Les événements clavier sont déjà attachés. Aucune action requise.");
-          return;
-      }
+        // Vérifie si l'événement est déjà attaché pour éviter les doublons
+        if (document.__keyboardEventsAttached) {
+            logEvent("warn", "Les événements clavier sont déjà attachés. Aucune action requise.");
+            return;
+        }
 
-      // Attache l'événement `keydown` pour capturer les interactions clavier
-      document.addEventListener("keydown", handleKeyboardEvent);
+        // Attache l'événement `keydown` pour capturer les interactions clavier
+        document.addEventListener("keydown", handleKeyboardEvent);
 
-      // Marqueur interne pour éviter les attachements multiples
-      document.__keyboardEventsAttached = true;
+        // Marqueur interne pour éviter les attachements multiples
+        document.__keyboardEventsAttached = true;
 
-      logEvent("success", "Écoute des événements clavier activée avec succès.");
-  } catch (error) {
-      logEvent("error", `Erreur critique dans initKeyboardEvents : ${error.message}`, { error });
-  }
+        logEvent("success", "Écoute des événements clavier activée avec succès.");
+    } catch (error) {
+        logEvent("error", `Erreur critique dans initKeyboardEvents : ${error.message}`, { error });
+    }
 }
 
 
@@ -785,22 +776,22 @@ function initKeyboardEvents() {
  * @throws {Error} Si une erreur survient lors de l’attachement des événements.
  */
 export function initEventListeners(mediaArray, folderName) {
-  logEvent("info", "Début de l'initialisation globale des événements...");
+    logEvent("info", "Début de l'initialisation globale des événements...");
 
-  try { 
-      // Initialisation des événements critiques
-      setupEventListeners();             // Gère les événements de like
-      initModalConfirm();                // Gère l'événement de confirmation de la modale
-      setupContactFormEvents();          // Attache les événements du formulaire de contact
-      initLightboxEvents(mediaArray, folderName); // Initialise la lightbox et ses interactions
-      initSortingEvents();               // Configure les événements de tri des médias
-      initKeyboardEvents();              // Active la gestion des interactions clavier
+    try { 
+        // Initialisation des événements critiques
+        setupEventListeners();             // Gère les événements de like
+        initModalConfirm();                // Gère l'événement de confirmation de la modale
+        setupContactFormEvents();          // Attache les événements du formulaire de contact
+        initLightboxEvents(mediaArray, folderName); // Initialise la lightbox et ses interactions
+        initSortingEvents();               // Configure les événements de tri des médias
+        initKeyboardEvents();              // Active la gestion des interactions clavier
 
-      logEvent("success", "Tous les événements ont été initialisés avec succès.");
-  } catch (error) {
-      logEvent("error", "Erreur critique lors de l'initialisation des événements.", { error });
-  }
+        logEvent("success", "Tous les événements ont été initialisés avec succès.");
+    } catch (error) {
+        logEvent("error", "Erreur critique lors de l'initialisation des événements.", { error });
+    }
 
-  logEvent("info", "Fin de l'initialisation globale des événements.");
+    logEvent("info", "Fin de l'initialisation globale des événements.");
 }
 

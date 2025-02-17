@@ -16,6 +16,7 @@ import {
 import { photographerTemplate } from "../templates/photographer-logic.js"; // Template photographe
 import { initEventListeners, attachModalEvents } from "../events/eventlisteners.js";
 import { initstatscalculator } from "../components/statsCalculator.js";
+import { initializeVideoHandlers} from "../components/lightbox/lightbox.js";
 
 // =============================
 // CONFIGURATION ET VARIABLES
@@ -41,12 +42,7 @@ export function getPhotographerIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const id = parseInt(params.get("id"), 10);
 
-    if (!id || isNaN(id)) {
-      logEvent(
-        "error",
-        "Aucun ID de photographe valide trouvé dans l'URL. Vérifiez que l'URL contient un paramètre 'id'.",
-        { params: window.location.search },
-      );
+    if (!id || isNaN(id)) { 
       return null;
     }
 
@@ -70,10 +66,6 @@ export function getPhotographerIdFromUrl() {
  */
 async function displayPhotographerBanner() {
   const photographerId = getPhotographerIdFromUrl();
-  if (!photographerId) {
-    logEvent("error", "Aucun ID de photographe trouvé dans l'URL.");
-    return;
-  }
 
   try {
     logEvent("info", "Chargement des données JSON pour la bannière...");
@@ -92,11 +84,6 @@ async function displayPhotographerBanner() {
       (photographer) => photographer.id === photographerId,
     );
 
-    if (!photographerData) {
-      throw new Error(
-        `Photographe avec l'ID ${photographerId} introuvable dans les données.`,
-      );
-    }
 
     logEvent("info", "Photographe trouvé dans les données.", {
       photographerData,
@@ -118,11 +105,6 @@ async function displayPhotographerBanner() {
     attachModalEvents();
     logEvent("success", "Événements de la modale attachés après génération du bouton.");
   } catch (error) {
-    logEvent(
-      "error",
-      `Erreur lors de l'affichage de la bannière : ${error.message}`,
-      { error },
-    );
     
   }
 }
@@ -131,13 +113,12 @@ async function displayPhotographerBanner() {
  * Affiche la galerie de médias du photographe.
  * Charge les médias depuis un fichier JSON et les rend dynamiquement.
  */
+/**
+ * Affiche la galerie de médias du photographe.
+ */
 async function displayMediaGallery() {
   const photographerId = getPhotographerIdFromUrl();
   if (!photographerId) {
-    logEvent(
-      "error",
-      "Impossible de continuer : ID du photographe non valide.",
-    );
     return { mediaArray: [], folderName: "" };
   }
 
@@ -147,7 +128,6 @@ async function displayMediaGallery() {
       throw new Error("Conteneur de galerie introuvable.");
     }
 
-    // Afficher un indicateur de chargement
     galleryContainer.innerHTML = "<p>Chargement des médias...</p>";
 
     const response = await fetch(mediaDataUrl);
@@ -163,7 +143,7 @@ async function displayMediaGallery() {
 
     if (!photographerData || !photographerData.folderName) {
       throw new Error(
-        `Impossible de trouver le folderName pour le photographe ID ${photographerId}.`,
+        `Impossible de trouver le folderName pour le photographe ID ${photographerId}.`
       );
     }
 
@@ -176,10 +156,7 @@ async function displayMediaGallery() {
     if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
       galleryContainer.innerHTML =
         "<p>Aucun média disponible pour ce photographe.</p>";
-      logEvent(
-        "warn",
-        `Aucun média trouvé pour le photographe ID ${photographerId}.`,
-      );
+      logEvent("warn", `Aucun média trouvé pour le photographe ID ${photographerId}.`);
       return { mediaArray: [], folderName };
     }
 
@@ -187,6 +164,9 @@ async function displayMediaGallery() {
     logEvent("success", "Galerie de médias affichée avec succès.", {
       mediaArray,
     });
+
+    // Ajout de l'initialisation des vidéos après l'affichage de la galerie
+    initializeVideoHandlers();
 
     return { mediaArray, folderName };
   } catch (error) {
@@ -198,6 +178,7 @@ async function displayMediaGallery() {
     return { mediaArray: [], folderName: "" };
   }
 }
+
 
 /**
  * Initialise la page du photographe.
@@ -225,7 +206,7 @@ async function initPhotographerPage() {
 
     logEvent("success", "Page photographe initialisée avec succès.");
   } catch (error) {
-    logEvent("error", "Erreur lors de l'initialisation de la page photographe.", { error });
+    
   }
 }
 

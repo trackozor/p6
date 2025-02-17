@@ -425,12 +425,7 @@ export function validateMessageField(field) {
 export function validateForm() {
   let isValid = true; // Indicateur global de validation
 
-  // Vérification du champ Honeypot (détection anti-spam)
-  if (!checkHoneypot()) {
-    logEvent("error", " Validation échouée : spam détecté via Honeypot.");
-    showSpamModal(); // Affiche une alerte de détection de spam
-    return false; // Stoppe immédiatement la validation
-  }
+  
 
   // Validation des champs obligatoires un par un
   REQUIRED_FIELDS.forEach((fieldId) => {

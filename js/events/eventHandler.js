@@ -34,7 +34,7 @@ import {
 import { fetchMedia } from "../data/dataFetcher.js";
 
 /*------------------ UI & Accessibilité ------------------*/
-import { showLoader } from "../components/loader/loader.js";
+
 import { trapFocus } from "../utils/accessibility.js";
 import { initvalidform } from "../utils/contactForm.js";
 
@@ -81,45 +81,50 @@ export async function handleModalOpen() {
     // Récupère les données des photographes depuis l'API ou la base de données
     const mediaData =  await fetchMedia();
 
-    // Vérifie que les données ont bien été récupérées et contiennent une liste de photographes
     if (!mediaData?.photographers) {
       throw new Error("Données photographes manquantes.");
     }
 
-    // Récupère l'ID du photographe à partir de l'URL de la page
     const photographerId = new URLSearchParams(window.location.search).get("id");
 
-    // Vérifie que l'ID du photographe a bien été trouvé dans l'URL
     if (!photographerId) {
       throw new Error("ID photographe introuvable dans l'URL.");
     }
 
-    // Recherche le photographe correspondant dans les données récupérées
     const photographerData = mediaData.photographers.find(
       (photographer) => photographer.id === parseInt(photographerId, 10)
     );
 
-    // Vérifie que le photographe existe bien dans la liste
     if (!photographerData) {
       throw new Error(`Photographe ID ${photographerId} introuvable.`);
     }
 
-    // Ouvre la modale avec les informations du photographe sélectionné
+    // Ouvre la modale avec les informations du photographe
     launchModal(photographerData);
 
-    // Enregistre dans les logs que la modale a été ouverte avec succès
+    // Ajoute un écouteur pour la fermeture de la modale
+    setTimeout(() => {
+      const modal = document.querySelector(".modal.modal-active");
+      if (modal) {
+        const firstInput = modal.querySelector("input, textarea, select");
+        if (firstInput) {
+          firstInput.focus();
+          logEvent("success", "Focus placé sur le premier champ interactif.");
+        } else {
+          logEvent("warn", "Aucun champ interactif trouvé pour focus.");
+        }
+      }
+    }, 100); // Petit délai pour s'assurer que la modale est bien affichée
+
     logEvent("success", "Modale ouverte avec succès.");
   } catch (error) {
-    // Enregistre une erreur dans les logs si un problème survient
     logEvent("error", `Erreur d'ouverture de la modale: ${error.message}`, { error });
-
-    // Affiche une alerte utilisateur en cas d'échec
     alert("Erreur lors du chargement de la modale.");
   } finally {
-    // Supprime l'indicateur de chargement, même en cas d'erreur
     document.body.classList.remove("loading");
   }
 }
+
 /*==============================================*/
 /*        Fermeture  modale contact             */
 /*==============================================*/
@@ -157,102 +162,67 @@ export function handleModalClose() {
   }
 }
 
+
+/*==============================================*/
+
 export function handleGalleryNavigation(event, direction) {
-  let mediaGallery = document.querySelector("#media-container");
-  if (!mediaGallery) {
-    return;
-  }
-
-  const mediaItems = Array.from(mediaGallery.querySelectorAll(".media-item")); // Récupère tous les médias affichés
-  const activeMedia = document.querySelector(".media-item.selected"); // Trouve l'élément sélectionné
-
-  let currentIndex = mediaItems.findIndex(item => item === activeMedia);
-
-  if (currentIndex === -1) {
-      currentIndex = 0; // Si aucun média n'est sélectionné, démarre au premier
-  }
-
-  // Vérifie si le média actuel est une vidéo
-  const isVideo = activeMedia?.querySelector("video");
-
-  // Si une vidéo est sélectionnée, empêcher qu'elle capte les flèches gauche/droite
-  if (isVideo && (event.key === KEY_CODES.ARROW_LEFT || event.key === KEY_CODES.ARROW_RIGHT)) {
-      event.preventDefault(); // Empêche la vidéo d'intercepter l'événement
-  }
-
-  // Détermine la direction et met à jour l'index
-  if (direction === "vertical") {
-      if (event.key === KEY_CODES.ARROW_UP) {
-          currentIndex = (currentIndex - 1 + mediaItems.length) % mediaItems.length; // Défilement circulaire vers le haut
-      } else if (event.key === KEY_CODES.ARROW_DOWN) {
-          currentIndex = (currentIndex + 1) % mediaItems.length; // Défilement circulaire vers le bas
-      }
-  } else if (direction === "horizontal") {
-      if (event.key === KEY_CODES.ARROW_LEFT) {
-          currentIndex = (currentIndex - 1 + mediaItems.length) % mediaItems.length; // Défilement circulaire vers la gauche
-      } else if (event.key === KEY_CODES.ARROW_RIGHT) {
-          currentIndex = (currentIndex + 1) % mediaItems.length; // Défilement circulaire vers la droite
-      }
-  }
-
-  // Met à jour la sélection visuelle
-  mediaItems.forEach(item => item.classList.remove("selected")); // Retire les classes actives
-  mediaItems[currentIndex].classList.add("selected"); // Ajoute la classe au nouvel élément actif
-  mediaItems[currentIndex].scrollIntoView({ behavior: "smooth", block: "center", inline: "center" }); // Fait défiler la galerie pour centrer l’élément sélectionné
-
-  // Piège le focus sur l'élément sélectionné
-  mediaItems[currentIndex].setAttribute("tabindex", "0"); // Ajoute tabindex pour le focus
-  mediaItems[currentIndex].focus(); // Force le focus sur l'élément
-
-  // Supprime tabindex des autres éléments pour éviter le focus accidentel
-  mediaItems.forEach((item, index) => {
-      if (index !== currentIndex) {
-          item.setAttribute("tabindex", "-1");
-      }
-  });
-
-  logEvent("info", `Média sélectionné via les flèches : Index ${currentIndex}`);
-}
-
-
-/**
- * Gère la fermeture de la modale lorsque l'utilisateur clique sur l'arrière-plan.
- * 
- * ### **Fonctionnement :**
- * - Vérifie si l'utilisateur a cliqué sur l'arrière-plan de la modale.
- * - Si c'est le cas, déclenche `handleModalClose()` pour fermer la modale.
- * - Capture et journalise toute erreur éventuelle.
- * 
- * ### **Gestion des erreurs :**
- * - Vérifie que l'événement `event.target` existe avant toute action.
- * - Vérifie que `domSelectors.modal.modalOverlay` est défini avant de comparer la cible.
- * - Capture et journalise toute erreur inattendue.
- * 
- * @function handleModalBackgroundClick
- * @param {Event} event - L'événement du clic.
- * @throws {Error} Génère une erreur si un problème survient lors de la gestion du clic.
- */
-
-export function handleModalBackgroundClick(event) {
-  try {
-    // Vérifie que l'événement et la cible existent bien
-    if (!event || !event.target) {
-      throw new Error("Événement invalide ou non défini.");
+    let mediaGallery = document.querySelector("#gallery"); // 📌 Cible bien la div qui contient les médias
+    if (!mediaGallery) {
+        logEvent("error", "handleGalleryNavigation : #gallery introuvable.");
+        return;
     }
 
-    // Vérifie que l'élément cliqué est bien l'arrière-plan de la modale
-    if (event.target === domSelectors.modal.modalOverlay) {
-      // Journalisation du clic sur l'arrière-plan
-      logEvent("info", "Clic détecté sur l'arrière-plan de la modale. Fermeture en cours...");
+    const mediaItems = Array.from(mediaGallery.querySelectorAll(".media-item")); //  Récupère tous les médias affichés
+    let activeMedia = document.querySelector(".media-item.selected"); // Trouve l'élément actuellement sélectionné
 
-      // Déclenche la fermeture de la modale
-      handleModalClose();
+    let currentIndex = mediaItems.findIndex(item => item === activeMedia);
+    if (currentIndex === -1) {
+        currentIndex = 0; // Si aucun média n'est sélectionné, démarre au premier
     }
-  } catch (error) {
-    // Capture et journalise toute erreur survenant lors du traitement du clic
-    logEvent("error", `Erreur lors du clic sur l'arrière-plan de la modale : ${error.message}`, { error });
-  }
+
+    const videoElement = activeMedia?.querySelector("video");
+
+    // Empêcher la navigation si une vidéo est en lecture
+    if (videoElement && !videoElement.paused) {
+        logEvent("warn", "handleGalleryNavigation : Une vidéo est en lecture, blocage de la navigation.");
+        event.preventDefault();
+        return;
+    }
+
+    // Défilement dans la galerie
+    if (direction === "vertical") {
+        if (event.key === "ArrowUp") {
+            currentIndex = (currentIndex - 1 + mediaItems.length) % mediaItems.length;
+        } else if (event.key === "ArrowDown") {
+            currentIndex = (currentIndex + 1) % mediaItems.length;
+        }
+    } else if (direction === "horizontal") {
+        if (event.key === "ArrowLeft") {
+            currentIndex = (currentIndex - 1 + mediaItems.length) % mediaItems.length;
+        } else if (event.key === "ArrowRight") {
+            currentIndex = (currentIndex + 1) % mediaItems.length;
+        }
+    }
+
+    // Met à jour la sélection
+    mediaItems.forEach(item => item.classList.remove("selected")); // Retire la sélection des autres médias
+    mediaItems[currentIndex].classList.add("selected"); // Ajoute la classe active au nouvel élément sélectionné
+    mediaItems[currentIndex].scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+
+    // Piège le focus sur l'élément sélectionné
+    mediaItems[currentIndex].setAttribute("tabindex", "0");
+    mediaItems[currentIndex].focus();
+
+    // Désactiver tabindex sur les autres éléments
+    mediaItems.forEach((item, index) => {
+        if (index !== currentIndex) {
+            item.setAttribute("tabindex", "-1");
+        }
+    });
+
+    logEvent("info", `handleGalleryNavigation : Média sélectionné (Index ${currentIndex})`);
 }
+
 
 /*==============================================*/
 /*        ouverture modale confirmation         */
@@ -289,61 +259,10 @@ export function handleModalConfirm() {
     logEvent("error", "Erreur lors de la fermeture de la modale de confirmation", { error });
   }
 }
-/*==============================================*/
-/*        Mise a jour compteur message          */
-/*==============================================*/
-/**
- * Met à jour dynamiquement le compteur de caractères d'un champ `textarea`.
- * 
- * ### **Fonctionnement :**
- * - Récupère l'élément `textarea` qui déclenche l'événement.
- * - Récupère l'élément du compteur (`#message-counter`).
- * - Vérifie que le compteur est bien présent dans le DOM.
- * - Récupère la limite de caractères définie (`maxLength`) ou applique une valeur par défaut (`500`).
- * - Met à jour dynamiquement l'affichage du compteur avec la longueur actuelle du texte.
- * - Journalise l'action dans `logEvent()`.
- * 
- * ### **Gestion des erreurs :**
- * - Vérifie que l'événement `event.target` est bien défini.
- * - Vérifie que l'élément `charCount` existe avant de modifier son contenu.
- * - Capture et journalise toute erreur.
- * 
- * @function updateCharCount
- * @param {Event} event - L'événement `input` déclenché par l'utilisateur.
- * @throws {Error} Génère une erreur si le compteur de caractères est introuvable.
- */
 
-export function updateCharCount(event) {
-  try {
-    // Récupère l'élément `textarea` qui a déclenché l'événement
-    const field = event.target;
 
-    // Vérifie que l'élément est bien défini avant de continuer
-    if (!field) {
-      throw new Error("Champ de saisie invalide ou non défini.");
-    }
 
-    // Sélectionne l'élément du compteur de caractères
-    const charCount = document.getElementById("message-counter");
 
-    // Vérifie que l'élément compteur existe dans le DOM
-    if (!charCount) {
-      throw new Error("Compteur de caractères introuvable dans le DOM.");
-    }
-
-    // Récupère la limite de caractères définie sur le champ ou applique une valeur par défaut (500)
-    const maxLength = field.maxLength || 500;
-
-    // Met à jour dynamiquement le texte du compteur avec la longueur actuelle du message
-    charCount.textContent = `${field.value.length} / ${maxLength} caractères`;
-
-    // Journalisation de la mise à jour du compteur
-    logEvent("info", "Mise à jour du compteur de caractères effectuée.");
-  } catch (error) {
-    // Capture et journalise toute erreur rencontrée
-    logEvent("error", `Erreur lors de la mise à jour du compteur : ${error.message}`, { error });
-  }
-}
 /*==============================================*/
 /*           Soumission formulaire              */
 /*==============================================*/
@@ -377,14 +296,7 @@ export function handleFormSubmit(event) {
     }
 
     logEvent("info", "Soumission du formulaire de contact en cours...");
-
-    //  Vérifie l'existence des fonctions avant de les appeler
-    if (typeof showLoader === "function") {
-      showLoader();
-    } else {
-      logEvent("warn", "showLoader() est introuvable.");
-    }
-
+  
     if (typeof initvalidform === "function") {
       initvalidform();
     } else {
@@ -432,44 +344,68 @@ export function handleFormSubmit(event) {
 
 export function handleLightboxOpen(event, mediaArray, folderName) {
   try {
-      // Journalisation pour vérifier la structure des médias avant l'ouverture
-      logEvent("debug", "Vérification de mediaArray avant ouverture de la lightbox.", { mediaArray });
+      logEvent("debug", "handleLightboxOpen() déclenché.", { event });
 
-      // Vérifie que mediaArray est bien un tableau valide et qu'il contient des médias
       if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
+          logEvent("error", "mediaArray est vide ou invalide !");
           throw new Error("mediaArray est vide ou invalide !");
       }
 
-      // Récupère l'élément `gallery-item` cliqué
-      const galleryItem = event.target.closest(".gallery-item");
+      logEvent("info", ` Élément cliqué : ${event.target.tagName}`, { eventTarget: event.target });
 
-      // Vérifie qu'un média a bien été sélectionné dans la galerie
+      // Récupère l'élément `.gallery-item` cliqué ou la vidéo
+      let galleryItem = event.target.closest(".gallery-item");
+
+      // Si on clique directement sur une vidéo, on capture son parent `.gallery-item`
+      if (!galleryItem && event.target.tagName === "VIDEO") {
+          logEvent("warn", "⚠ Clic détecté sur une vidéo, remontée vers .gallery-item...");
+          galleryItem = event.target.closest(".gallery-item");
+          event.preventDefault(); // Empêche l'avance rapide de 10s
+      }
+
       if (!galleryItem) {
+          logEvent("error", " Aucun média sélectionné, le clic a été ignoré.");
           throw new Error("Aucun média sélectionné.");
       }
 
-      // Récupère l'index du média à partir de l'attribut `data-index`
-      const mediaIndex = parseInt(galleryItem.dataset.index, 10);
+      logEvent("success", "Élément .gallery-item détecté avec succès.", { galleryItem });
 
-      // Vérifie que l'index est un nombre valide
+      // Vérification si c'est une vidéo et désactivation temporaire des contrôles
+      const videoElement = galleryItem.querySelector("video");
+      if (videoElement) {
+          logEvent("info", " Vidéo détectée, désactivation temporaire des contrôles.");
+          videoElement.removeAttribute("controls"); // Empêche l'interception du clic
+      }
+
+      // Récupère l'index du média
+      const mediaIndex = parseInt(galleryItem.dataset.index, 10);
       if (isNaN(mediaIndex) || mediaIndex < 0 || mediaIndex >= mediaArray.length) {
+          logEvent("error", "Index média invalide ou hors limites.", { mediaIndex });
           throw new Error("Index média invalide ou hors limites.");
       }
 
-      // Définit `mediaList` et `globalFolderName` pour assurer la cohérence des médias affichés
+      logEvent("success", `Média sélectionné à l'index ${mediaIndex}. Ouverture de la lightbox...`);
+
       window.mediaList = mediaArray;
       window.globalFolderName = folderName;
 
-      // Ouvre la lightbox avec le média sélectionné
       openLightbox(mediaIndex, mediaArray, folderName);
 
-      // Journalisation du succès
-      logEvent("success", `Lightbox ouverte pour le média à l'index ${mediaIndex}.`);
+      // Réactiver les contrôles après un court délai pour éviter l'interférence
+      setTimeout(() => {
+          if (videoElement) {
+              logEvent("info", "Réactivation des contrôles vidéo.");
+              videoElement.setAttribute("controls", "true");
+          }
+      }, 300);
+
+      logEvent("success", " Lightbox ouverte avec succès.");
+
   } catch (error) {
-      // Capture et journalise toute erreur rencontrée lors de l'ouverture de la lightbox
-      logEvent("error", `Erreur lors de l'ouverture de la lightbox : ${error.message}`, { error });
+      logEvent("error", ` Erreur lors de l'ouverture de la lightbox : ${error.message}`, { error });
   }
 }
+
 
 /*==============================================*/
 /*              Fermeture lightbox              */
@@ -513,24 +449,41 @@ export function handleLightboxClose() {
 }
 export function handleLightboxBackgroundClick(event) {
   try {
-    // Vérifie que l'événement et la cible existent bien
     if (!event || !event.target) {
       throw new Error("Événement invalide ou non défini.");
     }
 
-    // Vérifie que l'élément cliqué est bien l'overlay de la lightbox
-    if (event.target === domSelectors.lightbox.lightboxOverlay) {
-      // Journalisation du clic sur l'arrière-plan
-      logEvent("info", "Clic détecté sur l'arrière-plan de la lightbox. Fermeture en cours...");
+    // Sélectionne les éléments qui ne doivent PAS fermer la lightbox
+    const lightboxMedia = document.querySelector(".lightbox-media-container");
+    const prevButton = document.querySelector(".lightbox-prev");
+    const nextButton = document.querySelector(".lightbox-next");
+    const closeButton = document.querySelector(".lightbox-close");
 
-      // Déclenche la fermeture de la lightbox
-      closeLightbox();
+    logEvent("debug", "Clic détecté dans la lightbox", { clickedElement: event.target });
+
+    // Vérifie si l'élément cliqué est un bouton ou le média
+    if (
+      event.target === lightboxMedia ||
+      event.target === prevButton ||
+      event.target === nextButton ||
+      event.target === closeButton
+    ) {
+      logEvent("debug", "Clic détecté sur un élément de navigation ou le média, la lightbox ne doit pas se fermer.");
+      return;
     }
+
+    // Si c'est l'overlay (arrière-plan), fermer la lightbox
+    if (event.target === domSelectors.lightbox.lightboxOverlay) {
+      logEvent("info", "Clic détecté sur l'overlay. Fermeture de la lightbox.");
+      
+    }
+
   } catch (error) {
-    // Capture et journalise toute erreur survenant lors du traitement du clic
     logEvent("error", `Erreur lors du clic sur l'arrière-plan de la lightbox : ${error.message}`, { error });
   }
 }
+
+
 
 /*==============================================*/
 /*              Nav précédente                  */
@@ -737,36 +690,80 @@ export function handleLikeClick(event, totalLikesElement) {
 
 export function handleKeyboardEvent(event) {
   try {
-    if (!event || !event.key) {
-      throw new Error("Événement clavier invalide ou non défini.");
-    }
+      if (!event || !event.key) {
+          throw new Error("Événement clavier invalide ou non défini.");
+      }
 
-    // Récupère la modale active et la lightbox ouverte
-    const activeModal = document.querySelector(".modal.modal-active");
-    const activeLightbox = document.querySelector(".lightbox[aria-hidden='false']");
+      logEvent("debug", "Événement clavier détecté.", { keyPressed: event.key });
 
-    logEvent("debug", `Événement clavier détecté : ${event.key}`);
+      let mediaGallery = document.querySelector("#gallery"); 
+      if (!mediaGallery) {
+          logEvent("warn", "handleKeyboardEvent : Élément #gallery introuvable. Navigation désactivée.");
+          return;
+      }
 
-    // Empêcher le focus de sortir de la modale (Gestion de TAB)
-    if (event.key === KEY_CODES.TAB && activeModal) {
-      trapFocus(activeModal, event);
-    }
+      const activeModal = document.querySelector(".modal.modal-active");
+      const activeLightbox = document.querySelector(".lightbox[aria-hidden='false']");
+      const mediaItems = Array.from(document.querySelectorAll(".media-item")); // Liste des médias dans la galerie
+      const activeMedia = document.querySelector(".media-item.selected"); //  Élément actif dans la galerie
 
-    // Gestion de la touche ESCAPE : Ferme la modale ou la lightbox
-    else if (event.key === KEY_CODES.ESCAPE) {
-      handleEscapeKey(activeModal, activeLightbox);
-    }
+      logEvent("info", "Vérification des éléments actifs.", {
+          activeModal: !!activeModal,
+          activeLightbox: !!activeLightbox,
+          activeMedia: !!activeMedia
+      });
 
-    //  Gestion des flèches gauche/droite pour la navigation dans la lightbox
-    else if ([KEY_CODES.ARROW_LEFT, KEY_CODES.ARROW_RIGHT].includes(event.key)) {
-      handleLightboxNavigation(activeLightbox, event);
-    }
+      // Évite d'interférer avec une vidéo active
+      if (document.activeElement.tagName === "VIDEO" && !document.activeElement.paused) {
+          logEvent("warn", "handleKeyboardEvent : Vidéo active détectée, touches fléchées désactivées.");
+          return;
+      }
+
+      // Détecte les touches pour naviguer UNIQUEMENT dans la galerie
+      if (!activeLightbox && !activeModal) {
+          switch (event.key) {
+              case "ArrowLeft":
+              case "ArrowRight":
+                  handleGalleryNavigation(event, "horizontal");
+                  break;
+              case "ArrowUp":
+              case "ArrowDown":
+                  handleGalleryNavigation(event, "vertical");
+                  break;
+              case "Enter":
+              case " ":
+                  if (activeMedia) {
+                      // Trouver l'INDEX du média dans la **lightbox** et non juste la galerie
+                      const mediaId = activeMedia.getAttribute("data-id"); // ID du média
+                      const mediaIndex = mediaList.findIndex(media => media.id == mediaId); // Trouve l’index dans `mediaList`
+
+                      if (mediaIndex !== -1) {
+                          logEvent("info", `Ouverture de la lightbox pour index ${mediaIndex}`);
+                          openLightbox(mediaIndex, mediaList, globalFolderName); //  Passe bien la liste et le dossier
+                          event.preventDefault(); //  Empêche le scroll si c'est `Espace`
+                      } else {
+                          logEvent("error", "Aucun index valide trouvé pour ouvrir la lightbox.");
+                      }
+                  }
+                  break;
+              default:
+                  logEvent("warn", `Touche ${event.key} détectée mais non prise en charge.`);
+          }
+      }
   } catch (error) {
-    logEvent("error", ` Erreur lors de la gestion de l'événement clavier : ${error.message}`, { error });
+      logEvent("error", "handleKeyboardEvent : Erreur critique lors de la gestion clavier.", { error });
+      throw new Error(`Erreur dans handleKeyboardEvent : ${error.message}`);
   }
 }
 
-// Ajout de l'écouteur global des événements clavier
-document.addEventListener("keydown", handleKeyboardEvent);
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("keydown", handleKeyboardEvent);
+    logEvent("success", "Gestionnaire d'événements clavier activé.");
+});
+
 
 

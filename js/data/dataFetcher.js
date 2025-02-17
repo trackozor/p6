@@ -168,7 +168,7 @@ export async function fetchJSON(
  */
 export async function fetchMedia(
   url = "../../../assets/data/photographers.json",
-) {
+  ) {
   if (mediaDataCache) {
     logEvent("info", "Données récupérées depuis le cache.");
     return mediaDataCache;

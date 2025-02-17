@@ -10,7 +10,6 @@
  */
 
 import { logEvent } from "../utils/utils.js";
-import { trapFocus } from "../utils/accessibility.js";
 import { closeModal } from "../components/modal/modalManager.js";
 import {
     closeLightbox,
@@ -108,79 +107,124 @@ function blockKeyInput() {
  * @param {KeyboardEvent} event - Événement clavier détecté.
  * @throws {Error} Capture et logue toute erreur durant la gestion des touches.
  */
+
 export function handleKeyboardEvent(event) {
     try {
-        // Vérifie si l'événement est valide et empêche le spam de touches
-        if (!event.key || isKeyBlocked) {
+        if (!event || !event.key) {
+            throw new Error("Événement clavier invalide ou non défini.");
+        }
+
+        logEvent("debug", `handleKeyboardEvent : Touche détectée : ${event.key}`);
+
+        // Vérifie si la lightbox est ouverte
+        const activeLightbox = document.querySelector(".lightbox[aria-hidden='false']");
+        const focusedElement = document.activeElement;
+
+        // Gestion de `Escape` pour fermer la lightbox
+        if (event.key === "Escape" && activeLightbox) {
+            logEvent("info", "handleKeyboardEvent : Fermeture de la lightbox via Escape.");
+            closeLightbox();
             return;
         }
 
-        // Active le blocage temporaire des touches répétées
-        blockKeyInput();
-        
-        // Logue la touche détectée pour le débogage
-        logEvent("debug", "Événement clavier détecté.", { keyPressed: event.key });
-
-        // Récupère les éléments actifs pouvant être affectés par l'événement clavier
-        const activeModal = document.querySelector(".modal.modal-active"); // Modale active
-        const activeLightbox = document.querySelector(".lightbox[aria-hidden='false']"); // Lightbox active
-        const focusedElement = document.activeElement; // Élément actuellement focalisé
-
-        // Logue les éléments actifs pour diagnostic
-        logEvent("info", "Vérification des éléments actifs.", {
-            activeModal: !!activeModal, // Booléen indiquant si une modale est ouverte
-            activeLightbox: !!activeLightbox, // Booléen indiquant si la lightbox est ouverte
-            focusedElement: focusedElement?.tagName || "Aucun", // Nom de l'élément actuellement en focus
-        });
-
-        // Utilisation d'un `switch` pour traiter les différentes touches détectées
-        switch (event.key) {
-            // Gère la touche `Tab` pour maintenir le focus dans une modale
-            case KEY_CODES.TAB:
-                handleTabKey(event, activeModal);
-                break;
-
-            // Gère la touche `Escape` pour fermer la modale ou la lightbox
-            case KEY_CODES.ESCAPE:
-                handleEscapeKey(activeModal, activeLightbox);
-                break;
-
-            // Gère `Entrée` et `Espace` pour activer un bouton ou contrôler un média
-            case KEY_CODES.ENTER:
-            case KEY_CODES.SPACE:
-                handleActivationKey(event, focusedElement);
-                break;
-
-            // Gère la navigation avec `Flèche gauche` et `Flèche droite` dans la lightbox
-            
-            case KEY_CODES.ARROW_LEFT:
-            case KEY_CODES.ARROW_RIGHT:
-                if (activeLightbox) {
-                    handleLightboxNavigation(event, focusedElement); // Navigation dans la lightbox
-                } else if (mediaGallery) {
-                    handleGalleryNavigation(event, "horizontal"); // Navigation horizontale dans la galerie
-                }
-                break;
-
-            case KEY_CODES.ARROW_UP:
-            case KEY_CODES.ARROW_DOWN:
-                if (!activeLightbox && mediaGallery) {
-                    handleGalleryNavigation(event, "vertical"); // Navigation verticale dans la galerie
-                }
-                break;
-
-            // Capture les touches non gérées et logue un avertissement
-            default:
-                logEvent("warn", `Touche ${event.key} détectée mais non prise en charge.`);
+        // Vérifie si une modale est active (Empêche navigation si c'est le cas)
+        const activeModal = document.querySelector(".modal.modal-active");
+        if (activeModal) {
+            logEvent("warn", "handleKeyboardEvent : Modale active, désactivation de la navigation.");
+            return;
         }
-    } catch (error) {
-        // Logue toute erreur imprévue lors du traitement des événements clavier
-        logEvent("error", "handleKeyboardEvent : Erreur critique lors de la gestion clavier.", { error });
 
-        // Relance une erreur pour la capturer en amont si nécessaire
-        throw new Error(`Erreur dans handleKeyboardEvent : ${error.message}`);
+        // Correction du sélecteur pour la galerie
+        let mediaGallery = document.querySelector("#media-container");  
+        if (!mediaGallery) {
+            logEvent("warn", "handleKeyboardEvent : Élément #media-container introuvable. Navigation désactivée.");
+            return;
+        }
+
+        const mediaItems = Array.from(mediaGallery.querySelectorAll(".media-item"));
+        const activeMedia = document.querySelector(".media-item.selected") || mediaItems[0];
+
+        let currentIndex = mediaItems.findIndex(item => item === activeMedia);
+        if (currentIndex === -1) {
+            currentIndex = 0;  
+        }
+
+        const isVideo = activeMedia.querySelector("video");
+
+        // Correction : `Enter` doit ouvrir la lightbox avec le bon index
+        if ((event.key === "Enter" || event.key === " ") && !activeLightbox) {
+            logEvent("info", `handleKeyboardEvent : Ouverture de la lightbox via ${event.key} sur l'index ${currentIndex}.`);
+
+            // Vérification que `mediaList` et `globalFolderName` existent
+            if (!window.mediaList || !window.globalFolderName) {
+                logEvent("error", "handleKeyboardEvent : `mediaList` ou `globalFolderName` est invalide.");
+                return;
+            }
+
+            // **⚠ On s'assure que l'index respecte le tri !**
+            const sortedIndex = sorted ? sorted.findIndex(item => item.id === mediaList[currentIndex].id) : currentIndex;
+
+            openLightbox(sortedIndex, window.mediaList, window.globalFolderName);
+            event.preventDefault(); //  Empêche le comportement par défaut
+
+            return;
+        }
+
+        // Dans la lightbox : contrôle vidéo avec `Espace` et `Flèches`**
+        if (activeLightbox && isVideo) {
+            if (event.key === " ") {
+                logEvent("info", "handleKeyboardEvent : Lecture/Pause vidéo.");
+                if (isVideo.paused) {
+                    isVideo.play();
+                    logEvent("success", "Vidéo en lecture.");
+                } else {
+                    isVideo.pause();
+                    logEvent("success", "Vidéo en pause.");
+                }
+                event.preventDefault(); 
+                return;
+            }
+
+            if (event.key === "ArrowRight") {
+                isVideo.currentTime += 10;
+                logEvent("info", "Avance rapide de 10 secondes.");
+                return;
+            }
+
+            if (event.key === "ArrowLeft") {
+                isVideo.currentTime -= 10;
+                logEvent("info", "Retour arrière de 10 secondes.");
+                return;
+            }
+        }
+
+        // **Navigation dans la galerie si pas de lightbox active**
+        if (!activeLightbox) {
+            switch (event.key) {
+                case "ArrowLeft":
+                case "ArrowRight":
+                    handleGalleryNavigation(event, "horizontal");
+                    break;
+                case "ArrowUp":
+                case "ArrowDown":
+                    handleGalleryNavigation(event, "vertical");
+                    break;
+                default:
+                    logEvent("warn", `handleKeyboardEvent : Touche ${event.key} ignorée.`);
+            }
+        }
+
+    } catch (error) {
+        logEvent("error", `handleKeyboardEvent : Erreur critique : ${error.message}`, { error });
     }
 }
+
+// ⚡ Ajout de l'écouteur d'événements clavier au document
+document.addEventListener("keydown", handleKeyboardEvent);
+logEvent("success", "Gestionnaire de navigation clavier activé pour la galerie.");
+
+
+
 
 /** =============================================================================
  *                      GESTION DES TOUCHES SPÉCIFIQUES
@@ -200,62 +244,55 @@ export function handleKeyboardEvent(event) {
  * @param {KeyboardEvent} event - Événement clavier détecté.
  * @param {HTMLElement|null} activeModal - Élément actif de la modale.
  */
-function handleTabKey(event, activeModal) {
+export function handleTabKey(event, activeModal) {
     try {
-        // Vérifie si une modale est active. Sinon, ne fait rien.
         if (!activeModal) {
             logEvent("debug", "handleTabKey : Aucun focus trap nécessaire (pas de modale active).");
             return;
         }
 
-        logEvent("info", "handleTabKey : Focus trap activé dans la modale.");
+        logEvent("info", "handleTabKey : Activation du focus trap dans la modale.");
 
-        // Sélectionne tous les éléments interactifs pouvant recevoir le focus.
-        const focusableElements = activeModal.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
+        // Sélectionner TOUS les éléments interactifs, mais exclure ceux qui sont désactivés
+        const focusableElements = Array.from(activeModal.querySelectorAll(
+            'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        ));
 
-        // Convertir en tableau pour faciliter la manipulation.
-        const focusable = Array.from(focusableElements);
-        
-        if (focusable.length === 0) {
+        if (focusableElements.length === 0) {
             logEvent("warn", "handleTabKey : Aucun élément interactif trouvé dans la modale.");
             return;
         }
 
-        // Détermine l'élément actuellement focalisé.
         const focusedElement = document.activeElement;
-        const firstElement = focusable[0];
-        const lastElement = focusable[focusable.length - 1];
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
 
-        // Gestion du `Shift + Tab` (Navigation arrière)
-        if (event.shiftKey && focusedElement === firstElement) {
-            logEvent("info", "handleTabKey : Shift + Tab détecté, retour au dernier élément.");
+        // **Gestion de la navigation circulaire avec Tab**
+        if (!event.shiftKey && focusedElement === lastElement) {
+            firstElement.focus();
+            event.preventDefault();
+        } else if (event.shiftKey && focusedElement === firstElement) {
             lastElement.focus();
             event.preventDefault();
-            return;
         }
-
-        // Gestion du `Tab` normal (Navigation avant)
-        if (!event.shiftKey && focusedElement === lastElement) {
-            logEvent("info", "handleTabKey : Tab détecté, retour au premier élément.");
-            firstElement.focus();
-            event.preventDefault();
-            return;
-        }
-
-        // Si l'élément focalisé est en dehors de la modale, repositionne sur le premier élément.
-        if (!focusable.includes(focusedElement)) {
-            logEvent("warn", "handleTabKey : Focus échappé, repositionnement sur le premier élément.");
-            firstElement.focus();
-            event.preventDefault();
-        }
-
     } catch (error) {
-        logEvent("error", "handleTabKey : Erreur lors du focus trap.", { error });
+        logEvent("error", "handleTabKey : Erreur lors de la gestion du focus trap.", { error });
         throw new Error(`Erreur critique dans handleTabKey : ${error.message}`);
     }
 }
+
+// **Ajout de l'écouteur global des événements clavier**
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Tab") {
+        const activeModal = document.querySelector(".modal.modal-active");
+        if (activeModal) {
+            handleTabKey(event, activeModal);
+        }
+    }
+});
+
+
+
 
 
 /** =============================================================================
@@ -443,6 +480,16 @@ function handleActivationKey(event, focusedElement) {
 /** =============================================================================
  *                      ENREGISTREMENT DES ÉVÉNEMENTS CLAVIER
  * ============================================================================= */
+// Active la navigation clavier uniquement après le chargement du DOM
+document.addEventListener("DOMContentLoaded", () => {
+    const mediaGallery = document.querySelector("#media-container");
 
-document.addEventListener("keydown", handleKeyboardEvent);
-logEvent("success", "Gestionnaire d'événements clavier initialisé.");
+    if (!mediaGallery) {
+        logEvent("warn", "Gestionnaire clavier désactivé : #media-container est introuvable.");
+        return;
+    }
+
+    document.addEventListener("keydown", handleKeyboardEvent);
+    logEvent("success", " Gestionnaire de navigation clavier activé pour la galerie.");
+});
+

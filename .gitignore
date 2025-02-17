@@ -18,7 +18,6 @@ webpack.config.mjs
 scss
 tests
 reports
-dist
-assets
+
 
 

@@ -11,8 +11,7 @@
 /*==============================================*/
 import { logEvent } from "../../utils/utils.js";
 import domSelectors from "../../config/domSelectors.js";
-import {updateGallery} from "../sort/sortlogic.js";
-import { handleLightboxBackgroundClick } from "../../events/eventHandler.js";
+import {handleLightboxNavigation} from "../../events/keyboardHandler.js";
 // Indice du média actuellement affiché dans la lightbox
 let currentIndex = 0;
 
@@ -21,7 +20,7 @@ let mediaList = [];
 
 // Nom du dossier contenant les fichiers médias (images, vidéos, etc.)
 let globalFolderName = "";
-
+let isVideoLightboxOpen = false; // Indicateur d'ouverture pour les vidéos
 let isTransitioning = false;
 let lastDirection = "right";  
 import {sorted} from "../sort/sortlogic.js";
@@ -112,40 +111,45 @@ export function initLightbox(mediaArray, folderName) {
  */
 
 export function openLightbox(index, mediaArray, folderName) {
-    logEvent("action", `Ouverture de la lightbox pour l'index ${index}.`, { index });
+    logEvent("action", ` Tentative d'ouverture de la lightbox pour l'index ${index}.`, { index });
 
     try {
-        const { lightboxContainer, lightboxOverlay } = domSelectors.lightbox;
+        const { lightboxContainer } = domSelectors.lightbox;
 
         if (!lightboxContainer) {
-            throw new Error("Conteneur principal de la lightbox introuvable.");
+            throw new Error(" Conteneur principal de la lightbox introuvable.");
         }
 
-        if (Array.isArray(mediaArray) && mediaArray.length > 0 && mediaArray !== mediaList) {
+        //  Vérifier si mediaArray contient des éléments valides avant de l'affecter
+        if (Array.isArray(mediaArray) && mediaArray.length > 0) {
             mediaList = [...mediaArray];
             globalFolderName = folderName;
         }
 
+        //  Vérifier si l'index est valide
         if (index < 0 || index >= mediaList.length) {
-            throw new Error(`Index ${index} hors limites (doit être entre 0 et ${mediaList.length - 1}).`);
+            throw new Error(` Index ${index} hors limites (doit être entre 0 et ${mediaList.length - 1}).`);
         }
 
+        //  Tout est correct, on met à jour currentIndex et affiche le média
         currentIndex = index;
         updateLightboxContent(mediaList[currentIndex], globalFolderName, "right");
 
         lightboxContainer.classList.remove("hidden");
         lightboxContainer.setAttribute("aria-hidden", "false");
 
-        // Ajoute un écouteur pour fermer la lightbox au clic sur l'overlay
-        lightboxOverlay.addEventListener("click", handleLightboxBackgroundClick);
+        // Ajoute les écouteurs pour navigation et fermeture
+        document.querySelector(".lightbox-overlay")?.addEventListener("click", closeLightbox);
+        
+        if (!document.__lightboxKeyboardListener) {
+            document.addEventListener("keydown", handleLightboxNavigation);
+            document.__lightboxKeyboardListener = true;
+        }
 
-        // Ajout de l'écouteur pour la navigation au clavier
-        document.addEventListener("keydown", handleLightboxKeyboardNav);
-
-        logEvent("success", "Lightbox ouverte avec succès.", { currentIndex });
+        logEvent("success", `Lightbox ouverte avec succès pour l'index ${currentIndex}.`);
 
     } catch (error) {
-        logEvent("error", "Erreur lors de l'ouverture de la lightbox.", { error });
+        logEvent("error", ` Erreur lors de l'ouverture de la lightbox : ${error.message}`, { error });
     }
 }
 
@@ -173,11 +177,12 @@ export function openLightbox(index, mediaArray, folderName) {
  * @throws {Error} Lève une erreur si la lightbox ne peut pas être fermée correctement.
  */
 
+
 export function closeLightbox() {
     logEvent("action", "Fermeture de la lightbox et réinitialisation du contenu.");
 
     try {
-        const { lightboxContainer, lightboxOverlay, lightboxMediaContainer, lightboxCaption } = domSelectors.lightbox;
+        const { lightboxContainer, lightboxMediaContainer, lightboxCaption } = domSelectors.lightbox;
 
         if (!lightboxContainer) {
             throw new Error("Conteneur principal de la lightbox introuvable.");
@@ -193,7 +198,26 @@ export function closeLightbox() {
         // Réinitialisation du titre (caption)
         if (lightboxCaption) {
             lightboxCaption.textContent = "";
-            logEvent("info", "Caption de la lightbox réinitialisée.");
+            logEvent("info", " Caption de la lightbox réinitialisée.");
+        }
+
+        // Réinitialisation de l'état vidéo
+        if (isVideoLightboxOpen) {
+            isVideoLightboxOpen = false;
+            logEvent("info", " Réinitialisation de isVideoLightboxOpen après fermeture.");
+        }
+
+        //  Réactive les contrôles des vidéos dans la galerie après la fermeture
+        setTimeout(() => {
+            initializeVideoHandlers();  // Assure que les vidéos redeviennent interactives après la fermeture
+            logEvent("info", "Réactivation des vidéos après fermeture de la lightbox.");
+        }, 300); // Petit délai pour éviter les conflits
+
+        //  Réenregistre les événements clavier après fermeture et réouverture
+        if (!document.__lightboxKeyboardListener) {
+            document.addEventListener("keydown", handleLightboxNavigation);
+            document.__lightboxKeyboardListener = true;
+            logEvent("info", "Réactivation des commandes clavier après fermeture de la lightbox.");
         }
 
         // Réinitialisation des variables globales
@@ -205,16 +229,13 @@ export function closeLightbox() {
         lightboxContainer.classList.add("hidden");
         lightboxContainer.setAttribute("aria-hidden", "true");
 
-        // Suppression des écouteurs d'événements pour éviter les conflits
-        lightboxOverlay.removeEventListener("click", handleLightboxBackgroundClick);
-        document.removeEventListener("keydown", handleLightboxKeyboardNav);
-
-        logEvent("success", "Lightbox fermée et réinitialisée correctement.");
+        logEvent("success", "Lightbox fermée, vidéos réactivées et touches clavier fonctionnelles.");
 
     } catch (error) {
-        logEvent("error", `Erreur lors de la fermeture de la lightbox : ${error.message}`, { error });
+        logEvent("error", ` Erreur lors de la fermeture de la lightbox : ${error.message}`, { error });
     }
 }
+
 
 
 /*==============================================*/
@@ -478,32 +499,32 @@ export function showNextMedia() {
         }
 
         if (isTransitioning) {
-            logEvent("warn", "Tentative de navigation alors qu'une transition est en cours.");
+            logEvent("warn", "⏳ Tentative de navigation alors qu'une transition est en cours.");
             return;
         }
 
+        // 🚨 Désactive les entrées clavier pendant la transition
         isTransitioning = true;
+        document.removeEventListener("keydown", handleLightboxNavigation);
 
-        // Si un tri a été fait, inverser la direction de navigation
-        if (sorted) {
-            currentIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
-        } else {
-            currentIndex = (currentIndex + 1) % mediaList.length;
-        }
-
-        updateLightboxContent(mediaList[currentIndex], globalFolderName, sorted ? "left" : "right");
-
-        setTimeout(() => {
+        // Mise à jour de l'index
+        currentIndex = (currentIndex + 1) % mediaList.length;
+        
+        // Animation de sortie et mise à jour du média
+        updateLightboxContent(mediaList[currentIndex], globalFolderName, "right", () => {
+            // ✅ Réactivation des entrées clavier après la fin de la transition
             isTransitioning = false;
-            logEvent("info", "Transition terminée, navigation autorisée.");
-        }, 500);
+            document.addEventListener("keydown", handleLightboxNavigation);
+            logEvent("success", "✅ Transition terminée, navigation réactivée.");
+        });
 
-        logEvent("success", `Navigation vers le média suivant (avec tri : ${sorted}). Index actuel : ${currentIndex}.`);
+        logEvent("success", `🎯 Navigation vers le média suivant. Index actuel : ${currentIndex}`);
 
     } catch (error) {
-        logEvent("error", `Erreur lors de la navigation vers le média suivant : ${error.message}`, { error });
+        logEvent("error", `❌ Erreur lors de la navigation vers le média suivant : ${error.message}`, { error });
     }
 }
+
 
 
 /**----------------------------------------------------------------
@@ -538,32 +559,32 @@ export function showPreviousMedia() {
         }
 
         if (isTransitioning) {
-            logEvent("warn", "Tentative de navigation alors qu'une transition est en cours.");
+            logEvent("warn", "⏳ Tentative de navigation alors qu'une transition est en cours.");
             return;
         }
 
+        // 🚨 Désactive les entrées clavier pendant la transition
         isTransitioning = true;
+        document.removeEventListener("keydown", handleLightboxNavigation);
 
-        // Si un tri a été fait, inverser la direction de navigation
-        if (sorted) {
-            currentIndex = (currentIndex + 1) % mediaList.length;
-        } else {
-            currentIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
-        }
+        // Mise à jour de l'index
+        currentIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
 
-        updateLightboxContent(mediaList[currentIndex], globalFolderName, sorted ? "right" : "left");
-
-        setTimeout(() => {
+        // Animation de sortie et mise à jour du média
+        updateLightboxContent(mediaList[currentIndex], globalFolderName, "left", () => {
+            // ✅ Réactivation des entrées clavier après la fin de la transition
             isTransitioning = false;
-            logEvent("info", "Transition terminée, navigation autorisée.");
-        }, 500);
+            document.addEventListener("keydown", handleLightboxNavigation);
+            logEvent("success", "✅ Transition terminée, navigation réactivée.");
+        });
 
-        logEvent("success", `Navigation vers le média précédent (avec tri : ${sorted}). Index actuel : ${currentIndex}.`);
+        logEvent("success", `🎯 Navigation vers le média précédent. Index actuel : ${currentIndex}`);
 
     } catch (error) {
-        logEvent("error", `Erreur lors de la navigation vers le média précédent : ${error.message}`, { error });
+        logEvent("error", `❌ Erreur lors de la navigation vers le média précédent : ${error.message}`, { error });
     }
 }
+
 
 /*==============================================*/
 /*             Mise a jour du contenu
@@ -592,63 +613,115 @@ export function showPreviousMedia() {
  * @throws {Error} Génère une erreur si `media` est invalide ou si `folderName` est incorrect.
  */
 
-function updateLightboxContent(media, folderName, direction) {
+function updateLightboxContent(media, folderName, direction, callback) {
     try {
-        // Journalisation de la mise à jour de la lightbox
-        logEvent("debug", ` Mise à jour de la lightbox : ${currentIndex} / ${mediaList.length}`, {
+        logEvent("debug", `🔄 Mise à jour de la lightbox : ${currentIndex} / ${mediaList.length}`, {
             media, 
             currentIndex, 
             folderName, 
             direction
         });
 
-        // Vérifie que les paramètres sont valides
         if (!media || typeof folderName !== "string") {
             throw new Error("Média ou nom du dossier invalide.");
         }
 
-        // Vérifie que la direction est bien définie ("right" ou "left")
         if (direction !== "right" && direction !== "left") {
             throw new Error(`Direction "${direction}" non valide. Attendu : "right" ou "left".`);
         }
 
-        // Récupération des éléments de la lightbox
         const { lightboxMediaContainer } = domSelectors.lightbox;
-
-        // Vérifie que le conteneur existe avant de manipuler le DOM
         if (!lightboxMediaContainer) {
             throw new Error("Conteneur de médias de la lightbox introuvable.");
         }
 
-        // Récupère l'élément média actuellement affiché
         const currentMedia = lightboxMediaContainer.querySelector(".active-media");
-
-        // Construit le chemin du dossier contenant les médias
         const folderPath = `../../../assets/photographers/${folderName}/`;
 
-        // Vérifie si un média est déjà affiché et applique l'animation appropriée avant de l'enlever
+        // ✅ Animation de sortie et suppression de l'ancien média
         if (currentMedia) {
-            if (direction === "right") {
-                animateMediaExitLeft(currentMedia, () => {
-                    currentMedia.remove(); // Supprime l'ancien média après l'animation
-                    insertNewMedia(media, folderPath, direction); // Insère le nouveau média
-                });
-            } else {
-                animateMediaExitRight(currentMedia, () => {
-                    currentMedia.remove(); // Supprime l'ancien média après l'animation
-                    insertNewMedia(media, folderPath, direction); // Insère le nouveau média
-                });
-            }
+            const exitAnimation = direction === "right" ? animateMediaExitLeft : animateMediaExitRight;
+            
+            exitAnimation(currentMedia, () => {
+                currentMedia.remove();
+                insertNewMedia(media, folderPath, direction);
+
+                // ✅ Appel de la fonction de rappel après insertion du média
+                if (callback && typeof callback === "function") {
+                    callback();
+                }
+            });
         } else {
-            // Si aucun média précédent, on insère directement le nouveau média
             insertNewMedia(media, folderPath, direction);
+            if (callback && typeof callback === "function") {
+                callback();
+            }
         }
 
-        // Journalisation du succès
-        logEvent("success", `Média mis à jour avec succès. Direction : ${direction}`, { media });
+        logEvent("success", `✅ Média mis à jour avec succès. Direction : ${direction}`);
 
     } catch (error) {
-        // Capture et journalise toute erreur rencontrée
-        logEvent("error", `Erreur lors de la mise à jour du média dans la lightbox : ${error.message}`, { error });
+        logEvent("error", `❌ Erreur lors de la mise à jour du média dans la lightbox : ${error.message}`, { error });
     }
 }
+
+/**
+ * Initialise les vidéos de la galerie pour permettre leur ouverture en lightbox.
+ * 
+ * @function initializeVideoHandlers
+ */
+/**
+ * Initialise les vidéos pour permettre leur ouverture en lightbox.
+ * Empêche les interactions non souhaitées et rétablit l'ouverture après fermeture.
+ */
+export function initializeVideoHandlers() {
+    logEvent("init", " Initialisation des vidéos de la galerie...");
+
+    const videos = document.querySelectorAll(".media-item video");
+
+    if (!videos.length) {
+        logEvent("warn", "Aucune vidéo détectée dans la galerie.");
+        return;
+    }
+
+    videos.forEach((video) => {
+        video.removeAttribute("controls"); // Supprime les contrôles vidéo
+
+        // Ajoute un écouteur pour ouvrir la lightbox sur la vidéo
+        video.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            // Si la lightbox est déjà ouverte sur une vidéo, on bloque
+            if (isVideoLightboxOpen) {
+                logEvent("warn", " Tentative de réouverture alors qu'une vidéo est déjà ouverte.");
+                return;
+            }
+
+            logEvent("info", " Clic sur une vidéo, ouverture de la lightbox...", { video });
+
+            const galleryItem = video.closest(".gallery-item");
+
+            if (!galleryItem) {
+                logEvent("error", " Impossible de récupérer .gallery-item pour la vidéo.");
+                return;
+            }
+
+            const mediaIndex = parseInt(galleryItem.dataset.index, 10);
+            if (isNaN(mediaIndex)) {
+                logEvent("error", " Index de la vidéo introuvable.");
+                return;
+            }
+
+            // On indique que la lightbox est ouverte pour une vidéo
+            isVideoLightboxOpen = true;
+            logEvent("success", ` Ouverture de la lightbox vidéo à l'index ${mediaIndex}.`);
+
+            openLightbox(mediaIndex, window.mediaList, window.globalFolderName);
+        });
+    });
+
+    logEvent("success", " Initialisation des vidéos terminée avec succès.");
+}
+
+

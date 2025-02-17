@@ -285,7 +285,7 @@ function createImageElement(media, folderName) {
         img.loading = "lazy";
         img.decoding = "async";
         img.width = 300;
-        img.height = 200;
+        img.height = 300;
 
         // Gestion du fallback (si WebP et JPG échouent)
         img.onerror = () => img.src = "../../assets/photographers/account.png";
