@@ -172,8 +172,8 @@ export function handleGalleryNavigation(event, direction) {
         return;
     }
 
-    const mediaItems = Array.from(mediaGallery.querySelectorAll(".media-item")); //  Récupère tous les médias affichés
-    let activeMedia = document.querySelector(".media-item.selected"); // Trouve l'élément actuellement sélectionné
+    const mediaItems = Array.from(mediaGallery.querySelectorAll(".media-item")); // ✅ Récupère tous les médias affichés
+    let activeMedia = document.querySelector(".media-item.selected"); // 🔍 Trouve l'élément actuellement sélectionné
 
     let currentIndex = mediaItems.findIndex(item => item === activeMedia);
     if (currentIndex === -1) {
@@ -182,14 +182,14 @@ export function handleGalleryNavigation(event, direction) {
 
     const videoElement = activeMedia?.querySelector("video");
 
-    // Empêcher la navigation si une vidéo est en lecture
+    // 🚨 **Empêcher la navigation si une vidéo est en lecture**
     if (videoElement && !videoElement.paused) {
         logEvent("warn", "handleGalleryNavigation : Une vidéo est en lecture, blocage de la navigation.");
         event.preventDefault();
         return;
     }
 
-    // Défilement dans la galerie
+    // 🔄 **Défilement dans la galerie**
     if (direction === "vertical") {
         if (event.key === "ArrowUp") {
             currentIndex = (currentIndex - 1 + mediaItems.length) % mediaItems.length;
@@ -205,8 +205,8 @@ export function handleGalleryNavigation(event, direction) {
     }
 
     // Met à jour la sélection
-    mediaItems.forEach(item => item.classList.remove("selected")); // Retire la sélection des autres médias
-    mediaItems[currentIndex].classList.add("selected"); // Ajoute la classe active au nouvel élément sélectionné
+    mediaItems.forEach(item => item.classList.remove("selected")); // 🔹 Retire la sélection des autres médias
+    mediaItems[currentIndex].classList.add("selected"); // 🔹 Ajoute la classe active au nouvel élément sélectionné
     mediaItems[currentIndex].scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
 
     // Piège le focus sur l'élément sélectionné
@@ -347,7 +347,7 @@ export function handleLightboxOpen(event, mediaArray, folderName) {
       logEvent("debug", "handleLightboxOpen() déclenché.", { event });
 
       if (!Array.isArray(mediaArray) || mediaArray.length === 0) {
-          logEvent("error", "mediaArray est vide ou invalide !");
+          logEvent("error", " mediaArray est vide ou invalide !");
           throw new Error("mediaArray est vide ou invalide !");
       }
 
@@ -368,23 +368,23 @@ export function handleLightboxOpen(event, mediaArray, folderName) {
           throw new Error("Aucun média sélectionné.");
       }
 
-      logEvent("success", "Élément .gallery-item détecté avec succès.", { galleryItem });
+      logEvent("success", " Élément .gallery-item détecté avec succès.", { galleryItem });
 
       // Vérification si c'est une vidéo et désactivation temporaire des contrôles
       const videoElement = galleryItem.querySelector("video");
       if (videoElement) {
-          logEvent("info", " Vidéo détectée, désactivation temporaire des contrôles.");
+          logEvent("info", "Vidéo détectée, désactivation temporaire des contrôles.");
           videoElement.removeAttribute("controls"); // Empêche l'interception du clic
       }
 
       // Récupère l'index du média
       const mediaIndex = parseInt(galleryItem.dataset.index, 10);
       if (isNaN(mediaIndex) || mediaIndex < 0 || mediaIndex >= mediaArray.length) {
-          logEvent("error", "Index média invalide ou hors limites.", { mediaIndex });
+          logEvent("error", " Index média invalide ou hors limites.", { mediaIndex });
           throw new Error("Index média invalide ou hors limites.");
       }
 
-      logEvent("success", `Média sélectionné à l'index ${mediaIndex}. Ouverture de la lightbox...`);
+      logEvent("success", ` Média sélectionné à l'index ${mediaIndex}. Ouverture de la lightbox...`);
 
       window.mediaList = mediaArray;
       window.globalFolderName = folderName;
@@ -394,7 +394,7 @@ export function handleLightboxOpen(event, mediaArray, folderName) {
       // Réactiver les contrôles après un court délai pour éviter l'interférence
       setTimeout(() => {
           if (videoElement) {
-              logEvent("info", "Réactivation des contrôles vidéo.");
+              logEvent("info", " Réactivation des contrôles vidéo.");
               videoElement.setAttribute("controls", "true");
           }
       }, 300);
@@ -713,13 +713,13 @@ export function handleKeyboardEvent(event) {
           activeMedia: !!activeMedia
       });
 
-      // Évite d'interférer avec une vidéo active
+      //  Évite d'interférer avec une vidéo active
       if (document.activeElement.tagName === "VIDEO" && !document.activeElement.paused) {
           logEvent("warn", "handleKeyboardEvent : Vidéo active détectée, touches fléchées désactivées.");
           return;
       }
 
-      // Détecte les touches pour naviguer UNIQUEMENT dans la galerie
+      //  **Détecte les touches pour naviguer UNIQUEMENT dans la galerie**
       if (!activeLightbox && !activeModal) {
           switch (event.key) {
               case "ArrowLeft":
@@ -733,8 +733,8 @@ export function handleKeyboardEvent(event) {
               case "Enter":
               case " ":
                   if (activeMedia) {
-                      // Trouver l'INDEX du média dans la **lightbox** et non juste la galerie
-                      const mediaId = activeMedia.getAttribute("data-id"); // ID du média
+                      //  Trouver l'INDEX du média dans la **lightbox** et non juste la galerie
+                      const mediaId = activeMedia.getAttribute("data-id"); //  ID du média
                       const mediaIndex = mediaList.findIndex(media => media.id == mediaId); // Trouve l’index dans `mediaList`
 
                       if (mediaIndex !== -1) {

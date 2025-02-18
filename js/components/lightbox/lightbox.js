@@ -126,10 +126,7 @@ export function openLightbox(index, mediaArray, folderName) {
             globalFolderName = folderName;
         }
 
-        //  Vérifier si l'index est valide
-        if (index < 0 || index >= mediaList.length) {
-            throw new Error(` Index ${index} hors limites (doit être entre 0 et ${mediaList.length - 1}).`);
-        }
+       
 
         //  Tout est correct, on met à jour currentIndex et affiche le média
         currentIndex = index;
@@ -178,6 +175,8 @@ export function openLightbox(index, mediaArray, folderName) {
  */
 
 
+// Variable globale pour suivre si la lightbox est ouverte sur une vidéo
+
 export function closeLightbox() {
     logEvent("action", "Fermeture de la lightbox et réinitialisation du contenu.");
 
@@ -192,7 +191,7 @@ export function closeLightbox() {
         const mediaToRemove = lightboxMediaContainer.querySelector(".active-media");
         if (mediaToRemove) {
             mediaToRemove.remove();
-            logEvent("info", "Média actuel supprimé de la lightbox.");
+            logEvent("info", "🗑 Média actuel supprimé de la lightbox.");
         }
 
         // Réinitialisation du titre (caption)
@@ -204,26 +203,21 @@ export function closeLightbox() {
         // Réinitialisation de l'état vidéo
         if (isVideoLightboxOpen) {
             isVideoLightboxOpen = false;
-            logEvent("info", " Réinitialisation de isVideoLightboxOpen après fermeture.");
+            logEvent("info", "Réinitialisation de isVideoLightboxOpen après fermeture.");
         }
 
         //  Réactive les contrôles des vidéos dans la galerie après la fermeture
         setTimeout(() => {
-            initializeVideoHandlers();  // Assure que les vidéos redeviennent interactives après la fermeture
-            logEvent("info", "Réactivation des vidéos après fermeture de la lightbox.");
+            initializeVideoHandlers();  //  Assure que les vidéos redeviennent interactives après la fermeture
+            logEvent("info", " Réactivation des vidéos après fermeture de la lightbox.");
         }, 300); // Petit délai pour éviter les conflits
 
-        //  Réenregistre les événements clavier après fermeture et réouverture
-        if (!document.__lightboxKeyboardListener) {
-            document.addEventListener("keydown", handleLightboxNavigation);
-            document.__lightboxKeyboardListener = true;
-            logEvent("info", "Réactivation des commandes clavier après fermeture de la lightbox.");
-        }
+        
 
         // Réinitialisation des variables globales
-        currentIndex = null;
-        mediaList = null;
-        globalFolderName = null;
+        currentIndex = 0;
+        mediaList = [];
+        globalFolderName = "";
 
         // Masquer la lightbox sans supprimer ses éléments de structure
         lightboxContainer.classList.add("hidden");
@@ -235,7 +229,6 @@ export function closeLightbox() {
         logEvent("error", ` Erreur lors de la fermeture de la lightbox : ${error.message}`, { error });
     }
 }
-
 
 
 /*==============================================*/
@@ -503,25 +496,29 @@ export function showNextMedia() {
             return;
         }
 
-        // 🚨 Désactive les entrées clavier pendant la transition
+        //  Désactive les entrées clavier pendant la transition
         isTransitioning = true;
         document.removeEventListener("keydown", handleLightboxNavigation);
 
-        // Mise à jour de l'index
-        currentIndex = (currentIndex + 1) % mediaList.length;
+          // Si un tri a été fait, inverser la direction de navigation
+          if (sorted) {
+            currentIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
+        } else {
+            currentIndex = (currentIndex + 1) % mediaList.length;
+        }
         
         // Animation de sortie et mise à jour du média
         updateLightboxContent(mediaList[currentIndex], globalFolderName, "right", () => {
-            // ✅ Réactivation des entrées clavier après la fin de la transition
+            // Réactivation des entrées clavier après la fin de la transition
             isTransitioning = false;
             document.addEventListener("keydown", handleLightboxNavigation);
-            logEvent("success", "✅ Transition terminée, navigation réactivée.");
+            logEvent("success", "Transition terminée, navigation réactivée.");
         });
 
-        logEvent("success", `🎯 Navigation vers le média suivant. Index actuel : ${currentIndex}`);
+        logEvent("success", ` Navigation vers le média suivant. Index actuel : ${currentIndex}`);
 
     } catch (error) {
-        logEvent("error", `❌ Erreur lors de la navigation vers le média suivant : ${error.message}`, { error });
+        logEvent("error", ` Erreur lors de la navigation vers le média suivant : ${error.message}`, { error });
     }
 }
 
@@ -559,29 +556,32 @@ export function showPreviousMedia() {
         }
 
         if (isTransitioning) {
-            logEvent("warn", "⏳ Tentative de navigation alors qu'une transition est en cours.");
+            logEvent("warn", " Tentative de navigation alors qu'une transition est en cours.");
             return;
         }
 
-        // 🚨 Désactive les entrées clavier pendant la transition
+        //  Désactive les entrées clavier pendant la transition
         isTransitioning = true;
         document.removeEventListener("keydown", handleLightboxNavigation);
 
-        // Mise à jour de l'index
-        currentIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
-
+         if (sorted) {
+            currentIndex = (currentIndex + 1) % mediaList.length;
+        } else {
+            currentIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
+        }
+        
         // Animation de sortie et mise à jour du média
         updateLightboxContent(mediaList[currentIndex], globalFolderName, "left", () => {
-            // ✅ Réactivation des entrées clavier après la fin de la transition
-            isTransitioning = false;
+            //  Réactivation des entrées clavier après la fin de la transition
             document.addEventListener("keydown", handleLightboxNavigation);
-            logEvent("success", "✅ Transition terminée, navigation réactivée.");
+            logEvent("success", " Transition terminée, navigation réactivée."); 
+            isTransitioning = false;
         });
 
-        logEvent("success", `🎯 Navigation vers le média précédent. Index actuel : ${currentIndex}`);
+        logEvent("success", ` Navigation vers le média précédent. Index actuel : ${currentIndex}`);
 
     } catch (error) {
-        logEvent("error", `❌ Erreur lors de la navigation vers le média précédent : ${error.message}`, { error });
+        logEvent("error", ` Erreur lors de la navigation vers le média précédent : ${error.message}`, { error });
     }
 }
 
@@ -615,16 +615,13 @@ export function showPreviousMedia() {
 
 function updateLightboxContent(media, folderName, direction, callback) {
     try {
-        logEvent("debug", `🔄 Mise à jour de la lightbox : ${currentIndex} / ${mediaList.length}`, {
+        logEvent("debug", ` Mise à jour de la lightbox : ${currentIndex} / ${mediaList.length}`, {
             media, 
             currentIndex, 
             folderName, 
             direction
         });
 
-        if (!media || typeof folderName !== "string") {
-            throw new Error("Média ou nom du dossier invalide.");
-        }
 
         if (direction !== "right" && direction !== "left") {
             throw new Error(`Direction "${direction}" non valide. Attendu : "right" ou "left".`);
@@ -638,15 +635,15 @@ function updateLightboxContent(media, folderName, direction, callback) {
         const currentMedia = lightboxMediaContainer.querySelector(".active-media");
         const folderPath = `../../../assets/photographers/${folderName}/`;
 
-        // ✅ Animation de sortie et suppression de l'ancien média
+        //  Animation de sortie et suppression de l'ancien média
         if (currentMedia) {
-            const exitAnimation = direction === "right" ? animateMediaExitLeft : animateMediaExitRight;
+            let exitAnimation = direction === "right" ? animateMediaExitLeft : animateMediaExitRight;
             
             exitAnimation(currentMedia, () => {
                 currentMedia.remove();
                 insertNewMedia(media, folderPath, direction);
 
-                // ✅ Appel de la fonction de rappel après insertion du média
+                //  Appel de la fonction de rappel après insertion du média
                 if (callback && typeof callback === "function") {
                     callback();
                 }
@@ -658,10 +655,10 @@ function updateLightboxContent(media, folderName, direction, callback) {
             }
         }
 
-        logEvent("success", `✅ Média mis à jour avec succès. Direction : ${direction}`);
+        logEvent("success", ` Média mis à jour avec succès. Direction : ${direction}`);
 
     } catch (error) {
-        logEvent("error", `❌ Erreur lors de la mise à jour du média dans la lightbox : ${error.message}`, { error });
+        logEvent("error", ` Erreur lors de la mise à jour du média dans la lightbox : ${error.message}`, { error });
     }
 }
 

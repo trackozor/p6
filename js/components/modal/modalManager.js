@@ -252,6 +252,9 @@ export function openConfirmationModal() {
   logEvent("test_end", "Fin de l'ouverture de la modale de confirmation.");
 }
 
+
+
+
 /*==============================================*/
 /*              Fermeture         */
 /*=============================================*/
@@ -274,6 +277,11 @@ export function openConfirmationModal() {
  * @returns {void}
  */
 
+/*
+ * Ferme la modale de confirmation.
+ *
+ * @returns {void}
+ */
 export function closeConfirmationModal() {
   logEvent("test_start", "Début de la fermeture de la modale de confirmation.");
 
@@ -325,7 +333,25 @@ export function closeConfirmationModal() {
 /*              Modale erreur spam            */
 /*=============================================*/
 
-
+/*==============================================*/
+/*              Ouverture                     */
+/*=============================================*
+/**
+ * Affiche la modale d'erreur lorsqu'un spam est détecté.
+ *
+ * ### **Fonctionnement :**
+ * - Vérifie que la modale anti-spam est bien présente dans le DOM.
+ * - Ajoute les classes CSS nécessaires pour l'afficher et empêcher le défilement.
+ * - Capture et journalise toute erreur éventuelle.
+ *
+ * ### **Gestion des erreurs :**
+ * - Vérifie que `spamModal.container` existe avant de modifier ses classes.
+ * - Vérifie que `document.body` existe avant d'ajouter la classe `BODY_NO_SCROLL`.
+ * - Empêche les ajouts inutiles de classes déjà présentes.
+ *
+ * @function showSpamModal
+ * @returns {void}
+ */
 
 export function showSpamModal() {
   try {

@@ -134,8 +134,8 @@ export function handleKeyboardEvent(event) {
             return;
         }
 
-        // Correction du sélecteur pour la galerie
-        let mediaGallery = document.querySelector("#media-container");  
+        // 📌 ✅ **Correction du sélecteur pour la galerie**
+        let mediaGallery = document.querySelector("#media-container");  // ✅ On garde l'ordre correct ici
         if (!mediaGallery) {
             logEvent("warn", "handleKeyboardEvent : Élément #media-container introuvable. Navigation désactivée.");
             return;
@@ -146,7 +146,7 @@ export function handleKeyboardEvent(event) {
 
         let currentIndex = mediaItems.findIndex(item => item === activeMedia);
         if (currentIndex === -1) {
-            currentIndex = 0;  
+            currentIndex = 0;  // ✅ Si aucun média sélectionné, démarre au premier
         }
 
         const isVideo = activeMedia.querySelector("video");
@@ -155,22 +155,22 @@ export function handleKeyboardEvent(event) {
         if ((event.key === "Enter" || event.key === " ") && !activeLightbox) {
             logEvent("info", `handleKeyboardEvent : Ouverture de la lightbox via ${event.key} sur l'index ${currentIndex}.`);
 
-            // Vérification que `mediaList` et `globalFolderName` existent
+            //  Vérification que `mediaList` et `globalFolderName` existent
             if (!window.mediaList || !window.globalFolderName) {
                 logEvent("error", "handleKeyboardEvent : `mediaList` ou `globalFolderName` est invalide.");
                 return;
             }
 
-            // **⚠ On s'assure que l'index respecte le tri !**
+            // ** On s'assure que l'index respecte le tri !**
             const sortedIndex = sorted ? sorted.findIndex(item => item.id === mediaList[currentIndex].id) : currentIndex;
 
             openLightbox(sortedIndex, window.mediaList, window.globalFolderName);
-            event.preventDefault(); //  Empêche le comportement par défaut
+            event.preventDefault(); // Empêche le comportement par défaut
 
             return;
         }
 
-        // Dans la lightbox : contrôle vidéo avec `Espace` et `Flèches`**
+        // **Dans la lightbox : contrôle vidéo avec `Espace` et `Flèches`**
         if (activeLightbox && isVideo) {
             if (event.key === " ") {
                 logEvent("info", "handleKeyboardEvent : Lecture/Pause vidéo.");
@@ -181,7 +181,7 @@ export function handleKeyboardEvent(event) {
                     isVideo.pause();
                     logEvent("success", "Vidéo en pause.");
                 }
-                event.preventDefault(); 
+                event.preventDefault(); // Empêche le scroll de la page
                 return;
             }
 

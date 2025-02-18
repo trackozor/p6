@@ -54,6 +54,23 @@ const validateMediaList = (mediaList) => {
   }
 };
 
+
+
+
+/**---------------------------------------------------------------------------------------
+ * Trie les médias en fonction du nombre de likes (du plus populaire au moins populaire).
+ *----------------------------------------------------------------------------------------
+ *
+ * - Vérifie la validité de `mediaList` avant d'effectuer le tri.
+ * - Utilise `.slice()` pour préserver l'originalité de `mediaList`.
+ * - Applique `.sort()` avec une fonction de comparaison optimisée.
+ * - Retourne un tableau trié de manière immuable (`Object.freeze`).
+ * - Journalise le processus pour faciliter le suivi.
+ *
+ * @param {Array} mediaList - Liste des médias à trier.
+ * @returns {Array} - Liste triée par nombre de likes décroissant.
+ * @throws {TypeError} - En cas de données invalides.
+ */
 /**---------------------------------------------------------------------------------------
  * Trie les médias en fonction du nombre de likes (du plus populaire au moins populaire).
  *----------------------------------------------------------------------------------------
@@ -526,16 +543,17 @@ export async function handleMediaSort(sortOption) {
 
     // Journalise la réussite du processus
     logEvent("success", "Tri des médias terminé avec succès.");
+    sorted = true;
   } catch (error) {
     // Capture et journalise toute erreur détectée
     logEvent("error", `Erreur lors du tri des médias : ${error.message}`, {
       stack: error.stack,
     });
   } finally {
-    sorted = true;
+   
     // Fin du processus de tri
     logEvent("test_end", "Fin du processus de tri des médias.");
-  }
+   return sorted;}
 }
 
 

@@ -165,7 +165,7 @@ async function displayMediaGallery() {
       mediaArray,
     });
 
-    // Ajout de l'initialisation des vidéos après l'affichage de la galerie
+    // 🔥 Ajout de l'initialisation des vidéos après l'affichage de la galerie
     initializeVideoHandlers();
 
     return { mediaArray, folderName };
